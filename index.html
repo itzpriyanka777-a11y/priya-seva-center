@@ -7,13 +7,13 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
     a { text-decoration: none; }
     
-    /* TRANSPARENT FLOATING NAVBAR */
     .navbar { background-color: transparent; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 100;}
     .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .logo-icon { font-size: 28px; color: #e74c3c; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
@@ -28,9 +28,8 @@
     .dropdown-content a:hover { background-color: #f8faff; color: #1e3c72; padding-left: 25px;}
     .menu-container:hover .dropdown-content { display: block; }
 
-    /* FIXED CASE-SENSITIVE EXTENSION FOR LINUX/GITHUB (.PNG) */
     .hero { 
-        background: linear-gradient(rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8)), url('hero-bg.PNG'); 
+        background: linear-gradient(rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8)), url('./hero-bg.PNG'); 
         background-size: cover;
         background-position: center;
         color: white; 
@@ -45,7 +44,6 @@
     .services-container { max-width: 1100px; margin: -60px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; position: relative; z-index: 10;}
     .service-card { background: white; border-radius: 16px; padding: 35px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; border-bottom: 5px solid transparent; display: flex; flex-direction: column;}
     .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
-    
     .card-icon { font-size: 45px; margin-bottom: 20px; }
     .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #2c3e50; }
     .service-card p { font-size: 14px; color: #7f8c8d; margin-bottom: 25px; line-height: 1.6; flex-grow: 1;}
@@ -66,16 +64,27 @@
     .review-text { font-size: 15px; color: #555; font-style: italic; margin-bottom: 20px; line-height: 1.6; }
     .reviewer-name { font-weight: 700; color: #2c3e50; font-size: 16px; margin: 0; }
     .reviewer-service { font-size: 13px; color: #7f8c8d; margin-top: 5px; }
-
     footer { text-align: center; padding: 40px 20px; color: #7f8c8d; font-size: 14px; background-color: white; border-top: 1px solid #e2e8f0; margin-top: 40px;}
-    #netlify-identity-widget { z-index: 999999 !important; }
 
-    @media (max-width: 768px) { 
-        .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; background-color: rgba(30, 60, 114, 0.9); } 
-        .hero { padding: 180px 20px 100px 20px; }
-        .hero h1 { font-size: 32px; } 
-        .services-container { margin-top: -30px; } 
-    }
+    /* MODAL SYSTEM */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+    .auth-modal { background: white; padding: 35px; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; box-sizing: border-box; text-align: center;}
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #95a5a6; }
+    .auth-modal h2 { margin-top: 0; color: #1e3c72; font-weight: 700; font-size: 24px; margin-bottom: 25px; }
+    .auth-input { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; box-sizing: border-box; outline: none; }
+    .auth-input:focus { border-color: #1e3c72; }
+    .primary-auth-btn { background: #1e3c72; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
+    .primary-auth-btn:hover { background: #2a5298; }
+    
+    .oauth-divider { display: flex; align-items: center; text-align: center; color: #7f8c8d; font-size: 13px; margin-bottom: 20px; }
+    .oauth-divider::before, .oauth-divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+    .oauth-divider:not(:empty)::before { margin-right: .5em; } .oauth-divider:not(:empty)::after { margin-left: .5em; }
+    
+    .social-btn { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s; }
+    .social-btn:hover { background: #f8faff; }
+    .btn-google { color: #db4437; } .btn-facebook { color: #4267B2; }
+
+    @media (max-width: 768px) { .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; background-color: rgba(30, 60, 114, 0.9); } .hero { padding: 180px 20px 100px 20px; } .hero h1 { font-size: 32px; } .services-container { margin-top: -30px; } }
   </style>
 </head>
 <body>
@@ -88,7 +97,7 @@
     <div class="menu-container">
       <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
       <div class="dropdown-content">
-        <a href="#" onclick="netlifyIdentity.open();"><i class="fa-solid fa-lock"></i> Client Login</a>
+        <a href="#" onclick="openLoginModal();"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
         <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
         <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
       </div>
@@ -99,6 +108,26 @@
     <h1>Priya Seva Center:<br>Premium Home Care & Nursing</h1>
     <p>Professional Certified Nurses & Trusted Maid Services Across Kolkata.</p>
   </section>
+
+  <div class="modal-overlay" id="loginModal">
+    <div class="auth-modal">
+      <span class="close-modal" onclick="closeLoginModal();">&times;</span>
+      <h2>Client Account Portal</h2>
+      
+      <input type="email" id="authEmail" class="auth-input" placeholder="Enter Your Email Address">
+      <input type="password" id="authPassword" class="auth-input" placeholder="Enter Password">
+      <button class="primary-auth-btn" onclick="handleEmailLogin();">Login / Sign Up</button>
+      
+      <div class="oauth-divider">Or Access Securely Via</div>
+
+      <button class="social-btn btn-google" onclick="handleSocialLogin('google');">
+        <i class="fa-brands fa-google"></i> Continue with Google
+      </button>
+      <button class="social-btn btn-facebook" onclick="handleSocialLogin('facebook');">
+        <i class="fa-brands fa-facebook"></i> Continue with Facebook
+      </button>
+    </div>
+  </div>
 
   <section class="services-container">
     <a href="maid.html" class="service-card card-maid">
@@ -138,22 +167,6 @@
           <p class="reviewer-service">Maid Service Client (Salt Lake)</p>
         </div>
       </div>
-      <div class="review-card">
-        <div class="review-content">
-          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-          <p class="review-text">"We needed a certified nurse urgently for my father's recovery. Priya Seva sent a highly professional nurse the very next day. Complete peace of mind."</p>
-          <p class="reviewer-name">Sneha Das</p>
-          <p class="reviewer-service">24-Hour Nursing Client (New Town)</p>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="review-content">
-          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-          <p class="review-text">"Finding a reliable babysitter was always a stress. The caretaker they sent is so patient with our 2-year-old. The booking process was incredibly fast."</p>
-          <p class="reviewer-name">Priyanka Sen</p>
-          <p class="reviewer-service">Babysitter Client (Ballygunge)</p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -162,10 +175,48 @@
   </footer>
 
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("login", () => {
-        document.location.href = "dashboard.html";
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+    async function handleSocialLogin(providerName) {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: providerName,
+        options: {
+          redirectTo: window.location.origin + window.location.pathname.replace("index.html", "") + "dashboard.html"
+        }
       });
+      if (error) alert("Auth Error: " + error.message);
+    }
+
+    async function handleEmailLogin() {
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      
+      if(!email || !password) { alert("Please fill in both fields."); return; }
+
+      // Attempt to Log In
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      
+      if (!signInError) {
+        window.location.href = "dashboard.html";
+        return;
+      }
+
+      // If account doesn't exist, Create Account
+      if (signInError.message.includes("Invalid login credentials")) {
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password });
+        if (signUpError) {
+          alert("Error: " + signUpError.message);
+        } else {
+          alert("Account created successfully! If email confirmation is enabled, check your inbox. Otherwise, click Login again.");
+        }
+      } else {
+        alert("Authentication system message: " + signInError.message);
+      }
     }
   </script>
 </body>
