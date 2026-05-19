@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report an Issue | Priya Seva Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
+    
+    header { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: white; text-align: center; padding: 40px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
+    header p { font-size: 16px; color: #fdebd0; max-width: 600px; margin: 0 auto; }
+
+    .back-btn { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease; }
+    .back-btn:hover { background: white; color: #c0392b; }
+
+    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+
+    .booking-section { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top: 5px solid #c0392b; }
+    
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 15px; }
+    .form-group input[type="text"], .form-group input[type="email"], .form-group select, .form-group textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: border-color 0.3s ease; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #c0392b; background-color: white; }
+    
+    /* File Upload Styling */
+    .file-upload-wrapper { border: 2px dashed #bdc3c7; padding: 20px; text-align: center; border-radius: 8px; background-color: #f8faff; cursor: pointer; transition: all 0.3s ease; }
+    .file-upload-wrapper:hover { border-color: #c0392b; background-color: #fdf2e9; }
+    .file-upload-wrapper input[type="file"] { width: 100%; cursor: pointer; }
+
+    .submit-btn { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: white; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); transition: transform 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .submit-btn:hover { transform: translateY(-2px); }
+
+    .disclaimer { font-size: 13px; color: #7f8c8d; text-align: center; margin-top: 15px; }
+
+    @media (max-width: 768px) { .back-btn { position: relative; display: inline-block; top: 0; left: 0; margin-bottom: 20px; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <h1><i class="fa-solid fa-triangle-exclamation"></i> Report an Issue</h1>
+    <p>We take your concerns seriously. Please detail your grievance below, and our management team will investigate immediately.</p>
+  </header>
+
+  <div class="container">
+    <div class="booking-section">
+      <form action="https://formspree.io/f/xredelkr" method="POST" enctype="multipart/form-data">
+        
+        <div class="form-group">
+          <label for="clientName">1. Your Full Name</label>
+          <input type="text" id="clientName" name="Client Name" placeholder="E.g., Rahul Banerjee" required>
+        </div>
+
+        <div class="form-group">
+          <label for="clientEmail">2. Your Email Address (For Updates)</label>
+          <input type="email" id="clientEmail" name="Client Email" placeholder="E.g., rahul@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="serviceType">3. Which Service is this regarding?</label>
+          <select id="serviceType" name="Service Type" required>
+            <option value="" disabled selected>Select the service...</option>
+            <option value="Maid Services">Maid Services</option>
+            <option value="Certified Nurses">Certified Nurses</option>
+            <option value="Health Visits">Health Visits</option>
+            <option value="Babysitters">Babysitters</option>
+            <option value="General Management / Billing">General Management / Billing</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="grievanceDetails">4. Please describe the issue in detail</label>
+          <textarea id="grievanceDetails" name="Grievance Details" rows="5" placeholder="E.g., The assigned maid did not arrive at 8 AM, or the nurse was unprofessional..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="evidenceFile">5. Attach Photo or Evidence (Optional)</label>
+          <div class="file-upload-wrapper">
+            <input type="file" id="evidenceFile" name="Evidence Upload" accept="image/*,.pdf,.doc">
+            <p style="margin: 5px 0 0 0; font-size: 13px; color: #7f8c8d;">Accepted formats: JPG, PNG, PDF</p>
+          </div>
+        </div>
+
+        <input type="hidden" name="_next" value="https://priyasevacenter.netlify.app">
+
+        <button type="submit" class="submit-btn">
+          <i class="fa-solid fa-paper-plane"></i> Submit Grievance Securely
+        </button>
+        <p class="disclaimer"><i class="fa-solid fa-lock"></i> This report is sent directly to management.</p>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
