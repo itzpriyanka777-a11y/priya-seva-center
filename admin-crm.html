@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin CRM | Priya Seva</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #e8f4f8; color: #333; }
+    
+    .topbar { background-color: #1a252f; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .logo { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; }
+    
+    .container { max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    
+    .admin-card { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 30px; border-top: 6px solid #3498db; }
+    .admin-card h2 { margin-top: 0; color: #2c3e50; font-size: 24px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px; }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #7f8c8d; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-group input, .form-group select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: 0.3s; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #3498db; background-color: white; }
+
+    .submit-btn { background: #3498db; color: white; width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .submit-btn:hover { background: #2980b9; }
+
+    #successMessage { display: none; margin-top: 20px; padding: 15px; background: #d5f5e3; color: #27ae60; border-radius: 8px; font-weight: 600; font-size: 14px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo"><i class="fa-solid fa-lock" style="color: #3498db;"></i> Admin Portal</div>
+    <a href="index.html" style="color: white; text-decoration: none; font-size: 14px; border: 1px solid white; padding: 5px 10px; border-radius: 5px;">Back to Site</a>
+  </div>
+
+  <div class="container">
+    <div class="admin-card">
+      <h2><i class="fa-solid fa-user-plus"></i> Add New Customer</h2>
+      <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 25px;">Enter the client's details below. This will securely save them directly to the Master Google Sheet database.</p>
+
+      <form id="crmForm" onsubmit="addCustomer(event)">
+        
+        <div class="form-group">
+          <label>1. Client ID (Auto-Generated)</label>
+          <input type="text" id="clientID" readonly style="background-color: #e2e8f0; cursor: not-allowed; font-weight: bold; color: #2c3e50;">
+        </div>
+
+        <div class="form-group">
+          <label>2. Full Name</label>
+          <input type="text" id="clientName" placeholder="E.g., Anjali Sharma" required>
+        </div>
+
+        <div class="form-group">
+          <label>3. Phone Number</label>
+          <input type="tel" id="clientPhone" placeholder="10-digit number" required>
+        </div>
+
+        <div class="form-group">
+          <label>4. Email Address</label>
+          <input type="email" id="clientEmail" placeholder="client@email.com">
+        </div>
+
+        <div class="form-group">
+          <label>5. Service Booked</label>
+          <select id="serviceBooked" required>
+            <option value="" disabled selected>Select active service...</option>
+            <option value="Maid Service">Maid Service</option>
+            <option value="Certified Nurse">Certified Nurse</option>
+            <option value="Health Visit">Health Visit</option>
+            <option value="Babysitter">Babysitter</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>6. Full Address</label>
+          <input type="text" id="clientAddress" placeholder="E.g., Block AE, Salt Lake" required>
+        </div>
+
+        <button type="submit" class="submit-btn" id="btnText">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Save to Database
+        </button>
+      </form>
+
+      <div id="successMessage">
+        <i class="fa-solid fa-circle-check"></i> Customer successfully added to Google Sheets!
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate a random Client ID (e.g., C-8492) when the page loads
+    const randomID = "C-" + Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('clientID').value = randomID;
+
+    async function addCustomer(event) {
+      event.preventDefault(); 
+      
+      const btn = document.getElementById('btnText');
+      btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Saving...";
+      btn.style.opacity = "0.7";
+
+      // 🛑 PASTE YOUR SHEETDB API URL HERE 🛑
+      const sheetApiUrl = 'https://sheetdb.io/api/v1/z04j6u2ugd152'; 
+
+      // Gather the data from the form
+      // The keys MUST perfectly match the headers in your Google Sheet Row 1
+      const dataPayload = {
+        data: [
+          {
+            "ClientID": document.getElementById('clientID').value,
+            "FullName": document.getElementById('clientName').value,
+            "PhoneNumber": document.getElementById('clientPhone').value,
+            "Email": document.getElementById('clientEmail').value,
+            "ServiceBooked": document.getElementById('serviceBooked').value,
+            "Address": document.getElementById('clientAddress').value,
+            "JoinDate": new Date().toISOString().split('T')[0] // Gets today's date automatically
+          }
+        ]
+      };
+
+      try {
+        // Push to Google Sheets
+        await fetch(sheetApiUrl, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dataPayload)
+        });
+
+        // Show Success Message
+        document.getElementById('crmForm').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+
+        // Reload page after 3 seconds to add another customer
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+
+      } catch (error) {
+        alert("Error saving to database. Check your internet or API link.");
+        btn.innerHTML = "<i class='fa-solid fa-cloud-arrow-up'></i> Save to Database";
+        btn.style.opacity = "1";
+      }
+    }
+  </script>
+</body>
+</html>

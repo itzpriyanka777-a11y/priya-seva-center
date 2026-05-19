@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Certified Nurse | Priya Seva Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
+    header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 40px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
+    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
+    header p { font-size: 16px; color: #e2e8f0; max-width: 600px; margin: 0 auto; }
+    .back-btn { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease; }
+    .back-btn:hover { background: white; color: #1e3c72; }
+    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+    .booking-section { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top: 5px solid #3498db; }
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 15px; }
+    .form-group input, .form-group select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: border-color 0.3s ease; }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: #3498db; background-color: white; }
+    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+    .checkbox-item { display: flex; align-items: center; gap: 10px; background: #f8faff; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+    .checkbox-item input { width: 18px; height: 18px; cursor: pointer; }
+    
+    .submit-btn { background: #25D366; color: white; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: transform 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px;}
+    .submit-btn:hover { background: #128C7E; transform: translateY(-2px); }
+    
+    #successMessage { display: none; margin-top: 20px; padding: 25px; background: #d5f5e3; color: #27ae60; border-radius: 8px; font-weight: 600; font-size: 16px; text-align: center; border: 2px solid #2ecc71;}
+
+    @media (max-width: 768px) { .input-grid, .checkbox-grid { grid-template-columns: 1fr; } .back-btn { position: relative; display: inline-block; top: 0; left: 0; margin-bottom: 20px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <h1><i class="fa-solid fa-user-nurse"></i> Request a Certified Nurse</h1>
+    <p>Submit your medical request. Our team will verify it on WhatsApp and assign a nurse.</p>
+  </header>
+  <div class="container">
+    <div class="booking-section">
+      
+      <form id="bookingForm" onsubmit="submitDoubleAction(event)">
+        <div class="input-grid">
+          <div class="form-group">
+            <label for="primaryCondition">1. Primary Medical Condition</label>
+            <select id="primaryCondition" required>
+              <option value="" disabled selected>Select reason for care...</option>
+              <option value="Post-Surgery Recovery">Post-Surgery Recovery</option>
+              <option value="Bedridden / Paralysis">Bedridden / Paralysis</option>
+              <option value="Dementia / Alzheimer's">Dementia / Alzheimer's</option>
+              <option value="Geriatric (Elderly) Care">Geriatric (Elderly) Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="shiftRequired">2. Required Shift</label>
+            <select id="shiftRequired" required>
+              <option value="" disabled selected>Select shift...</option>
+              <option value="12-Hour Day Shift">12-Hour Day Shift</option>
+              <option value="12-Hour Night Shift">12-Hour Night Shift</option>
+              <option value="24-Hour Live-in">24-Hour Live-in</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>3. Special Medical Requirements</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item"><input type="checkbox" name="medReq" value="Oxygen"> Oxygen Admin</label>
+            <label class="checkbox-item"><input type="checkbox" name="medReq" value="Catheter"> Catheter Care</label>
+            <label class="checkbox-item"><input type="checkbox" name="medReq" value="Ryles Tube"> Ryle's Tube</label>
+            <label class="checkbox-item"><input type="checkbox" name="medReq" value="Injections"> Injections</label>
+          </div>
+        </div>
+
+        <div class="input-grid">
+          <div class="form-group">
+            <label for="startDate">4. Target Start Date</label>
+            <input type="date" id="startDate" required>
+          </div>
+          <div class="form-group">
+            <label for="patientAge">5. Patient Age</label>
+            <input type="number" id="patientAge" required>
+          </div>
+        </div>
+
+        <div class="input-grid">
+          <div class="form-group">
+            <label for="clientName">6. Contact Person Name</label>
+            <input type="text" id="clientName" required>
+          </div>
+          <div class="form-group">
+            <label for="clientPhone">7. Mobile Number (For Dashboard)</label>
+            <input type="tel" id="clientPhone" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="clientLocation">8. Full Address in Kolkata</label>
+          <input type="text" id="clientLocation" required>
+        </div>
+
+        <button type="submit" class="submit-btn" id="btnText">
+          <i class="fa-brands fa-whatsapp"></i> Book via WhatsApp & Save
+        </button>
+      </form>
+
+      <div id="successMessage">
+        <i class="fa-solid fa-circle-check" style="font-size: 30px; margin-bottom: 10px; display: block;"></i>
+        Medical Request Logged!<br><br>
+        <span style="font-size: 14px; color: #2c3e50; font-weight: 400;">
+          If WhatsApp did not open automatically, click <a id="manualWaLink" href="#" style="color: #25D366; font-weight:bold;">here</a> to message our nursing director.
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    document.getElementById('startDate').min = tomorrow.toISOString().split("T")[0];
+
+    function submitDoubleAction(event) {
+      event.preventDefault(); 
+      
+      const btn = document.getElementById('btnText');
+      btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Redirecting...";
+      btn.style.opacity = "0.7";
+
+      const condition = document.getElementById('primaryCondition').value;
+      const shift = document.getElementById('shiftRequired').value;
+      const startDate = document.getElementById('startDate').value;
+      const age = document.getElementById('patientAge').value;
+      const name = document.getElementById('clientName').value;
+      const phone = document.getElementById('clientPhone').value;
+      const location = document.getElementById('clientLocation').value;
+      const today = new Date().toISOString().split("T")[0];
+      
+      const checkboxes = document.querySelectorAll('input[name="medReq"]:checked');
+      let reqs = [];
+      checkboxes.forEach((cb) => { reqs.push(cb.value); });
+      const reqList = reqs.length > 0 ? reqs.join("+") : "Basic Care";
+
+      // 1. SILENT GOOGLE SHEETS SAVE (Targeting Tab 2)
+      const sheetApiUrl = 'https://sheetdb.io/api/v1/z04j6u2ugd152?sheet=ServiceBookings'; 
+      
+      const dataPayload = {
+        data: [{
+            "DateOfRequest": today,
+            "Name": name,
+            "Phone": phone,
+            "ServiceType": `Nurse (${shift}) - Age ${age}, ${condition} [${reqList}]`,
+            "ServiceDate": startDate,
+            "Status": "Pending WhatsApp Confirmation",
+            "Address": location
+        }]
+      };
+
+      fetch(sheetApiUrl, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataPayload)
+      }).catch(err => console.log("Background save failed.", err));
+
+      // 2. WHATSAPP REDIRECT
+      const whatsappText = `*URGENT: NURSE REQUIREMENT*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Patient Age:* ${age}%0A*Condition:* ${condition}%0A*Needs:* ${reqList}%0A*Shift:* ${shift}%0A*Start Date:* ${startDate}%0A*Location:* ${location}%0A%0A_Please confirm availability._`;
+      const phoneNumber = "917439392803";
+      const waUrl = `https://wa.me/${phoneNumber}?text=${whatsappText}`;
+
+      window.open(waUrl, '_blank');
+
+      document.getElementById('bookingForm').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'block';
+      document.getElementById('manualWaLink').href = waUrl;
+    }
+  </script>
+</body>
+</html>
