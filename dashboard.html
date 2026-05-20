@@ -14,22 +14,21 @@
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
     
     header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: white;}
     
-    .logout-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: 0.3s; }
+    .nav-buttons { display: flex; gap: 10px; }
+    .action-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: 0.3s; text-decoration: none; font-size: 14px;}
+    .action-btn:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.8); }
     .logout-btn:hover { background: #e74c3c; border-color: #e74c3c; }
 
     .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
     @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
-
-    /* LEFT COLUMN: Calendar & Alerts */
-    .main-panel { display: flex; flex-direction: column; gap: 20px; }
     
+    .main-panel { display: flex; flex-direction: column; gap: 20px; }
     .welcome-banner { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #2a5298;}
     .welcome-text h2 { margin: 0 0 5px 0; color: #1e3c72; font-size: 20px; }
     .welcome-text p { margin: 0; color: #7f8c8d; font-size: 14px;}
     
-    /* Toggle Switch UI */
     .notification-setting { display: flex; align-items: center; gap: 10px; background: #f8faff; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;}
     .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
     .switch input { opacity: 0; width: 0; height: 0; }
@@ -39,19 +38,15 @@
     input:checked + .slider:before { transform: translateX(18px); }
     .toggle-label { font-size: 12px; font-weight: 600; color: #2c3e50; }
 
-    /* Calendar Framework */
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 20px; min-height: 400px; position: relative; overflow: hidden;}
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px;}
     .cal-header h3 { margin: 0; color: #2c3e50; font-size: 18px; }
-    .cal-nav button { background: none; border: none; font-size: 16px; cursor: pointer; color: #7f8c8d; }
     
-    /* The Empty State overlay the user requested */
     .cal-empty-state { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; z-index: 10;}
     .cal-empty-state i { font-size: 50px; color: #bdc3c7; margin-bottom: 15px; }
     .cal-empty-state h4 { color: #2c3e50; margin: 0 0 10px 0; font-size: 18px; }
     .cal-empty-state p { color: #7f8c8d; font-size: 14px; max-width: 300px; line-height: 1.5; margin: 0;}
 
-    /* RIGHT COLUMN: Action Grid */
     .action-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
     .action-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; border: 1px solid #e2e8f0; transition: transform 0.2s; display: flex; align-items: center; gap: 15px; cursor: pointer; text-decoration: none; color: inherit;}
     .action-card:hover { transform: translateY(-3px); border-color: #2a5298; }
@@ -59,7 +54,6 @@
     .action-text h4 { margin: 0 0 5px 0; color: #2c3e50; font-size: 16px;}
     .action-text p { margin: 0; color: #7f8c8d; font-size: 12px; line-height: 1.4;}
 
-    /* Modals for embedded actions */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
     .dashboard-modal { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; box-sizing: border-box; }
     .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #95a5a6; }
@@ -68,9 +62,7 @@
     .service-link-btn { display: block; width: 100%; background: #f8faff; color: #2c3e50; border: 2px solid #e2e8f0; padding: 15px; border-radius: 8px; font-weight: 600; text-decoration: none; margin-bottom: 10px; transition: 0.2s; box-sizing: border-box; }
     .service-link-btn i { width: 25px; color: #3498db; }
     .service-link-btn:hover { border-color: #3498db; background: white; transform: translateX(5px); }
-
-    .warning-box { background: #fdf2e9; border-left: 4px solid #e74c3c; padding: 15px; border-radius: 4px; margin-top: 15px; font-size: 13px; color: #c0392b; line-height: 1.5; }
-
+    
     #page-content { display: none; }
   </style>
 
@@ -81,23 +73,12 @@
 
     async function checkUserSession() {
       if (!supabaseClient) { window.location.href = "index.html"; return; }
-      
       const { data: { user } } = await supabaseClient.auth.getUser();
       if (!user) { window.location.href = "index.html"; } 
-      else {
-        document.getElementById('page-content').style.display = 'block';
-        document.getElementById('user-email-display').innerText = user.email;
-      }
+      else { document.getElementById('page-content').style.display = 'block'; document.getElementById('user-email-display').innerText = user.email; }
     }
-
-    async function handleLogOut() {
-      if(supabaseClient) await supabaseClient.auth.signOut();
-      window.location.href = "index.html";
-    }
-
+    async function handleLogOut() { if(supabaseClient) await supabaseClient.auth.signOut(); window.location.href = "index.html"; }
     window.onload = checkUserSession;
-
-    // Modal Controls
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
   </script>
@@ -106,41 +87,30 @@
 
   <div id="page-content">
     <header>
-      <div class="brand">
+      <a href="index.html" class="brand">
         <i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard
+      </a>
+      
+      <div class="nav-buttons">
+        <a href="index.html" class="action-btn"><i class="fa-solid fa-house"></i> Home</a>
+        <button class="action-btn logout-btn" onclick="handleLogOut();"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</button>
       </div>
-      <button class="logout-btn" onclick="handleLogOut();"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</button>
     </header>
 
     <div class="dashboard-container">
-      
       <div class="main-panel">
-        
         <div class="welcome-banner">
           <div class="welcome-text">
             <h2>Welcome back.</h2>
             <p><i class="fa-solid fa-shield-halved"></i> Secured as: <strong id="user-email-display">Loading...</strong></p>
           </div>
-          
           <div class="notification-setting">
-            <div class="toggle-label">1-Hour Service Reminders<br><span style="font-weight:400; font-size:10px; color:#7f8c8d;">(WhatsApp & Email)</span></div>
-            <label class="switch">
-              <input type="checkbox" checked>
-              <span class="slider"></span>
-            </label>
+            <div class="toggle-label">1-Hour Service Reminders</div>
+            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
           </div>
         </div>
-
         <div class="calendar-container">
-          <div class="cal-header">
-            <h3><i class="fa-regular fa-calendar-days"></i> Service Schedule</h3>
-            <div class="cal-nav">
-              <button>&lt;</button> <span style="font-weight: 600; color:#333; margin:0 10px;">May 2026</span> <button>&gt;</button>
-            </div>
-          </div>
-          
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Calendar_icon.svg/1024px-Calendar_icon.svg.png" style="opacity: 0.05; width: 100%; height: auto; max-height: 250px; object-fit: contain; margin-top:20px;" alt="calendar background">
-
+          <div class="cal-header"><h3><i class="fa-regular fa-calendar-days"></i> Service Schedule</h3></div>
           <div class="cal-empty-state">
             <i class="fa-solid fa-calendar-xmark"></i>
             <h4>No upcoming services</h4>
@@ -150,47 +120,11 @@
       </div>
 
       <div class="action-grid">
-        
-        <div class="action-card" onclick="openModal('bookModal');">
-          <div class="action-icon"><i class="fa-solid fa-calendar-plus"></i></div>
-          <div class="action-text">
-            <h4>Book New Service</h4>
-            <p>Schedule a maid, nurse, or babysitter instantly.</p>
-          </div>
-        </div>
-
-        <div class="action-card" onclick="openModal('manageModal');">
-          <div class="action-icon" style="color: #f39c12;"><i class="fa-solid fa-pen-to-square"></i></div>
-          <div class="action-text">
-            <h4>Edit / Cancel Booking</h4>
-            <p>Modify existing schedules (Subject to 48hr rule).</p>
-          </div>
-        </div>
-        
-        <a href="absent.html" class="action-card">
-          <div class="action-icon" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
-          <div class="action-text">
-            <h4>Log an Absence</h4>
-            <p>Manually pause a service for specific dates.</p>
-          </div>
-        </a>
-
-        <a href="grievance.html" class="action-card">
-          <div class="action-icon" style="color: #8e44ad;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div class="action-text">
-            <h4>File a Grievance</h4>
-            <p>Report an issue directly to the management team.</p>
-          </div>
-        </a>
-
-        <a href="https://search.google.com/local/writereview?placeid=YOUR_GOOGLE_MAPS_ID" target="_blank" class="action-card">
-          <div class="action-icon" style="color: #2ecc71;"><i class="fa-regular fa-star"></i></div>
-          <div class="action-text">
-            <h4>Leave Feedback</h4>
-            <p>Rate our service on Google Reviews.</p>
-          </div>
-        </a>
-
+        <div class="action-card" onclick="openModal('bookModal');"><div class="action-icon"><i class="fa-solid fa-calendar-plus"></i></div><div class="action-text"><h4>Book New Service</h4></div></div>
+        <div class="action-card" onclick="openModal('manageModal');"><div class="action-icon" style="color: #f39c12;"><i class="fa-solid fa-pen-to-square"></i></div><div class="action-text"><h4>Edit / Cancel Booking</h4></div></div>
+        <a href="absent.html" class="action-card"><div class="action-icon" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div><div class="action-text"><h4>Log an Absence</h4></div></a>
+        <a href="grievance.html" class="action-card"><div class="action-icon" style="color: #8e44ad;"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="action-text"><h4>File a Grievance</h4></div></a>
+        <a href="https://search.google.com/local/writereview?placeid=YOUR_GOOGLE_MAPS_ID" target="_blank" class="action-card"><div class="action-icon" style="color: #2ecc71;"><i class="fa-regular fa-star"></i></div><div class="action-text"><h4>Leave Feedback</h4></div></a>
       </div>
     </div>
   </div>
@@ -210,17 +144,8 @@
     <div class="dashboard-modal">
       <span class="close-modal" onclick="closeModal('manageModal');">&times;</span>
       <h3>Active Bookings</h3>
-      
-      <div style="text-align: center; padding: 20px; color: #7f8c8d;">
-        <i class="fa-solid fa-folder-open" style="font-size: 30px; margin-bottom: 10px; color: #bdc3c7;"></i>
-        <p style="margin: 0;">No active bookings available to edit.</p>
-      </div>
-
-      <div class="warning-box">
-        <strong>Important Policy:</strong> You may edit or completely cancel any active service directly from this panel, provided the change is made at least <strong>48 hours prior</strong> to the scheduled service time.
-      </div>
+      <div style="text-align: center; padding: 20px; color: #7f8c8d;">No active bookings.</div>
     </div>
   </div>
-
 </body>
 </html>
