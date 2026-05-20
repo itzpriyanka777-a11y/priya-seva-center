@@ -239,7 +239,7 @@
       if (error || data.length === 0) {
         feed.innerHTML = emptyStateHTML;
       } else {
-        // Updated Status Logic
+        // Status Logic (Pending vs Confirmed)
         feed.innerHTML = data.map(item => {
           let isPending = item.status.toLowerCase() === 'pending';
           let statusIcon = isPending ? '<i class="fa-solid fa-clock-rotate-left"></i>' : '<i class="fa-solid fa-circle-check"></i>';
