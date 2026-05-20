@@ -3,155 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Maid Services | Priya Seva Center</title>
+  <title>Book Maid Service | Priya Seva Center</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
-    header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 40px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative;}
-    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
-    header p { font-size: 16px; color: #e2e8f0; }
-    .back-btn { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 5px; }
-    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-    .booking-section { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); }
-    .form-group { margin-bottom: 25px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 15px; }
-    .form-group input, .form-group select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; }
-    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .checkbox-item { display: flex; align-items: center; gap: 10px; background: #f8faff; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; }
-    .checkbox-item input { width: 20px; height: 20px; }
-    
-    .submit-btn { background: #25D366; color: white; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;}
-    .submit-btn:hover { background: #128C7E; }
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    #successMessage { display: none; margin-top: 20px; padding: 25px; background: #d5f5e3; color: #27ae60; border-radius: 8px; font-weight: 600; font-size: 16px; text-align: center; border: 2px solid #2ecc71;}
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
+    
+    /* Navbar */
+    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; color: white; }
+    .logo-text { font-size: 22px; font-weight: 700; }
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; }
+
+    /* Page Container */
+    .page-wrapper { max-width: 600px; margin: 50px auto; padding: 20px; }
+    .booking-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    
+    h2 { color: #3498db; margin-top: 0; font-size: 28px; }
+    p { color: #7f8c8d; line-height: 1.6; margin-bottom: 30px; }
+
+    /* Form Styling */
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: #2c3e50; }
+    .form-group input, .form-group textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; font-family: 'Poppins', sans-serif; font-size: 15px; }
+    
+    .confirm-btn { background: #3498db; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .confirm-btn:hover { background: #2980b9; transform: translateY(-2px); }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-    <h1><i class="fa-solid fa-broom"></i> Book a Maid Service</h1>
-    <p>Submit your request. Our team will verify it on WhatsApp and add it to your calendar.</p>
-  </header>
 
-  <div class="container">
-    <div class="booking-section">
-      
-      <form id="bookingForm" onsubmit="submitDoubleAction(event)">
+  <nav class="navbar">
+    <div class="logo-text">Priya Seva Center</div>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Back to Dashboard</a>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="booking-card">
+      <h2><i class="fa-solid fa-broom"></i> Book Maid Service</h2>
+      <p>Fill in the details below to request a professional maid for your home. We will confirm your slot shortly.</p>
+
+      <div class="booking-form" id="bookingForm">
         <div class="form-group">
-          <label>1. What tasks do you need help with?</label>
-          <div class="checkbox-grid">
-            <label class="checkbox-item"><input type="checkbox" name="task" value="Cooking"> Cooking</label>
-            <label class="checkbox-item"><input type="checkbox" name="task" value="Cleaning"> Cleaning</label>
-            <label class="checkbox-item"><input type="checkbox" name="task" value="Washing"> Washing</label>
-            <label class="checkbox-item"><input type="checkbox" name="task" value="Caretaking"> Caretaking</label>
-          </div>
-        </div>
-        
-        <div class="input-grid">
-          <div class="form-group">
-            <label for="bookingDuration">2. Booking Duration</label>
-            <select id="bookingDuration" required>
-              <option value="" disabled selected>Select duration...</option>
-              <option value="1 Month Trial">1 Month Trial</option>
-              <option value="2 Months">2 Months</option>
-              <option value="Ongoing">Ongoing</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="startDate">3. Target Start Date</label>
-            <input type="date" id="startDate" required>
-          </div>
-        </div>
-
-        <div class="input-grid">
-          <div class="form-group">
-            <label for="clientName">4. Your Name</label>
-            <input type="text" id="clientName" required>
-          </div>
-          <div class="form-group">
-            <label for="clientPhone">5. Mobile Number (For your Dashboard)</label>
-            <input type="tel" id="clientPhone" required>
-          </div>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" placeholder="Your Name" required>
         </div>
 
         <div class="form-group">
-          <label for="clientLocation">6. Location / Address</label>
-          <input type="text" id="clientLocation" required>
+          <label for="bookingDate">Preferred Service Date</label>
+          <input type="date" id="bookingDate" required>
         </div>
 
-        <button type="submit" class="submit-btn" id="btnText">
-          <i class="fa-brands fa-whatsapp"></i> Book via WhatsApp & Save
-        </button>
-      </form>
+        <div class="form-group">
+          <label for="specialNote">Special Instructions (Optional)</label>
+          <textarea id="specialNote" rows="3" placeholder="e.g., Specific cleaning requirements..."></textarea>
+        </div>
 
-      <div id="successMessage">
-        <i class="fa-solid fa-circle-check" style="font-size: 30px; margin-bottom: 10px; display: block;"></i>
-        Request Logged!<br><br>
-        <span style="font-size: 14px; color: #2c3e50; font-weight: 400;">
-          If WhatsApp did not open automatically, please click <a id="manualWaLink" href="#" style="color: #25D366; font-weight:bold;">here</a> to message us directly.
-        </span>
+        <button onclick="saveBooking()" class="confirm-btn">Confirm Booking</button>
       </div>
-
     </div>
   </div>
 
   <script>
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    document.getElementById('startDate').min = tomorrow.toISOString().split("T")[0];
+    // Configuration
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function submitDoubleAction(event) {
-      event.preventDefault(); 
-      
-      const btn = document.getElementById('btnText');
-      btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Redirecting...";
-      btn.style.opacity = "0.7";
+    async function saveBooking() {
+      // Get Values
+      const dateInput = document.getElementById('bookingDate').value;
+      const nameInput = document.getElementById('fullName').value;
+      const noteInput = document.getElementById('specialNote').value;
 
-      const name = document.getElementById('clientName').value;
-      const phone = document.getElementById('clientPhone').value;
-      const duration = document.getElementById('bookingDuration').value;
-      const startDate = document.getElementById('startDate').value;
-      const location = document.getElementById('clientLocation').value;
-      const today = new Date().toISOString().split("T")[0];
-      
-      const checkboxes = document.querySelectorAll('input[name="task"]:checked');
-      let tasks = [];
-      checkboxes.forEach((cb) => { tasks.push(cb.value); });
-      const taskList = tasks.length > 0 ? tasks.join(", ") : "General";
+      if (!dateInput || !nameInput) {
+        return alert("Please fill in your name and the preferred date!");
+      }
 
-      // 1. SILENT GOOGLE SHEETS SAVE (Targeting Tab 2)
-      const sheetApiUrl = 'https://sheetdb.io/api/v1/z04j6u2ugd152?sheet=ServiceBookings'; 
-      
-      const dataPayload = {
-        data: [{
-            "DateOfRequest": today,
-            "Name": name,               
-            "Phone": phone,
-            "ServiceType": `Maid (${duration}) - Tasks: ${taskList}`,
-            "ServiceDate": startDate,
-            "Status": "Pending WhatsApp Confirmation",
-            "Address": location         
-        }]
-      };
+      // Check User Authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return alert("You must be logged in to book. Please sign in!");
+      }
 
-      fetch(sheetApiUrl, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataPayload)
-      }).catch(err => console.log("Background save failed.", err));
+      // Insert into Supabase
+      const { error } = await supabase
+        .from('bookings')
+        .insert([
+          { 
+            user_email: user.email, 
+            service_type: 'Maid Services', 
+            booking_date: dateInput,
+            status: 'pending' 
+            // Note: If you want to add more columns, add them to your table first!
+          }
+        ]);
 
-      // 2. WHATSAPP REDIRECT
-      const whatsappText = `*NEW MAID REQUEST*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Tasks:* ${taskList}%0A*Duration:* ${duration}%0A*Start Date:* ${startDate}%0A*Location:* ${location}%0A%0A_Please confirm my booking._`;
-      const phoneNumber = "917439392803";
-      const waUrl = `https://wa.me/${phoneNumber}?text=${whatsappText}`;
-
-      window.open(waUrl, '_blank');
-
-      document.getElementById('bookingForm').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('manualWaLink').href = waUrl;
+      if (error) {
+        console.error("Supabase Error:", error);
+        alert("Booking failed: " + error.message);
+      } else {
+        alert("Booking confirmed! Redirecting to your dashboard...");
+        window.location.href = "dashboard.html";
+      }
     }
   </script>
 </body>
