@@ -10,68 +10,91 @@
 
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
+    
+    /* Header */
     header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: white;}
-    .action-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: 0.3s; text-decoration: none; font-size: 14px;}
+    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none;}
+    .action-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 14px;}
+    
+    /* Grid */
     .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
     .main-panel { display: flex; flex-direction: column; gap: 20px; }
+    
+    /* Pretty Cards */
+    .welcome-banner { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid #2a5298; display: flex; justify-content: space-between; align-items: center;}
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 20px; min-height: 400px; }
-    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; }
-    .toggle-btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 11px; }
-    .toggle-btn:hover { background: #1e3c72; color: white; }
+    
+    /* Toggles & Feed */
+    .cal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 15px;}
+    .toggle-btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: 5px; }
+    .toggle-btn:hover { background: #2a5298; color: white; }
     .booking-item { padding: 12px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; font-size: 14px; }
-    .action-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; cursor: pointer; margin-bottom: 15px; }
+    
+    /* Sidebar Actions */
+    .action-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+    .action-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+    .action-card:hover { border-color: #2a5298; transform: translateY(-2px); transition: 0.2s; }
+    .action-icon { width: 40px; height: 40px; background: #f8faff; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #2a5298; }
+
     #page-content { display: none; }
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; }
-    .dashboard-modal { background: white; padding: 30px; border-radius: 16px; width: 300px; position: relative; }
   </style>
 </head>
 <body>
 
   <div id="page-content">
     <header>
-      <a href="index.html" class="brand">Priya Seva Dashboard</a>
-      <button class="action-btn" onclick="logOut()">Log Out</button>
+      <div class="brand"><i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard</div>
+      <button class="action-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
     </header>
 
     <div class="dashboard-container">
       <div class="main-panel">
+        <div class="welcome-banner">
+          <div>
+            <h2 style="margin:0; font-size: 20px; color: #1e3c72;">Welcome back.</h2>
+            <p style="margin:0; font-size: 14px; color: #7f8c8d;" id="user-email-display"></p>
+          </div>
+        </div>
+
         <div class="calendar-container">
           <div class="cal-header">
-            <h3>Schedule</h3>
+            <h3><i class="fa-regular fa-calendar-days"></i> Service Schedule</h3>
             <div>
               <button class="toggle-btn" onclick="loadBookings('Maid Services')">Maid</button>
               <button class="toggle-btn" onclick="loadBookings('Certified Nurses')">Nurse</button>
             </div>
           </div>
-          <div id="feed">Select a service to view schedule.</div>
+          <div id="feed" style="text-align: center; color: #7f8c8d; margin-top: 50px;">Select a service to view schedule.</div>
         </div>
       </div>
-      <div>
-        <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">Book New Service</div>
+
+      <div class="action-grid">
+        <div class="action-card" onclick="window.location.href='maid.html'"><div class="action-icon"><i class="fa-solid fa-broom"></i></div><h4>Book Maid</h4></div>
+        <div class="action-card" onclick="window.location.href='nurse.html'"><div class="action-icon"><i class="fa-solid fa-user-nurse"></i></div><h4>Book Nurse</h4></div>
       </div>
     </div>
   </div>
 
-  <div class="modal-overlay" id="bookModal"><div class="dashboard-modal"><span onclick="this.parentElement.parentElement.style.display='none'" style="cursor:pointer">X</span><h3>Bookings</h3><a href="maid.html">Maid</a><br><a href="nurse.html">Nurse</a></div></div>
-
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    
-    // Using a completely unique variable name
     const myUniqueDatabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function checkAuth() {
       const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
       if (!user) window.location.href = "index.html";
-      else document.getElementById('page-content').style.display = 'block';
+      else {
+        document.getElementById('page-content').style.display = 'block';
+        document.getElementById('user-email-display').innerText = user.email;
+      }
     }
 
     async function loadBookings(type) {
+      const feed = document.getElementById('feed');
+      feed.innerHTML = "Loading...";
       const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
-      const { data } = await myUniqueDatabaseClient.from('bookings').select('*').eq('service_type', type).eq('user_email', user.email);
-      document.getElementById('feed').innerHTML = data.length > 0 ? data.map(i => `<div>${i.booking_date} - ${i.status}</div>`).join('') : "No bookings.";
+      const { data, error } = await myUniqueDatabaseClient.from('bookings').select('*').eq('service_type', type).eq('user_email', user.email);
+      feed.innerHTML = (error || data.length === 0) ? "No bookings found." : data.map(i => `<div class="booking-item"><span>${i.booking_date}</span><span>${i.status}</span></div>`).join('');
     }
 
     async function logOut() { await myUniqueDatabaseClient.auth.signOut(); window.location.href = "index.html"; }
