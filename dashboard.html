@@ -7,53 +7,28 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
-    
-    /* Header */
     header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
     .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; color: white;}
     .nav-buttons { display: flex; gap: 10px; }
     .action-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; transition: 0.3s; text-decoration: none; font-size: 14px;}
     .action-btn:hover { background: rgba(255,255,255,0.3); border-color: rgba(255,255,255,0.8); }
-    .logout-btn:hover { background: #e74c3c; border-color: #e74c3c; }
-
-    /* Dashboard Grid */
     .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
     @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
-    
     .main-panel { display: flex; flex-direction: column; gap: 20px; }
-    
-    /* Welcome Banner & Toggles */
     .welcome-banner { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #2a5298;}
-    .welcome-text h2 { margin: 0 0 5px 0; color: #1e3c72; font-size: 20px; }
-    .welcome-text p { margin: 0; color: #7f8c8d; font-size: 14px;}
-    .notification-setting { display: flex; align-items: center; gap: 10px; background: #f8faff; padding: 10px 15px; border-radius: 8px; border: 1px solid #e2e8f0;}
-    .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #2ecc71; }
-    input:checked + .slider:before { transform: translateX(18px); }
-
-    /* Calendar & Toggle Nav */
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 20px; min-height: 400px; }
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; flex-wrap: wrap; gap: 10px;}
     .service-toggles { display: flex; gap: 5px; }
     .toggle-btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #e2e8f0; background: white; cursor: pointer; font-size: 11px; font-weight: 600; color: #555; }
     .toggle-btn:hover { background: #1e3c72; color: white; }
     .booking-item { padding: 12px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; font-size: 14px; }
-
-    /* Action Grid */
     .action-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
     .action-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; border: 1px solid #e2e8f0; transition: transform 0.2s; display: flex; align-items: center; gap: 15px; cursor: pointer; text-decoration: none; color: inherit;}
-    .action-card:hover { transform: translateY(-3px); border-color: #2a5298; }
     .action-icon { background: #f8faff; width: 50px; height: 50px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 20px; color: #2a5298; flex-shrink: 0;}
-    
-    /* Modals */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
     .dashboard-modal { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 450px; position: relative; }
     .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; }
@@ -79,10 +54,6 @@
             <h2>Welcome back.</h2>
             <p><i class="fa-solid fa-shield-halved"></i> <span id="user-email-display">Loading...</span></p>
           </div>
-          <div class="notification-setting">
-            <div style="font-size: 11px; font-weight: 600;">1-Hour Reminders</div>
-            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-          </div>
         </div>
 
         <div class="calendar-container">
@@ -104,8 +75,6 @@
       <div class="action-grid">
         <div class="action-card" onclick="openModal('bookModal');"><div class="action-icon"><i class="fa-solid fa-calendar-plus"></i></div><div><h4>Book New Service</h4></div></div>
         <div class="action-card" onclick="openModal('manageModal');"><div class="action-icon" style="color: #f39c12;"><i class="fa-solid fa-pen-to-square"></i></div><div><h4>Edit / Cancel Booking</h4></div></div>
-        <a href="absent.html" class="action-card"><div class="action-icon" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div><div><h4>Log an Absence</h4></div></a>
-        <a href="grievance.html" class="action-card"><div class="action-icon" style="color: #8e44ad;"><i class="fa-solid fa-triangle-exclamation"></i></div><div><h4>File a Grievance</h4></div></a>
       </div>
     </div>
   </div>
@@ -116,10 +85,11 @@
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Renamed to supabaseClient to avoid conflicts
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function checkUserSession() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabaseClient.auth.getUser();
       if (!user) { window.location.href = "index.html"; } 
       else { document.getElementById('page-content').style.display = 'block'; document.getElementById('user-email-display').innerText = user.email; }
     }
@@ -127,8 +97,8 @@
     async function fetchBookings(serviceType) {
       const feed = document.getElementById('calendarFeed');
       feed.innerHTML = "Loading...";
-      const { data: { user } } = await supabase.auth.getUser();
-      const { data, error } = await supabase.from('bookings').select('booking_date, status').eq('service_type', serviceType).eq('user_email', user.email).order('booking_date', { ascending: true });
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      const { data, error } = await supabaseClient.from('bookings').select('booking_date, status').eq('service_type', serviceType).eq('user_email', user.email).order('booking_date', { ascending: true });
 
       if (error) feed.innerHTML = "Error loading schedule.";
       else if (data.length === 0) feed.innerHTML = `<p style="text-align:center;">No upcoming dates for ${serviceType}.</p>`;
@@ -139,7 +109,7 @@
       }
     }
 
-    async function handleLogOut() { await supabase.auth.signOut(); window.location.href = "index.html"; }
+    async function handleLogOut() { await supabaseClient.auth.signOut(); window.location.href = "index.html"; }
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onload = checkUserSession;
