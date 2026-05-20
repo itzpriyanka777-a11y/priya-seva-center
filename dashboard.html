@@ -3,39 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Dashboard | Priya Seva Center</title>
+  <title>Priya Seva Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
-    
     /* Header */
-    header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none;}
-    .action-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 14px;}
+    header { background: #1e3c72; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    .logout-btn { background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 600; }
     
-    /* Grid */
+    /* Layout */
     .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
-    .main-panel { display: flex; flex-direction: column; gap: 20px; }
     
-    /* Pretty Cards */
-    .welcome-banner { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid #2a5298; display: flex; justify-content: space-between; align-items: center;}
+    /* Welcome Card */
+    .welcome-banner { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border-left: 5px solid #2a5298; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+    
+    /* Calendar Card */
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); padding: 20px; min-height: 400px; }
-    
-    /* Toggles & Feed */
-    .cal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 15px;}
-    .toggle-btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; font-size: 12px; font-weight: 600; margin-left: 5px; }
+    .cal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f2f5; padding-bottom: 15px; margin-bottom: 15px;}
+    .toggle-btn { padding: 6px 12px; border-radius: 5px; border: 1px solid #e2e8f0; background: #fff; cursor: pointer; font-size: 11px; font-weight: 600; margin-left: 5px; }
     .toggle-btn:hover { background: #2a5298; color: white; }
     .booking-item { padding: 12px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; font-size: 14px; }
     
     /* Sidebar Actions */
-    .action-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-    .action-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-    .action-card:hover { border-color: #2a5298; transform: translateY(-2px); transition: 0.2s; }
+    .action-grid { display: flex; flex-direction: column; gap: 15px; }
+    .action-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 15px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: 0.2s; }
+    .action-card:hover { border-color: #2a5298; }
     .action-icon { width: 40px; height: 40px; background: #f8faff; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #2a5298; }
-
+    
     #page-content { display: none; }
   </style>
 </head>
@@ -44,7 +42,7 @@
   <div id="page-content">
     <header>
       <div class="brand"><i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard</div>
-      <button class="action-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+      <button class="logout-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
     </header>
 
     <div class="dashboard-container">
@@ -69,8 +67,10 @@
       </div>
 
       <div class="action-grid">
-        <div class="action-card" onclick="window.location.href='maid.html'"><div class="action-icon"><i class="fa-solid fa-broom"></i></div><h4>Book Maid</h4></div>
-        <div class="action-card" onclick="window.location.href='nurse.html'"><div class="action-icon"><i class="fa-solid fa-user-nurse"></i></div><h4>Book Nurse</h4></div>
+        <div class="action-card" onclick="window.location.href='maid.html'"><div class="action-icon"><i class="fa-solid fa-broom"></i></div><div><strong>Book New Service</strong><br><small>Maid, nurse, or babysitter</small></div></div>
+        <div class="action-card"><div class="action-icon"><i class="fa-solid fa-pen-to-square"></i></div><div><strong>Edit / Cancel Booking</strong></div></div>
+        <div class="action-card"><div class="action-icon"><i class="fa-solid fa-user-xmark"></i></div><div><strong>Log an Absence</strong></div></div>
+        <div class="action-card"><div class="action-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div><strong>File a Grievance</strong></div></div>
       </div>
     </div>
   </div>
@@ -85,7 +85,7 @@
       if (!user) window.location.href = "index.html";
       else {
         document.getElementById('page-content').style.display = 'block';
-        document.getElementById('user-email-display').innerText = user.email;
+        document.getElementById('user-email-display').innerText = "Secured as: " + user.email;
       }
     }
 
@@ -94,7 +94,7 @@
       feed.innerHTML = "Loading...";
       const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
       const { data, error } = await myUniqueDatabaseClient.from('bookings').select('*').eq('service_type', type).eq('user_email', user.email);
-      feed.innerHTML = (error || data.length === 0) ? "No bookings found." : data.map(i => `<div class="booking-item"><span>${i.booking_date}</span><span>${i.status}</span></div>`).join('');
+      feed.innerHTML = (error || data.length === 0) ? "No bookings found for " + type : data.map(i => `<div class="booking-item"><span>📅 ${i.booking_date}</span><span>${i.status}</span></div>`).join('');
     }
 
     async function logOut() { await myUniqueDatabaseClient.auth.signOut(); window.location.href = "index.html"; }
