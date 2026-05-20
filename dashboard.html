@@ -39,27 +39,26 @@
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    // FIXED: Renamed to supabaseClient to prevent crashing
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function checkUserSession() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await supabaseClient.auth.getUser();
       
       if (!user) {
-        // Unregistered user detected, kick them back to home
         window.location.href = "index.html";
       } else {
-        // Valid user! Show the page and personalize the welcome
         document.getElementById('page-content').style.display = 'block';
         document.getElementById('user-email-display').innerText = user.email;
       }
     }
 
     async function handleLogOut() {
-      await supabase.auth.signOut();
+      await supabaseClient.auth.signOut();
       window.location.href = "index.html";
     }
 
-    // Run security check the moment the page loads
     window.onload = checkUserSession;
   </script>
 </head>
