@@ -8,15 +8,27 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
     a { text-decoration: none; }
     
+    /* NAVBAR STRUCTURE */
     .navbar { background-color: transparent; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 100;}
     .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .logo-icon { font-size: 28px; color: #e74c3c; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .logo-text { color: white; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
     
+    /* NEW WRAPPER FOR SIDE-BY-SIDE BUTTONS */
+    .nav-actions { display: flex; align-items: center; gap: 15px; }
+
+    /* NEW SEPERATE PROMINENT LOGIN BUTTON */
+    .login-trigger-btn { background-color: #ffffff; color: #1e3c72; border: none; padding: 10px 22px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 8px; cursor: pointer; transition: 0.3s ease; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; }
+    .login-trigger-btn:hover { background-color: #f0f2f5; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
+    .login-trigger-btn i { font-size: 13px; }
+
+    /* MENU DROPDOWN SYSTEM */
     .menu-container { position: relative; display: inline-block; }
     .menu-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 10px 20px; font-size: 16px; font-family: 'Poppins', sans-serif; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(5px);}
     .menu-btn:hover { background: rgba(255,255,255,0.3); }
@@ -82,7 +94,15 @@
     .social-btn:hover { background: #f8faff; }
     .btn-google { color: #db4437; } .btn-facebook { color: #4267B2; }
 
-    @media (max-width: 768px) { .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; background-color: rgba(30, 60, 114, 0.9); } .hero { padding: 180px 20px 100px 20px; } .hero h1 { font-size: 32px; } .services-container { margin-top: -30px; } }
+    /* RESPONSIVE MOBILE FIXES */
+    @media (max-width: 768px) { 
+        .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; background-color: rgba(30, 60, 114, 0.9); } 
+        .hero { padding: 180px 20px 100px 20px; } 
+        .hero h1 { font-size: 32px; } 
+        .services-container { margin-top: -30px; } 
+        .nav-actions { width: 100%; justify-content: center; gap: 10px; }
+        .login-trigger-btn { padding: 10px 15px; font-size: 14px; }
+    }
   </style>
 </head>
 <body>
@@ -92,12 +112,18 @@
       <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
       <div class="logo-text">Priya Seva Center</div>
     </a>
-    <div class="menu-container">
-      <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
-      <div class="dropdown-content">
-        <a href="#" onclick="openLoginModal(); return false;"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
-        <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
-        <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
+    
+    <div class="nav-actions">
+      <button class="login-trigger-btn" onclick="openLoginModal();">
+        <i class="fa-solid fa-user-lock"></i> Login / Sign Up
+      </button>
+
+      <div class="menu-container">
+        <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
+        <div class="dropdown-content">
+          <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
+          <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
+        </div>
       </div>
     </div>
   </nav>
@@ -173,25 +199,20 @@
   </footer>
 
   <script>
-    // Force-delete any stuck Netlify Service Workers
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for(let registration of registrations) registration.unregister();
       });
     }
 
-    // Modal logic isolated so it cannot be blocked
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
   </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     
-    // Create client immediately since library is loaded above
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     async function handleSocialLogin(providerName) {
