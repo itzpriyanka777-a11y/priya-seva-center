@@ -97,7 +97,7 @@
     <div class="menu-container">
       <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
       <div class="dropdown-content">
-        <a href="#" onclick="openLoginModal();"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
+        <a href="javascript:void(0);" onclick="openLoginModal();"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
         <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
         <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
       </div>
@@ -175,16 +175,30 @@
   </footer>
 
   <script>
-    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    
-    // FIXED: Renamed to supabaseClient to prevent crashing
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+    // ==========================================
+    // 1. UI FUNCTIONS (Placed at the top so they are instantly ready)
+    // ==========================================
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
+    // ==========================================
+    // 2. SUPABASE BACKEND (Safe Loading Logic)
+    // ==========================================
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    
+    let supabaseClient;
+    
+    // This waits for the page and background downloads to finish completely before connecting
+    window.addEventListener('load', function() {
+        if(window.supabase) {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        }
+    });
+
     async function handleSocialLogin(providerName) {
+      if(!supabaseClient) return alert("System connecting... please try again in a second.");
+      
       const { data, error } = await supabaseClient.auth.signInWithOAuth({
         provider: providerName,
         options: {
@@ -195,6 +209,8 @@
     }
 
     async function handleEmailLogin() {
+      if(!supabaseClient) return alert("System connecting... please try again in a second.");
+      
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
       
