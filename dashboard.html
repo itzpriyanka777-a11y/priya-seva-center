@@ -28,12 +28,10 @@
     .welcome-text h2 { margin: 0 0 5px 0; color: #2c3e50; font-size: 22px; }
     .welcome-text p { margin: 0; color: #7f8c8d; font-size: 14px;}
     
-    /* Notification Toggle Box */
     .notification-box { display: flex; align-items: center; gap: 15px; border: 1px solid #f0f2f5; padding: 10px 20px; border-radius: 10px; background: #fdfdfd; }
     .notif-text { font-size: 12px; font-weight: 600; color: #2c3e50; line-height: 1.2;}
     .notif-sub { font-size: 10px; color: #95a5a6; font-weight: 400;}
     
-    /* Toggle Switch */
     .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
@@ -41,29 +39,43 @@
     input:checked + .slider { background-color: #2ecc71; }
     input:checked + .slider:before { transform: translateX(20px); }
 
-    /* Custom Calendar Design */
+    /* New Dedicated Calendar Design */
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 30px; min-height: 450px; }
-    .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .cal-header button { background: #f8faff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 15px; cursor: pointer; color: #3b5998; transition: 0.2s; font-size: 14px;}
-    .cal-header button:hover { background: #3b5998; color: white; }
-    .cal-header h3 { margin: 0; font-size: 20px; color: #2c3e50; font-weight: 700; }
     
-    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 13px; color: #95a5a6; margin-bottom: 10px; text-transform: uppercase;}
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .service-toggles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #f0f2f5;}
+    .toggle-btn { padding: 12px 20px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #7f8c8d; font-family: 'Poppins'; transition: 0.2s; display: flex; align-items: center; gap: 8px;}
+    .toggle-btn:hover { border-color: #3b5998; color: #3b5998; }
+    .toggle-btn.active { background: #3b5998; color: white; border-color: #3b5998; box-shadow: 0 4px 10px rgba(59, 89, 152, 0.3);}
     
-    .cal-day { background: #fdfdfd; border: 1px solid #f0f2f5; border-radius: 10px; min-height: 80px; padding: 8px; display: flex; flex-direction: column; transition: 0.2s; position: relative;}
-    .cal-day:hover { border-color: #3b5998; background: #f8faff; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
-    .cal-day.empty { background: transparent; border: none; box-shadow: none;}
-    .cal-day.empty:hover { transform: none; }
-    .cal-day.today { border: 2px solid #3b5998; background: #f4f8ff; }
-    
-    .day-num { font-size: 14px; font-weight: 600; color: #2c3e50; align-self: flex-end; }
-    .badges-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; justify-content: flex-start;}
-    .cal-badge { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.15);}
+    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #f8faff; padding: 10px 20px; border-radius: 10px; border: 1px solid #e2e8f0; }
+    .month-controls button { background: white; border: 1px solid #cbd5e1; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; color: #3b5998; transition: 0.2s;}
+    .month-controls button:hover { background: #3b5998; color: white; }
+    #monthYearDisplay { margin: 0; font-size: 18px; color: #2c3e50; font-weight: 700;}
 
-    .legend { display: flex; gap: 15px; justify-content: center; margin-top: 25px; font-size: 12px; color: #7f8c8d; font-weight: 600; flex-wrap: wrap;}
-    .legend-item { display: flex; align-items: center; gap: 6px; }
-    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 13px; color: #95a5a6; margin-bottom: 10px; text-transform: uppercase;}
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+    
+    .cal-day { background: #fdfdfd; border: 2px solid #f0f2f5; border-radius: 10px; min-height: 85px; padding: 8px; display: flex; flex-direction: column; transition: 0.2s; position: relative;}
+    .cal-day.empty { background: transparent; border: none; }
+    .cal-day.today { background: #f4f8ff; border-color: #cbd5e1;}
+    .day-num { font-size: 14px; font-weight: 600; color: #7f8c8d; align-self: flex-end; margin-bottom: 5px;}
+
+    /* Prominent Full-Box Colors */
+    .cal-day.booked-maid { background: #ebf5fb; border-color: #3498db; cursor: pointer; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);}
+    .cal-day.booked-maid .day-num { color: #2980b9; }
+    
+    .cal-day.booked-nurse { background: #eafaf1; border-color: #2ecc71; cursor: pointer; box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);}
+    .cal-day.booked-nurse .day-num { color: #27ae60; }
+    
+    .cal-day.booked-health { background: #fdedec; border-color: #e74c3c; cursor: pointer; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);}
+    .cal-day.booked-health .day-num { color: #c0392b; }
+    
+    .cal-day.booked-baby { background: #fef5e7; border-color: #f39c12; cursor: pointer; box-shadow: 0 4px 10px rgba(243, 156, 18, 0.2);}
+    .cal-day.booked-baby .day-num { color: #d68910; }
+
+    .cal-day:hover[class*="booked-"] { transform: translateY(-3px); }
+    
+    .booking-label { font-size: 11px; font-weight: 700; text-align: center; margin-top: auto; padding: 4px; border-radius: 4px; letter-spacing: 0.5px;}
 
     /* Right Side Actions */
     .action-grid { display: flex; flex-direction: column; gap: 18px; }
@@ -124,10 +136,26 @@
         </div>
 
         <div class="calendar-container">
-          <div class="cal-header">
-            <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-            <h3 id="monthYearDisplay">Loading...</h3>
-            <button onclick="changeMonth(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+          
+          <div class="service-toggles">
+            <button class="toggle-btn active" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid')">
+              <i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid Schedule
+            </button>
+            <button class="toggle-btn" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse')">
+              <i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse Schedule
+            </button>
+            <button class="toggle-btn" id="tab-health" onclick="switchService('Health Visits', 'tab-health')">
+              <i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health Schedule
+            </button>
+            <button class="toggle-btn" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby')">
+              <i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby Schedule
+            </button>
+          </div>
+
+          <div class="month-controls">
+            <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+            <h3 id="monthYearDisplay">Loading Data...</h3>
+            <button onclick="changeMonth(1)">Next Month <i class="fa-solid fa-chevron-right"></i></button>
           </div>
           
           <div class="cal-weekdays">
@@ -140,12 +168,6 @@
             </div>
           </div>
 
-          <div class="legend">
-            <div class="legend-item"><div class="legend-dot" style="background: #3498db;"></div> Maid</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #2ecc71;"></div> Nurse</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #e74c3c;"></div> Health</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #f39c12;"></div> Baby</div>
-          </div>
         </div>
 
       </div>
@@ -193,7 +215,6 @@
   </div>
 
   <script>
-    // System Config
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const myUniqueDatabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -201,6 +222,7 @@
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
     let allBookingsMap = {};
+    let currentActiveService = 'Maid Services';
 
     async function checkAuth() {
       const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
@@ -226,6 +248,13 @@
       renderCalendar();
     }
 
+    function switchService(serviceName, btnId) {
+      currentActiveService = serviceName;
+      document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(btnId).classList.add('active');
+      renderCalendar();
+    }
+
     function renderCalendar() {
       const year = currentDisplayedDate.getFullYear();
       const month = currentDisplayedDate.getMonth();
@@ -237,34 +266,45 @@
       
       grid.innerHTML = '';
 
-      // Blank slots before the 1st of the month
+      // Blank slots before the 1st
       for (let i = 0; i < firstDay; i++) {
         grid.innerHTML += `<div class="cal-day empty"></div>`;
       }
 
-      // Fill real days
+      // Fill days
       for (let i = 1; i <= daysInMonth; i++) {
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-        const dayBookings = allBookingsMap[dateString] || [];
+        
+        // Only get bookings for the currently selected tab
+        const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
 
-        let badgesHtml = '';
+        let dayClass = '';
+        let labelHtml = '';
+        let clickable = '';
+
         if (dayBookings.length > 0) {
-          dayBookings.forEach(b => {
-             let color = '#3498db'; // Default Maid
-             if (b.service_type === 'Certified Nurses') color = '#2ecc71';
-             else if (b.service_type === 'Health Visits') color = '#e74c3c';
-             else if (b.service_type === 'Babysitters') color = '#f39c12';
-             badgesHtml += `<div class="cal-badge" style="background-color: ${color};" title="${b.service_type}"></div>`;
-          });
+           clickable = `onclick="showDayDetails('${dateString}')"`;
+           if (currentActiveService === 'Maid Services') {
+             dayClass = 'booked-maid';
+             labelHtml = '<div class="booking-label" style="background:#3498db; color:white;">BOOKED</div>';
+           } else if (currentActiveService === 'Certified Nurses') {
+             dayClass = 'booked-nurse';
+             labelHtml = '<div class="booking-label" style="background:#2ecc71; color:white;">BOOKED</div>';
+           } else if (currentActiveService === 'Health Visits') {
+             dayClass = 'booked-health';
+             labelHtml = '<div class="booking-label" style="background:#e74c3c; color:white;">BOOKED</div>';
+           } else if (currentActiveService === 'Babysitters') {
+             dayClass = 'booked-baby';
+             labelHtml = '<div class="booking-label" style="background:#f39c12; color:white;">BOOKED</div>';
+           }
         }
 
-        const isToday = (dateString === new Date().toISOString().split('T')[0]) ? 'today' : '';
-        const clickable = dayBookings.length > 0 ? `onclick="showDayDetails('${dateString}')" style="cursor:pointer;"` : '';
+        const isToday = (dateString === new Date().toISOString().split('T')[0] && dayBookings.length === 0) ? 'today' : '';
 
         grid.innerHTML += `
-          <div class="cal-day ${isToday}" ${clickable}>
+          <div class="cal-day ${isToday} ${dayClass}" ${clickable}>
             <span class="day-num">${i}</span>
-            <div class="badges-container">${badgesHtml}</div>
+            ${labelHtml}
           </div>
         `;
       }
@@ -276,15 +316,16 @@
     }
 
     function showDayDetails(dateString) {
-      const dayBookings = allBookingsMap[dateString] || [];
+      const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
       const modal = document.getElementById('dayDetailsModal');
       const content = document.getElementById('dayDetailsContent');
 
-      // Convert format YYYY-MM-DD to Readable Format
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
 
-      let html = `<h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;"><i class="fa-regular fa-calendar-check" style="color:#3498db; margin-right:8px;"></i> ${formattedDate}</h3>`;
+      let html = `<h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;">
+                    <i class="fa-regular fa-calendar-check" style="color:#2c3e50; margin-right:8px;"></i> ${formattedDate}
+                  </h3>`;
 
       dayBookings.forEach(item => {
         let isPending = item.status.toLowerCase() === 'pending';
@@ -292,7 +333,6 @@
         let statusColor = isPending ? '#e67e22' : '#2ecc71';
         let statusBg = isPending ? '#fdf2e9' : '#eafaf1';
 
-        // Icon Mapping based on Service
         let serviceIcon = '<i class="fa-solid fa-broom" style="color:#3498db; width:20px;"></i>';
         if (item.service_type === 'Certified Nurses') serviceIcon = '<i class="fa-solid fa-user-nurse" style="color:#2ecc71; width:20px;"></i>';
         if (item.service_type === 'Health Visits') serviceIcon = '<i class="fa-solid fa-house-medical" style="color:#e74c3c; width:20px;"></i>';
