@@ -8,8 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
     
@@ -32,45 +30,8 @@
     .dash-btn { display: inline-block; background: #f8faff; color: #2a5298; text-decoration: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; border: 1px solid #2a5298; margin-top: 15px; transition: 0.3s;}
     .dash-btn:hover { background: #2a5298; color: white; }
 
-    /* Keeps screen blank while checking security */
     #page-content { display: none; }
   </style>
-
-  <script>
-    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    
-    let supabaseClient;
-
-    async function checkUserSession() {
-      // Security Check 1: If internet is too slow and Supabase fails to download, kick to home to prevent a frozen white screen
-      if (!window.supabase) {
-         window.location.href = "index.html";
-         return;
-      }
-      
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      
-      // Security Check 2: Verify the user is actually logged in
-      const { data: { user } } = await supabaseClient.auth.getUser();
-      
-      if (!user) {
-        window.location.href = "index.html";
-      } else {
-        // Safe! Show the dashboard and populate their email
-        document.getElementById('page-content').style.display = 'block';
-        document.getElementById('user-email-display').innerText = user.email;
-      }
-    }
-
-    async function handleLogOut() {
-      if(supabaseClient) await supabaseClient.auth.signOut();
-      window.location.href = "index.html";
-    }
-
-    // Run security check the moment the page fully finishes loading
-    window.onload = checkUserSession;
-  </script>
 </head>
 <body>
 
@@ -113,5 +74,37 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    async function checkUserSession() {
+      if (!supabaseClient) {
+         window.location.href = "index.html";
+         return;
+      }
+      
+      const { data: { user } } = await supabaseClient.auth.getUser();
+      
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        document.getElementById('page-content').style.display = 'block';
+        document.getElementById('user-email-display').innerText = user.email;
+      }
+    }
+
+    async function handleLogOut() {
+      if(supabaseClient) await supabaseClient.auth.signOut();
+      window.location.href = "index.html";
+    }
+
+    // Run security check
+    window.onload = checkUserSession;
+  </script>
 </body>
 </html>
