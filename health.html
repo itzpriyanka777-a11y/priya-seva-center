@@ -3,152 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Health Visit | Priya Seva Center</title>
+  <title>Book Health Visit | Priya Seva Center</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
-    header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 40px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
-    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
-    header p { font-size: 16px; color: #e2e8f0; max-width: 600px; margin: 0 auto; }
-    .back-btn { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease; }
-    .back-btn:hover { background: white; color: #1e3c72; }
-    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-    .booking-section { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top: 5px solid #e74c3c; }
-    .form-group { margin-bottom: 25px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 15px; }
-    .form-group input, .form-group select { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: border-color 0.3s ease; }
-    .form-group input:focus, .form-group select:focus { outline: none; border-color: #e74c3c; background-color: white; }
-    .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
     
-    .submit-btn { background: #25D366; color: white; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); transition: transform 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px;}
-    .submit-btn:hover { background: #128C7E; transform: translateY(-2px); }
+    /* Navbar */
+    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; color: white; }
+    .logo-text { font-size: 22px; font-weight: 700; }
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; }
 
-    #successMessage { display: none; margin-top: 20px; padding: 25px; background: #d5f5e3; color: #27ae60; border-radius: 8px; font-weight: 600; font-size: 16px; text-align: center; border: 2px solid #2ecc71;}
+    /* Page Container */
+    .page-wrapper { max-width: 600px; margin: 50px auto; padding: 20px; }
+    .booking-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    
+    h2 { color: #e74c3c; margin-top: 0; font-size: 28px; }
+    p { color: #7f8c8d; line-height: 1.6; margin-bottom: 30px; }
 
-    @media (max-width: 768px) { .input-grid { grid-template-columns: 1fr; } .back-btn { position: relative; display: inline-block; top: 0; left: 0; margin-bottom: 20px; } }
+    /* Form Styling */
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: #2c3e50; }
+    .form-group input, .form-group textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; font-family: 'Poppins', sans-serif; font-size: 15px; }
+    
+    .confirm-btn { background: #e74c3c; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .confirm-btn:hover { background: #c0392b; transform: translateY(-2px); }
   </style>
 </head>
 <body>
-  <header>
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    <h1><i class="fa-solid fa-house-medical"></i> Request a Health Visit</h1>
-    <p>Book a certified healthcare worker. Our team will confirm the visit via WhatsApp.</p>
-  </header>
-  <div class="container">
-    <div class="booking-section">
-      
-      <form id="bookingForm" onsubmit="submitDoubleAction(event)">
+
+  <nav class="navbar">
+    <div class="logo-text">Priya Seva Center</div>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Back to Dashboard</a>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="booking-card">
+      <h2><i class="fa-solid fa-house-medical"></i> Book Health Visit</h2>
+      <p>Schedule an on-demand home visit for wound dressings, vitals monitoring, or injections. Our team will prepare the necessary supplies.</p>
+
+      <div class="booking-form" id="bookingForm">
         <div class="form-group">
-          <label for="visitType">1. Service Needed</label>
-          <select id="visitType" required>
-            <option value="" disabled selected>Select the primary procedure...</option>
-            <option value="Wound Dressing">Post-Surgery Wound Dressing</option>
-            <option value="Injection">Injection Administration</option>
-            <option value="Vitals Check">Vitals Check (BP, Sugar)</option>
-            <option value="Catheter Change">Catheter Change</option>
-          </select>
-        </div>
-
-        <div class="input-grid">
-          <div class="form-group">
-            <label for="startDate">2. Visit Date</label>
-            <input type="date" id="startDate" required>
-          </div>
-          <div class="form-group">
-            <label for="visitTime">3. Preferred Time</label>
-            <input type="time" id="visitTime" required>
-          </div>
-        </div>
-
-        <div class="input-grid">
-          <div class="form-group">
-            <label for="clientName">4. Contact Person Name</label>
-            <input type="text" id="clientName" required>
-          </div>
-          <div class="form-group">
-            <label for="clientPhone">5. Mobile Number (For Dashboard)</label>
-            <input type="tel" id="clientPhone" required>
-          </div>
+          <label for="fullName">Patient/Primary Name</label>
+          <input type="text" id="fullName" placeholder="Your Name" required>
         </div>
 
         <div class="form-group">
-          <label for="clientLocation">6. Full Address in Kolkata</label>
-          <input type="text" id="clientLocation" required>
+          <label for="bookingDate">Preferred Service Date</label>
+          <input type="date" id="bookingDate" required>
         </div>
 
-        <button type="submit" class="submit-btn" id="btnText">
-          <i class="fa-brands fa-whatsapp"></i> Book via WhatsApp & Save
-        </button>
-      </form>
+        <div class="form-group">
+          <label for="specialNote">Health Details / Instructions</label>
+          <textarea id="specialNote" rows="3" placeholder="e.g., Blood pressure monitor needed, injection instructions..."></textarea>
+        </div>
 
-      <div id="successMessage">
-        <i class="fa-solid fa-circle-check" style="font-size: 30px; margin-bottom: 10px; display: block;"></i>
-        Visit Requested!<br><br>
-        <span style="font-size: 14px; color: #2c3e50; font-weight: 400;">
-          If WhatsApp did not open automatically, click <a id="manualWaLink" href="#" style="color: #25D366; font-weight:bold;">here</a> to message us directly.
-        </span>
+        <button onclick="saveBooking()" class="confirm-btn">Confirm Health Visit</button>
       </div>
-
     </div>
   </div>
 
   <script>
-    // 24-hour start date rule
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    document.getElementById('startDate').min = tomorrow.toISOString().split("T")[0];
+    // Configuration
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    function submitDoubleAction(event) {
-      event.preventDefault(); 
+    async function saveBooking() {
+      // 1. Collect Data
+      const dateInput = document.getElementById('bookingDate').value;
+      const nameInput = document.getElementById('fullName').value;
       
-      const btn = document.getElementById('btnText');
-      btn.innerHTML = "<i class='fa-solid fa-spinner fa-spin'></i> Redirecting...";
-      btn.style.opacity = "0.7";
+      if (!dateInput || !nameInput) {
+        return alert("Please fill in your name and the preferred date!");
+      }
 
-      const type = document.getElementById('visitType').value;
-      const startDate = document.getElementById('startDate').value;
-      const time = document.getElementById('visitTime').value;
-      const name = document.getElementById('clientName').value;
-      const phone = document.getElementById('clientPhone').value;
-      const location = document.getElementById('clientLocation').value;
-      const today = new Date().toISOString().split("T")[0];
+      // 2. Auth Check
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        return alert("You must be logged in to book. Please sign in!");
+      }
 
-      // 1. SILENT GOOGLE SHEETS SAVE
-      // Using your exact live API URL and targeting Tab 2 (ServiceBookings)
-      const sheetApiUrl = 'https://sheetdb.io/api/v1/z04j6u2ugd152?sheet=ServiceBookings'; 
-      
-      // Keys explicitly match your Google Sheet Headers
-      const dataPayload = {
-        data: [{
-            "DateOfRequest": today,
-            "Name": name,
-            "Phone": phone,
-            "ServiceType": `Health Visit: ${type} at ${time}`,
-            "ServiceDate": startDate,
-            "Status": "Pending WhatsApp Confirmation",
-            "Address": location
-        }]
-      };
+      // 3. Save to Supabase
+      const { error } = await supabase
+        .from('bookings')
+        .insert([
+          { 
+            user_email: user.email, 
+            service_type: 'Health Visits', 
+            booking_date: dateInput,
+            status: 'pending' 
+          }
+        ]);
 
-      fetch(sheetApiUrl, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataPayload)
-      }).catch(err => console.log("Background save failed.", err));
-
-      // 2. WHATSAPP REDIRECT
-      const whatsappText = `*NEW HEALTH VISIT REQUEST*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${type}%0A*Date:* ${startDate}%0A*Time:* ${time}%0A*Location:* ${location}%0A%0A_Please confirm availability._`;
-      const phoneNumber = "917439392803";
-      const waUrl = `https://wa.me/${phoneNumber}?text=${whatsappText}`;
-
-      // Open WhatsApp
-      window.open(waUrl, '_blank');
-
-      // Update UI
-      document.getElementById('bookingForm').style.display = 'none';
-      document.getElementById('successMessage').style.display = 'block';
-      document.getElementById('manualWaLink').href = waUrl;
+      if (error) {
+        console.error("Supabase Error:", error);
+        alert("Booking failed: " + error.message);
+      } else {
+        alert("Success! Your health visit has been booked.");
+        window.location.href = "dashboard.html";
+      }
     }
   </script>
 </body>
