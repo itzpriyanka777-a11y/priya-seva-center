@@ -8,8 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
     a { text-decoration: none; }
@@ -97,7 +95,7 @@
     <div class="menu-container">
       <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
       <div class="dropdown-content">
-        <a href="javascript:void(0);" onclick="openLoginModal();"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
+        <a href="#" onclick="openLoginModal(); return false;"><i class="fa-solid fa-lock"></i> Client Login / Sign Up</a>
         <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
         <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
       </div>
@@ -175,29 +173,29 @@
   </footer>
 
   <script>
-    // ==========================================
-    // 1. UI FUNCTIONS (Placed at the top so they are instantly ready)
-    // ==========================================
+    // Force-delete any stuck Netlify Service Workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) registration.unregister();
+      });
+    }
+
+    // Modal logic isolated so it cannot be blocked
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+  </script>
 
-    // ==========================================
-    // 2. SUPABASE BACKEND (Safe Loading Logic)
-    // ==========================================
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     
-    let supabaseClient;
-    
-    // This waits for the page and background downloads to finish completely before connecting
-    window.addEventListener('load', function() {
-        if(window.supabase) {
-            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        }
-    });
+    // Create client immediately since library is loaded above
+    const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     async function handleSocialLogin(providerName) {
-      if(!supabaseClient) return alert("System connecting... please try again in a second.");
+      if(!supabaseClient) return alert("System connecting... please try again.");
       
       const { data, error } = await supabaseClient.auth.signInWithOAuth({
         provider: providerName,
@@ -209,7 +207,7 @@
     }
 
     async function handleEmailLogin() {
-      if(!supabaseClient) return alert("System connecting... please try again in a second.");
+      if(!supabaseClient) return alert("System connecting... please try again.");
       
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
