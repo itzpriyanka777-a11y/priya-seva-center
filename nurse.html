@@ -3,30 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Certified Nurse | Priya Seva</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>Configure Nursing Deployment | Priya Seva Center</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
-    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #2c3e50; }
+    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
     .logo-text { font-size: 22px; font-weight: 700; color: white; margin: 0; display: flex; align-items: center; gap: 10px; text-decoration: none;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; }
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+
+    .page-wrapper { max-width: 850px; margin: 50px auto; padding: 0 20px; }
+    .premium-header { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color: white; padding: 35px; border-radius: 16px 16px 0 0; box-shadow: 0 10px 30px rgba(39, 174, 96, 0.15); }
+    .premium-header h2 { margin: 0 0 10px 0; font-size: 28px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+    .premium-header p { margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.6; }
+
+    .form-container { background: white; padding: 40px; border-radius: 0 0 16px 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 35px; }
+    .section-card { background: #fcfdfe; border: 1px solid #eef2f5; padding: 30px; border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
+    .section-title { font-size: 15px; font-weight: 700; color: #27ae60; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
     
-    .page-wrapper { max-width: 800px; margin: 40px auto; padding: 20px; }
-    .booking-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-top: 6px solid #2ecc71;}
-    h2 { color: #2ecc71; margin-top: 0; font-size: 28px; border-bottom: 2px solid #f0f2f5; padding-bottom: 15px;}
-    
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .full-width { grid-column: 1 / -1; }
     
-    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; color: #2c3e50; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins'; font-size: 14px; box-sizing: border-box; background: #f8faff; transition: 0.3s; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #2ecc71; outline: none; background: white; }
-    
-    .confirm-btn { background: #2ecc71; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;}
-    .confirm-btn:hover { background: #27ae60; transform: translateY(-2px); }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; color: #34495e; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Poppins'; font-size: 14px; box-sizing: border-box; background: white; transition: all 0.3s ease; color: #2c3e50; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #27ae60; outline: none; box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1); }
+
+    .confirm-btn { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color: white; width: 100%; padding: 18px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3); }
+    .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4); }
+    .confirm-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
 
     @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
   </style>
@@ -42,103 +48,114 @@
   </nav>
 
   <div class="page-wrapper">
-    <div class="booking-card">
-      <h2><i class="fa-solid fa-user-nurse"></i> Certified Nursing Care</h2>
-      <p style="color: #7f8c8d; font-size: 14px; margin-bottom: 30px;">For sensitive recovery or intensive care, specify your exact requirements to help us assign the right professional.</p>
+    <div class="premium-header">
+      <h2><i class="fa-solid fa-user-nurse"></i> Nursing Deployment Parameters</h2>
+      <p>Configure critical post-operative or chronic nursing assignments. Accurate definition here ensures precise matching with clinical criteria.</p>
+    </div>
 
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Patient Name</label>
-          <input type="text" id="fullName" placeholder="Full Name" required>
-        </div>
-
-        <div class="form-group">
-          <label>Nurse Gender Preference</label>
-          <select id="gender">
-            <option value="Female Nurse">Female Nurse</option>
-            <option value="Male Nurse">Male Nurse</option>
-            <option value="No Preference">No Preference</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Start Date</label>
-          <input type="date" id="bookingDate" required>
-        </div>
-
-        <div class="form-group">
-          <label>Service Duration & Scale</label>
-          <select id="duration">
-            <option value="12hr Day Shift">12hr Day Shift</option>
-            <option value="12hr Night Shift">12hr Night Shift</option>
-            <option value="24hr Live-in Support">24hr Live-in Support</option>
-            <option value="Short Term (3-5 Days)">Short Term (3-5 Days)</option>
-            <option value="Split Shifts">Split Shifts</option>
-          </select>
-        </div>
-
-        <div class="form-group full-width">
-          <label>Exact Shift Timings</label>
-          <input type="text" id="timings" placeholder="E.g., 8:00 AM to 8:00 PM, or specific split hours.">
-        </div>
-
-        <div class="form-group full-width">
-          <label>Primary Diagnosis & Care Needs (CRITICAL)</label>
-          <textarea id="diagnosis" rows="4" placeholder="E.g., Bedridden care, oxygen monitoring, post-op mobility support, feeding tubes..."></textarea>
+    <div class="form-container">
+      
+      <div class="section-card">
+        <div class="section-title"><i class="fa-solid fa-id-card-clip"></i> Baseline Identification</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Patient Full Legal Identity</label>
+            <input type="text" id="fullName" placeholder="Enter Patient Name" required>
+          </div>
+          <div class="form-group">
+            <label>Clinical Team Gender Mandate</label>
+            <select id="gender">
+              <option value="Female Nursing Staff Obligatory">Female Nursing Staff Obligatory</option>
+              <option value="Male Nursing Staff Obligatory">Male Nursing Staff Obligatory</option>
+              <option value="No Explicit Gender Restrictions">No Explicit Gender Restrictions</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <button onclick="saveBooking()" class="confirm-btn" id="submitBtn"><i class="fa-solid fa-paper-plane"></i> Request Nurse Assigment</button>
+      <div class="section-card">
+        <div class="section-title"><i class="fa-solid fa-business-time"></i> Shift Intensity & Timeline</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Deployment Commencement Target</label>
+            <input type="date" id="bookingDate" required>
+          </div>
+          <div class="form-group">
+            <label>Allocation Structural Scale</label>
+            <select id="duration">
+              <option value="12-Hour Continuous Day Shift Rotation">12-Hour Continuous Day Shift Rotation</option>
+              <option value="12-Hour Continuous Night Shift Rotation">12-Hour Continuous Night Shift Rotation</option>
+              <option value="24-Hour Premium Live-In Support Integration">24-Hour Premium Live-In Support Integration</option>
+              <option value="Acute Isolation Protocol (3-5 Consecutive Days)">Acute Isolation Protocol (3-5 Consecutive Days)</option>
+              <option value="Custom Complex Split Allocation Shifts">Custom Complex Split Allocation Shifts</option>
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label>Specific Hourly Blocks Required</label>
+            <input type="text" id="timings" placeholder="E.g., 07:00 to 19:00 daily, or alternate schedules.">
+          </div>
+          <div class="form-group full-width">
+            <label>Critical Medical Diagnostics & Life Support Context</label>
+            <textarea id="diagnosis" rows="4" placeholder="Detail surgical recovery state, critical catheter protocols, dependency levels, feeding tube metrics etc."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="saveBooking()" class="confirm-btn" id="submitBtn"><i class="fa-solid fa-lock"></i> Verify & Submit Assignment</button>
     </div>
   </div>
 
   <script>
-    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
     async function saveBooking() {
       const btn = document.getElementById('submitBtn');
       const dateInput = document.getElementById('bookingDate').value;
       const nameInput = document.getElementById('fullName').value;
 
-      if (!dateInput || !nameInput) return alert("Patient Name and Start Date are required!");
+      if (!dateInput || !nameInput) return alert("Please clarify Patient Identity and Start Date parameters.");
+
+      if (typeof window.supabase === 'undefined') {
+        return alert("Security compilation freeze. Re-verify connectivity assets.");
+      }
 
       try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Binding medical data channels...';
         btn.disabled = true;
 
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            btn.innerHTML = 'Request Nurse Assigment'; btn.disabled = false;
-            return alert("You must be logged in to book.");
+        const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+        const clientInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const { data: { user }, error: authError } = await clientInstance.auth.getUser();
+        if (authError || !user) {
+          btn.innerHTML = '<i class="fa-solid fa-lock"></i> Verify & Submit Assignment'; btn.disabled = false;
+          return alert("Session expired or missing. Please authenticate via root dashboard path.");
         }
 
-        const detailsObj = {
-          Patient: nameInput,
-          Gender_Pref: document.getElementById('gender').value,
-          Scale: document.getElementById('duration').value,
-          Timings: document.getElementById('timings').value,
-          Diagnosis: document.getElementById('diagnosis').value
+        const detailsPayload = {
+          Context_Patient: nameInput,
+          Gender_Preference: document.getElementById('gender').value,
+          Shift_Cadence: document.getElementById('duration').value,
+          Hourly_Blocks: document.getElementById('timings').value,
+          Critical_Diagnostics: document.getElementById('diagnosis').value
         };
 
-        const { error } = await supabase.from('bookings').insert([{ 
+        const { error } = await clientInstance.from('bookings').insert([{ 
             user_email: user.email, 
             service_type: 'Certified Nurses', 
             booking_date: dateInput,
             status: 'pending',
-            details: JSON.stringify(detailsObj)
+            details: JSON.stringify(detailsPayload)
         }]);
 
         if (error) throw error;
 
-        alert("Success! Your nursing request has been logged securely.");
+        alert("Nursing allocation profile compiled successfully.");
         window.location.href = "dashboard.html";
 
       } catch (err) {
         console.error(err);
-        alert("Booking failed: " + err.message);
-        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Request Nurse Assigment';
+        alert("Transaction aborted: " + err.message);
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Verify & Submit Assignment';
         btn.disabled = false;
       }
     }
