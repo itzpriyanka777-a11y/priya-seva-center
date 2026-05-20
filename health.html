@@ -14,8 +14,9 @@
     
     /* Navbar */
     .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; color: white; }
-    .logo-text { font-size: 22px; font-weight: 700; }
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; }
+    .logo-text { font-size: 22px; font-weight: 700; color: white; margin: 0;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; }
+    .nav-link:hover { opacity: 0.8; }
 
     /* Page Container */
     .page-wrapper { max-width: 600px; margin: 50px auto; padding: 20px; }
@@ -36,14 +37,15 @@
 <body>
 
   <nav class="navbar">
-  <a href="index.html" class="logo-text" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
-    <i class="fa-solid fa-hands-holding-child"></i> Priya Seva Center
-  </a>
-  <div style="display:flex; gap: 20px; align-items: center;">
-    <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-  </div>
-</nav>
+    <a href="index.html" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
+      <i class="fa-solid fa-hands-holding-child" style="font-size: 24px; color: white;"></i>
+      <span class="logo-text">Priya Seva Center</span>
+    </a>
+    <div style="display:flex; gap: 20px; align-items: center;">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    </div>
+  </nav>
 
   <div class="page-wrapper">
     <div class="booking-card">
@@ -72,13 +74,11 @@
   </div>
 
   <script>
-    // Configuration
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function saveBooking() {
-      // 1. Collect Data
       const dateInput = document.getElementById('bookingDate').value;
       const nameInput = document.getElementById('fullName').value;
       
@@ -86,13 +86,11 @@
         return alert("Please fill in your name and the preferred date!");
       }
 
-      // 2. Auth Check
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         return alert("You must be logged in to book. Please sign in!");
       }
 
-      // 3. Save to Supabase
       const { error } = await supabase
         .from('bookings')
         .insert([
