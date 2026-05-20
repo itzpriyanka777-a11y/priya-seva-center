@@ -8,27 +8,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
     a { text-decoration: none; }
     
-    /* NAVBAR STRUCTURE */
     .navbar { background-color: transparent; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 100;}
     .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
     .logo-icon { font-size: 28px; color: #e74c3c; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .logo-text { color: white; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
     
-    /* NEW WRAPPER FOR SIDE-BY-SIDE BUTTONS */
     .nav-actions { display: flex; align-items: center; gap: 15px; }
 
-    /* NEW SEPERATE PROMINENT LOGIN BUTTON */
     .login-trigger-btn { background-color: #ffffff; color: #1e3c72; border: none; padding: 10px 22px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 8px; cursor: pointer; transition: 0.3s ease; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; }
     .login-trigger-btn:hover { background-color: #f0f2f5; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
     .login-trigger-btn i { font-size: 13px; }
 
-    /* MENU DROPDOWN SYSTEM */
     .menu-container { position: relative; display: inline-block; }
     .menu-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 10px 20px; font-size: 16px; font-family: 'Poppins', sans-serif; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(5px);}
     .menu-btn:hover { background: rgba(255,255,255,0.3); }
@@ -94,7 +88,6 @@
     .social-btn:hover { background: #f8faff; }
     .btn-google { color: #db4437; } .btn-facebook { color: #4267B2; }
 
-    /* RESPONSIVE MOBILE FIXES */
     @media (max-width: 768px) { 
         .navbar { padding: 15px 20px; flex-direction: column; gap: 15px; background-color: rgba(30, 60, 114, 0.9); } 
         .hero { padding: 180px 20px 100px 20px; } 
@@ -114,7 +107,7 @@
     </a>
     
     <div class="nav-actions">
-      <button class="login-trigger-btn" onclick="openLoginModal();">
+      <button class="login-trigger-btn" id="mainActionButton" onclick="openLoginModal();">
         <i class="fa-solid fa-user-lock"></i> Login / Sign Up
       </button>
 
@@ -198,16 +191,7 @@
     <p>&copy; 2026 Priya Seva Center Kolkata. All rights reserved.</p>
   </footer>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for(let registration of registrations) registration.unregister();
-      });
-    }
-
-    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
-    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
@@ -215,30 +199,60 @@
     
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
+    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+
+    // FIXED: Active checking logic when loading the main page
+    window.addEventListener('load', async function() {
+      // Clear out older hidden cache layers from past deployments
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs) {
+          for(let r of regs) r.unregister();
+        });
+      }
+
+      // Check if a session exists right now on the home page
+      if (supabaseClient) {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user) {
+          const btn = document.getElementById('mainActionButton');
+          if (btn) {
+            // Transform the button layout to route directly into the management panel
+            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> Client Dashboard';
+            btn.style.backgroundColor = '#1e3c72';
+            btn.style.color = '#ffffff';
+            btn.onclick = function() { window.location.href = 'dashboard.html'; };
+          }
+        }
+      }
+    });
+
     async function handleSocialLogin(providerName) {
-      if(!supabaseClient) return alert("System connecting... please try again.");
+      if(!supabaseClient) return alert("Connecting to server...");
       
       const { data, error } = await supabaseClient.auth.signInWithOAuth({
         provider: providerName,
         options: {
-          redirectTo: window.location.origin + window.location.pathname.replace("index.html", "") + "dashboard.html"
+          // FIXED: Forces Google return path to point cleanly to index.html instead of dashboard.html
+          redirectTo: window.location.origin + window.location.pathname.replace("dashboard.html", "").replace("index.html", "") + "index.html"
         }
       });
       if (error) alert("Auth Error: " + error.message);
     }
 
     async function handleEmailLogin() {
-      if(!supabaseClient) return alert("System connecting... please try again.");
+      if(!supabaseClient) return alert("Connecting to server...");
       
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
       
-      if(!email || !password) { alert("Please fill in both fields."); return; }
+      if(!email || !password) { alert("Please fill in fields."); return; }
 
       const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
       
       if (!signInError) {
-        window.location.href = "dashboard.html";
+        // FIXED: Redirect email logins directly back to home page
+        window.location.href = "index.html";
         return;
       }
 
@@ -247,10 +261,10 @@
         if (signUpError) {
           alert("Error: " + signUpError.message);
         } else {
-          alert("Account created successfully! If email confirmation is enabled, check your inbox. Otherwise, click Login again.");
+          alert("Account created! Click login button again to access.");
         }
       } else {
-        alert("Authentication system message: " + signInError.message);
+        alert("Authentication engine: " + signInError.message);
       }
     }
   </script>
