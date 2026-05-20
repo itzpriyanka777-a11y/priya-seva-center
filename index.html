@@ -202,23 +202,21 @@
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
-    // FIXED: Active checking logic when loading the main page
+    // This checks for a valid user right when the homepage loads
     window.addEventListener('load', async function() {
-      // Clear out older hidden cache layers from past deployments
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(regs) {
           for(let r of regs) r.unregister();
         });
       }
 
-      // Check if a session exists right now on the home page
       if (supabaseClient) {
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (user) {
           const btn = document.getElementById('mainActionButton');
           if (btn) {
-            // Transform the button layout to route directly into the management panel
-            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> Client Dashboard';
+            // Dynamically change button to Dashboard access since they are already authenticated!
+            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> Go to Dashboard';
             btn.style.backgroundColor = '#1e3c72';
             btn.style.color = '#ffffff';
             btn.onclick = function() { window.location.href = 'dashboard.html'; };
@@ -251,7 +249,7 @@
       const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
       
       if (!signInError) {
-        // FIXED: Redirect email logins directly back to home page
+        // FIXED: Redirect email logins directly back to index.html home page
         window.location.href = "index.html";
         return;
       }
