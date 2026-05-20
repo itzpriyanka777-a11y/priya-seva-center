@@ -44,17 +44,18 @@
     /* Calendar Container */
     .calendar-container { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 30px; min-height: 400px; }
     .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-    .cal-header h3 { margin: 0; color: #ecf0f1; font-size: 18px; font-weight: 600; color: #e2e8f0; display: flex; gap: 10px; align-items: center;}
+    .cal-header h3 { margin: 0; font-size: 18px; font-weight: 600; color: #e2e8f0; display: flex; gap: 10px; align-items: center;}
     
-    /* Service Toggles (Replaces Date in Header) */
+    /* Service Toggles */
     .service-toggles { display: flex; gap: 8px; }
     .toggle-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #f0f2f5; background: #f8faff; cursor: pointer; font-size: 12px; font-weight: 600; color: #7f8c8d; font-family: 'Poppins'; transition: 0.2s;}
     .toggle-btn:hover, .toggle-btn.active { background: #3b5998; color: white; border-color: #3b5998; }
 
     /* Feed & Bookings */
     #feed { min-height: 250px; display: flex; flex-direction: column; justify-content: center; }
-    .booking-item { padding: 15px 20px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: #2c3e50; align-items: center; }
-    .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; background: #fdf2e9; color: #e67e22; }
+    .booking-item { padding: 15px 20px; border-bottom: 1px solid #f0f2f5; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: #2c3e50; align-items: center; transition: 0.2s;}
+    .booking-item:hover { background-color: #f8faff; }
+    .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px;}
 
     /* Right Side Actions */
     .action-grid { display: flex; flex-direction: column; gap: 18px; }
@@ -75,8 +76,8 @@
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
     .dashboard-modal { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 450px; position: relative; box-sizing: border-box; }
     .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #95a5a6; }
-    .service-link-btn { display: block; background: #f8faff; padding: 15px; border-radius: 8px; margin-bottom: 10px; text-decoration: none; color: #2c3e50; font-weight: 600; border: 1px solid #e2e8f0; text-align: center; }
-    .service-link-btn:hover { border-color: #3498db; }
+    .service-link-btn { display: block; background: #f8faff; padding: 15px; border-radius: 8px; margin-bottom: 10px; text-decoration: none; color: #2c3e50; font-weight: 600; border: 1px solid #e2e8f0; text-align: center; transition: 0.2s;}
+    .service-link-btn:hover { border-color: #3498db; background: white; transform: translateX(5px);}
 
     #page-content { display: none; }
   </style>
@@ -84,9 +85,15 @@
 <body>
 
   <div id="page-content">
+    
     <header>
-      <div class="brand"><i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard</div>
-      <button class="logout-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+      <a href="index.html" class="brand" style="text-decoration:none; color:white;">
+        <i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard
+      </a>
+      <div style="display:flex; gap: 10px;">
+        <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> Home</button>
+        <button class="logout-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+      </div>
     </header>
 
     <div class="dashboard-container">
@@ -109,7 +116,7 @@
 
         <div class="calendar-container">
           <div class="cal-header">
-            <h3><i class="fa-regular fa-calendar-days"></i> Service Schedule</h3>
+            <h3 style="color: #2c3e50;"><i class="fa-regular fa-calendar-days"></i> Service Schedule</h3>
             <div class="service-toggles">
               <button class="toggle-btn" onclick="loadBookings('Maid Services', this)">Maid</button>
               <button class="toggle-btn" onclick="loadBookings('Certified Nurses', this)">Nurse</button>
@@ -122,7 +129,7 @@
             <div style="text-align: center; color: #7f8c8d; padding: 20px;">
               <i class="fa-solid fa-calendar-xmark" style="font-size: 50px; color: #d5dce4; margin-bottom: 15px;"></i>
               <h4 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 18px;">No upcoming services</h4>
-              <p style="font-size: 13px; max-width: 300px; margin: 0 auto; line-height: 1.5; color: #95a5a6;">Your calendar is clear. Any new service bookings or reported absences will automatically reflect here.</p>
+              <p style="font-size: 13px; max-width: 300px; margin: 0 auto; line-height: 1.5; color: #95a5a6;">No services booked yet, services that are requested will be reflecting here.</p>
             </div>
           </div>
         </div>
@@ -178,27 +185,26 @@
   <div class="modal-overlay" id="bookModal">
     <div class="dashboard-modal">
       <span class="close-modal" onclick="document.getElementById('bookModal').style.display='none'">&times;</span>
-      <h3 style="margin-top:0; color:#2c3e50;">Select Service</h3>
-      <a href="maid.html" class="service-link-btn">Maid Services</a>
-      <a href="nurse.html" class="service-link-btn">Certified Nurses</a>
-      <a href="health.html" class="service-link-btn">Health Visits</a>
-      <a href="babysitter.html" class="service-link-btn">Babysitters</a>
+      <h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;">Select Service</h3>
+      <a href="maid.html" class="service-link-btn"><i class="fa-solid fa-broom" style="color: #3498db; margin-right: 10px;"></i> Maid Services</a>
+      <a href="nurse.html" class="service-link-btn"><i class="fa-solid fa-user-nurse" style="color: #2ecc71; margin-right: 10px;"></i> Certified Nurses</a>
+      <a href="health.html" class="service-link-btn"><i class="fa-solid fa-house-medical" style="color: #e74c3c; margin-right: 10px;"></i> Health Visits</a>
+      <a href="babysitter.html" class="service-link-btn"><i class="fa-solid fa-baby-carriage" style="color: #f39c12; margin-right: 10px;"></i> Babysitters</a>
     </div>
   </div>
 
   <div class="modal-overlay" id="manageModal">
     <div class="dashboard-modal">
       <span class="close-modal" onclick="document.getElementById('manageModal').style.display='none'">&times;</span>
-      <h3 style="margin-top:0; color:#2c3e50;">Active Bookings</h3>
-      <p style="color:#7f8c8d; font-size:14px; text-align:center;">Select a service on your calendar to view details.</p>
+      <h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;">Active Bookings</h3>
+      <p style="color:#7f8c8d; font-size:14px; text-align:center; padding: 20px 0;">Select a service on your calendar to view details.</p>
     </div>
   </div>
 
   <script>
+    // System Config
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    
-    // Crash-proof variable name
     const myUniqueDatabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     async function checkAuth() {
@@ -212,7 +218,7 @@
     }
 
     async function loadBookings(type, btnElement) {
-      // Manage Active Button Styling
+      // Toggle button styling
       document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
       if(btnElement) btnElement.classList.add('active');
 
@@ -226,19 +232,27 @@
         <div style="text-align: center; color: #7f8c8d; padding: 20px;">
           <i class="fa-solid fa-calendar-xmark" style="font-size: 50px; color: #d5dce4; margin-bottom: 15px;"></i>
           <h4 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 18px;">No upcoming ${type.toLowerCase()}</h4>
-          <p style="font-size: 13px; max-width: 300px; margin: 0 auto; line-height: 1.5; color: #95a5a6;">Your calendar is clear. Any new bookings will automatically reflect here.</p>
+          <p style="font-size: 13px; max-width: 300px; margin: 0 auto; line-height: 1.5; color: #95a5a6;">No services booked yet, services that are requested will be reflecting here.</p>
         </div>
       `;
 
       if (error || data.length === 0) {
         feed.innerHTML = emptyStateHTML;
       } else {
-        feed.innerHTML = data.map(item => `
-          <div class="booking-item">
+        // Updated Status Logic
+        feed.innerHTML = data.map(item => {
+          let isPending = item.status.toLowerCase() === 'pending';
+          let statusIcon = isPending ? '<i class="fa-solid fa-clock-rotate-left"></i>' : '<i class="fa-solid fa-circle-check"></i>';
+          let statusColor = isPending ? '#e67e22' : '#2ecc71';
+          let statusBg = isPending ? '#fdf2e9' : '#eafaf1';
+          let hoverText = isPending ? 'Pending Review' : 'Booking Confirmed';
+
+          return `
+          <div class="booking-item" title="Current Status: ${hoverText}" style="cursor: help;">
             <span><i class="fa-regular fa-calendar" style="margin-right:8px; color:#95a5a6;"></i> ${item.booking_date}</span>
-            <span class="status-badge">${item.status.toUpperCase()}</span>
+            <span class="status-badge" style="color: ${statusColor}; background: ${statusBg};">${statusIcon} ${item.status.toUpperCase()}</span>
           </div>
-        `).join('');
+        `}).join('');
       }
     }
 
