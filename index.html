@@ -197,12 +197,13 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     
+    // Safety allocation renaming to avoid collisions
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
 
-    // This checks for a valid user right when the homepage loads
+    // Intercepts session instantly upon landing
     window.addEventListener('load', async function() {
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(regs) {
@@ -215,7 +216,7 @@
         if (user) {
           const btn = document.getElementById('mainActionButton');
           if (btn) {
-            // Dynamically change button to Dashboard access since they are already authenticated!
+            // Transform landing action to client portal map links
             btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> Go to Dashboard';
             btn.style.backgroundColor = '#1e3c72';
             btn.style.color = '#ffffff';
@@ -231,7 +232,7 @@
       const { data, error } = await supabaseClient.auth.signInWithOAuth({
         provider: providerName,
         options: {
-          // FIXED: Forces Google return path to point cleanly to index.html instead of dashboard.html
+          // FIXED: Forces Google server to hand keys off back to index.html home screen explicitly
           redirectTo: window.location.origin + window.location.pathname.replace("dashboard.html", "").replace("index.html", "") + "index.html"
         }
       });
@@ -244,12 +245,12 @@
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
       
-      if(!email || !password) { alert("Please fill in fields."); return; }
+      if(!email || !password) { alert("Please fill fields."); return; }
 
       const { data: signInData, error: signInError } = await supabaseClient.auth.signInWithPassword({ email, password });
       
       if (!signInError) {
-        // FIXED: Redirect email logins directly back to index.html home page
+        // FIXED: Forces email return routing to drop off back at the main landing page
         window.location.href = "index.html";
         return;
       }
@@ -259,10 +260,10 @@
         if (signUpError) {
           alert("Error: " + signUpError.message);
         } else {
-          alert("Account created! Click login button again to access.");
+          alert("Account created! Tap login button again to access.");
         }
       } else {
-        alert("Authentication engine: " + signInError.message);
+        alert("Authentication engine error: " + signInError.message);
       }
     }
   </script>
