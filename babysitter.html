@@ -11,13 +11,19 @@
 
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
-    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
-    .logo-text { color: white; font-size: 22px; font-weight: 700; }
     
+    /* Navbar */
+    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; color: white; }
+    .logo-text { font-size: 22px; font-weight: 700; color: white; margin: 0;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; }
+    .nav-link:hover { opacity: 0.8; }
+    
+    /* Page Container */
     .content { max-width: 600px; margin: 60px auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center; }
     h2 { color: #f39c12; font-size: 28px; margin-bottom: 20px; }
     p { color: #7f8c8d; margin-bottom: 30px; }
 
+    /* Form Styling */
     .booking-form { text-align: left; background: #fdfaf6; padding: 25px; border-radius: 12px; border: 1px solid #f39c1244; }
     .booking-form label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 14px; }
     .booking-form input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
@@ -29,14 +35,15 @@
 <body>
 
   <nav class="navbar">
-  <a href="index.html" class="logo-text" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
-    <i class="fa-solid fa-hands-holding-child"></i> Priya Seva Center
-  </a>
-  <div style="display:flex; gap: 20px; align-items: center;">
-    <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-  </div>
-</nav>
+    <a href="index.html" style="text-decoration: none; color: white; display: flex; align-items: center; gap: 10px;">
+      <i class="fa-solid fa-hands-holding-child" style="font-size: 24px; color: white;"></i>
+      <span class="logo-text">Priya Seva Center</span>
+    </a>
+    <div style="display:flex; gap: 20px; align-items: center;">
+      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+    </div>
+  </nav>
 
   <div class="content">
     <h2><i class="fa-solid fa-baby-carriage"></i> Book a Babysitter</h2>
@@ -59,11 +66,9 @@
       const dateInput = document.getElementById('bookingDate').value;
       if (!dateInput) return alert("Please select a date first!");
 
-      // 1. Get the current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return alert("You must be logged in to book a service!");
 
-      // 2. Save to Supabase
       const { error } = await supabase
         .from('bookings')
         .insert([
