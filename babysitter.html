@@ -3,110 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configure Child Care Plan | Priya Seva Center</title>
+  <title>Customize Babysitter Service | Priya Seva</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #2c3e50; }
-    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .logo-text { font-size: 22px; font-weight: 700; color: white; margin: 0; display: flex; align-items: center; gap: 10px; text-decoration: none;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; }
-
-    .page-wrapper { max-width: 850px; margin: 50px auto; padding: 0 20px; }
-    .premium-header { background: linear-gradient(135deg, #f39c12 0%, #d68910 100%); color: white; padding: 35px; border-radius: 16px 16px 0 0; box-shadow: 0 10px 30px rgba(243, 156, 18, 0.15); }
-    .premium-header h2 { margin: 0 0 10px 0; font-size: 28px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-    .premium-header p { margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.6; }
-
-    .form-container { background: white; padding: 40px; border-radius: 0 0 16px 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 35px; }
-    .section-card { background: #fcfdfe; border: 1px solid #eef2f5; padding: 30px; border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
-    .section-title { font-size: 15px; font-weight: 700; color: #f39c12; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f0f4f8; color: #2c3e50; }
     
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .full-width { grid-column: 1 / -1; }
-    
-    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; color: #34495e; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Poppins'; font-size: 14px; box-sizing: border-box; background: white; transition: all 0.3s ease; color: #2c3e50; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #f39c12; outline: none; box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.1); }
-    
-    .selector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-    .selector-item { background: white; border: 2px solid #e2e8f0; padding: 14px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .selector-item:hover { border-color: #f39c12; background: #fffdf9; }
-    .selector-item input { margin: 0; cursor: pointer; width: 18px; height: 18px; accent-color: #f39c12; }
+    /* Sleek Navbar */
+    .navbar { background-color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .logo-text { font-size: 20px; font-weight: 700; color: #1e3c72; display: flex; align-items: center; gap: 10px; text-decoration: none;}
+    .nav-link { color: #7f8c8d; text-decoration: none; font-weight: 600; font-size: 14px; transition: color 0.2s; }
+    .nav-link:hover { color: #1e3c72; }
 
-    .confirm-btn { background: linear-gradient(135deg, #f39c12 0%, #d68910 100%); color: white; width: 100%; padding: 18px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3); }
-    .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4); }
-    .confirm-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+    /* App-Like Container */
+    .app-container { max-width: 700px; margin: 50px auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; }
+    
+    /* Header Graphic */
+    .app-header { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; padding: 40px; text-align: center; }
+    .app-header i { font-size: 40px; margin-bottom: 15px; }
+    .app-header h2 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 0.5px;}
+    .app-header p { margin: 10px 0 0 0; font-size: 15px; opacity: 0.9; }
 
-    @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    /* Customizer Body */
+    .customizer-body { padding: 40px; }
+    .input-block { margin-bottom: 30px; }
+    .input-block label { display: block; font-weight: 600; font-size: 15px; color: #2c3e50; margin-bottom: 12px; }
+    
+    /* Sleek Inputs */
+    .sleek-input { width: 100%; padding: 16px 20px; border: 2px solid #edf2f7; border-radius: 12px; font-family: 'Poppins'; font-size: 15px; background: #f8fafc; color: #2d3748; transition: all 0.3s; box-sizing: border-box; }
+    .sleek-input:focus { border-color: #f39c12; background: white; outline: none; box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.1); }
+    
+    /* The Pill Grid (Replaces Checkboxes) */
+    .pill-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .pill-label { background: #f8fafc; border: 2px solid #edf2f7; color: #4a5568; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
+    .pill-label input[type="checkbox"] { display: none; } /* Hide the ugly box */
+    
+    /* When a pill is selected */
+    .pill-label:has(input:checked) { background: #fef5e7; border-color: #f39c12; color: #d68910; }
+    .pill-label:hover { border-color: #f39c12; }
+
+    /* Submit Button */
+    .submit-btn { background: #f39c12; color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(243, 156, 18, 0.3); margin-top: 10px;}
+    .submit-btn:hover { background: #d68910; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(243, 156, 18, 0.4); }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child"></i> Priya Seva Center</a>
-    <div style="display:flex; gap: 20px;">
-      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-    </div>
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child" style="color: #f39c12;"></i> Priya Seva</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Go to Dashboard</a>
   </nav>
 
-  <div class="page-wrapper">
-    <div class="premium-header">
-      <h2><i class="fa-solid fa-baby-carriage"></i> Child Care Profile Configuration</h2>
-      <p>Configure dedicated child care parameters. Outlining structural tasks and timing constraints ensures maximum child safety and developmental compatibility.</p>
+  <div class="app-container">
+    <div class="app-header">
+      <i class="fa-solid fa-baby-carriage"></i>
+      <h2>Customize Your Babysitter</h2>
+      <p>Tell us exactly what you need. We'll find the perfect match.</p>
     </div>
 
-    <div class="form-container">
+    <div class="customizer-body">
       
-      <div class="section-card">
-        <div class="section-title"><i class="fa-solid fa-children"></i> Family Matrix</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Parent / Guardian Legal Name</label>
-            <input type="text" id="fullName" placeholder="Enter Full Guardian Name" required>
-          </div>
-          <div class="form-group">
-            <label>Total Dependents Count</label>
-            <input type="number" id="numChildren" min="1" max="5" value="1">
-          </div>
-          <div class="form-group full-width">
-            <label>Ages & Developmental Profiles of Children</label>
-            <input type="text" id="ages" placeholder="E.g., 3 Years old and an infant of 8 Months." required>
-          </div>
+      <div class="input-block">
+        <label>Your Name</label>
+        <input type="text" id="fullName" class="sleek-input" placeholder="E.g., Anjali Sharma" required>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="input-block">
+          <label>Number of Children</label>
+          <input type="number" id="numChildren" class="sleek-input" min="1" value="1">
+        </div>
+        <div class="input-block">
+          <label>Ages of Children</label>
+          <input type="text" id="ages" class="sleek-input" placeholder="E.g., 2 years and 6 months" required>
         </div>
       </div>
 
-      <div class="section-card">
-        <div class="section-title"><i class="fa-solid fa-calendar-check"></i> Allocation Window</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Commencement Target Date</label>
-            <input type="date" id="bookingDate" required>
-          </div>
-          <div class="form-group">
-            <label>Termination Window Target (Optional)</label>
-            <input type="date" id="endDate">
-          </div>
-          <div class="form-group full-width">
-            <label>Daily Temporal Cadence Requirements</label>
-            <input type="text" id="timings" placeholder="E.g., Mon to Fri from 09:00 to 17:00 explicitly.">
-          </div>
-          <div class="form-group full-width">
-            <label>Core Caretaker Mandates</label>
-            <div class="selector-grid">
-              <label class="selector-item"><input type="checkbox" class="task-cb" value="Dietary Prep & Feeding"> Meal Prep</label>
-              <label class="selector-item"><input type="checkbox" class="task-cb" value="Hygiene & Bathing"> Bathing</label>
-              <label class="selector-item"><input type="checkbox" class="task-cb" value="Educational Playtime"> Playtime</label>
-              <label class="selector-item"><input type="checkbox" class="task-cb" value="Sleep Training Protocol"> Sleep Training</label>
-              <label class="selector-item"><input type="checkbox" class="task-cb" value="Academic Tutoring Support"> Tutoring</label>
-            </div>
-          </div>
+      <div class="input-block">
+        <label>When do you need them to start?</label>
+        <input type="date" id="bookingDate" class="sleek-input" required>
+      </div>
+
+      <div class="input-block">
+        <label>What times will they be needed?</label>
+        <input type="text" id="timings" class="sleek-input" placeholder="E.g., Mon-Fri from 9 AM to 5 PM">
+      </div>
+
+      <div class="input-block">
+        <label>What should the babysitter do? (Tap to select)</label>
+        <div class="pill-grid">
+          <label class="pill-label"><input type="checkbox" class="task-cb" value="Prepare Meals"> 🍎 Prepare Meals</label>
+          <label class="pill-label"><input type="checkbox" class="task-cb" value="Bathing & Hygiene"> 🛁 Bathing</label>
+          <label class="pill-label"><input type="checkbox" class="task-cb" value="Play & Read"> 📚 Play & Read</label>
+          <label class="pill-label"><input type="checkbox" class="task-cb" value="Put to Sleep"> 🛏️ Put to Sleep</label>
+          <label class="pill-label"><input type="checkbox" class="task-cb" value="Help with Homework"> ✏️ Homework</label>
         </div>
       </div>
 
-      <button onclick="saveBooking()" class="confirm-btn" id="submitBtn"><i class="fa-solid fa-lock"></i> Authorize & Book Caretaker</button>
+      <button onclick="saveBooking()" class="submit-btn" id="submitBtn">Find My Babysitter</button>
+
     </div>
   </div>
 
@@ -116,37 +113,32 @@
       const dateInput = document.getElementById('bookingDate').value;
       const nameInput = document.getElementById('fullName').value;
 
-      if (!dateInput || !nameInput) return alert("Guardian Identity and Commencement Window are mandatory parameters.");
-
-      if (typeof window.supabase === 'undefined') {
-        return alert("Security layer handshake lost. Re-verify interface systems.");
-      }
+      if (!dateInput || !nameInput) return alert("Please fill in your Name and Start Date!");
 
       try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Dispatching child care allocation arrays...';
+        btn.innerHTML = 'Finding matches... <i class="fa-solid fa-spinner fa-spin"></i>';
         btn.disabled = true;
 
         const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-        const clientInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const { data: { user }, error: authError } = await clientInstance.auth.getUser();
-        if (authError || !user) {
-          btn.innerHTML = '<i class="fa-solid fa-lock"></i> Authorize & Book Caretaker'; btn.disabled = false;
-          return alert("Authentication mismatch. Re-establish credentials via landing node.");
+        const { data: { user } } = await client.auth.getUser();
+        if (!user) {
+          btn.innerHTML = 'Find My Babysitter'; btn.disabled = false;
+          return alert("Oops! You need to log in first. Head back to the Home page to sign in.");
         }
 
-        const mandateArray = Array.from(document.querySelectorAll('.task-cb:checked')).map(cb => cb.value);
+        const selectedTasks = Array.from(document.querySelectorAll('.task-cb:checked')).map(cb => cb.value).join(', ');
         const detailsPayload = {
-          Guardian: nameInput,
-          Child_Metric: document.getElementById('numChildren').value,
-          Age_Profiles: document.getElementById('ages').value,
-          Target_End_Window: document.getElementById('endDate').value,
-          Daily_Timings: document.getElementById('timings').value,
-          Caretaking_Directives: mandateArray.length > 0 ? mandateArray.join(', ') : 'Standard Supervision'
+          Parent_Name: nameInput,
+          Number_of_Kids: document.getElementById('numChildren').value,
+          Ages: document.getElementById('ages').value,
+          Timings: document.getElementById('timings').value,
+          Tasks_Required: selectedTasks || 'Basic Supervision'
         };
 
-        const { error } = await clientInstance.from('bookings').insert([{ 
+        const { error } = await client.from('bookings').insert([{ 
             user_email: user.email, 
             service_type: 'Babysitters', 
             booking_date: dateInput,
@@ -156,14 +148,11 @@
 
         if (error) throw error;
 
-        alert("Child care plan submitted safely.");
         window.location.href = "dashboard.html";
 
       } catch (err) {
-        console.error(err);
-        alert("Transaction aborted: " + err.message);
-        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Authorize & Book Caretaker';
-        btn.disabled = false;
+        alert("Something went wrong: " + err.message);
+        btn.innerHTML = 'Find My Babysitter'; btn.disabled = false;
       }
     }
   </script>
