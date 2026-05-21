@@ -3,362 +3,275 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Dashboard | Priya Seva Center</title>
+  <title>Premium Babysitting | Priya Seva</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#1e3c72">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #333; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #050a15; overflow: hidden; color: white; }
     
-    /* Header */
-    header { background: #3b5998; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .brand { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-    .logout-btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.5); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 14px; transition: 0.2s;}
-    .logout-btn:hover { background: rgba(255,255,255,0.2); }
-    
-    /* Layout */
-    .dashboard-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 350px; gap: 25px; }
-    @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
-    .main-panel { display: flex; flex-direction: column; gap: 20px; }
-    
-    /* Welcome Banner */
-    .welcome-banner { background: white; padding: 20px 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-left: 5px solid #3b5998; display: flex; justify-content: space-between; align-items: center;}
-    .welcome-text h2 { margin: 0 0 5px 0; color: #2c3e50; font-size: 20px; }
-    .welcome-text p { margin: 0; color: #7f8c8d; font-size: 13px;}
-    
-    .notification-box { display: flex; align-items: center; gap: 15px; border: 1px solid #f0f2f5; padding: 8px 15px; border-radius: 8px; background: #fdfdfd; }
-    .notif-text { font-size: 11px; font-weight: 600; color: #2c3e50; line-height: 1.2;}
-    .notif-sub { font-size: 9px; color: #95a5a6; font-weight: 400;}
-    
-    .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-    input:checked + .slider { background-color: #2ecc71; }
-    input:checked + .slider:before { transform: translateX(20px); }
+    /* Fixed Navbar with high Z-Index */
+    .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; }
+    .logo-text { font-size: 24px; font-weight: 700; color: white; display: flex; align-items: center; gap: 10px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.12); backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+    .nav-link:hover { background: rgba(255,255,255,0.22); transform: translateY(-2px); }
 
-    /* Compact Dedicated Calendar Design */
-    .calendar-container { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 20px 25px; min-height: auto; }
+    /* Split Screen Layout */
+    .split-layout { display: flex; height: 100vh; width: 100vw; }
     
-    .service-toggles { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px solid #f0f2f5;}
-    .toggle-btn { padding: 8px 16px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-size: 13px; font-weight: 600; color: #7f8c8d; font-family: 'Poppins'; transition: 0.2s; display: flex; align-items: center; gap: 8px;}
-    .toggle-btn:hover { border-color: #3b5998; color: #3b5998; }
-    .toggle-btn.active { background: #3b5998; color: white; border-color: #3b5998; box-shadow: 0 4px 10px rgba(59, 89, 152, 0.3);}
+    /* Left Side - With Increased Top Padding for Logo Breathing Room */
+    .left-pane { flex: 1.1; position: relative; background: url('https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=1500&auto=format&fit=crop') center/cover no-repeat; display: flex; align-items: center; justify-content: center; padding: 190px 40px 40px 40px; box-sizing: border-box;}
+    .left-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5, 15, 35, 0.88) 0%, rgba(20, 45, 90, 0.65) 100%); z-index: 1; }
     
-    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #f8faff; padding: 8px 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
-    .month-controls button { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; color: #3b5998; transition: 0.2s; font-size: 13px;}
-    .month-controls button:hover { background: #3b5998; color: white; }
-    #monthYearDisplay { margin: 0; font-size: 16px; color: #2c3e50; font-weight: 700;}
+    /* The Cherry on Top: Subtle Galactic Cradle Doodles */
+    .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20l2-5 2 5 5 2-5 2-2 5-2-5-5-2 5-2zm40 40l1-3 1 3 3 1-3 1-1 3-1-3-3-1 3-1zm15-50a10 10 0 1 1 10 10 8 8 0 0 0-10-10z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"); z-index: 2; pointer-events: none; }
 
-    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: #95a5a6; margin-bottom: 8px; text-transform: uppercase;}
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-    
-    /* Reduced Box Heights for Compact View */
-    .cal-day { background: #fdfdfd; border: 2px solid #f0f2f5; border-radius: 8px; min-height: 65px; padding: 6px; display: flex; flex-direction: column; transition: 0.2s; position: relative;}
-    .cal-day.empty { background: transparent; border: none; }
-    .cal-day.today { background: #f4f8ff; border-color: #cbd5e1;}
-    .day-num { font-size: 13px; font-weight: 600; color: #7f8c8d; align-self: flex-end; margin-bottom: 3px;}
+    /* Right Side - Looping Video Window */
+    .right-pane { flex: 0.9; position: relative; background: #000; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); }
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0.95; object-fit: cover;}
+    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(5, 15, 35, 1) 0%, transparent 25%); z-index: 2;}
 
-    /* Prominent Full-Box Colors */
-    .cal-day.booked-maid { background: #ebf5fb; border-color: #3498db; cursor: pointer; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);}
-    .cal-day.booked-maid .day-num { color: #2980b9; }
+    /* Repositioned Glass Container */
+    .glass-form { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 24px; padding: 40px; width: 100%; max-width: 500px; max-height: 75vh; overflow-y: auto; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
     
-    .cal-day.booked-nurse { background: #eafaf1; border-color: #2ecc71; cursor: pointer; box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);}
-    .cal-day.booked-nurse .day-num { color: #27ae60; }
+    /* Custom Scrollbar */
+    .glass-form::-webkit-scrollbar { width: 5px; }
+    .glass-form::-webkit-scrollbar-track { background: transparent; }
+    .glass-form::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
+    .form-header h2 { margin: 0 0 6px 0; font-size: 30px; font-weight: 700; color: #fff; letter-spacing: 0.5px;}
+    .form-header p { margin: 0 0 25px 0; font-size: 13.5px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+    .input-group { margin-bottom: 22px; position: relative;}
+    .input-group label { display: block; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
     
-    .cal-day.booked-health { background: #fdedec; border-color: #e74c3c; cursor: pointer; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);}
-    .cal-day.booked-health .day-num { color: #c0392b; }
-    
-    .cal-day.booked-baby { background: #fef5e7; border-color: #f39c12; cursor: pointer; box-shadow: 0 4px 10px rgba(243, 156, 18, 0.2);}
-    .cal-day.booked-baby .day-num { color: #d68910; }
+    .glass-input { width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: white; font-family: 'Poppins'; font-size: 14.5px; box-sizing: border-box; transition: 0.3s; outline: none; }
+    .glass-input::placeholder { color: rgba(255,255,255,0.35); }
+    .glass-input:focus { border-color: #f39c12; background: rgba(0, 0, 0, 0.55); box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
 
-    .cal-day:hover[class*="booked-"] { transform: translateY(-2px); }
-    
-    .booking-label { font-size: 10px; font-weight: 700; text-align: center; margin-top: auto; padding: 3px; border-radius: 4px; letter-spacing: 0.5px;}
+    /* Dropdown UI */
+    .custom-select { position: relative; user-select: none; }
+    .select-trigger { width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: white; font-size: 14.5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; box-sizing: border-box;}
+    .select-trigger:hover { background: rgba(0, 0, 0, 0.45); }
+    .select-options { position: absolute; top: 100%; left: 0; right: 0; background: rgba(10, 20, 35, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; margin-top: 6px; overflow: hidden; display: none; z-index: 100; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
+    .select-options.show { display: block; animation: slideDown 0.2s ease; }
+    .option { padding: 14px 18px; color: white; cursor: pointer; transition: 0.2s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);}
+    .option:last-child { border-bottom: none; }
+    .option:hover { background: rgba(243, 156, 18, 0.9); padding-left: 24px; }
 
-    /* Right Side Actions */
-    .action-grid { display: flex; flex-direction: column; gap: 15px; }
-    .action-card { background: white; padding: 18px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); display: flex; align-items: center; gap: 15px; cursor: pointer; text-decoration: none; color: inherit; transition: 0.2s; border: 1px solid transparent;}
-    .action-card:hover { border-color: #e2e8f0; transform: translateY(-3px); }
-    
-    .icon-box { width: 40px; height: 40px; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; }
-    .icon-blue { background: #ebf5fb; color: #3498db; }
-    .icon-orange { background: #fef5e7; color: #f39c12; }
-    .icon-red { background: #fdedec; color: #e74c3c; }
-    .icon-purple { background: #f4ecf8; color: #9b59b6; }
-    .icon-green { background: #eafaf1; color: #2ecc71; }
+    /* Dropdown Interactive Calendar */
+    .glass-calendar { display: none; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 18px; margin-top: 12px; animation: slideDown 0.3s ease;}
+    .cal-top { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; font-size: 13px; }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+    .cal-day-name { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase;}
+    .cal-date { padding: 8px 0; background: rgba(255,255,255,0.04); border-radius: 8px; font-size: 12px; cursor: pointer; transition: 0.2s; border: 1px solid transparent;}
+    .cal-date:hover { background: rgba(255,255,255,0.15); }
+    .cal-date.selected { background: #f39c12; color: white; border-color: #e67e22; box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); transform: scale(1.05);}
 
-    .action-text h4 { margin: 0 0 4px 0; color: #2c3e50; font-size: 14px; }
-    .action-text p { margin: 0; color: #95a5a6; font-size: 11px; line-height: 1.3; font-weight: 400;}
+    .submit-btn { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; width: 100%; padding: 18px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(243, 156, 18, 0.35); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;}
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(243, 156, 18, 0.5); }
 
-    /* Modals */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
-    .dashboard-modal { background: white; padding: 30px; border-radius: 16px; width: 100%; max-width: 450px; position: relative; box-sizing: border-box; max-height: 80vh; overflow-y: auto;}
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #95a5a6; transition: 0.2s;}
-    .close-modal:hover { color: #e74c3c; }
-    .service-link-btn { display: block; background: #f8faff; padding: 15px; border-radius: 8px; margin-bottom: 10px; text-decoration: none; color: #2c3e50; font-weight: 600; border: 1px solid #e2e8f0; text-align: center; transition: 0.2s;}
-    .service-link-btn:hover { border-color: #3498db; background: white; transform: translateX(5px);}
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 
-    #page-content { display: none; }
+    @media (max-width: 900px) {
+      .split-layout { flex-direction: column; overflow-y: auto; height: auto;}
+      body { overflow: auto; }
+      .right-pane { display: none; }
+      .left-pane { padding: 120px 15px 30px 15px; min-height: 100vh;}
+      .glass-form { max-height: none; margin-top: 10px; }
+    }
   </style>
 </head>
 <body>
 
-  <div id="page-content">
+  <nav class="navbar">
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child" style="color: #f39c12;"></i> Priya Seva</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+  </nav>
+
+  <div class="split-layout">
     
-    <header>
-      <a href="index.html" class="brand" style="text-decoration:none; color:white;">
-        <i class="fa-solid fa-hands-holding-child"></i> Priya Seva Dashboard
-      </a>
-      <div style="display:flex; gap: 10px;">
-        <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> Home</button>
-        <button class="logout-btn" onclick="logOut()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
-      </div>
-    </header>
-
-    <div class="dashboard-container">
+    <div class="left-pane">
+      <div class="left-overlay"></div>
+      <div class="galactic-doodles"></div>
       
-      <div class="main-panel">
-        
-        <div class="welcome-banner">
-          <div class="welcome-text">
-            <h2>Welcome back.</h2>
-            <p><i class="fa-solid fa-shield-halved"></i> Secured as: <strong id="user-email-display" style="color:#2c3e50;">Loading...</strong></p>
-          </div>
-          <div class="notification-box">
-            <div>
-              <div class="notif-text">1-Hour Service Reminders</div>
-              <div class="notif-sub">(WhatsApp & Email)</div>
-            </div>
-            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
-          </div>
+      <div class="glass-form">
+        <div class="form-header">
+          <h2>Reserve a Babysitter</h2>
+          <p>Configure your child care metrics below. Our system will immediately coordinate availability profiles.</p>
         </div>
 
-        <div class="calendar-container">
-          
-          <div class="service-toggles">
-            <button class="toggle-btn active" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid')">
-              <i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid
-            </button>
-            <button class="toggle-btn" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse')">
-              <i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse
-            </button>
-            <button class="toggle-btn" id="tab-health" onclick="switchService('Health Visits', 'tab-health')">
-              <i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health
-            </button>
-            <button class="toggle-btn" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby')">
-              <i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby
-            </button>
-          </div>
+        <div class="input-group">
+          <label>Your Full Name</label>
+          <input type="text" id="parentName" class="glass-input" placeholder="E.g., Anjali Sharma" required>
+        </div>
 
-          <div class="month-controls">
-            <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Previous</button>
-            <h3 id="monthYearDisplay">Loading Data...</h3>
-            <button onclick="changeMonth(1)">Next Month <i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-          
-          <div class="cal-weekdays">
-            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-          </div>
-          
-          <div class="cal-grid" id="calendarGrid">
-            <div style="grid-column: 1/-1; text-align:center; padding: 40px; color: #95a5a6;">
-              <i class="fa-solid fa-spinner fa-spin" style="font-size:24px; margin-bottom:10px;"></i><br>Syncing records...
+        <div class="input-group">
+          <label>Number of Children</label>
+          <div class="custom-select">
+            <div class="select-trigger" id="childCountTrigger" onclick="toggleDropdown('childCountOptions')">
+              <span>Select count...</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="childCountOptions">
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '1 Child')">1 Child</div>
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '2 Children')">2 Children</div>
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '3+ Children')">3+ Children</div>
             </div>
           </div>
-
         </div>
 
-      </div>
-
-      <div class="action-grid">
-        <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">
-          <div class="icon-box icon-blue"><i class="fa-solid fa-calendar-plus"></i></div>
-          <div class="action-text"><h4>Book New Service</h4><p>Schedule a maid, nurse, or babysitter instantly.</p></div>
+        <div class="input-group">
+          <label>Service Frequency</label>
+          <div class="custom-select">
+            <div class="select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
+              <span>Select frequency...</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="freqOptions">
+              <div class="option" onclick="selectFrequency('Single Day Need')">Single Day Need</div>
+              <div class="option" onclick="selectFrequency('Recurring Weekly')">Recurring Weekly</div>
+              <div class="option" onclick="selectFrequency('Customized Dates')">Customized Dates</div>
+            </div>
+          </div>
+          
+          <div class="glass-calendar" id="visualCalendar">
+            <div class="cal-top"><span>Select System Dates:</span> <span>May 2026</span></div>
+            <div class="cal-days" style="margin-bottom:8px;">
+              <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
+            </div>
+            <div class="cal-days" id="calGrid"></div>
+          </div>
         </div>
 
-        <a href="absent.html" class="action-card">
-          <div class="icon-box icon-red"><i class="fa-solid fa-user-xmark"></i></div>
-          <div class="action-text"><h4>Log an Absence</h4><p>Manually pause a service for specific dates.</p></div>
-        </a>
+        <div class="input-group">
+          <label>Required Time Window</label>
+          <input type="text" id="timeWindow" class="glass-input" placeholder="E.g., 9:00 AM to 5:00 PM">
+        </div>
 
-        <a href="grievance.html" class="action-card">
-          <div class="icon-box icon-purple"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div class="action-text"><h4>File a Grievance</h4><p>Report an issue directly to the management team.</p></div>
-        </a>
-
-        <a href="https://search.google.com/local/writereview?placeid=YOUR_GOOGLE_MAPS_ID" target="_blank" class="action-card">
-          <div class="icon-box icon-green"><i class="fa-regular fa-star"></i></div>
-          <div class="action-text"><h4>Leave Feedback</h4><p>Rate our service on Google Reviews.</p></div>
-        </a>
+        <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
       </div>
     </div>
-  </div>
 
-  <div class="modal-overlay" id="bookModal">
-    <div class="dashboard-modal">
-      <span class="close-modal" onclick="document.getElementById('bookModal').style.display='none'">&times;</span>
-      <h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;">Select Service</h3>
-      <a href="maid.html" class="service-link-btn"><i class="fa-solid fa-broom" style="color: #3498db; margin-right: 10px;"></i> Configure Maid Plan</a>
-      <a href="nurse.html" class="service-link-btn"><i class="fa-solid fa-user-nurse" style="color: #2ecc71; margin-right: 10px;"></i> Assign Certified Nurse</a>
-      <a href="health.html" class="service-link-btn"><i class="fa-solid fa-house-medical" style="color: #e74c3c; margin-right: 10px;"></i> Schedule Health Visit</a>
-      <a href="babysitter.html" class="service-link-btn"><i class="fa-solid fa-baby-carriage" style="color: #f39c12; margin-right: 10px;"></i> Secure Babysitter</a>
+    <div class="right-pane">
+      <div class="video-overlay"></div>
+      <video autoplay loop muted playsinline class="video-bg" poster="https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=1200">
+        <source src="babysitter.mp4" type="video/mp4">
+      </video>
     </div>
-  </div>
 
-  <div class="modal-overlay" id="dayDetailsModal">
-    <div class="dashboard-modal">
-      <span class="close-modal" onclick="document.getElementById('dayDetailsModal').style.display='none'">&times;</span>
-      <div id="dayDetailsContent"></div>
-    </div>
   </div>
 
   <script>
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const myUniqueDatabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let currentDisplayedDate = new Date();
-    let allBookingsMap = {};
-    let currentActiveService = 'Maid Services';
+    let selectedFrequency = "";
+    let selectedDates = [];
 
-    async function checkAuth() {
-      const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
-      if (!user) {
-        window.location.href = "index.html";
-      } else {
-        document.getElementById('page-content').style.display = 'block';
-        document.getElementById('user-email-display').innerText = user.email;
-        initializeCalendar(user.email);
-      }
+    function toggleDropdown(id) {
+      document.querySelectorAll('.select-options').forEach(el => {
+        if(el.id !== id) el.classList.remove('show');
+      });
+      document.getElementById(id).classList.toggle('show');
     }
 
-    async function initializeCalendar(email) {
-      const { data, error } = await myUniqueDatabaseClient.from('bookings').select('*').eq('user_email', email);
+    function selectOption(triggerId, dropdownId, value) {
+      document.getElementById(triggerId).innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`;
+      document.getElementById(dropdownId).classList.remove('show');
+    }
+
+    function selectFrequency(value) {
+      selectOption('freqTrigger', 'freqOptions', value);
+      selectedFrequency = value;
+      selectedDates = []; 
       
-      allBookingsMap = {};
-      if (!error && data) {
-        data.forEach(item => {
-          if (!allBookingsMap[item.booking_date]) allBookingsMap[item.booking_date] = [];
-          allBookingsMap[item.booking_date].push(item);
-        });
-      }
-      renderCalendar();
+      const calWidget = document.getElementById('visualCalendar');
+      calWidget.style.display = 'block';
+      buildCalendarGrid(value === 'Single Day Need');
     }
 
-    function switchService(serviceName, btnId) {
-      currentActiveService = serviceName;
-      document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(btnId).classList.add('active');
-      renderCalendar();
-    }
-
-    function renderCalendar() {
-      const year = currentDisplayedDate.getFullYear();
-      const month = currentDisplayedDate.getMonth();
-      document.getElementById('monthYearDisplay').innerText = `${monthNames[month]} ${year}`;
-
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const grid = document.getElementById('calendarGrid');
-      
+    function buildCalendarGrid(isSingleSelect) {
+      const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
+      
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; }
+      
+      for(let i=1; i<=31; i++) {
+        const div = document.createElement('div');
+        div.className = 'cal-date';
+        div.innerText = i;
+        div.onclick = function() {
+          if(isSingleSelect) {
+            document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+            selectedDates = [i];
+            this.classList.add('selected');
+          } else {
+            this.classList.toggle('selected');
+            if(this.classList.contains('selected')) selectedDates.push(i);
+            else selectedDates = selectedDates.filter(d => d !== i);
+          }
+        };
+        grid.appendChild(div);
+      }
+    }
 
-      // Blank slots before the 1st
-      for (let i = 0; i < firstDay; i++) {
-        grid.innerHTML += `<div class="cal-day empty"></div>`;
+    document.addEventListener('click', function(e) {
+      if(!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
+      }
+    });
+
+    async function submitRequest() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('parentName').value;
+      const childCount = document.getElementById('childCountTrigger').innerText.trim();
+      const timeWindow = document.getElementById('timeWindow').value;
+
+      if(!name || selectedFrequency === "" || selectedDates.length === 0) {
+        return alert("Please fill your name and select your required dates from the calendar.");
       }
 
-      // Fill days
-      for (let i = 1; i <= daysInMonth; i++) {
-        const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-        
-        // Only get bookings for the currently selected tab
-        const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+        btn.disabled = true;
 
-        let dayClass = '';
-        let labelHtml = '';
-        let clickable = '';
-
-        if (dayBookings.length > 0) {
-           clickable = `onclick="showDayDetails('${dateString}')"`;
-           if (currentActiveService === 'Maid Services') {
-             dayClass = 'booked-maid';
-             labelHtml = '<div class="booking-label" style="background:#3498db; color:white;">BOOKED</div>';
-           } else if (currentActiveService === 'Certified Nurses') {
-             dayClass = 'booked-nurse';
-             labelHtml = '<div class="booking-label" style="background:#2ecc71; color:white;">BOOKED</div>';
-           } else if (currentActiveService === 'Health Visits') {
-             dayClass = 'booked-health';
-             labelHtml = '<div class="booking-label" style="background:#e74c3c; color:white;">BOOKED</div>';
-           } else if (currentActiveService === 'Babysitters') {
-             dayClass = 'booked-baby';
-             labelHtml = '<div class="booking-label" style="background:#f39c12; color:white;">BOOKED</div>';
-           }
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+          btn.innerHTML = 'Generate Request'; btn.disabled = false;
+          return alert("Authentication required. Please return to the homepage to log in.");
         }
 
-        const isToday = (dateString === new Date().toISOString().split('T')[0] && dayBookings.length === 0) ? 'today' : '';
+        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
 
-        grid.innerHTML += `
-          <div class="cal-day ${isToday} ${dayClass}" ${clickable}>
-            <span class="day-num">${i}</span>
-            ${labelHtml}
-          </div>
-        `;
+        const detailsPayload = {
+          Parent_Name: name,
+          Children: childCount.replace("Select count...", "Not Specified"),
+          Frequency: selectedFrequency,
+          Selected_Dates: formattedDates,
+          Timings: timeWindow
+        };
+
+        const { error } = await supabaseClient.from('bookings').insert([{ 
+            user_email: user.email, 
+            service_type: 'Babysitters', 
+            booking_date: primaryDate,
+            status: 'pending',
+            details: JSON.stringify(detailsPayload)
+        }]);
+
+        if (error) throw error;
+        window.location.href = "dashboard.html";
+
+      } catch (err) {
+        alert("Transaction aborted: " + err.message);
+        btn.innerHTML = 'Generate Request';
+        btn.disabled = false;
       }
     }
-
-    function changeMonth(offset) {
-      currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + offset);
-      renderCalendar();
-    }
-
-    function showDayDetails(dateString) {
-      const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
-      const modal = document.getElementById('dayDetailsModal');
-      const content = document.getElementById('dayDetailsContent');
-
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-
-      let html = `<h3 style="margin-top:0; color:#2c3e50; border-bottom: 2px solid #f0f2f5; padding-bottom: 10px; margin-bottom: 20px;">
-                    <i class="fa-regular fa-calendar-check" style="color:#2c3e50; margin-right:8px;"></i> ${formattedDate}
-                  </h3>`;
-
-      dayBookings.forEach(item => {
-        let isPending = item.status.toLowerCase() === 'pending';
-        let statusIcon = isPending ? '<i class="fa-solid fa-clock-rotate-left"></i>' : '<i class="fa-solid fa-circle-check"></i>';
-        let statusColor = isPending ? '#e67e22' : '#2ecc71';
-        let statusBg = isPending ? '#fdf2e9' : '#eafaf1';
-
-        let serviceIcon = '<i class="fa-solid fa-broom" style="color:#3498db; width:20px;"></i>';
-        if (item.service_type === 'Certified Nurses') serviceIcon = '<i class="fa-solid fa-user-nurse" style="color:#2ecc71; width:20px;"></i>';
-        if (item.service_type === 'Health Visits') serviceIcon = '<i class="fa-solid fa-house-medical" style="color:#e74c3c; width:20px;"></i>';
-        if (item.service_type === 'Babysitters') serviceIcon = '<i class="fa-solid fa-baby-carriage" style="color:#f39c12; width:20px;"></i>';
-
-        html += `
-          <div style="padding: 15px; border: 1px solid #f0f2f5; border-radius: 12px; margin-bottom: 15px; background: #fdfdfd; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong style="color:#2c3e50; font-size:16px;">${serviceIcon} ${item.service_type}</strong>
-              <span style="font-size: 11px; padding: 5px 10px; border-radius: 20px; font-weight:700; color: ${statusColor}; background: ${statusBg};">${statusIcon} ${item.status.toUpperCase()}</span>
-            </div>
-          </div>
-        `;
-      });
-
-      content.innerHTML = html;
-      modal.style.display = 'flex';
-    }
-
-    async function logOut() { 
-      await myUniqueDatabaseClient.auth.signOut(); 
-      window.location.href = "index.html"; 
-    }
-    
-    window.onload = checkAuth;
   </script>
 </body>
 </html>
