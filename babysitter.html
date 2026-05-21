@@ -3,145 +3,279 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customize Babysitter Service | Priya Seva</title>
+  <title>Premium Babysitting | Priya Seva</title>
+  
+  <meta name="description" content="Secure a trusted, verified babysitter in Kolkata. Custom schedules, interactive booking, and premium care.">
+  <meta name="theme-color" content="#1e3c72">
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f0f4f8; color: #2c3e50; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #000; overflow: hidden; color: white; }
     
-    /* Sleek Navbar */
-    .navbar { background-color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-    .logo-text { font-size: 20px; font-weight: 700; color: #1e3c72; display: flex; align-items: center; gap: 10px; text-decoration: none;}
-    .nav-link { color: #7f8c8d; text-decoration: none; font-weight: 600; font-size: 14px; transition: color 0.2s; }
-    .nav-link:hover { color: #1e3c72; }
+    /* Absolute Floating Navbar */
+    .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 100; }
+    .logo-text { font-size: 24px; font-weight: 700; color: white; display: flex; align-items: center; gap: 10px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; }
+    .nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-    /* App-Like Container */
-    .app-container { max-width: 700px; margin: 50px auto; background: white; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); overflow: hidden; }
+    /* Split Screen Layout */
+    .split-layout { display: flex; height: 100vh; width: 100vw; }
     
-    /* Header Graphic */
-    .app-header { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; padding: 40px; text-align: center; }
-    .app-header i { font-size: 40px; margin-bottom: 15px; }
-    .app-header h2 { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: 0.5px;}
-    .app-header p { margin: 10px 0 0 0; font-size: 15px; opacity: 0.9; }
+    /* Left Side - Glassmorphism UI */
+    .left-pane { flex: 1.2; position: relative; background: url('https://images.unsplash.com/photo-1544126592-807ade215a0b?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat; display: flex; align-items: center; justify-content: center; padding: 80px 40px 40px 40px; box-sizing: border-box;}
+    .left-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30, 60, 114, 0.85) 0%, rgba(42, 82, 152, 0.75) 100%); z-index: 1; }
+    
+    /* Right Side - Video Loop */
+    .right-pane { flex: 0.8; position: relative; background: #000; overflow: hidden; }
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0.85; object-fit: cover;}
+    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(20,40,80,0.9) 0%, transparent 50%); z-index: 2;}
 
-    /* Customizer Body */
-    .customizer-body { padding: 40px; }
-    .input-block { margin-bottom: 30px; }
-    .input-block label { display: block; font-weight: 600; font-size: 15px; color: #2c3e50; margin-bottom: 12px; }
+    /* Glass Container */
+    .glass-form { position: relative; z-index: 10; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; padding: 40px; width: 100%; max-width: 550px; max-height: 80vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
     
-    /* Sleek Inputs */
-    .sleek-input { width: 100%; padding: 16px 20px; border: 2px solid #edf2f7; border-radius: 12px; font-family: 'Poppins'; font-size: 15px; background: #f8fafc; color: #2d3748; transition: all 0.3s; box-sizing: border-box; }
-    .sleek-input:focus { border-color: #f39c12; background: white; outline: none; box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.1); }
+    /* Custom Scrollbar for Glass UI */
+    .glass-form::-webkit-scrollbar { width: 6px; }
+    .glass-form::-webkit-scrollbar-track { background: transparent; }
+    .glass-form::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+
+    .form-header h2 { margin: 0 0 5px 0; font-size: 32px; font-weight: 700; color: #fff; letter-spacing: 0.5px;}
+    .form-header p { margin: 0 0 30px 0; font-size: 14px; color: rgba(255,255,255,0.8); }
+
+    .input-group { margin-bottom: 25px; position: relative;}
+    .input-group label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;}
     
-    /* The Pill Grid (Replaces Checkboxes) */
-    .pill-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-    .pill-label { background: #f8fafc; border: 2px solid #edf2f7; color: #4a5568; padding: 12px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
-    .pill-label input[type="checkbox"] { display: none; } /* Hide the ugly box */
-    
-    /* When a pill is selected */
-    .pill-label:has(input:checked) { background: #fef5e7; border-color: #f39c12; color: #d68910; }
-    .pill-label:hover { border-color: #f39c12; }
+    /* Sleek Glass Inputs */
+    .glass-input { width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-family: 'Poppins'; font-size: 15px; box-sizing: border-box; transition: 0.3s; outline: none; }
+    .glass-input::placeholder { color: rgba(255,255,255,0.5); }
+    .glass-input:focus { border-color: #f39c12; background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 15px rgba(243, 156, 18, 0.3); }
+
+    /* Custom Glass Dropdown */
+    .custom-select { position: relative; user-select: none; }
+    .select-trigger { width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; box-sizing: border-box;}
+    .select-trigger:hover { background: rgba(0, 0, 0, 0.3); }
+    .select-options { position: absolute; top: 100%; left: 0; right: 0; background: rgba(30, 60, 114, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; margin-top: 8px; overflow: hidden; display: none; z-index: 100; box-shadow: 0 15px 30px rgba(0,0,0,0.3);}
+    .select-options.show { display: block; animation: slideDown 0.3s ease; }
+    .option { padding: 15px 20px; color: white; cursor: pointer; transition: 0.2s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);}
+    .option:last-child { border-bottom: none; }
+    .option:hover { background: rgba(243, 156, 18, 0.8); padding-left: 25px; }
+
+    /* Interactive UI Calendar */
+    .glass-calendar { display: none; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 20px; margin-top: 15px; animation: slideDown 0.4s ease;}
+    .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; }
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+    .cal-day-name { font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase;}
+    .cal-date { padding: 10px 0; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 13px; cursor: pointer; transition: 0.2s; border: 1px solid transparent;}
+    .cal-date:hover { background: rgba(255,255,255,0.15); }
+    .cal-date.selected { background: #f39c12; color: white; border-color: #e67e22; box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4); transform: scale(1.05);}
 
     /* Submit Button */
-    .submit-btn { background: #f39c12; color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(243, 156, 18, 0.3); margin-top: 10px;}
-    .submit-btn:hover { background: #d68910; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(243, 156, 18, 0.4); }
+    .submit-btn { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; width: 100%; padding: 20px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(243, 156, 18, 0.4); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;}
+    .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(243, 156, 18, 0.6); }
+
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .split-layout { flex-direction: column; overflow-y: auto; height: auto;}
+      body { overflow: auto; }
+      .right-pane { display: none; } /* Hide video on mobile to save performance */
+      .left-pane { padding: 100px 20px 40px 20px; min-height: 100vh;}
+      .glass-form { max-height: none; }
+    }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
     <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child" style="color: #f39c12;"></i> Priya Seva</a>
-    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Go to Dashboard</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </nav>
 
-  <div class="app-container">
-    <div class="app-header">
-      <i class="fa-solid fa-baby-carriage"></i>
-      <h2>Customize Your Babysitter</h2>
-      <p>Tell us exactly what you need. We'll find the perfect match.</p>
-    </div>
-
-    <div class="customizer-body">
+  <div class="split-layout">
+    
+    <div class="left-pane">
+      <div class="left-overlay"></div>
       
-      <div class="input-block">
-        <label>Your Name</label>
-        <input type="text" id="fullName" class="sleek-input" placeholder="E.g., Anjali Sharma" required>
-      </div>
+      <div class="glass-form">
+        <div class="form-header">
+          <h2><i class="fa-solid fa-baby-carriage" style="color: #f39c12;"></i> Reserve a Babysitter</h2>
+          <p>Customize your care plan. Select your preferences below and let our algorithm find the perfect match.</p>
+        </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="input-block">
+        <div class="input-group">
+          <label>Your Full Name</label>
+          <input type="text" id="parentName" class="glass-input" placeholder="E.g., Anjali Sharma" required>
+        </div>
+
+        <div class="input-group">
           <label>Number of Children</label>
-          <input type="number" id="numChildren" class="sleek-input" min="1" value="1">
+          <div class="custom-select">
+            <div class="select-trigger" id="childCountTrigger" onclick="toggleDropdown('childCountOptions')">
+              <span>Select count...</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="childCountOptions">
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '1 Child')">1 Child</div>
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '2 Children')">2 Children</div>
+              <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '3+ Children')">3+ Children</div>
+            </div>
+          </div>
         </div>
-        <div class="input-block">
-          <label>Ages of Children</label>
-          <input type="text" id="ages" class="sleek-input" placeholder="E.g., 2 years and 6 months" required>
+
+        <div class="input-group">
+          <label>Service Frequency</label>
+          <div class="custom-select">
+            <div class="select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
+              <span>Select frequency...</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="select-options" id="freqOptions">
+              <div class="option" onclick="selectFrequency('Single Day Need')">Single Day Need</div>
+              <div class="option" onclick="selectFrequency('Recurring Weekly')">Recurring Weekly</div>
+              <div class="option" onclick="selectFrequency('Customized Dates')">Customized Dates</div>
+            </div>
+          </div>
+          
+          <div class="glass-calendar" id="visualCalendar">
+            <div class="cal-top"><span>Select Your Dates:</span> <span>May 2026</span></div>
+            <div class="cal-days" style="margin-bottom:10px;">
+              <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
+            </div>
+            <div class="cal-days" id="calGrid">
+              </div>
+          </div>
         </div>
-      </div>
 
-      <div class="input-block">
-        <label>When do you need them to start?</label>
-        <input type="date" id="bookingDate" class="sleek-input" required>
-      </div>
-
-      <div class="input-block">
-        <label>What times will they be needed?</label>
-        <input type="text" id="timings" class="sleek-input" placeholder="E.g., Mon-Fri from 9 AM to 5 PM">
-      </div>
-
-      <div class="input-block">
-        <label>What should the babysitter do? (Tap to select)</label>
-        <div class="pill-grid">
-          <label class="pill-label"><input type="checkbox" class="task-cb" value="Prepare Meals"> 🍎 Prepare Meals</label>
-          <label class="pill-label"><input type="checkbox" class="task-cb" value="Bathing & Hygiene"> 🛁 Bathing</label>
-          <label class="pill-label"><input type="checkbox" class="task-cb" value="Play & Read"> 📚 Play & Read</label>
-          <label class="pill-label"><input type="checkbox" class="task-cb" value="Put to Sleep"> 🛏️ Put to Sleep</label>
-          <label class="pill-label"><input type="checkbox" class="task-cb" value="Help with Homework"> ✏️ Homework</label>
+        <div class="input-group">
+          <label>Required Time Window</label>
+          <input type="text" id="timeWindow" class="glass-input" placeholder="E.g., 9:00 AM to 5:00 PM">
         </div>
+
+        <div class="input-group">
+          <label>Special Requests (Optional)</label>
+          <textarea id="specialNotes" class="glass-input" rows="3" placeholder="Specific allergies, bedtime routines, homework help..."></textarea>
+        </div>
+
+        <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
       </div>
-
-      <button onclick="saveBooking()" class="submit-btn" id="submitBtn">Find My Babysitter</button>
-
     </div>
+
+    <div class="right-pane">
+      <div class="video-overlay"></div>
+      <video autoplay loop muted playsinline class="video-bg">
+        <source src="https://videos.pexels.com/video-files/5243075/5243075-uhd_2160_4096_25fps.mp4" type="video/mp4">
+      </video>
+    </div>
+
   </div>
 
   <script>
-    async function saveBooking() {
-      const btn = document.getElementById('submitBtn');
-      const dateInput = document.getElementById('bookingDate').value;
-      const nameInput = document.getElementById('fullName').value;
+    // System Config
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      if (!dateInput || !nameInput) return alert("Please fill in your Name and Start Date!");
+    // Global variables to hold selected custom data
+    let selectedFrequency = "";
+    let selectedDates = [];
+
+    // --- Custom Glass UI Logic ---
+    function toggleDropdown(id) {
+      document.querySelectorAll('.select-options').forEach(el => {
+        if(el.id !== id) el.classList.remove('show');
+      });
+      document.getElementById(id).classList.toggle('show');
+    }
+
+    function selectOption(triggerId, dropdownId, value) {
+      document.getElementById(triggerId).innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`;
+      document.getElementById(dropdownId).classList.remove('show');
+    }
+
+    function selectFrequency(value) {
+      selectOption('freqTrigger', 'freqOptions', value);
+      selectedFrequency = value;
+      selectedDates = []; // Reset dates
+      
+      const calWidget = document.getElementById('visualCalendar');
+      calWidget.style.display = 'block';
+      buildCalendarGrid(value === 'Single Day Need');
+    }
+
+    function buildCalendarGrid(isSingleSelect) {
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+      
+      // Blank days for start of month
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; }
+      
+      for(let i=1; i<=31; i++) {
+        const div = document.createElement('div');
+        div.className = 'cal-date';
+        div.innerText = i;
+        div.onclick = function() {
+          if(isSingleSelect) {
+            document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+            selectedDates = [i];
+            this.classList.add('selected');
+          } else {
+            this.classList.toggle('selected');
+            if(this.classList.contains('selected')) selectedDates.push(i);
+            else selectedDates = selectedDates.filter(d => d !== i);
+          }
+        };
+        grid.appendChild(div);
+      }
+    }
+
+    // Close dropdowns if clicked outside
+    document.addEventListener('click', function(e) {
+      if(!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
+      }
+    });
+
+    // --- Submission Logic ---
+    async function submitRequest() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('parentName').value;
+      const childCount = document.getElementById('childCountTrigger').innerText.trim();
+      const timeWindow = document.getElementById('timeWindow').value;
+      const notes = document.getElementById('specialNotes').value;
+
+      if(!name || selectedFrequency === "" || selectedDates.length === 0) {
+        return alert("Please fill your name and select your required dates from the calendar.");
+      }
 
       try {
-        btn.innerHTML = 'Finding matches... <i class="fa-solid fa-spinner fa-spin"></i>';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
         btn.disabled = true;
 
-        const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        const { data: { user } } = await client.auth.getUser();
+        const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) {
-          btn.innerHTML = 'Find My Babysitter'; btn.disabled = false;
-          return alert("Oops! You need to log in first. Head back to the Home page to sign in.");
+          btn.innerHTML = 'Generate Request'; btn.disabled = false;
+          return alert("Authentication required. Please return to the homepage to log in.");
         }
 
-        const selectedTasks = Array.from(document.querySelectorAll('.task-cb:checked')).map(cb => cb.value).join(', ');
+        // Format dates cleanly
+        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        
+        // We will store the FIRST date selected as the primary dashboard sorting date
+        let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
+
         const detailsPayload = {
-          Parent_Name: nameInput,
-          Number_of_Kids: document.getElementById('numChildren').value,
-          Ages: document.getElementById('ages').value,
-          Timings: document.getElementById('timings').value,
-          Tasks_Required: selectedTasks || 'Basic Supervision'
+          Parent_Name: name,
+          Children: childCount.replace("Select count...", "Not Specified"),
+          Frequency: selectedFrequency,
+          Selected_Dates: formattedDates,
+          Timings: timeWindow,
+          Special_Requests: notes
         };
 
-        const { error } = await client.from('bookings').insert([{ 
+        const { error } = await supabaseClient.from('bookings').insert([{ 
             user_email: user.email, 
             service_type: 'Babysitters', 
-            booking_date: dateInput,
+            booking_date: primaryDate,
             status: 'pending',
             details: JSON.stringify(detailsPayload)
         }]);
@@ -151,8 +285,9 @@
         window.location.href = "dashboard.html";
 
       } catch (err) {
-        alert("Something went wrong: " + err.message);
-        btn.innerHTML = 'Find My Babysitter'; btn.disabled = false;
+        alert("Transaction aborted: " + err.message);
+        btn.innerHTML = 'Generate Request';
+        btn.disabled = false;
       }
     }
   </script>
