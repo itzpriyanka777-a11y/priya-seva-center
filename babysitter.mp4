@@ -13,7 +13,7 @@
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #050a15; overflow: hidden; color: white; }
     
-    /* Fixed Navbar */
+    /* Fixed Navbar with high Z-Index */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; }
     .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
     .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
@@ -22,19 +22,20 @@
     /* Split Screen Layout */
     .split-layout { display: flex; height: 100vh; width: 100vw; }
     
-    /* Left Side - Solid Midnight Blue Gradient (No messy images) */
-    .left-pane { flex: 1.15; position: relative; background: linear-gradient(135deg, #050f23 0%, #142d5a 100%); display: flex; align-items: center; justify-content: center; padding: 0 40px; box-sizing: border-box;}
+    /* Left Side - Solid Midnight Blue Gradient ONLY (No photos) */
+    /* Changed align-items to flex-start and added heavy top padding to strictly enforce the logo gap */
+    .left-pane { flex: 1.15; position: relative; background: linear-gradient(135deg, #050f23 0%, #142d5a 100%); display: flex; align-items: flex-start; justify-content: center; padding: 160px 40px 40px 40px; box-sizing: border-box;}
     
-    /* Randomly Dispersed Galactic Doodles (Moons & Stars) */
-    .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 40,40 Q 60,30 50,60 Q 30,70 40,40 Z' fill='%23ffffff' fill-opacity='0.15'/%3E%3Cpath d='M 250,150 Q 270,140 260,170 Q 240,180 250,150 Z' fill='%23ffffff' fill-opacity='0.1'/%3E%3Cpath d='M 120,300 Q 140,290 130,320 Q 110,330 120,300 Z' fill='%23ffffff' fill-opacity='0.12'/%3E%3Cpolygon points='100,100 105,115 120,115 108,125 112,140 100,130 88,140 92,125 80,115 95,115' fill='%23ffffff' fill-opacity='0.15'/%3E%3Cpolygon points='300,50 302,60 312,60 304,66 308,76 300,70 292,76 296,66 288,60 298,60' fill='%23ffffff' fill-opacity='0.15'/%3E%3Cpolygon points='50,250 52,255 57,255 53,258 55,263 50,260 45,263 47,258 43,255 48,255' fill='%23ffffff' fill-opacity='0.12'/%3E%3Cpolygon points='350,280 353,290 363,290 355,296 358,306 350,300 342,306 345,296 337,290 347,290' fill='%23ffffff' fill-opacity='0.1'/%3E%3Cpolygon points='200,80 202,85 207,85 203,88 205,93 200,90 195,93 197,88 193,85 198,85' fill='%23ffffff' fill-opacity='0.14'/%3E%3Cpolygon points='220,350 223,360 233,360 225,366 228,376 220,370 212,376 215,366 207,360 217,360' fill='%23ffffff' fill-opacity='0.11'/%3E%3Ccircle cx='30' cy='180' r='2' fill='%23ffffff' fill-opacity='0.2'/%3E%3Ccircle cx='180' cy='220' r='1.5' fill='%23ffffff' fill-opacity='0.15'/%3E%3Ccircle cx='280' cy='320' r='2.5' fill='%23ffffff' fill-opacity='0.15'/%3E%3Ccircle cx='380' cy='120' r='1.5' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/svg%3E"); z-index: 2; pointer-events: none; }
+    /* Randomly Scattered Custom Doodles (Saturn, Clouds, Glitter, Moons, Stars) */
+    .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.12'%3E%3Cpath d='M 100,50 Q 100,70 120,70 Q 100,70 100,90 Q 100,70 80,70 Q 100,70 100,50 Z'/%3E%3Cpath d='M 450,250 Q 450,265 465,265 Q 450,265 450,280 Q 450,265 435,265 Q 450,265 450,250 Z'/%3E%3Cpath d='M 700,650 Q 700,660 710,660 Q 700,660 700,670 Q 700,660 690,660 Q 700,660 700,650 Z'/%3E%3Cpath d='M 250,150 A 20,20 0 1,0 280,180 A 25,25 0 1,1 250,150 Z'/%3E%3Cpath d='M 600,80 A 15,15 0 1,0 620,100 A 18,18 0 1,1 600,80 Z'/%3E%3Cpath d='M 150,600 A 25,25 0 1,0 190,640 A 30,30 0 1,1 150,600 Z'/%3E%3Cpolygon points='350,50 355,65 370,65 358,75 362,90 350,80 338,90 342,75 330,65 345,65'/%3E%3Cpolygon points='50,350 53,360 63,360 55,366 58,376 50,370 42,376 45,366 37,360 47,360'/%3E%3Cpolygon points='550,450 554,460 564,460 556,466 559,476 550,470 541,476 544,466 536,460 546,460'/%3E%3Cpolygon points='300,700 306,715 321,715 309,725 313,740 300,730 287,740 291,725 279,715 294,715'/%3E%3Cpath d='M 200,400 A 15,15 0 0,1 210,380 A 20,20 0 0,1 240,380 A 15,15 0 0,1 240,410 L 200,410 Z'/%3E%3Cpath d='M 650,300 A 10,10 0 0,1 658,285 A 15,15 0 0,1 680,285 A 10,10 0 0,1 680,308 L 650,308 Z'/%3E%3Cpath d='M 450,600 A 20,20 0 0,1 465,570 A 25,25 0 0,1 505,570 A 20,20 0 0,1 505,615 L 450,615 Z'/%3E%3Cg transform='translate(500, 150) rotate(-20)'%3E%3Cellipse cx='0' cy='0' rx='30' ry='8' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='0' cy='0' r='15'/%3E%3C/g%3E%3Cg transform='translate(100, 500) rotate(15)'%3E%3Cellipse cx='0' cy='0' rx='25' ry='6' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='0' cy='0' r='12'/%3E%3C/g%3E%3Cg transform='translate(700, 500) rotate(-35)'%3E%3Cellipse cx='0' cy='0' rx='20' ry='5' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='0' cy='0' r='10'/%3E%3C/g%3E%3Ccircle cx='80' cy='200' r='3'/%3E%3Ccircle cx='300' cy='250' r='2'/%3E%3Ccircle cx='750' cy='200' r='4'/%3E%3Ccircle cx='400' cy='400' r='2'/%3E%3Ccircle cx='250' cy='550' r='3'/%3E%3Ccircle cx='600' cy='700' r='2'/%3E%3Ccircle cx='50' cy='750' r='3'/%3E%3C/g%3E%3C/svg%3E"); z-index: 2; pointer-events: none; }
 
     /* Right Side - Looping Video Window */
     .right-pane { flex: 0.85; position: relative; background: #000; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); }
     .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0.95; object-fit: cover;}
     .video-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(5, 15, 35, 1) 0%, transparent 25%); z-index: 2;}
 
-    /* Repositioned Glass Container - Added heavy margin-top to guarantee the gap */
-    .glass-form { position: relative; z-index: 10; margin-top: 80px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; max-height: 70vh; overflow-y: auto; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
+    /* Glass Container */
+    .glass-form { position: relative; z-index: 10; margin-top: 20px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; max-height: 70vh; overflow-y: auto; box-shadow: 0 40px 80px rgba(0,0,0,0.5); }
     
     .glass-form::-webkit-scrollbar { width: 5px; }
     .glass-form::-webkit-scrollbar-track { background: transparent; }
@@ -78,7 +79,7 @@
       .split-layout { flex-direction: column; overflow-y: auto; height: auto;}
       body { overflow: auto; }
       .right-pane { display: none; }
-      .left-pane { padding: 120px 15px 30px 15px; min-height: 100vh;}
+      .left-pane { padding: 160px 15px 30px 15px; min-height: 100vh;}
       .glass-form { margin-top: 0px; max-height: none; }
     }
   </style>
@@ -156,6 +157,7 @@
       <div class="video-overlay"></div>
       
       <video autoplay loop muted playsinline class="video-bg" poster="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=1500">
+        <source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4">
         <source src="./babysitter.mp4" type="video/mp4">
       </video>
     </div>
