@@ -15,40 +15,79 @@
     
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
     .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5); pointer-events: auto;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: auto;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: auto;}
     .nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
     .split-layout { display: flex; height: 100vh; width: 100vw; }
     
+    /* Left Pane Space Universe */
     .left-pane { flex: 1.15; position: relative; background: linear-gradient(135deg, #050f23 0%, #0a1931 100%); overflow: hidden; box-sizing: border-box;}
-    
-    /* Parallax Background Layers */
     .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M 100,50 Q 100,70 120,70 Q 100,70 100,90 Q 100,70 80,70 Q 100,70 100,50 Z'/%3E%3Cpath d='M 450,250 Q 450,265 465,265 Q 450,265 450,280 Q 450,265 435,265 Q 450,265 450,250 Z'/%3E%3Cpath d='M 250,150 A 20,20 0 1,0 280,180 A 25,25 0 1,1 250,150 Z'/%3E%3Cpolygon points='350,50 355,65 370,65 358,75 362,90 350,80 338,90 342,75 330,65 345,65'/%3E%3Cg transform='translate(500, 150) rotate(-20)'%3E%3Cellipse cx='0' cy='0' rx='30' ry='8' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='0' cy='0' r='15'/%3E%3C/g%3E%3Cg transform='translate(100, 500) rotate(15)'%3E%3Cellipse cx='0' cy='0' rx='25' ry='6' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='0' cy='0' r='12'/%3E%3C/g%3E%3Ccircle cx='80' cy='200' r='3'/%3E%3Ccircle cx='750' cy='200' r='4'/%3E%3Ccircle cx='400' cy='400' r='2'/%3E%3C/g%3E%3C/svg%3E"); z-index: 1; pointer-events: none; }
     #spaceCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;}
 
-    /* Scrollable Architecture */
+    /* Scrollable Engine */
     .scroll-content { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 150px; z-index: 10; scroll-behavior: smooth;}
     .scroll-content::-webkit-scrollbar { width: 6px; }
     .scroll-content::-webkit-scrollbar-track { background: transparent; }
     .scroll-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
     /* The Glass Form */
-    .glass-form { position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 40px 80px rgba(0,0,0,0.6); flex-shrink: 0; z-index: 10; }
+    .glass-form { position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 40px 80px rgba(0,0,0,0.6); flex-shrink: 0; margin-bottom: 250px; }
     
-    /* === THE SILHOUETTE BABY ENGINE === */
-    .silhouette-baby { position: absolute; top: -38px; left: 20px; width: 40px; height: 40px; z-index: 20; transition: left 0.1s linear, transform 0.3s ease; }
-    .baby-vector { fill: #0b1528; filter: drop-shadow(0 -2px 8px rgba(52, 152, 219, 0.4)); transition: all 0.2s ease; }
+    /* =========================================
+       THE SKELETAL CSS BABY RIG 
+       ========================================= */
+    .baby-rig { position: absolute; top: -42px; left: 0; width: 45px; height: 50px; z-index: 20; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); /* Transition is handled by JS for smooth sliding */ }
     
-    /* CSS Animations for Baby States */
-    .anim-crawl { animation: crawlBob 0.3s infinite alternate; }
-    .anim-stand { animation: standWobble 0.5s infinite alternate; }
-    .anim-fall { transform: rotate(-70deg) translateY(10px); }
+    .b-part { position: absolute; background-color: #ffe0bd; border-radius: 50px; }
+    .b-head { width: 22px; height: 22px; top: 0; left: 12px; z-index: 5; transition: transform 0.3s; transform-origin: bottom center;}
+    .b-eye { position: absolute; width: 4px; height: 4px; background: #2c3e50; border-radius: 50%; right: 4px; top: 8px; transition: transform 0.1s;}
     
-    @keyframes crawlBob { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
-    @keyframes standWobble { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+    .b-torso { width: 18px; height: 30px; top: 18px; left: 14px; z-index: 3; transition: transform 0.5s ease-in-out; transform-origin: top center;}
+    .b-diaper { position: absolute; bottom: -2px; left: -2px; width: 22px; height: 16px; background: white; border-radius: 5px 5px 12px 12px; box-shadow: inset 0 -2px 5px rgba(0,0,0,0.1);}
+    
+    .b-arm { width: 8px; height: 22px; top: 20px; z-index: 4; transform-origin: top center; transition: transform 0.5s ease-in-out;}
+    .b-arm.front { left: 22px; }
+    .b-arm.back { left: 14px; z-index: 1; filter: brightness(0.9); }
+    
+    .b-leg { width: 10px; height: 20px; top: 38px; z-index: 2; transform-origin: top center; transition: transform 0.5s ease-in-out;}
+    .b-leg.front { left: 20px; }
+    .b-leg.back { left: 12px; z-index: 1; filter: brightness(0.9); }
+
+    /* STATE: SITTING */
+    .state-sit .b-torso { transform: rotate(10deg) translateY(2px); }
+    .state-sit .b-arm.front { transform: rotate(-20deg); }
+    .state-sit .b-arm.back { transform: rotate(-30deg); }
+    .state-sit .b-leg.front { transform: rotate(-80deg) translateX(-2px); }
+    .state-sit .b-leg.back { transform: rotate(-90deg) translateX(-4px); }
+
+    /* STATE: CRAWLING */
+    .state-crawl .b-torso { transform: rotate(75deg) translateY(6px); }
+    .state-crawl .b-head { transform: rotate(-50deg) translate(-2px, -4px); }
+    .state-crawl .b-arm.front { animation: crawlSwing 0.6s infinite alternate ease-in-out; }
+    .state-crawl .b-arm.back { animation: crawlSwing 0.6s infinite alternate-reverse ease-in-out; }
+    .state-crawl .b-leg.front { animation: crawlSwing 0.6s infinite alternate-reverse ease-in-out; }
+    .state-crawl .b-leg.back { animation: crawlSwing 0.6s infinite alternate ease-in-out; }
+
+    /* STATE: STANDING WOBBLE */
+    .state-stand { animation: standWobble 2s infinite ease-in-out; }
+    .state-stand .b-torso { transform: rotate(0deg) translateY(-5px); }
+    .state-stand .b-arm.front { transform: rotate(-10deg); }
+    .state-stand .b-arm.back { transform: rotate(10deg); }
+    .state-stand .b-leg.front { transform: rotate(0deg); }
+    .state-stand .b-leg.back { transform: rotate(5deg); }
+
+    /* STATE: FALLING */
+    .state-fall .b-torso { transform: rotate(-80deg) translateY(10px); }
+    .state-fall .b-head { transform: rotate(40deg); }
+    .state-fall .b-arm { transform: rotate(-120deg); }
+    .state-fall .b-leg { transform: rotate(-60deg); }
+
+    @keyframes crawlSwing { 0% { transform: rotate(20deg); } 100% { transform: rotate(110deg); } }
+    @keyframes standWobble { 0%, 100% { transform: translateX(0) rotate(-5deg); } 50% { transform: translateX(0) rotate(5deg); } }
+    /* ========================================= */
 
     /* === THE 3D HALF-EARTH === */
-    /* This wrapper ensures it stays inside the scroll flow but hides the bottom half */
     .earth-wrapper { width: 100%; height: 250px; position: relative; overflow: hidden; margin-top: 60px; flex-shrink: 0; display: flex; justify-content: center; z-index: 1;}
     .earth-sphere { width: 1400px; height: 1400px; border-radius: 50%; position: absolute; top: 30px; background: url('https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg') repeat-x center; background-size: auto 100%; box-shadow: inset -40px -20px 100px rgba(0,0,0,0.9), inset 0 30px 60px rgba(52,152,219,0.5), 0 -15px 50px rgba(52,152,219,0.4); animation: spinEarth 100s linear infinite; }
     @keyframes spinEarth { 0% { background-position: 0 0; } 100% { background-position: 2048px 0; } }
@@ -97,7 +136,7 @@
       .right-pane { display: none; } 
       .left-pane { flex: 1; padding: 0; min-height: 100vh; width: 100vw; position: relative;}
       .scroll-content { padding-top: 120px; overflow-y: visible;}
-      .glass-form { max-width: 90%; background: rgba(5, 15, 35, 0.8); }
+      .glass-form { max-width: 90%; background: rgba(5, 15, 35, 0.8); margin-bottom: 250px;}
       .earth-wrapper { height: 200px; }
       .earth-sphere { width: 900px; height: 900px; top: 20px;}
       .navbar { padding: 25px 25px; }
@@ -112,6 +151,7 @@
   </nav>
 
   <div class="split-layout">
+    
     <div class="left-pane">
       
       <div class="galactic-doodles"></div>
@@ -121,13 +161,20 @@
         
         <div class="glass-form" id="mainForm">
           
-          <div class="silhouette-baby" id="babyAvatar">
-            <svg viewBox="0 0 100 100" width="100%" height="100%">
-              <g id="babyTransformGroup">
-                <circle cx="70" cy="30" r="18" class="baby-vector" id="babyHead" />
-                <path id="babyBodyPath" class="baby-vector" d="M20,60 Q50,40 70,60 Q80,80 50,85 Q20,80 20,60 Z" />
-              </g>
-            </svg>
+          <div id="smartBaby" class="baby-rig state-sit" style="transform: translateX(40px);">
+            <div class="b-part b-arm back"></div>
+            <div class="b-part b-leg back"></div>
+            
+            <div class="b-part b-torso">
+               <div class="b-diaper"></div>
+            </div>
+            
+            <div class="b-part b-head" id="babyHead">
+               <div class="b-eye" id="babyEye"></div>
+            </div>
+            
+            <div class="b-part b-leg front"></div>
+            <div class="b-part b-arm front"></div>
           </div>
 
           <div class="form-header">
@@ -202,72 +249,58 @@
   </div>
 
   <script>
-    // --- SILHOUETTE BABY STATE MACHINE ---
-    const babyAvatar = document.getElementById('babyAvatar');
-    const babyBodyPath = document.getElementById('babyBodyPath');
+    // --- ADVANCED SKELETAL BABY AI ---
+    const babyRig = document.getElementById('smartBaby');
     const babyHead = document.getElementById('babyHead');
-    const babyTransformGroup = document.getElementById('babyTransformGroup');
+    const babyEye = document.getElementById('babyEye');
     const formWidth = 520;
     
-    let babyX = 20;
-    let babyState = 'sit'; // crawl, sit, stand, fall
+    let currentBabyX = 40;
+    let babyState = 'sit'; 
 
-    // SVG Path Definitions for Silhouette
-    const paths = {
-      crawl: "M10,70 Q40,50 70,65 Q80,85 50,85 Q20,85 10,70 Z", // Flat crawling body
-      sit: "M30,85 Q20,50 50,45 Q75,50 70,85 Z", // Upright sitting body
-      stand: "M40,90 Q40,30 50,30 Q60,30 60,90 Z" // Tall standing body
-    };
-
-    function updateBabyLogic() {
-      // Logic Engine: Randomly pick a new state
+    function updateBabyBrain() {
       const rand = Math.random();
       
+      // If baby was falling, it recovers to sit
       if (babyState === 'fall') {
-        // Recover from fall
-        babyState = 'sit';
-        babyAvatar.className = 'silhouette-baby';
-        babyTransformGroup.style.transform = 'rotate(0deg)';
-        babyBodyPath.setAttribute('d', paths.sit);
-        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '30');
-      } else if (rand < 0.4) {
-        // Crawl
-        babyState = 'crawl';
-        babyAvatar.className = 'silhouette-baby anim-crawl';
-        babyBodyPath.setAttribute('d', paths.crawl);
-        babyHead.setAttribute('cx', '75'); babyHead.setAttribute('cy', '50'); // Head moves forward
+        babyState = 'sit'; babyRig.className = 'baby-rig state-sit';
+      } else if (rand < 0.45) {
+        // CRAWL: Calculate distance to calculate exact smooth sliding time
+        babyState = 'crawl'; babyRig.className = 'baby-rig state-crawl';
         
-        // Move position jaggedly
-        babyX += (Math.random() * 60 + 20) * (Math.random() > 0.3 ? 1 : -1); 
-        if(babyX < 10) babyX = 10;
-        if(babyX > formWidth - 50) babyX = formWidth - 50;
-        babyAvatar.style.left = babyX + 'px';
+        let targetX = Math.random() * (formWidth - 80);
+        let distance = Math.abs(targetX - currentBabyX);
+        let travelTime = distance / 35; // Pixels per second
         
-      } else if (rand < 0.7) {
-        // Sit & Look
-        babyState = 'sit';
-        babyAvatar.className = 'silhouette-baby';
-        babyBodyPath.setAttribute('d', paths.sit);
-        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '30');
+        // Flip baby if moving left
+        let scaleX = targetX < currentBabyX ? -1 : 1;
         
+        babyRig.style.transition = `transform ${travelTime}s linear`;
+        babyRig.style.transform = `translateX(${targetX}px) scaleX(${scaleX})`;
+        
+        currentBabyX = targetX;
+        
+      } else if (rand < 0.75) {
+        // SIT
+        babyState = 'sit'; babyRig.className = 'baby-rig state-sit';
+        babyRig.style.transition = `transform 0.5s ease`;
+        babyRig.style.transform = `translateX(${currentBabyX}px)`; // Maintain position
       } else {
-        // Try to Stand
-        babyState = 'stand';
-        babyAvatar.className = 'silhouette-baby anim-stand';
-        babyBodyPath.setAttribute('d', paths.stand);
-        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '15');
+        // STAND & WOBBLE
+        babyState = 'stand'; babyRig.className = 'baby-rig state-stand';
+        babyRig.style.transition = `transform 0.5s ease`;
+        babyRig.style.transform = `translateX(${currentBabyX}px)`;
         
-        // Inevitable fall after standing
+        // Inevitable fall
         setTimeout(() => {
           if(babyState === 'stand') {
-            babyState = 'fall';
-            babyAvatar.className = 'silhouette-baby anim-fall';
+            babyState = 'fall'; babyRig.className = 'baby-rig state-fall';
           }
-        }, 1200);
+        }, 1800);
       }
     }
-    // Run brain every 2.5 seconds
-    setInterval(updateBabyLogic, 2500);
+    // Fire the baby's brain every 3.5 seconds
+    setInterval(updateBabyBrain, 3500);
 
     // --- CANVAS GRAPHICS RENDER ENGINE ---
     const canvas = document.getElementById('spaceCanvas');
@@ -293,7 +326,7 @@
     function drawSpaceEngine() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Starfield
+      // Starfield POV
       stars.forEach(star => {
         star.x -= star.speed;
         if(star.x < 0) { star.x = canvas.width; star.y = Math.random() * canvas.height; }
@@ -335,11 +368,11 @@
       ctx.restore();
 
       // --- VIBRANT BLUE BUTTERFLIES ---
-      if(Math.random() < 0.01 && butterflies.length < 3) {
+      if(Math.random() < 0.01 && butterflies.length < 4) {
         butterflies.push({ x: Math.random() * canvas.width, y: canvas.height + 50, vx: 0, vy: 0, life: 600 });
       }
 
-      let babyRect = babyAvatar.getBoundingClientRect();
+      let babyRect = babyRig.getBoundingClientRect();
       let bTargetX = babyRect.left + 20;
       let bTargetY = babyRect.top + 20;
 
@@ -350,12 +383,13 @@
         let dx = bTargetX - b.x; let dy = bTargetY - b.y; let dist = Math.hypot(dx, dy);
         
         if(dist > 60) {
-            b.vx += (dx / dist) * 0.08; b.vy += (dy / dist) * 0.08;
+            b.vx += (dx / dist) * 0.1; b.vy += (dy / dist) * 0.1;
         } else {
-            b.vx += (Math.random() - 0.5) * 0.8; b.vy += (Math.random() - 0.5) * 0.8;
+            // Play near baby
+            b.vx += (Math.random() - 0.5) * 1.2; b.vy += (Math.random() - 0.5) * 1.2;
         }
-        b.vx *= 0.94; b.vy *= 0.94;
-        b.x += b.vx + Math.sin(b.life * 0.1) * 2.5; b.y += b.vy + Math.cos(b.life * 0.1) * 2.5;
+        b.vx *= 0.92; b.vy *= 0.92;
+        b.x += b.vx + Math.sin(b.life * 0.1) * 3; b.y += b.vy + Math.cos(b.life * 0.1) * 3;
 
         // Vibrant Blue Butterfly Wings
         ctx.fillStyle = `rgba(0, 191, 255, ${Math.min(1, b.life/50)})`;
@@ -366,7 +400,7 @@
         ctx.fill();
 
         // Trail of Cyan/Gold Dust
-        if(Math.random() < 0.7) {
+        if(Math.random() < 0.8) {
             let dustColor = Math.random() > 0.5 ? '0, 191, 255' : '241, 196, 15';
             particles.push({ x: b.x, y: b.y, vx: (Math.random()-0.5)*0.5, vy: Math.random()*0.5, size: Math.random()*2, alpha: 1, color: dustColor, type: 'dust' });
         }
@@ -380,18 +414,28 @@
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
       });
 
-      // Head Tracking Logic
-      if(babyState === 'sit' || babyState === 'crawl') {
+      // --- HEAD EYE TRACKING LOGIC ---
+      if(babyState === 'sit' || babyState === 'stand') {
         let distShuttle = Math.hypot(shuttle.x - bTargetX, shuttle.y - bTargetY);
         let distUFO = Math.hypot(ufo.x - bTargetX, ufo.y - bTargetY);
         let tx = canvas.width/2; let ty = 0;
+        
         if(distShuttle < distUFO && shuttle.x > 0 && shuttle.x < canvas.width) { tx = shuttle.x; ty = shuttle.y; }
         else if (ufo.x > 0 && ufo.x < canvas.width) { tx = ufo.x; ty = ufo.y; }
         
-        // Rotate silhouette head slightly towards ship
-        let angle = Math.atan2(ty - bTargetY, tx - bTargetX) * (180 / Math.PI);
-        if(angle > 30) angle = 30; if(angle < -30) angle = -30;
-        babyHead.style.transform = `rotate(${angle + 45}deg)`;
+        // Move Eye to track ship
+        let angle = Math.atan2(ty - bTargetY, tx - bTargetX);
+        let eyeX = Math.cos(angle) * 4;
+        let eyeY = Math.sin(angle) * 4;
+        babyEye.style.transform = `translate(${eyeX}px, ${eyeY}px)`;
+        
+        // Tilt head slightly
+        let headTilt = angle * (180/Math.PI) * 0.2;
+        if(headTilt < -20) headTilt = -20;
+        if(headTilt > 10) headTilt = 10;
+        babyHead.style.transform = `rotate(${headTilt}deg)`;
+      } else {
+        babyEye.style.transform = `translate(0, 0)`;
       }
 
       requestAnimationFrame(drawSpaceEngine);
