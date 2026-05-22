@@ -13,7 +13,6 @@
   <style>
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #050a15; overflow: hidden; color: white; }
     
-    /* Fixed Navbar */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
     .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5); pointer-events: auto;}
     .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: auto;}
@@ -21,37 +20,37 @@
 
     .split-layout { display: flex; height: 100vh; width: 100vw; }
     
-    /* Left Pane - Fixed Canvas Window */
     .left-pane { flex: 1.15; position: relative; background: linear-gradient(135deg, #050f23 0%, #0a1931 100%); overflow: hidden; box-sizing: border-box;}
     
-    /* Background Constellations */
+    /* Parallax Background Layers */
     .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M 100,50 Q 100,70 120,70 Q 100,70 100,90 Q 100,70 80,70 Q 100,70 100,50 Z'/%3E%3Cpath d='M 450,250 Q 450,265 465,265 Q 450,265 450,280 Q 450,265 435,265 Q 450,265 450,250 Z'/%3E%3Cpath d='M 250,150 A 20,20 0 1,0 280,180 A 25,25 0 1,1 250,150 Z'/%3E%3Cpolygon points='350,50 355,65 370,65 358,75 362,90 350,80 338,90 342,75 330,65 345,65'/%3E%3Cg transform='translate(500, 150) rotate(-20)'%3E%3Cellipse cx='0' cy='0' rx='30' ry='8' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='0' cy='0' r='15'/%3E%3C/g%3E%3Cg transform='translate(100, 500) rotate(15)'%3E%3Cellipse cx='0' cy='0' rx='25' ry='6' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='0' cy='0' r='12'/%3E%3C/g%3E%3Ccircle cx='80' cy='200' r='3'/%3E%3Ccircle cx='750' cy='200' r='4'/%3E%3Ccircle cx='400' cy='400' r='2'/%3E%3C/g%3E%3C/svg%3E"); z-index: 1; pointer-events: none; }
-    
-    /* Interactive 2D Canvas System */
     #spaceCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;}
 
-    /* Scrolling Container for Form & Earth */
+    /* Scrollable Architecture */
     .scroll-content { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 150px; z-index: 10; scroll-behavior: smooth;}
     .scroll-content::-webkit-scrollbar { width: 6px; }
     .scroll-content::-webkit-scrollbar-track { background: transparent; }
     .scroll-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
     /* The Glass Form */
-    .glass-form { position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 40px 80px rgba(0,0,0,0.6); flex-shrink: 0; margin-bottom: 250px; }
+    .glass-form { position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 40px 80px rgba(0,0,0,0.6); flex-shrink: 0; z-index: 10; }
     
-    /* === THE DYNAMIC SVG BABY AVATAR === */
-    .smart-baby-container { position: absolute; top: -45px; left: 40px; width: 50px; height: 50px; z-index: 20; transition: left 1s ease-in-out; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));}
-    .baby-body { fill: #f8c291; transition: all 0.3s; }
-    .baby-cloth { fill: #81ecec; }
-    .baby-head { transform-origin: center 20px; transition: transform 0.1s linear; }
+    /* === THE SILHOUETTE BABY ENGINE === */
+    .silhouette-baby { position: absolute; top: -38px; left: 20px; width: 40px; height: 40px; z-index: 20; transition: left 0.1s linear, transform 0.3s ease; }
+    .baby-vector { fill: #0b1528; filter: drop-shadow(0 -2px 8px rgba(52, 152, 219, 0.4)); transition: all 0.2s ease; }
     
-    /* Animation Classes handled by JS */
-    .state-sit .baby-body-shape { transform: scaleY(0.7) translateY(10px); }
-    .state-walk { animation: walkBounce 0.4s alternate infinite; }
-    @keyframes walkBounce { 0% { transform: translateY(0); } 100% { transform: translateY(-8px); } }
+    /* CSS Animations for Baby States */
+    .anim-crawl { animation: crawlBob 0.3s infinite alternate; }
+    .anim-stand { animation: standWobble 0.5s infinite alternate; }
+    .anim-fall { transform: rotate(-70deg) translateY(10px); }
+    
+    @keyframes crawlBob { 0% { transform: translateY(0); } 100% { transform: translateY(-4px); } }
+    @keyframes standWobble { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
 
-    /* === THE HALF-EARTH HORIZON === */
-    .earth-horizon { position: absolute; bottom: 0; left: -50vw; width: 200vw; height: 350px; border-radius: 100% 100% 0 0; background: url('https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg') repeat-x center; background-size: auto 100%; box-shadow: inset 0 40px 80px rgba(0,0,0,0.9), inset 0 10px 40px rgba(52,152,219,0.6), 0 -20px 60px rgba(52,152,219,0.3); animation: spinEarth 150s linear infinite; z-index: 5; pointer-events: none;}
+    /* === THE 3D HALF-EARTH === */
+    /* This wrapper ensures it stays inside the scroll flow but hides the bottom half */
+    .earth-wrapper { width: 100%; height: 250px; position: relative; overflow: hidden; margin-top: 60px; flex-shrink: 0; display: flex; justify-content: center; z-index: 1;}
+    .earth-sphere { width: 1400px; height: 1400px; border-radius: 50%; position: absolute; top: 30px; background: url('https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg') repeat-x center; background-size: auto 100%; box-shadow: inset -40px -20px 100px rgba(0,0,0,0.9), inset 0 30px 60px rgba(52,152,219,0.5), 0 -15px 50px rgba(52,152,219,0.4); animation: spinEarth 100s linear infinite; }
     @keyframes spinEarth { 0% { background-position: 0 0; } 100% { background-position: 2048px 0; } }
 
     /* Form Details */
@@ -98,9 +97,10 @@
       .right-pane { display: none; } 
       .left-pane { flex: 1; padding: 0; min-height: 100vh; width: 100vw; position: relative;}
       .scroll-content { padding-top: 120px; overflow-y: visible;}
-      .glass-form { max-width: 90%; background: rgba(5, 15, 35, 0.8); margin-bottom: 250px;}
+      .glass-form { max-width: 90%; background: rgba(5, 15, 35, 0.8); }
+      .earth-wrapper { height: 200px; }
+      .earth-sphere { width: 900px; height: 900px; top: 20px;}
       .navbar { padding: 25px 25px; }
-      .logo-text { font-size: 22px; }
     }
   </style>
 </head>
@@ -112,7 +112,6 @@
   </nav>
 
   <div class="split-layout">
-    
     <div class="left-pane">
       
       <div class="galactic-doodles"></div>
@@ -122,18 +121,11 @@
         
         <div class="glass-form" id="mainForm">
           
-          <div class="smart-baby-container state-sit" id="smartBaby">
+          <div class="silhouette-baby" id="babyAvatar">
             <svg viewBox="0 0 100 100" width="100%" height="100%">
-              <path class="baby-body baby-body-shape" d="M30,50 C30,80 70,80 70,50 C70,40 30,40 30,50 Z" />
-              <path class="baby-cloth" d="M35,60 Q50,75 65,60 L60,80 Q50,85 40,80 Z" />
-              <g class="baby-head" id="babyHead">
-                <circle cx="50" cy="35" r="22" class="baby-body" />
-                <circle cx="42" cy="30" r="3" fill="#2c3e50" />
-                <circle cx="58" cy="30" r="3" fill="#2c3e50" />
-                <path d="M47,42 Q50,45 53,42" fill="none" stroke="#2c3e50" stroke-width="2" stroke-linecap="round"/>
-                <circle cx="35" cy="35" r="4" fill="#ff7675" opacity="0.5"/>
-                <circle cx="65" cy="35" r="4" fill="#ff7675" opacity="0.5"/>
-                <path d="M50,13 Q55,5 60,15" fill="none" stroke="#e1b12c" stroke-width="2" stroke-linecap="round"/>
+              <g id="babyTransformGroup">
+                <circle cx="70" cy="30" r="18" class="baby-vector" id="babyHead" />
+                <path id="babyBodyPath" class="baby-vector" d="M20,60 Q50,40 70,60 Q80,80 50,85 Q20,80 20,60 Z" />
               </g>
             </svg>
           </div>
@@ -192,7 +184,9 @@
           <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
         </div>
 
-        <div class="earth-horizon"></div>
+        <div class="earth-wrapper">
+          <div class="earth-sphere"></div>
+        </div>
 
       </div>
     </div>
@@ -208,16 +202,77 @@
   </div>
 
   <script>
-    // --- CANVAS GRAPHICS RENDER ENGINE (UFO, Shuttle, Butterflies) ---
+    // --- SILHOUETTE BABY STATE MACHINE ---
+    const babyAvatar = document.getElementById('babyAvatar');
+    const babyBodyPath = document.getElementById('babyBodyPath');
+    const babyHead = document.getElementById('babyHead');
+    const babyTransformGroup = document.getElementById('babyTransformGroup');
+    const formWidth = 520;
+    
+    let babyX = 20;
+    let babyState = 'sit'; // crawl, sit, stand, fall
+
+    // SVG Path Definitions for Silhouette
+    const paths = {
+      crawl: "M10,70 Q40,50 70,65 Q80,85 50,85 Q20,85 10,70 Z", // Flat crawling body
+      sit: "M30,85 Q20,50 50,45 Q75,50 70,85 Z", // Upright sitting body
+      stand: "M40,90 Q40,30 50,30 Q60,30 60,90 Z" // Tall standing body
+    };
+
+    function updateBabyLogic() {
+      // Logic Engine: Randomly pick a new state
+      const rand = Math.random();
+      
+      if (babyState === 'fall') {
+        // Recover from fall
+        babyState = 'sit';
+        babyAvatar.className = 'silhouette-baby';
+        babyTransformGroup.style.transform = 'rotate(0deg)';
+        babyBodyPath.setAttribute('d', paths.sit);
+        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '30');
+      } else if (rand < 0.4) {
+        // Crawl
+        babyState = 'crawl';
+        babyAvatar.className = 'silhouette-baby anim-crawl';
+        babyBodyPath.setAttribute('d', paths.crawl);
+        babyHead.setAttribute('cx', '75'); babyHead.setAttribute('cy', '50'); // Head moves forward
+        
+        // Move position jaggedly
+        babyX += (Math.random() * 60 + 20) * (Math.random() > 0.3 ? 1 : -1); 
+        if(babyX < 10) babyX = 10;
+        if(babyX > formWidth - 50) babyX = formWidth - 50;
+        babyAvatar.style.left = babyX + 'px';
+        
+      } else if (rand < 0.7) {
+        // Sit & Look
+        babyState = 'sit';
+        babyAvatar.className = 'silhouette-baby';
+        babyBodyPath.setAttribute('d', paths.sit);
+        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '30');
+        
+      } else {
+        // Try to Stand
+        babyState = 'stand';
+        babyAvatar.className = 'silhouette-baby anim-stand';
+        babyBodyPath.setAttribute('d', paths.stand);
+        babyHead.setAttribute('cx', '50'); babyHead.setAttribute('cy', '15');
+        
+        // Inevitable fall after standing
+        setTimeout(() => {
+          if(babyState === 'stand') {
+            babyState = 'fall';
+            babyAvatar.className = 'silhouette-baby anim-fall';
+          }
+        }, 1200);
+      }
+    }
+    // Run brain every 2.5 seconds
+    setInterval(updateBabyLogic, 2500);
+
+    // --- CANVAS GRAPHICS RENDER ENGINE ---
     const canvas = document.getElementById('spaceCanvas');
     const ctx = canvas.getContext('2d');
     
-    // DOM Links for Tracking
-    const babyDom = document.getElementById('smartBaby');
-    const babyHead = document.getElementById('babyHead');
-    const formPanel = document.getElementById('mainForm');
-    const scrollContainer = document.getElementById('scrollContainer');
-
     let stars = [];
     let particles = [];
     let butterflies = [];
@@ -235,51 +290,10 @@
       stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 + 0.1 });
     }
 
-    // --- BABY AI TRACKING SYSTEM ---
-    setInterval(() => {
-      // Move baby randomly along the top edge
-      if(Math.random() > 0.6) {
-        babyDom.className = 'smart-baby-container state-walk';
-        let maxWalk = formPanel.clientWidth - 50;
-        babyDom.style.left = (Math.random() * maxWalk) + 'px';
-        setTimeout(() => { babyDom.className = 'smart-baby-container state-sit'; }, 1000);
-      }
-    }, 4000);
-
-    function trackSpaceships() {
-      // Get Baby Canvas Y Position (accounting for user scroll)
-      let babyRect = babyDom.getBoundingClientRect();
-      let babyX = babyRect.left + 25;
-      let babyY = babyRect.top + 25;
-
-      // Find closest ship
-      let distShuttle = Math.hypot(shuttle.x - babyX, shuttle.y - babyY);
-      let distUFO = Math.hypot(ufo.x - babyX, ufo.y - babyY);
-      
-      let targetX = canvas.width/2;
-      let targetY = 0;
-
-      if(distShuttle < distUFO && shuttle.x > 0 && shuttle.x < canvas.width) {
-        targetX = shuttle.x; targetY = shuttle.y;
-      } else if (ufo.x > 0 && ufo.x < canvas.width) {
-        targetX = ufo.x; targetY = ufo.y;
-      }
-
-      // Calculate angle and apply to SVG head
-      let angle = Math.atan2(targetY - babyY, targetX - babyX) * (180 / Math.PI);
-      
-      // Clamp angle so baby doesn't break its neck
-      if(angle > 45) angle = 45;
-      if(angle < -45) angle = -45;
-
-      babyHead.style.transform = `rotate(${angle + 90}deg)`;
-    }
-
-    // --- MAIN RENDER LOOP ---
     function drawSpaceEngine() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Starfield POV
+      // Starfield
       stars.forEach(star => {
         star.x -= star.speed;
         if(star.x < 0) { star.x = canvas.width; star.y = Math.random() * canvas.height; }
@@ -288,8 +302,7 @@
       });
 
       // Space Shuttle
-      shuttle.x += shuttle.speedX;
-      shuttle.waveTimer += 0.02;
+      shuttle.x += shuttle.speedX; shuttle.waveTimer += 0.02;
       shuttle.y = shuttle.targetY + Math.sin(shuttle.waveTimer) * 30;
       if(shuttle.x > canvas.width + 100) {
         shuttle.x = -60; shuttle.targetY = Math.random() * (canvas.height - 300) + 100; shuttle.speedX = Math.random() * 1 + 1.2;
@@ -304,87 +317,85 @@
       ctx.restore();
 
       // Deep UFO Engine with Alien
-      ufo.x += ufo.speedX;
-      ufo.waveTimer += 0.05;
+      ufo.x += ufo.speedX; ufo.waveTimer += 0.05;
       ufo.y = ufo.targetY + Math.cos(ufo.waveTimer) * 40;
       if(ufo.x < -100) {
         ufo.x = canvas.width + Math.random() * 500 + 100; ufo.targetY = Math.random() * (canvas.height/2); ufo.speedX = -(Math.random() * 1.5 + 1.5);
       }
-      // UFO Plasma Trail
       if (Math.random() < 0.5 && ufo.x > 0 && ufo.x < canvas.width) {
         particles.push({ x: ufo.x + 15, y: ufo.y, vx: Math.random() * 1.5 + 1, vy: (Math.random() - 0.5) * 1, size: Math.random() * 5 + 2, alpha: 1, color: '46, 204, 113', type: 'exhaust' });
       }
 
       ctx.save(); ctx.translate(ufo.x, ufo.y); ctx.rotate(0.1 * Math.cos(ufo.waveTimer));
-      // Dome
       ctx.fillStyle = "rgba(46, 204, 113, 0.4)"; ctx.beginPath(); ctx.arc(0, -5, 14, Math.PI, 0); ctx.fill();
-      // Little Alien Silhouette
-      ctx.fillStyle = "#2ecc71"; ctx.beginPath(); ctx.arc(0, -6, 5, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(-2, -7, 1.5, 0, Math.PI*2); ctx.arc(2, -7, 1.5, 0, Math.PI*2); ctx.fill();
-      // Hull
+      ctx.fillStyle = "#2ecc71"; ctx.beginPath(); ctx.arc(0, -6, 5, 0, Math.PI*2); ctx.fill(); // Alien
+      ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(-2, -7, 1.5, 0, Math.PI*2); ctx.arc(2, -7, 1.5, 0, Math.PI*2); ctx.fill(); // Eyes
       ctx.fillStyle = "rgba(149, 165, 166, 0.95)"; ctx.beginPath(); ctx.ellipse(0, 0, 25, 8, 0, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = "rgba(231, 76, 60, 1)"; ctx.beginPath(); ctx.arc(-12, 2, 2, 0, Math.PI*2); ctx.arc(0, 4, 2, 0, Math.PI*2); ctx.arc(12, 2, 2, 0, Math.PI*2); ctx.fill();
       ctx.restore();
 
-      // --- BLUE BUTTERFLIES AI ---
+      // --- VIBRANT BLUE BUTTERFLIES ---
       if(Math.random() < 0.01 && butterflies.length < 3) {
         butterflies.push({ x: Math.random() * canvas.width, y: canvas.height + 50, vx: 0, vy: 0, life: 600 });
       }
 
-      let babyRect = babyDom.getBoundingClientRect();
-      let bTargetX = babyRect.left + 25;
-      let bTargetY = babyRect.top + 25;
+      let babyRect = babyAvatar.getBoundingClientRect();
+      let bTargetX = babyRect.left + 20;
+      let bTargetY = babyRect.top + 20;
 
       butterflies.forEach((b, index) => {
         b.life--;
         if(b.life <= 0) { butterflies.splice(index, 1); return; }
         
-        // Boid physics seeking baby
-        let dx = bTargetX - b.x;
-        let dy = bTargetY - b.y;
-        let dist = Math.hypot(dx, dy);
+        let dx = bTargetX - b.x; let dy = bTargetY - b.y; let dist = Math.hypot(dx, dy);
         
-        if(dist > 50) {
-            b.vx += (dx / dist) * 0.05;
-            b.vy += (dy / dist) * 0.05;
+        if(dist > 60) {
+            b.vx += (dx / dist) * 0.08; b.vy += (dy / dist) * 0.08;
         } else {
-            // Play near baby
-            b.vx += (Math.random() - 0.5) * 0.5;
-            b.vy += (Math.random() - 0.5) * 0.5;
+            b.vx += (Math.random() - 0.5) * 0.8; b.vy += (Math.random() - 0.5) * 0.8;
         }
-        
-        // Speed Limit & Friction
-        b.vx *= 0.95; b.vy *= 0.95;
-        b.x += b.vx + Math.sin(b.life * 0.1) * 2; // Flutter effect
-        b.y += b.vy + Math.cos(b.life * 0.1) * 2;
+        b.vx *= 0.94; b.vy *= 0.94;
+        b.x += b.vx + Math.sin(b.life * 0.1) * 2.5; b.y += b.vy + Math.cos(b.life * 0.1) * 2.5;
 
-        // Render Butterfly (Vibrant Blue)
-        ctx.fillStyle = `rgba(0, 210, 211, ${Math.min(1, b.life/50)})`;
+        // Vibrant Blue Butterfly Wings
+        ctx.fillStyle = `rgba(0, 191, 255, ${Math.min(1, b.life/50)})`;
         ctx.beginPath();
-        let flap = Math.abs(Math.sin(b.life * 0.4)) * 6;
-        ctx.ellipse(b.x - flap/2, b.y, flap, 4, -0.5, 0, Math.PI*2);
-        ctx.ellipse(b.x + flap/2, b.y, flap, 4, 0.5, 0, Math.PI*2);
+        let flap = Math.abs(Math.sin(b.life * 0.5)) * 8;
+        ctx.ellipse(b.x - flap/2, b.y, flap, 5, -0.5, 0, Math.PI*2);
+        ctx.ellipse(b.x + flap/2, b.y, flap, 5, 0.5, 0, Math.PI*2);
         ctx.fill();
 
-        // Trail of Pixie Dust
-        if(Math.random() < 0.6) {
-            particles.push({ x: b.x, y: b.y, vx: (Math.random()-0.5)*0.5, vy: Math.random()*0.5, size: Math.random()*1.5, alpha: 1, color: '0, 210, 211', type: 'dust' });
+        // Trail of Cyan/Gold Dust
+        if(Math.random() < 0.7) {
+            let dustColor = Math.random() > 0.5 ? '0, 191, 255' : '241, 196, 15';
+            particles.push({ x: b.x, y: b.y, vx: (Math.random()-0.5)*0.5, vy: Math.random()*0.5, size: Math.random()*2, alpha: 1, color: dustColor, type: 'dust' });
         }
       });
 
-      // Render All Particles
+      // Render Particles
       particles.forEach((p, index) => {
-        p.x += p.vx; p.y += p.vy; p.alpha -= (p.type==='dust') ? 0.01 : 0.02;
+        p.x += p.vx; p.y += p.vy; p.alpha -= (p.type==='dust') ? 0.015 : 0.02;
         if(p.alpha <= 0) { particles.splice(index, 1); return; }
         ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
       });
 
-      trackSpaceships();
+      // Head Tracking Logic
+      if(babyState === 'sit' || babyState === 'crawl') {
+        let distShuttle = Math.hypot(shuttle.x - bTargetX, shuttle.y - bTargetY);
+        let distUFO = Math.hypot(ufo.x - bTargetX, ufo.y - bTargetY);
+        let tx = canvas.width/2; let ty = 0;
+        if(distShuttle < distUFO && shuttle.x > 0 && shuttle.x < canvas.width) { tx = shuttle.x; ty = shuttle.y; }
+        else if (ufo.x > 0 && ufo.x < canvas.width) { tx = ufo.x; ty = ufo.y; }
+        
+        // Rotate silhouette head slightly towards ship
+        let angle = Math.atan2(ty - bTargetY, tx - bTargetX) * (180 / Math.PI);
+        if(angle > 30) angle = 30; if(angle < -30) angle = -30;
+        babyHead.style.transform = `rotate(${angle + 45}deg)`;
+      }
+
       requestAnimationFrame(drawSpaceEngine);
     }
-    
-    // Start Engine
     drawSpaceEngine();
 
     // --- APPLICATION DATA CONTROL ---
