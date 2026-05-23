@@ -5,199 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Premium Babysitting | Priya Seva</title>
   
-  <meta name="theme-color" content="#050f23">
+  <meta name="theme-color" content="#020614">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #050a15; overflow: hidden; color: white; }
+    :root {
+      /* Neptune Ice Blue Palette */
+      --void-bg: #020614;
+      --glass-base: rgba(10, 20, 35, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --highlight: #00e5ff; /* Ice Sharp Blue */
+      --deep-ocean: #0055ff;
+    }
+
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
+
+    /* Interactive Space Engine */
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     
+    /* Water Ripples Container */
+    #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+
+    /* Fixed Navbar */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
-    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 2px 10px rgba(0,0,0,0.5); pointer-events: auto;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); pointer-events: auto;}
-    .nav-link:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 229, 255, 0.6); pointer-events: auto;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(10, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
+    .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 229, 255, 0.15); border-color: var(--highlight);}
 
-    .split-layout { display: flex; height: 100vh; width: 100vw; }
+    /* Layout */
+    .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
-    /* Left Pane Space Universe */
-    .left-pane { flex: 1.15; position: relative; background: linear-gradient(135deg, #050f23 0%, #0a1931 100%); overflow: hidden; box-sizing: border-box;}
-    .galactic-doodles { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.15'%3E%3Cpath d='M 100,50 Q 100,70 120,70 Q 100,70 100,90 Q 100,70 80,70 Q 100,70 100,50 Z'/%3E%3Cpath d='M 450,250 Q 450,265 465,265 Q 450,265 450,280 Q 450,265 435,265 Q 450,265 450,250 Z'/%3E%3Cpath d='M 250,150 A 20,20 0 1,0 280,180 A 25,25 0 1,1 250,150 Z'/%3E%3Cpolygon points='350,50 355,65 370,65 358,75 362,90 350,80 338,90 342,75 330,65 345,65'/%3E%3Cg transform='translate(500, 150) rotate(-20)'%3E%3Cellipse cx='0' cy='0' rx='30' ry='8' fill='none' stroke='%23ffffff' stroke-width='3'/%3E%3Ccircle cx='0' cy='0' r='15'/%3E%3C/g%3E%3Cg transform='translate(100, 500) rotate(15)'%3E%3Cellipse cx='0' cy='0' rx='25' ry='6' fill='none' stroke='%23ffffff' stroke-width='2'/%3E%3Ccircle cx='0' cy='0' r='12'/%3E%3C/g%3E%3Ccircle cx='80' cy='200' r='3'/%3E%3Ccircle cx='750' cy='200' r='4'/%3E%3Ccircle cx='400' cy='400' r='2'/%3E%3C/g%3E%3C/svg%3E"); z-index: 1; pointer-events: none; }
-    #spaceCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;}
-
-    /* Scrollable Engine */
-    .scroll-content { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding-top: 150px; z-index: 10; scroll-behavior: smooth;}
-    .scroll-content::-webkit-scrollbar { width: 6px; }
-    .scroll-content::-webkit-scrollbar-track { background: transparent; }
-    .scroll-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-    /* The Glass Form */
-    .glass-form { position: relative; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 24px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 40px 80px rgba(0,0,0,0.6); flex-shrink: 0; margin-bottom: 250px; }
+    /* LEFT PANE - Void Viewport */
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+    .left-pane::-webkit-scrollbar { width: 0px; }
     
-    /* =========================================
-       THE CUSTOM PNG BABY ENGINE
-       ========================================= */
-    .smart-baby-container { position: absolute; top: -65px; left: 0; height: 75px; z-index: 20; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
+    /* The Structural Container (Fully exposes the space) */
+    .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
-    /* The Flipper Wrapper (Flips baby left/right seamlessly) */
-    #babyFlipper { height: 100%; transform-origin: center bottom; transition: transform 0.4s ease; }
+    .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
+    .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0,0,0,1);}
+    .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
+
+    /* Capsule Groups with Hardcoded Z-Indexes */
+    .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
+    .capsule-group:nth-child(2) { animation-delay: 1s; z-index: 50; }
+    .capsule-group:nth-child(3) { animation-delay: 2s; z-index: 40; }
+    .capsule-group:nth-child(4) { animation-delay: 0.5s; z-index: 30; }
+    .capsule-group:nth-child(5) { animation-delay: 1.5s; z-index: 20; }
+    .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
+
+    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+    /* ==========================================================
+       THE ICE-BLUE LIGHT-SOURCE TRACKER
+       ========================================================== */
+    .light-tracker { position: relative; width: 100%; }
     
-    /* The Image Itself (Handles the CSS animations) */
-    #babyAvatar { height: 100%; width: auto; object-fit: contain; transform-origin: bottom center; transition: transform 0.3s ease; }
+    /* 1. The Glowing Edge Highlight */
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      /* Neptune Blue tracking gradient */
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 40%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
+
+    /* 2. The Internal Surface Glare */
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+    /* ========================================================== */
+
+    .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
-    /* Micro-Animations applied dynamically by JS */
-    .anim-crawl { animation: crawlBob 0.35s infinite alternate ease-in-out; }
-    .anim-stand { animation: standWobble 0.7s infinite alternate ease-in-out; }
-    .anim-fall { transform: rotate(-75deg) translateY(15px) !important; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    /* Transparent High-End Glass */
+    .glass-render { 
+      width: 100%; padding: 18px 25px; 
+      background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+      border: 1px solid rgba(255,255,255,0.05); 
+      border-radius: inherit; 
+      color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
+      position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1);
+    }
+    .glass-render::placeholder { color: rgba(255,255,255,0.6); text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
+    .glass-render:hover { background: rgba(15, 25, 45, 0.5); transform: scale(1.02); }
+    .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
-    @keyframes crawlBob { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(-4px) rotate(3deg); } }
-    @keyframes standWobble { 0% { transform: rotate(-6deg); } 100% { transform: rotate(6deg); } }
-    /* ========================================= */
-
-    /* The 3D Half-Earth */
-    .earth-wrapper { width: 100%; height: 250px; position: relative; overflow: hidden; margin-top: 60px; flex-shrink: 0; display: flex; justify-content: center; z-index: 1;}
-    .earth-sphere { width: 1400px; height: 1400px; border-radius: 50%; position: absolute; top: 30px; background: url('https://upload.wikimedia.org/wikipedia/commons/c/cd/Land_ocean_ice_2048.jpg') repeat-x center; background-size: auto 100%; box-shadow: inset -40px -20px 100px rgba(0,0,0,0.9), inset 0 30px 60px rgba(52,152,219,0.5), 0 -15px 50px rgba(52,152,219,0.4); animation: spinEarth 100s linear infinite; }
-    @keyframes spinEarth { 0% { background-position: 0 0; } 100% { background-position: 2048px 0; } }
-
-    /* Form Details */
-    .form-header h2 { margin: 0 0 6px 0; font-size: 30px; font-weight: 700; color: #fff; letter-spacing: 0.5px;}
-    .form-header p { margin: 0 0 25px 0; font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.5; }
-    .input-group { margin-bottom: 22px; position: relative;}
-    .input-group label { display: block; font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
-    .glass-input { width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: white; font-family: 'Poppins'; font-size: 14.5px; box-sizing: border-box; transition: 0.3s; outline: none; }
-    .glass-input::placeholder { color: rgba(255,255,255,0.35); }
-    .glass-input:focus { border-color: #f39c12; background: rgba(0, 0, 0, 0.55); box-shadow: 0 0 15px rgba(243, 156, 18, 0.25); }
-
-    /* Dropdown UI */
+    /* Dropdowns */
     .custom-select { position: relative; user-select: none; }
-    .select-trigger { width: 100%; padding: 15px 18px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: white; font-size: 14.5px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; box-sizing: border-box;}
-    .select-options { position: absolute; top: 100%; left: 0; right: 0; background: rgba(10, 20, 35, 0.98); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; margin-top: 6px; overflow: hidden; display: none; z-index: 100; box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-    .select-options.show { display: block; animation: slideDown 0.2s ease; }
-    .option { padding: 14px 18px; color: white; cursor: pointer; transition: 0.2s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);}
+    .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
+    .select-trigger.active span { color: white; font-size: 15px; text-transform: none; letter-spacing: 0; }
+    
+    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
+    .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .option:last-child { border-bottom: none; }
-    .option:hover { background: rgba(243, 156, 18, 0.9); padding-left: 24px; }
+    .option:hover { background: rgba(0, 229, 255, 0.2); padding-left: 35px; }
 
-    /* Interactive Calendar */
-    .glass-calendar { display: none; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 18px; margin-top: 12px; animation: slideDown 0.3s ease;}
-    .cal-top { display: flex; justify-content: space-between; margin-bottom: 12px; font-weight: 600; font-size: 13px; }
-    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-    .cal-day-name { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase;}
-    .cal-date { padding: 8px 0; background: rgba(255,255,255,0.04); border-radius: 8px; font-size: 12px; cursor: pointer; transition: 0.2s; border: 1px solid transparent;}
-    .cal-date:hover { background: rgba(255,255,255,0.15); }
-    .cal-date.selected { background: #f39c12; color: white; border-color: #e67e22; box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); transform: scale(1.05);}
+    /* Interactive Parallax Bouncy Calendar */
+    .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0, 229, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
+    .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
+    .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
+    .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
+    .cal-date.selected { background: rgba(0, 229, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 229, 255, 0.4); transform: scale(1.3) translateY(-6px);}
+    .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
-    .submit-btn { background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white; width: 100%; padding: 18px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 25px rgba(243, 156, 18, 0.35); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px;}
-    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(243, 156, 18, 0.5); }
+    /* Hovering Submit Button */
+    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 229, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 229, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 229, 255, 0.3); text-shadow: 0 0 10px #fff; }
+    .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
-    @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-    /* Right Side Video */
-    .right-pane { flex: 0.85; position: relative; background: #000; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 1;}
-    .video-bg.playing { opacity: 0.95; }
-    .video-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(5, 15, 35, 1) 0%, transparent 25%); z-index: 2;}
+    /* RIGHT PANE - Seamless Blended Video */
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;}
+    
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0.85; object-fit: cover; z-index: 1; 
+      /* Seamless blend into the serene night sky */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    }
 
     @media (max-width: 900px) {
-      body { overflow-y: auto; }
-      .split-layout { flex-direction: column; height: auto; min-height: 100vh; }
-      .right-pane { display: none; } 
-      .left-pane { flex: 1; padding: 0; min-height: 100vh; width: 100vw; position: relative;}
-      .scroll-content { padding-top: 120px; overflow-y: visible;}
-      .glass-form { max-width: 90%; background: rgba(5, 15, 35, 0.8); margin-bottom: 250px;}
-      .earth-wrapper { height: 200px; }
-      .earth-sphere { width: 900px; height: 900px; top: 20px;}
-      .navbar { padding: 25px 25px; }
+      .split-layout { flex-direction: column; overflow-y: auto; height: auto; display: block;}
+      body { overflow: auto; }
+      .right-pane { height: 50vh; width: 100vw; display: block; }
+      .video-bg { -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%); }
+      .left-pane { padding: 120px 20px 40px 20px; min-height: 100vh; display: flex; }
     }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child" style="color: #f39c12;"></i> Priya Seva</a>
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child" style="color: #00e5ff;"></i> Priya Seva</a>
     <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </nav>
+
+  <canvas id="nightCanvas"></canvas>
+  <div id="rippleContainer"></div>
 
   <div class="split-layout">
     
     <div class="left-pane">
       
-      <div class="galactic-doodles"></div>
-      <canvas id="spaceCanvas"></canvas>
-      
-      <div class="scroll-content" id="scrollContainer">
+      <div class="form-container" id="mainForm">
         
-        <div class="glass-form" id="mainForm">
-          
-          <div id="babyContainer" class="smart-baby-container" style="transform: translateX(40px);">
-            <div id="babyFlipper" style="transform: scaleX(1);">
-                <img id="babyAvatar" src="./2.png" alt="Baby">
-            </div>
-          </div>
-
-          <div class="form-header">
-            <h2>Reserve a Babysitter</h2>
-            <p>Configure your child care metrics below. Our system will immediately coordinate availability profiles.</p>
-          </div>
-
-          <div class="input-group">
-            <label>Your Full Name</label>
-            <input type="text" id="parentName" class="glass-input" placeholder="E.g., Anjali Sharma" required>
-          </div>
-
-          <div class="input-group">
-            <label>Number of Children</label>
-            <div class="custom-select">
-              <div class="select-trigger" id="childCountTrigger" onclick="toggleDropdown('childCountOptions')">
-                <span>Select count...</span> <i class="fa-solid fa-chevron-down"></i>
-              </div>
-              <div class="select-options" id="childCountOptions">
-                <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '1 Child')">1 Child</div>
-                <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '2 Children')">2 Children</div>
-                <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '3+ Children')">3+ Children</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label>Service Frequency</label>
-            <div class="custom-select">
-              <div class="select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
-                <span>Select frequency...</span> <i class="fa-solid fa-chevron-down"></i>
-              </div>
-              <div class="select-options" id="freqOptions">
-                <div class="option" onclick="selectFrequency('Single Day Need')">Single Day Need</div>
-                <div class="option" onclick="selectFrequency('Recurring Weekly')">Recurring Weekly</div>
-                <div class="option" onclick="selectFrequency('Customized Dates')">Customized Dates</div>
-              </div>
-            </div>
-            
-            <div class="glass-calendar" id="visualCalendar">
-              <div class="cal-top"><span>Select System Dates:</span> <span>May 2026</span></div>
-              <div class="cal-days" style="margin-bottom:8px;">
-                <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
-              </div>
-              <div class="cal-days" id="calGrid"></div>
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label>Required Time Window</label>
-            <input type="text" id="timeWindow" class="glass-input" placeholder="E.g., 9:00 AM to 5:00 PM">
-          </div>
-
-          <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
+        <div class="spatial-header">
+          <h2>Reserve a Babysitter</h2>
+          <p>Configure your child care metrics below. Our system will immediately coordinate availability profiles.</p>
         </div>
 
-        <div class="earth-wrapper">
-          <div class="earth-sphere"></div>
+        <div class="capsule-group input-group">
+          <label>Your Full Name</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="parentName" class="glass-render" placeholder="E.g., Anjali Sharma" required>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group custom-select">
+          <label>Number of Children</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="childCountTrigger" onclick="toggleDropdown('childCountOptions')">
+              <span>Select count</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="light-tracker select-options" id="childCountOptions" style="border-radius: 25px;">
+            <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '1 Child')">1 Child</div>
+            <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '2 Children')">2 Children</div>
+            <div class="option" onclick="selectOption('childCountTrigger', 'childCountOptions', '3+ Children')">3+ Children</div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group custom-select">
+          <label>Service Frequency</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
+              <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
+            <div class="option" onclick="selectFrequency('Single Day Need')">Single Day Need</div>
+            <div class="option" onclick="selectFrequency('Recurring Weekly')">Recurring Weekly</div>
+            <div class="option" onclick="selectFrequency('Customized Dates')">Customized Dates</div>
+          </div>
+          
+          <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
+            <div class="cal-top"><span>Select Dates:</span> <span>May 2026</span></div>
+            <div class="cal-days" style="margin-bottom:8px;">
+              <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
+            </div>
+            <div class="cal-days" id="calGrid"></div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group">
+          <label>Required Time Window</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="timeWindow" class="glass-render" placeholder="E.g., 9:00 AM to 5:00 PM">
+          </div>
+        </div>
+
+        <div class="capsule-group" style="margin-top: 35px;">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
+          </div>
         </div>
 
       </div>
     </div>
 
     <div class="right-pane">
-      <div class="video-overlay"></div>
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')" poster="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=1500">
+      <video autoplay loop muted playsinline class="video-bg" poster="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&q=80&w=1500">
         <source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4">
         <source src="./babysitter.mp4" type="video/mp4">
       </video>
@@ -206,214 +235,122 @@
   </div>
 
   <script>
-    // --- ADVANCED PNG BABY AI ---
-    const babyContainer = document.getElementById('babyContainer');
-    const babyFlipper = document.getElementById('babyFlipper');
-    const babyImage = document.getElementById('babyAvatar');
-    const formWidth = 520;
+    // --- 1. LIGHT TRACKER & WATER RIPPLE ENGINE ---
+    const rippleContainer = document.getElementById('rippleContainer');
     
-    let currentBabyX = 40;
-    let babyState = 'sit';
-    let babyFacingRight = true;
-
-    // Asset Map linking to your custom PNGs
-    const ASSETS = {
-      crawl: './1.png',
-      sit: './2.png',
-      stand: './3.png'
-    };
-
-    function updateBabyBrain() {
-      const rand = Math.random();
-      
-      if (babyState === 'fall') {
-        // Recover from falling
-        babyState = 'sit';
-        babyImage.src = ASSETS.sit;
-        babyImage.className = ''; 
-        babyFlipper.style.transform = babyFacingRight ? 'scaleX(1)' : 'scaleX(-1)';
-        
-      } else if (rand < 0.45) {
-        // CRAWL
-        babyState = 'crawl';
-        babyImage.src = ASSETS.crawl;
-        babyImage.className = 'anim-crawl'; // Applies CSS bobbing
-        
-        let targetX = Math.random() * (formWidth - 80);
-        let distance = Math.abs(targetX - currentBabyX);
-        let travelTime = distance / 50; // Pixels per second
-        
-        // Flip wrapper depending on travel direction
-        babyFacingRight = targetX > currentBabyX;
-        babyFlipper.style.transform = babyFacingRight ? 'scaleX(1)' : 'scaleX(-1)';
-        
-        // Slide container smoothly
-        babyContainer.style.transition = `transform ${travelTime}s linear`;
-        babyContainer.style.transform = `translateX(${targetX}px)`;
-        currentBabyX = targetX;
-        
-      } else if (rand < 0.75) {
-        // SIT
-        babyState = 'sit';
-        babyImage.src = ASSETS.sit;
-        babyImage.className = ''; 
-        babyContainer.style.transition = `none`; 
-        
-      } else {
-        // STAND & WOBBLE
-        babyState = 'stand';
-        babyImage.src = ASSETS.stand;
-        babyImage.className = 'anim-stand';
-        babyContainer.style.transition = `none`; 
-        
-        // Inevitable clumsy fall backward
-        setTimeout(() => {
-          if (babyState === 'stand') {
-            babyState = 'fall';
-            babyImage.className = 'anim-fall';
-          }
-        }, 1500);
-      }
+    function createRipple(x, y) {
+      const ripple = document.createElement('div');
+      ripple.className = 'water-ripple';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      rippleContainer.appendChild(ripple);
+      setTimeout(() => { ripple.remove(); }, 1800);
     }
-    // Fire the baby's brain every 3 seconds
-    setInterval(updateBabyBrain, 3000);
-
-    // --- CANVAS GRAPHICS RENDER ENGINE ---
-    const canvas = document.getElementById('spaceCanvas');
-    const ctx = canvas.getContext('2d');
     
+    document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+    
+    let lastRippleTime = 0;
+    document.addEventListener('mousemove', (e) => {
+      // Trail Ripples
+      const now = Date.now();
+      if(now - lastRippleTime > 150) { 
+        createRipple(e.clientX, e.clientY);
+        lastRippleTime = now;
+      }
+
+      // Dynamic Edge Reflection Math for Neptune Blue
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // --- 2. SERENE STARRY NIGHT & SHADOW CLOUD ENGINE ---
+    const canvas = document.getElementById('nightCanvas');
+    const ctx = canvas.getContext('2d');
     let stars = [];
-    let particles = [];
-    let butterflies = [];
-    let shuttle = { x: -50, y: 200, targetY: 200, speedX: 1.2, waveTimer: 0 };
-    let ufo = { x: 2000, y: 150, targetY: 150, speedX: -2.0, waveTimer: 0 };
+    let clouds = [];
+    const numStars = 400;
+    const numClouds = 15;
 
     function resizeCanvas() {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    for(let i=0; i<100; i++) {
-      stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2, speed: Math.random() * 0.5 + 0.1 });
+    // Populate Stars
+    for(let i=0; i<numStars; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 1.5,
+        speed: (Math.random() * 0.2) + 0.05,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: (Math.random() * 0.02) + 0.01,
+        color: Math.random() > 0.8 ? '150, 230, 255' : '255, 255, 255' // Some ice blue stars
+      });
     }
 
-    function drawSpaceEngine() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Starfield POV
-      stars.forEach(star => {
-        star.x -= star.speed;
-        if(star.x < 0) { star.x = canvas.width; star.y = Math.random() * canvas.height; }
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.speed})`;
-        ctx.beginPath(); ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2); ctx.fill();
+    // Populate Shadow Clouds
+    for(let i=0; i<numClouds; i++) {
+      clouds.push({
+        x: Math.random() * canvas.width,
+        y: (Math.random() * canvas.height) - 100,
+        size: (Math.random() * 300) + 200,
+        speed: (Math.random() * 0.5) + 0.2, // Clouds move faster than stars to create parallax
+        opacity: (Math.random() * 0.4) + 0.1 // Deep shadow transparency
       });
+    }
 
-      // Space Shuttle
-      shuttle.x += shuttle.speedX; shuttle.waveTimer += 0.02;
-      shuttle.y = shuttle.targetY + Math.sin(shuttle.waveTimer) * 30;
-      if(shuttle.x > canvas.width + 100) {
-        shuttle.x = -60; shuttle.targetY = Math.random() * (canvas.height - 300) + 100; shuttle.speedX = Math.random() * 1 + 1.2;
-      }
-      if (Math.random() < 0.4 && shuttle.x > 0 && shuttle.x < canvas.width) {
-        particles.push({ x: shuttle.x - 15, y: shuttle.y + 4, vx: -(Math.random() * 1.5 + 1), vy: (Math.random() - 0.5) * 1, size: Math.random() * 4 + 2, alpha: 1, color: '243, 156, 18', type: 'exhaust' });
-      }
+    function drawSereneSky() {
+      // Clear with deep void background
+      ctx.fillStyle = '#020614';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.save(); ctx.translate(shuttle.x, shuttle.y); ctx.rotate(0.05 * Math.sin(shuttle.waveTimer));
-      ctx.fillStyle = "rgba(255, 255, 255, 0.85)"; ctx.beginPath(); ctx.moveTo(25, 0); ctx.lineTo(-15, -10); ctx.lineTo(-15, 10); ctx.fill();
-      ctx.fillStyle = "rgba(243, 156, 18, 0.9)"; ctx.beginPath(); ctx.moveTo(-5, 0); ctx.lineTo(-18, -14); ctx.lineTo(-12, 0); ctx.lineTo(-18, 14); ctx.fill();
-      ctx.restore();
-
-      // Deep UFO Engine with Alien
-      ufo.x += ufo.speedX; ufo.waveTimer += 0.05;
-      ufo.y = ufo.targetY + Math.cos(ufo.waveTimer) * 40;
-      if(ufo.x < -100) {
-        ufo.x = canvas.width + Math.random() * 500 + 100; ufo.targetY = Math.random() * (canvas.height/2); ufo.speedX = -(Math.random() * 1.5 + 1.5);
-      }
-      if (Math.random() < 0.5 && ufo.x > 0 && ufo.x < canvas.width) {
-        particles.push({ x: ufo.x + 15, y: ufo.y, vx: Math.random() * 1.5 + 1, vy: (Math.random() - 0.5) * 1, size: Math.random() * 5 + 2, alpha: 1, color: '46, 204, 113', type: 'exhaust' });
-      }
-
-      ctx.save(); ctx.translate(ufo.x, ufo.y); ctx.rotate(0.1 * Math.cos(ufo.waveTimer));
-      ctx.fillStyle = "rgba(46, 204, 113, 0.4)"; ctx.beginPath(); ctx.arc(0, -5, 14, Math.PI, 0); ctx.fill();
-      ctx.fillStyle = "#2ecc71"; ctx.beginPath(); ctx.arc(0, -6, 5, 0, Math.PI*2); ctx.fill(); // Alien
-      ctx.fillStyle = "#000"; ctx.beginPath(); ctx.arc(-2, -7, 1.5, 0, Math.PI*2); ctx.arc(2, -7, 1.5, 0, Math.PI*2); ctx.fill(); // Eyes
-      ctx.fillStyle = "rgba(149, 165, 166, 0.95)"; ctx.beginPath(); ctx.ellipse(0, 0, 25, 8, 0, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = "rgba(231, 76, 60, 1)"; ctx.beginPath(); ctx.arc(-12, 2, 2, 0, Math.PI*2); ctx.arc(0, 4, 2, 0, Math.PI*2); ctx.arc(12, 2, 2, 0, Math.PI*2); ctx.fill();
-      ctx.restore();
-
-      // --- VIBRANT BLUE BUTTERFLIES ---
-      if(Math.random() < 0.01 && butterflies.length < 4) {
-        butterflies.push({ x: Math.random() * canvas.width, y: canvas.height + 50, vx: 0, vy: 0, life: 600 });
-      }
-
-      let babyRect = babyContainer.getBoundingClientRect();
-      let bTargetX = babyRect.left + 35;
-      let bTargetY = babyRect.top + 35;
-
-      butterflies.forEach((b, index) => {
-        b.life--;
-        if(b.life <= 0) { butterflies.splice(index, 1); return; }
+      // Render Stars
+      stars.forEach(s => {
+        s.x -= s.speed; // Drift left
+        if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
         
-        let dx = bTargetX - b.x; let dy = bTargetY - b.y; let dist = Math.hypot(dx, dy);
-        
-        if(dist > 60) {
-            b.vx += (dx / dist) * 0.1; b.vy += (dy / dist) * 0.1;
-        } else {
-            // Play near baby
-            b.vx += (Math.random() - 0.5) * 1.2; b.vy += (Math.random() - 0.5) * 1.2;
-        }
-        b.vx *= 0.92; b.vy *= 0.92;
-        b.x += b.vx + Math.sin(b.life * 0.1) * 3; b.y += b.vy + Math.cos(b.life * 0.1) * 3;
+        s.twinklePhase += s.twinkleSpeed;
+        let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
 
-        // Vibrant Blue Butterfly Wings
-        ctx.fillStyle = `rgba(0, 191, 255, ${Math.min(1, b.life/50)})`;
+        ctx.fillStyle = `rgba(${s.color}, ${opacity})`;
         ctx.beginPath();
-        let flap = Math.abs(Math.sin(b.life * 0.5)) * 8;
-        ctx.ellipse(b.x - flap/2, b.y, flap, 5, -0.5, 0, Math.PI*2);
-        ctx.ellipse(b.x + flap/2, b.y, flap, 5, 0.5, 0, Math.PI*2);
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
         ctx.fill();
-
-        // Trail of Cyan/Gold Dust
-        if(Math.random() < 0.8) {
-            let dustColor = Math.random() > 0.5 ? '0, 191, 255' : '241, 196, 15';
-            particles.push({ x: b.x, y: b.y, vx: (Math.random()-0.5)*0.5, vy: Math.random()*0.5, size: Math.random()*2, alpha: 1, color: dustColor, type: 'dust' });
-        }
       });
 
-      // Render Particles
-      particles.forEach((p, index) => {
-        p.x += p.vx; p.y += p.vy; p.alpha -= (p.type==='dust') ? 0.015 : 0.02;
-        if(p.alpha <= 0) { particles.splice(index, 1); return; }
-        ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+      // Render Shadow Clouds
+      clouds.forEach(c => {
+        c.x -= c.speed; // Drift left
+        if(c.x < -c.size) { 
+            c.x = canvas.width + c.size; 
+            c.y = (Math.random() * canvas.height) - 100;
+        }
+
+        // Radial gradient makes it soft and cloud-like
+        let grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
+        // Using deep oceanic/night colors for the shadow clouds
+        grad.addColorStop(0, `rgba(4, 10, 25, ${c.opacity})`); 
+        grad.addColorStop(1, 'rgba(2, 6, 20, 0)');
+
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
+        ctx.fill();
       });
 
-      // --- ASSET-BASED TRACKING ---
-      if(babyState === 'sit' || babyState === 'stand') {
-        let distShuttle = Math.hypot(shuttle.x - bTargetX, shuttle.y - bTargetY);
-        let distUFO = Math.hypot(ufo.x - bTargetX, ufo.y - bTargetY);
-        let targetX = canvas.width/2;
-        
-        if(distShuttle < distUFO && shuttle.x > 0 && shuttle.x < canvas.width) { targetX = shuttle.x; }
-        else if (ufo.x > 0 && ufo.x < canvas.width) { targetX = ufo.x; }
-        
-        // Physically flip the image wrapper to look at the ship
-        if (targetX < bTargetX && babyFacingRight) {
-            babyFacingRight = false;
-            babyFlipper.style.transform = 'scaleX(-1)';
-        } else if (targetX > bTargetX && !babyFacingRight) {
-            babyFacingRight = true;
-            babyFlipper.style.transform = 'scaleX(1)';
-        }
-      }
-
-      requestAnimationFrame(drawSpaceEngine);
+      requestAnimationFrame(drawSereneSky);
     }
-    drawSpaceEngine();
+    drawSereneSky();
 
-    // --- APPLICATION DATA CONTROL ---
+    // --- 3. DATA LOGIC ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -429,7 +366,9 @@
     }
 
     function selectOption(triggerId, dropdownId, value) {
-      document.getElementById(triggerId).innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`;
+      const trigger = document.getElementById(triggerId);
+      trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`;
+      trigger.classList.add('active'); 
       document.getElementById(dropdownId).classList.remove('show');
     }
 
@@ -437,19 +376,19 @@
       selectOption('freqTrigger', 'freqOptions', value);
       selectedFrequency = value;
       selectedDates = []; 
-      const calWidget = document.getElementById('visualCalendar');
-      calWidget.style.display = 'block';
+      document.getElementById('visualCalendar').style.display = 'block';
       buildCalendarGrid(value === 'Single Day Need');
     }
 
     function buildCalendarGrid(isSingleSelect) {
       const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
-      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; }
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } // Spacer
       for(let i=1; i<=31; i++) {
         const div = document.createElement('div');
         div.className = 'cal-date'; div.innerText = i;
-        div.onclick = function() {
+        div.onclick = function(e) {
+          createRipple(e.clientX, e.clientY);
           if(isSingleSelect) {
             document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
             selectedDates = [i]; this.classList.add('selected');
@@ -475,7 +414,9 @@
       const childCount = document.getElementById('childCountTrigger').innerText.trim();
       const timeWindow = document.getElementById('timeWindow').value;
 
-      if(!name || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name and select your dates."); }
+      if(!name || childCount === "Select count" || selectedFrequency === "" || selectedDates.length === 0) { 
+        return alert("Please fill your name, select count, and pick your dates."); 
+      }
 
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
@@ -484,7 +425,8 @@
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", ");
         let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
-        const detailsPayload = { Parent_Name: name, Children: childCount.replace("Select count...", "Not Specified"), Frequency: selectedFrequency, Selected_Dates: formattedDates, Timings: timeWindow };
+        
+        const detailsPayload = { Parent_Name: name, Children: childCount, Frequency: selectedFrequency, Selected_Dates: formattedDates, Timings: timeWindow };
 
         const { error } = await supabaseClient.from('bookings').insert([{ user_email: user.email, service_type: 'Babysitters', booking_date: primaryDate, status: 'pending', details: JSON.stringify(detailsPayload) }]);
         if (error) throw error;
