@@ -12,6 +12,7 @@
 
   <style>
     :root {
+      /* Deep Dark Void Palette with Cyan/Purple Highlights */
       --void-bg: #03040b;
       --glass-base: rgba(10, 15, 25, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
@@ -20,8 +21,8 @@
 
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
 
-    /* Interactive Space Engine */
-    #spaceCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+    /* Interactive Serene Night Canvas Engine */
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     
     /* Water Ripples Container */
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
@@ -37,18 +38,18 @@
     /* Layout */
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
-    /* LEFT PANE - Void Viewport */
+    /* LEFT PANE - Spatial Viewport */
     .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
     .left-pane::-webkit-scrollbar { width: 0px; }
     
-    /* The Structural Container (NO BACKGROUND, NO BLUR - Fully exposes the space) */
+    /* The Structural Container (Fully exposes the space) */
     .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
     .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
     .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 243, 255, 0.8), 0 0 50px rgba(0,0,0,1);}
     .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
 
-    /* Capsule Groups with Hardcoded Z-Indexes to fix overlap bugs */
+    /* Capsule Groups with Floating Mechanics */
     .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
     .capsule-group:nth-child(2) { animation-delay: 1s; z-index: 50; }
     .capsule-group:nth-child(3) { animation-delay: 2s; z-index: 40; }
@@ -59,14 +60,13 @@
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
 
     /* ==========================================================
-       THE DYNAMIC LIGHT-SOURCE TRACKER (The Masterpiece)
+       THE DYNAMIC LIGHT-SOURCE TRACKER (Cyan & Purple)
        ========================================================== */
     .light-tracker { position: relative; width: 100%; }
     
     /* 1. The Glowing Edge Highlight */
     .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      /* The gradient follows the cursor via JS CSS variables */
       background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 255, 255, 1), rgba(160, 100, 255, 0.8) 40%, transparent 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
@@ -80,14 +80,13 @@
     }
     /* ========================================================== */
 
-    /* Inputs - Pure High-End Beveled Glass Capsules */
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
+    /* Matte Crystal Glass Inputs */
     .glass-render { 
       width: 100%; padding: 18px 25px; 
       background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-      border: 1px solid rgba(255,255,255,0.05); /* Extremely thin base border, the light tracker does the rest */
-      border-radius: inherit; 
+      border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; 
       color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
       box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
@@ -97,7 +96,7 @@
     .glass-render:hover { background: rgba(15, 20, 35, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
 
-    /* Custom Spatial Dropdowns */
+    /* Interactive Dropdowns */
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
@@ -109,32 +108,34 @@
     .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
 
-    /* Interactive Parallax Bouncy Calendar */
+    /* Bouncy Liquid Calendar Widget */
     .glass-calendar { display: none; background: rgba(5, 8, 15, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
     .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
     .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
     .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
-    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: #00f3ff; box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
+    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
-    /* Hovering Submit Button */
-    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: #00f3ff; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    /* Premium Submit Button Capsule */
+    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-    /* RIGHT PANE - Seamless Blended Cinematic Sweep */
-    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;}
-    
-    .cinematic-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.1) translateX(-20px); transition: opacity 1.5s ease, transform 6s ease-out; z-index: 1; 
-      /* Perfect seamless blend into the space void */
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%);
+    /* ==========================================================
+       RIGHT PANE - SEAMLESS BLENDED CINEMATIC SWEEP 
+       ========================================================== */
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
     }
+    
+    .cinematic-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.1) translateX(-20px); transition: opacity 1.5s ease, transform 6s ease-out; z-index: 1;}
     .cinematic-img.active { opacity: 0.7; transform: scale(1) translateX(0); z-index: 2;}
-    .cinematic-img.swipe-out { transform: translateX(120vw) rotate(10deg); opacity: 0; transition: transform 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.8s ease; z-index: 3;}
+    .cinematic-img.swipe-out { transform: translateX(120vw) rotate(5deg); opacity: 0; transition: transform 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.8s ease; z-index: 3;}
     
     .final-message-container { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 60px; z-index: 10; opacity: 0; transform: scale(0.95); transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); text-align: center; }
     .final-message-container.show { opacity: 1; transform: scale(1); }
@@ -144,8 +145,7 @@
     @media (max-width: 900px) {
       .split-layout { flex-direction: column; overflow-y: auto; height: auto; display: block;}
       body { overflow: auto; }
-      .right-pane { height: 60vh; width: 100vw; display: block; }
-      .cinematic-img { -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 40%); }
+      .right-pane { height: 50vh; width: 100vw; display: block; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%); mask-image: linear-gradient(to bottom, transparent 0%, black 50%); }
       .left-pane { padding: 120px 20px 40px 20px; min-height: 100vh; display: flex; }
       .final-message-container h3 { font-size: 24px; }
     }
@@ -158,13 +158,12 @@
     <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </nav>
 
-  <canvas id="spaceCanvas"></canvas>
+  <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
 
   <div class="split-layout">
     
     <div class="left-pane">
-      
       <div class="form-container" id="mainForm">
         
         <div class="spatial-header">
@@ -269,13 +268,7 @@
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
     let lastRippleTime = 0;
-    let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
-
     document.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-
-      // Trail Ripples
       const now = Date.now();
       if(now - lastRippleTime > 150) { 
         createRipple(e.clientX, e.clientY);
@@ -292,12 +285,13 @@
       });
     });
 
-    // --- 2. CELESTIAL FISHEYE SPACE ENGINE (Newtonian Physics) ---
-    const canvas = document.getElementById('spaceCanvas');
+    // --- 2. SERENE STARRY NIGHT & DRIFTING SHADOW CLOUD ENGINE ---
+    const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let celestials = [];
-    const numObjects = 300;
-    const focalLength = window.innerWidth * 1.8; 
+    let stars = [];
+    let clouds = [];
+    const numStars = 400;
+    const numClouds = 8; // Layered compound clouds
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -306,114 +300,84 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    for(let i=0; i<numObjects; i++) {
-      let type = 'star';
-      const r = Math.random();
-      if(r > 0.98) type = 'blackhole';
-      else if(r > 0.94) type = 'pulsar';
-      else if(r > 0.88) type = 'planet';
-      else if(r > 0.80) type = 'nebula';
-
-      celestials.push({
-        type: type,
-        x: Math.random() * 5000 - 2500,
-        y: Math.random() * 5000 - 2500,
-        z: Math.random() * 4000,
-        vx: 0, vy: 0, 
-        baseColor: type === 'star' ? '200, 240, 255' : (Math.random() > 0.5 ? '180, 100, 255' : '0, 243, 255'), 
-        speedX: (Math.random() - 0.5) * 0.2, 
-        speedY: (Math.random() - 0.5) * 0.2,
-        wobble: Math.random() * Math.PI * 2,
-        o: Math.random() * 0.8 + 0.2
+    // Populate Twinkling Star Matrix
+    for(let i=0; i<numStars; i++) {
+      stars.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 1.5,
+        speed: (Math.random() * 0.12) + 0.04,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: (Math.random() * 0.02) + 0.01,
+        // Match the cyan/white theme of the health page
+        color: Math.random() > 0.85 ? '0, 243, 255' : '255, 255, 255' 
       });
     }
 
-    function resetCelestial(c) {
-      c.x = Math.random() * 5000 - 2500;
-      c.y = Math.random() * 5000 - 2500;
-      c.z = 4000;
-      c.vx = 0; c.vy = 0; 
-    }
+    // Populate Randomly Contoured Shadow Clouds (Left to Right)
+    for(let i=0; i<numClouds; i++) {
+      let baseSize = (Math.random() * 180) + 120;
+      let subParts = [];
+      let cloudCircles = Math.floor(Math.random() * 3) + 4; 
+      
+      for(let j=0; j<cloudCircles; j++) {
+        subParts.push({
+          offsetX: (Math.random() - 0.5) * baseSize * 1.2,
+          offsetY: (Math.random() - 0.5) * baseSize * 0.4,
+          radius: (Math.random() * 0.4 + 0.6) * (baseSize * 0.5)
+        });
+      }
 
-    function drawFisheyeSpace() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-
-      celestials.forEach(c => {
-        c.z -= 2; 
-        c.wobble += 0.01;
-        if(c.z <= 0) resetCelestial(c);
-
-        const scale = focalLength / (focalLength + c.z);
-        let px = centerX + (c.x * scale);
-        let py = centerY + (c.y * scale);
-
-        // Cursor Collision - Pushes elements dynamically based on gravity
-        let dx = px - mouse.x;
-        let dy = py - mouse.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist < 350) {
-            c.vx += (dx / dist) * 1.5; // Heavy repulsive wave
-            c.vy += (dy / dist) * 1.5;
-        }
-        
-        c.vx *= 0.95; c.vy *= 0.95;
-        c.x += c.vx; c.y += c.vy;
-
-        px = centerX + (c.x * scale);
-        py = centerY + (c.y * scale);
-        
-        const size = Math.max(0.5, (1 - c.z/4000) * 5); 
-        let dynamicAlpha = c.o * (1 - c.z/4000);
-        
-        if (c.type === 'star') {
-          ctx.fillStyle = `rgba(${c.baseColor}, ${dynamicAlpha})`;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (c.type === 'planet') {
-          ctx.strokeStyle = `rgba(255,255,255, ${dynamicAlpha * 0.6})`;
-          ctx.beginPath();
-          ctx.ellipse(px, py, size * 2.2, size * 0.4, c.wobble, 0, Math.PI * 2);
-          ctx.stroke();
-          
-          let pGrad = ctx.createRadialGradient(px,py,0, px,py,size);
-          pGrad.addColorStop(0, `rgba(180, 100, 255, ${dynamicAlpha})`);
-          pGrad.addColorStop(1, `rgba(10, 15, 30, ${dynamicAlpha})`);
-          ctx.fillStyle = pGrad;
-          ctx.beginPath();
-          ctx.arc(px, py, size, 0, Math.PI * 2);
-          ctx.fill();
-        } else if (c.type === 'blackhole') {
-          let bhGrad = ctx.createRadialGradient(px,py,size*0.8, px,py,size*3);
-          bhGrad.addColorStop(0, `rgba(160, 100, 255, ${dynamicAlpha})`);
-          bhGrad.addColorStop(0.5, `rgba(0, 243, 255, ${dynamicAlpha*0.5})`);
-          bhGrad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.fillStyle = bhGrad;
-          ctx.beginPath(); ctx.arc(px, py, size*3, 0, Math.PI * 2); ctx.fill();
-          
-          ctx.fillStyle = `rgba(0,0,0, ${dynamicAlpha})`;
-          ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
-        } else if (c.type === 'pulsar') {
-          let pSize = size * 0.2;
-          ctx.fillStyle = `rgba(255,255,255, ${Math.abs(Math.sin(c.wobble * 20))})`;
-          ctx.beginPath(); ctx.arc(px, py, pSize, 0, Math.PI * 2); ctx.fill();
-          
-          ctx.strokeStyle = `rgba(0, 243, 255, ${dynamicAlpha * 0.4})`;
-          ctx.beginPath(); ctx.moveTo(px - size*5, py); ctx.lineTo(px + size*5, py);
-          ctx.lineWidth = pSize; ctx.stroke();
-        } else if (c.type === 'nebula') {
-          let nGrad = ctx.createRadialGradient(px,py,0, px,py,size*5);
-          nGrad.addColorStop(0, `rgba(${c.baseColor}, ${dynamicAlpha * 0.1})`);
-          nGrad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.fillStyle = nGrad;
-          ctx.beginPath(); ctx.arc(px, py, size*5, 0, Math.PI * 2); ctx.fill();
-        }
+      clouds.push({
+        x: Math.random() * canvas.width,
+        y: (Math.random() * canvas.height * 0.85),
+        parts: subParts,
+        baseSize: baseSize,
+        speed: (Math.random() * 0.25) + 0.12, 
+        opacity: (Math.random() * 0.14) + 0.04
       });
-      requestAnimationFrame(drawFisheyeSpace);
     }
-    drawFisheyeSpace();
+
+    function drawSereneSky() {
+      ctx.fillStyle = '#03040b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Render Stars
+      stars.forEach(s => {
+        s.x -= s.speed;
+        if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
+        
+        s.twinklePhase += s.twinkleSpeed;
+        let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
+
+        ctx.fillStyle = `rgba(${s.color}, ${opacity})`;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // Render Organic Random Shapes drifting LEFT TO RIGHT
+      clouds.forEach(c => {
+        c.x += c.speed; 
+        if(c.x > canvas.width + c.baseSize * 2) { 
+            c.x = -c.baseSize * 2; 
+            c.y = (Math.random() * canvas.height * 0.85);
+        }
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(2, 6, 20, 0.95)';
+        ctx.shadowBlur = c.baseSize * 0.6;
+        ctx.fillStyle = `rgba(5, 14, 32, ${c.opacity})`;
+
+        ctx.beginPath();
+        c.parts.forEach(p => {
+          ctx.arc(c.x + p.offsetX, c.y + p.offsetY, p.radius, 0, Math.PI * 2);
+        });
+        ctx.fill();
+        ctx.restore();
+      });
+
+      requestAnimationFrame(drawSereneSky);
+    }
+    drawSereneSky();
 
     // --- 3. CINEMATIC SWIPE SEQUENCE ---
     const sequenceImages = [
@@ -472,7 +436,7 @@
     function buildCalendarGrid(isSingleSelect) {
       const grid = document.getElementById('calGrid');
       grid.innerHTML = '';
-      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } // Spacer
       for(let i=1; i<=31; i++) {
         const div = document.createElement('div');
         div.className = 'cal-date'; div.innerText = i;
