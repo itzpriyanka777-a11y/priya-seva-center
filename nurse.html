@@ -15,24 +15,30 @@
       --void-bg: #03040b;
       --glass-base: rgba(10, 15, 25, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --highlight: #00f3ff; 
+      --highlight: #00f3ff;
       --deep-ocean: #0055ff;
     }
 
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
 
+    /* Interactive Space Engine */
     #spaceCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+    
+    /* Water Ripples Container */
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
+    /* Fixed Navbar */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
     .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 243, 255, 0.6); pointer-events: auto;}
     .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(15, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
     .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 243, 255, 0.15); border-color: var(--highlight);}
 
+    /* Layout */
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
+    /* LEFT PANE - Void Viewport */
     .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
     .left-pane::-webkit-scrollbar { width: 0px; }
     
@@ -51,6 +57,7 @@
 
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
 
+    /* The Photon Light Tracker */
     .light-tracker { position: relative; width: 100%; }
     .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
@@ -100,17 +107,22 @@
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
-    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.3); text-shadow: 0 0 10px #fff; }
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
+    /* RIGHT PANE - Seamless Blended Video Architecture */
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
     }
     
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .video-bg { 
+      position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); 
+      opacity: 0; object-fit: cover; z-index: 1; 
+      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
     .video-bg.playing { opacity: 0.85; }
 
     @media (max-width: 900px) {
@@ -132,6 +144,7 @@
   <div id="rippleContainer"></div>
 
   <div class="split-layout">
+    
     <div class="left-pane">
       <div class="form-container" id="mainForm">
         
@@ -231,10 +244,7 @@
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
     let lastRippleTime = 0;
-    let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
-
     document.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX; mouse.y = e.clientY;
       const now = Date.now();
       if(now - lastRippleTime > 150) { 
         createRipple(e.clientX, e.clientY);
@@ -255,10 +265,12 @@
     let celestials = [];
     const numObjects = 250;
     const focalLength = window.innerWidth * 1.5; 
+    let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
 
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
+    document.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
 
     for(let i=0; i<numObjects; i++) {
       let type = 'star'; const r = Math.random();
