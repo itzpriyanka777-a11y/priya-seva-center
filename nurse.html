@@ -13,39 +13,34 @@
   <style>
     :root {
       --void-bg: #03040b;
-      --glass-base: rgba(10, 15, 25, 0.25);
+      --glass-base: rgba(10, 20, 35, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --highlight: #00f3ff;
+      --highlight: #00e5ff; 
       --deep-ocean: #0055ff;
     }
 
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
 
-    /* Interactive Space Engine */
-    #spaceCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     
-    /* Water Ripples Container */
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
-    /* Fixed Navbar */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
-    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 243, 255, 0.6); pointer-events: auto;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(15, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
-    .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 243, 255, 0.15); border-color: var(--highlight);}
+    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 229, 255, 0.6); pointer-events: auto;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(10, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
+    .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 229, 255, 0.15); border-color: var(--highlight);}
 
-    /* Layout */
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
-    /* LEFT PANE - Void Viewport */
     .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
     .left-pane::-webkit-scrollbar { width: 0px; }
     
     .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
     .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
-    .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 243, 255, 0.8), 0 0 50px rgba(0,0,0,1);}
+    .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0,0,0,1);}
     .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
 
     .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
@@ -55,19 +50,18 @@
     .capsule-group:nth-child(5) { animation-delay: 1.5s; z-index: 20; }
     .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
 
-    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-    /* The Photon Light Tracker */
     .light-tracker { position: relative; width: 100%; }
     .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), rgba(160, 100, 255, 0.8) 40%, transparent 100%);
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
     }
     .light-tracker::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%);
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
       pointer-events: none; z-index: 0;
     }
 
@@ -79,51 +73,54 @@
       border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; 
       color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
       position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1);
     }
     .glass-render::placeholder { color: rgba(255,255,255,0.6); text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
-    .glass-render:hover { background: rgba(15, 20, 35, 0.6); transform: scale(1.02); }
-    .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
+    .glass-render:hover { background: rgba(15, 25, 45, 0.5); transform: scale(1.02); }
+    .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
     .select-trigger.active span { color: white; font-size: 15px; text-transform: none; letter-spacing: 0; }
     
-    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
+    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .option:last-child { border-bottom: none; }
-    .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
+    .option:hover { background: rgba(0, 229, 255, 0.2); padding-left: 35px; }
 
-    .glass-calendar { display: none; background: rgba(5, 8, 15, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 229, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
     .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
     .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
     .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
-    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
+    .cal-date.selected { background: rgba(0, 229, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 229, 255, 0.4); transform: scale(1.3) translateY(-6px);}
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
-    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
-    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
+    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 229, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 229, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 229, 255, 0.3); text-shadow: 0 0 10px #fff; }
     .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     /* RIGHT PANE - Seamless Blended Video Architecture */
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
     
     .video-bg { 
-      position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); 
-      opacity: 0; object-fit: cover; z-index: 1; 
-      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: absolute; top: 50%; left: 50%; 
+      width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; 
+      transform: translate(-50%, -50%); 
+      opacity: 0; z-index: 1; border: none; pointer-events: none;
+      animation: fadeVideoIn 2.5s ease-in-out 1s forwards;
     }
-    .video-bg.playing { opacity: 0.85; }
+    
+    @keyframes fadeVideoIn { to { opacity: 0.85; } }
 
     @media (max-width: 900px) {
       .split-layout { flex-direction: column; overflow-y: auto; height: auto; display: block;}
@@ -136,11 +133,11 @@
 <body>
 
   <nav class="navbar">
-    <a href="index.html" class="logo-text"><i class="fa-solid fa-user-nurse" style="color: #00f3ff;"></i> Priya Seva</a>
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-user-nurse" style="color: #00e5ff;"></i> Priya Seva</a>
     <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </nav>
 
-  <canvas id="spaceCanvas"></canvas>
+  <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
 
   <div class="split-layout">
@@ -223,9 +220,13 @@
     </div>
 
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
-        <source src="./nurse.mp4" type="video/mp4">
-      </video>
+      <iframe 
+        class="video-bg" 
+        src="https://www.youtube.com/embed/NrGakESMh5w?autoplay=1&mute=1&loop=1&playlist=NrGakESMh5w&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen>
+      </iframe>
     </div>
 
   </div>
@@ -259,77 +260,55 @@
       });
     });
 
-    // --- 2. CELESTIAL FISHEYE SPACE ENGINE ---
-    const canvas = document.getElementById('spaceCanvas');
+    // --- 2. SERENE STARRY NIGHT SKY & SHADOW CLOUDS ---
+    const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let celestials = [];
-    const numObjects = 250;
-    const focalLength = window.innerWidth * 1.5; 
-    let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
+    let stars = [];
+    let clouds = [];
+    const numStars = 400;
+    const numClouds = 14;
 
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    document.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<numObjects; i++) {
-      let type = 'star'; const r = Math.random();
-      if(r > 0.98) type = 'blackhole'; else if(r > 0.94) type = 'pulsar'; else if(r > 0.88) type = 'planet'; else if(r > 0.80) type = 'nebula';
-      celestials.push({
-        type: type, x: Math.random() * 5000 - 2500, y: Math.random() * 5000 - 2500, z: Math.random() * 4000,
-        vx: 0, vy: 0, 
-        baseColor: type === 'star' ? '200, 240, 255' : (Math.random() > 0.5 ? '180, 100, 255' : '0, 243, 255'), 
-        speedX: (Math.random() - 0.5) * 0.2, speedY: (Math.random() - 0.5) * 0.2, wobble: Math.random() * Math.PI * 2, o: Math.random() * 0.8 + 0.2
+    for(let i=0; i<numStars; i++) {
+      stars.push({
+        x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+        size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05,
+        twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01,
+        color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255'
       });
     }
 
-    function resetCelestial(c) { c.x = Math.random() * 5000 - 2500; c.y = Math.random() * 5000 - 2500; c.z = 4000; c.vx = 0; c.vy = 0; }
-
-    function drawFisheyeSpace() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const centerX = canvas.width / 2; const centerY = canvas.height / 2;
-
-      celestials.forEach(c => {
-        c.z -= 2; c.wobble += 0.01;
-        if(c.z <= 0) resetCelestial(c);
-
-        const scale = focalLength / (focalLength + c.z);
-        let px = centerX + (c.x * scale); let py = centerY + (c.y * scale);
-
-        let dx = px - mouse.x; let dy = py - mouse.y; let dist = Math.sqrt(dx*dx + dy*dy);
-        if(dist < 350) { c.vx += (dx / dist) * 1.5; c.vy += (dy / dist) * 1.5; }
-        
-        c.vx *= 0.95; c.vy *= 0.95; c.x += c.vx; c.y += c.vy;
-
-        px = centerX + (c.x * scale); py = centerY + (c.y * scale);
-        const size = Math.max(0.5, (1 - c.z/4000) * 5); 
-        let dynamicAlpha = c.o * (1 - c.z/4000);
-        
-        if (c.type === 'star') {
-          ctx.fillStyle = `rgba(${c.baseColor}, ${dynamicAlpha})`; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
-        } else if (c.type === 'planet') {
-          ctx.strokeStyle = `rgba(255,255,255, ${dynamicAlpha * 0.6})`; ctx.beginPath(); ctx.ellipse(px, py, size * 2.2, size * 0.4, c.wobble, 0, Math.PI * 2); ctx.stroke();
-          let pGrad = ctx.createRadialGradient(px,py,0, px,py,size);
-          pGrad.addColorStop(0, `rgba(180, 100, 255, ${dynamicAlpha})`); pGrad.addColorStop(1, `rgba(10, 15, 30, ${dynamicAlpha})`);
-          ctx.fillStyle = pGrad; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
-        } else if (c.type === 'blackhole') {
-          let bhGrad = ctx.createRadialGradient(px,py,size*0.8, px,py,size*3);
-          bhGrad.addColorStop(0, `rgba(160, 100, 255, ${dynamicAlpha})`); bhGrad.addColorStop(0.5, `rgba(0, 243, 255, ${dynamicAlpha*0.5})`); bhGrad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.fillStyle = bhGrad; ctx.beginPath(); ctx.arc(px, py, size*3, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = `rgba(0,0,0, ${dynamicAlpha})`; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
-        } else if (c.type === 'pulsar') {
-          let pSize = size * 0.2;
-          ctx.fillStyle = `rgba(255,255,255, ${Math.abs(Math.sin(c.wobble * 20))})`; ctx.beginPath(); ctx.arc(px, py, pSize, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = `rgba(0, 243, 255, ${dynamicAlpha * 0.4})`; ctx.beginPath(); ctx.moveTo(px - size*5, py); ctx.lineTo(px + size*5, py); ctx.lineWidth = pSize; ctx.stroke();
-        } else if (c.type === 'nebula') {
-          let nGrad = ctx.createRadialGradient(px,py,0, px,py,size*5);
-          nGrad.addColorStop(0, `rgba(${c.baseColor}, ${dynamicAlpha * 0.1})`); nGrad.addColorStop(1, 'rgba(0,0,0,0)');
-          ctx.fillStyle = nGrad; ctx.beginPath(); ctx.arc(px, py, size*5, 0, Math.PI * 2); ctx.fill();
-        }
+    for(let i=0; i<numClouds; i++) {
+      clouds.push({
+        x: Math.random() * window.innerWidth, y: (Math.random() * window.innerHeight) - 100,
+        size: (Math.random() * 320) + 220, speed: (Math.random() * 0.4) + 0.15, opacity: (Math.random() * 0.35) + 0.1
       });
-      requestAnimationFrame(drawFisheyeSpace);
     }
-    drawFisheyeSpace();
+
+    function drawSereneSky() {
+      ctx.fillStyle = '#020614'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(s => {
+        s.x -= s.speed;
+        if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
+        s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
+        ctx.fillStyle = `rgba(${s.color}, ${opacity})`;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+      });
+
+      clouds.forEach(c => {
+        c.x -= c.speed;
+        if(c.x < -c.size) { c.x = canvas.width + c.size; c.y = (Math.random() * canvas.height) - 100; }
+        let grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
+        grad.addColorStop(0, `rgba(5, 12, 30, ${c.opacity})`); grad.addColorStop(1, 'rgba(2, 6, 20, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath(); ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2); ctx.fill();
+      });
+      requestAnimationFrame(drawSereneSky);
+    }
+    drawSereneSky();
 
     // --- 3. DATA LOGIC ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
