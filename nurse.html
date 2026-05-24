@@ -3,161 +3,361 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Configure Nursing Deployment | Priya Seva Center</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Professional Nursing | Priya Seva</title>
+  
+  <meta name="theme-color" content="#03040b">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f4f7f6; color: #2c3e50; }
-    .navbar { background-color: #1e3c72; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .logo-text { font-size: 22px; font-weight: 700; color: white; margin: 0; display: flex; align-items: center; gap: 10px; text-decoration: none;}
-    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    :root {
+      --void-bg: #03040b;
+      --glass-base: rgba(10, 15, 25, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --highlight: #00f3ff; 
+      --deep-ocean: #0055ff;
+    }
 
-    .page-wrapper { max-width: 850px; margin: 50px auto; padding: 0 20px; }
-    .premium-header { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color: white; padding: 35px; border-radius: 16px 16px 0 0; box-shadow: 0 10px 30px rgba(39, 174, 96, 0.15); }
-    .premium-header h2 { margin: 0 0 10px 0; font-size: 28px; font-weight: 700; display: flex; align-items: center; gap: 12px; }
-    .premium-header p { margin: 0; opacity: 0.9; font-size: 14px; line-height: 1.6; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
 
-    .form-container { background: white; padding: 40px; border-radius: 0 0 16px 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 35px; }
-    .section-card { background: #fcfdfe; border: 1px solid #eef2f5; padding: 30px; border-radius: 12px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01); }
-    .section-title { font-size: 15px; font-weight: 700; color: #27ae60; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; }
+    #spaceCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+    #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+
+    .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
+    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 243, 255, 0.6); pointer-events: auto;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(15, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
+    .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 243, 255, 0.15); border-color: var(--highlight);}
+
+    .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .full-width { grid-column: 1 / -1; }
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+    .left-pane::-webkit-scrollbar { width: 0px; }
     
-    .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 13px; color: #34495e; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 10px; font-family: 'Poppins'; font-size: 14px; box-sizing: border-box; background: white; transition: all 0.3s ease; color: #2c3e50; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #27ae60; outline: none; box-shadow: 0 0 0 4px rgba(39, 174, 96, 0.1); }
+    .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
+    
+    .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
+    .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 243, 255, 0.8), 0 0 50px rgba(0,0,0,1);}
+    .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
 
-    .confirm-btn { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); color: white; width: 100%; padding: 18px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3); }
-    .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4); }
-    .confirm-btn:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+    .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
+    .capsule-group:nth-child(2) { animation-delay: 1s; z-index: 50; }
+    .capsule-group:nth-child(3) { animation-delay: 2s; z-index: 40; }
+    .capsule-group:nth-child(4) { animation-delay: 0.5s; z-index: 30; }
+    .capsule-group:nth-child(5) { animation-delay: 1.5s; z-index: 20; }
+    .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
 
-    @media(max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+
+    .light-tracker { position: relative; width: 100%; }
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), rgba(160, 100, 255, 0.8) 40%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
+    
+    .glass-render { 
+      width: 100%; padding: 18px 25px; 
+      background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+      border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; 
+      color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
+      position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1);
+    }
+    .glass-render::placeholder { color: rgba(255,255,255,0.6); text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
+    .glass-render:hover { background: rgba(15, 20, 35, 0.6); transform: scale(1.02); }
+    .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
+
+    .custom-select { position: relative; user-select: none; }
+    .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
+    .select-trigger.active span { color: white; font-size: 15px; text-transform: none; letter-spacing: 0; }
+    
+    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
+    .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .option:last-child { border-bottom: none; }
+    .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
+
+    .glass-calendar { display: none; background: rgba(5, 8, 15, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
+    .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
+    .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
+    .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
+    .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
+    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
+    .cal-date:active { transform: scale(0.9) translateY(4px); } 
+
+    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.3); text-shadow: 0 0 10px #fff; }
+    .submit-btn:active { transform: translateY(5px) scale(0.95); }
+
+    @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
+    }
+    
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .video-bg.playing { opacity: 0.85; }
+
+    @media (max-width: 900px) {
+      .split-layout { flex-direction: column; overflow-y: auto; height: auto; display: block;}
+      body { overflow: auto; }
+      .right-pane { height: 50vh; width: 100vw; display: block; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%); mask-image: linear-gradient(to bottom, transparent 0%, black 50%); }
+      .left-pane { padding: 120px 20px 40px 20px; min-height: 100vh; display: flex; }
+    }
   </style>
 </head>
 <body>
 
   <nav class="navbar">
-    <a href="index.html" class="logo-text"><i class="fa-solid fa-hands-holding-child"></i> Priya Seva Center</a>
-    <div style="display:flex; gap: 20px;">
-      <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
-      <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-    </div>
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-user-nurse" style="color: #00f3ff;"></i> Priya Seva</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
   </nav>
 
-  <div class="page-wrapper">
-    <div class="premium-header">
-      <h2><i class="fa-solid fa-user-nurse"></i> Nursing Deployment Parameters</h2>
-      <p>Configure critical post-operative or chronic nursing assignments. Accurate definition here ensures precise matching with clinical criteria.</p>
-    </div>
+  <canvas id="spaceCanvas"></canvas>
+  <div id="rippleContainer"></div>
 
-    <div class="form-container">
-      
-      <div class="section-card">
-        <div class="section-title"><i class="fa-solid fa-id-card-clip"></i> Baseline Identification</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Patient Full Legal Identity</label>
-            <input type="text" id="fullName" placeholder="Enter Patient Name" required>
-          </div>
-          <div class="form-group">
-            <label>Clinical Team Gender Mandate</label>
-            <select id="gender">
-              <option value="Female Nursing Staff Obligatory">Female Nursing Staff Obligatory</option>
-              <option value="Male Nursing Staff Obligatory">Male Nursing Staff Obligatory</option>
-              <option value="No Explicit Gender Restrictions">No Explicit Gender Restrictions</option>
-            </select>
+  <div class="split-layout">
+    <div class="left-pane">
+      <div class="form-container" id="mainForm">
+        
+        <div class="spatial-header">
+          <h2>Professional Nursing</h2>
+          <p>Secure certified, compassionate nursing care for your loved ones. Our staff ensures medical-grade support at home.</p>
+        </div>
+
+        <div class="capsule-group input-group">
+          <label>Patient Full Name</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="parentName" class="glass-render" placeholder="E.g., Anjali Sharma" required>
           </div>
         </div>
-      </div>
 
-      <div class="section-card">
-        <div class="section-title"><i class="fa-solid fa-business-time"></i> Shift Intensity & Timeline</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label>Deployment Commencement Target</label>
-            <input type="date" id="bookingDate" required>
+        <div class="capsule-group input-group custom-select">
+          <label>Select Nursing Service</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
+              <span>Choose a service</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Allocation Structural Scale</label>
-            <select id="duration">
-              <option value="12-Hour Continuous Day Shift Rotation">12-Hour Continuous Day Shift Rotation</option>
-              <option value="12-Hour Continuous Night Shift Rotation">12-Hour Continuous Night Shift Rotation</option>
-              <option value="24-Hour Premium Live-In Support Integration">24-Hour Premium Live-In Support Integration</option>
-              <option value="Acute Isolation Protocol (3-5 Consecutive Days)">Acute Isolation Protocol (3-5 Consecutive Days)</option>
-              <option value="Custom Complex Split Allocation Shifts">Custom Complex Split Allocation Shifts</option>
-            </select>
-          </div>
-          <div class="form-group full-width">
-            <label>Specific Hourly Blocks Required</label>
-            <input type="text" id="timings" placeholder="E.g., 07:00 to 19:00 daily, or alternate schedules.">
-          </div>
-          <div class="form-group full-width">
-            <label>Critical Medical Diagnostics & Life Support Context</label>
-            <textarea id="diagnosis" rows="4" placeholder="Detail surgical recovery state, critical catheter protocols, dependency levels, feeding tube metrics etc."></textarea>
+          <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Elder Care')">Elder Care</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Post-Op Recovery')">Post-Op Recovery</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Newborn Nursing')">Newborn Nursing</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Medication Management')">Medication Management</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', '24/7 Live-in Nurse')">24/7 Live-in Nurse</div>
           </div>
         </div>
-      </div>
 
-      <button onclick="saveBooking()" class="confirm-btn" id="submitBtn"><i class="fa-solid fa-lock"></i> Verify & Submit Assignment</button>
+        <div class="capsule-group input-group custom-select">
+          <label>Schedule Frequency</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
+              <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
+            <div class="option" onclick="selectFrequency('Single Shift (8h)')">Single Shift (8h)</div>
+            <div class="option" onclick="selectFrequency('Night Shift (12h)')">Night Shift (12h)</div>
+            <div class="option" onclick="selectFrequency('24/7 Coverage')">24/7 Coverage</div>
+            <div class="option" onclick="selectFrequency('Weekly Schedule')">Weekly Schedule</div>
+          </div>
+          
+          <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
+            <div class="cal-top"><span>Select Dates:</span> <span>May 2026</span></div>
+            <div class="cal-days" style="margin-bottom:8px;">
+              <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
+            </div>
+            <div class="cal-days" id="calGrid"></div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group">
+          <label>Preferred Arrival Time</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="timeWindow" class="glass-render" placeholder="E.g., 9:00 AM to 5:00 PM">
+          </div>
+        </div>
+
+        <div class="capsule-group input-group">
+          <label>Medical Conditions (Optional)</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="extraDetails" class="glass-render" placeholder="Any specific conditions we should know?">
+          </div>
+        </div>
+
+        <div class="capsule-group" style="margin-top: 35px;">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Generate Request</button>
+          </div>
+        </div>
+
+      </div>
     </div>
+
+    <div class="right-pane">
+      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
+        <source src="./nurse.mp4" type="video/mp4">
+      </video>
+    </div>
+
   </div>
 
   <script>
-    async function saveBooking() {
-      const btn = document.getElementById('submitBtn');
-      const dateInput = document.getElementById('bookingDate').value;
-      const nameInput = document.getElementById('fullName').value;
+    // --- 1. LIGHT TRACKER & WATER RIPPLE ENGINE ---
+    const rippleContainer = document.getElementById('rippleContainer');
+    function createRipple(x, y) {
+      const ripple = document.createElement('div');
+      ripple.className = 'water-ripple';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      rippleContainer.appendChild(ripple);
+      setTimeout(() => { ripple.remove(); }, 1800);
+    }
+    document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+    
+    let lastRippleTime = 0;
+    let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
 
-      if (!dateInput || !nameInput) return alert("Please clarify Patient Identity and Start Date parameters.");
-
-      if (typeof window.supabase === 'undefined') {
-        return alert("Security compilation freeze. Re-verify connectivity assets.");
+    document.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+      const now = Date.now();
+      if(now - lastRippleTime > 150) { 
+        createRipple(e.clientX, e.clientY);
+        lastRippleTime = now;
       }
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
 
-      try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Binding medical data channels...';
-        btn.disabled = true;
+    // --- 2. CELESTIAL FISHEYE SPACE ENGINE ---
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+    let celestials = [];
+    const numObjects = 250;
+    const focalLength = window.innerWidth * 1.5; 
 
-        const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-        const clientInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-        const { data: { user }, error: authError } = await clientInstance.auth.getUser();
-        if (authError || !user) {
-          btn.innerHTML = '<i class="fa-solid fa-lock"></i> Verify & Submit Assignment'; btn.disabled = false;
-          return alert("Session expired or missing. Please authenticate via root dashboard path.");
+    for(let i=0; i<numObjects; i++) {
+      let type = 'star'; const r = Math.random();
+      if(r > 0.98) type = 'blackhole'; else if(r > 0.94) type = 'pulsar'; else if(r > 0.88) type = 'planet'; else if(r > 0.80) type = 'nebula';
+      celestials.push({
+        type: type, x: Math.random() * 5000 - 2500, y: Math.random() * 5000 - 2500, z: Math.random() * 4000,
+        vx: 0, vy: 0, 
+        baseColor: type === 'star' ? '200, 240, 255' : (Math.random() > 0.5 ? '180, 100, 255' : '0, 243, 255'), 
+        speedX: (Math.random() - 0.5) * 0.2, speedY: (Math.random() - 0.5) * 0.2, wobble: Math.random() * Math.PI * 2, o: Math.random() * 0.8 + 0.2
+      });
+    }
+
+    function resetCelestial(c) { c.x = Math.random() * 5000 - 2500; c.y = Math.random() * 5000 - 2500; c.z = 4000; c.vx = 0; c.vy = 0; }
+
+    function drawFisheyeSpace() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const centerX = canvas.width / 2; const centerY = canvas.height / 2;
+
+      celestials.forEach(c => {
+        c.z -= 2; c.wobble += 0.01;
+        if(c.z <= 0) resetCelestial(c);
+
+        const scale = focalLength / (focalLength + c.z);
+        let px = centerX + (c.x * scale); let py = centerY + (c.y * scale);
+
+        let dx = px - mouse.x; let dy = py - mouse.y; let dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 350) { c.vx += (dx / dist) * 1.5; c.vy += (dy / dist) * 1.5; }
+        
+        c.vx *= 0.95; c.vy *= 0.95; c.x += c.vx; c.y += c.vy;
+
+        px = centerX + (c.x * scale); py = centerY + (c.y * scale);
+        const size = Math.max(0.5, (1 - c.z/4000) * 5); 
+        let dynamicAlpha = c.o * (1 - c.z/4000);
+        
+        if (c.type === 'star') {
+          ctx.fillStyle = `rgba(${c.baseColor}, ${dynamicAlpha})`; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
+        } else if (c.type === 'planet') {
+          ctx.strokeStyle = `rgba(255,255,255, ${dynamicAlpha * 0.6})`; ctx.beginPath(); ctx.ellipse(px, py, size * 2.2, size * 0.4, c.wobble, 0, Math.PI * 2); ctx.stroke();
+          let pGrad = ctx.createRadialGradient(px,py,0, px,py,size);
+          pGrad.addColorStop(0, `rgba(180, 100, 255, ${dynamicAlpha})`); pGrad.addColorStop(1, `rgba(10, 15, 30, ${dynamicAlpha})`);
+          ctx.fillStyle = pGrad; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
+        } else if (c.type === 'blackhole') {
+          let bhGrad = ctx.createRadialGradient(px,py,size*0.8, px,py,size*3);
+          bhGrad.addColorStop(0, `rgba(160, 100, 255, ${dynamicAlpha})`); bhGrad.addColorStop(0.5, `rgba(0, 243, 255, ${dynamicAlpha*0.5})`); bhGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = bhGrad; ctx.beginPath(); ctx.arc(px, py, size*3, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = `rgba(0,0,0, ${dynamicAlpha})`; ctx.beginPath(); ctx.arc(px, py, size, 0, Math.PI * 2); ctx.fill();
+        } else if (c.type === 'pulsar') {
+          let pSize = size * 0.2;
+          ctx.fillStyle = `rgba(255,255,255, ${Math.abs(Math.sin(c.wobble * 20))})`; ctx.beginPath(); ctx.arc(px, py, pSize, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = `rgba(0, 243, 255, ${dynamicAlpha * 0.4})`; ctx.beginPath(); ctx.moveTo(px - size*5, py); ctx.lineTo(px + size*5, py); ctx.lineWidth = pSize; ctx.stroke();
+        } else if (c.type === 'nebula') {
+          let nGrad = ctx.createRadialGradient(px,py,0, px,py,size*5);
+          nGrad.addColorStop(0, `rgba(${c.baseColor}, ${dynamicAlpha * 0.1})`); nGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = nGrad; ctx.beginPath(); ctx.arc(px, py, size*5, 0, Math.PI * 2); ctx.fill();
         }
+      });
+      requestAnimationFrame(drawFisheyeSpace);
+    }
+    drawFisheyeSpace();
 
-        const detailsPayload = {
-          Context_Patient: nameInput,
-          Gender_Preference: document.getElementById('gender').value,
-          Shift_Cadence: document.getElementById('duration').value,
-          Hourly_Blocks: document.getElementById('timings').value,
-          Critical_Diagnostics: document.getElementById('diagnosis').value
+    // --- 3. DATA LOGIC ---
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let selectedFrequency = ""; let selectedDates = [];
+
+    function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
+    function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
+    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'Single Shift (8h)'); }
+
+    function buildCalendarGrid(isSingleSelect) {
+      const grid = document.getElementById('calGrid'); grid.innerHTML = '';
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
+      for(let i=1; i<=31; i++) {
+        const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
+        div.onclick = function(e) {
+          createRipple(e.clientX, e.clientY);
+          if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
+          else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
         };
-
-        const { error } = await clientInstance.from('bookings').insert([{ 
-            user_email: user.email, 
-            service_type: 'Certified Nurses', 
-            booking_date: dateInput,
-            status: 'pending',
-            details: JSON.stringify(detailsPayload)
-        }]);
-
-        if (error) throw error;
-
-        alert("Nursing allocation profile compiled successfully.");
-        window.location.href = "dashboard.html";
-
-      } catch (err) {
-        console.error(err);
-        alert("Transaction aborted: " + err.message);
-        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Verify & Submit Assignment';
-        btn.disabled = false;
+        grid.appendChild(div);
       }
+    }
+    document.addEventListener('click', function(e) { if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); } });
+
+    async function submitRequest() {
+      const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const notes = document.getElementById('extraDetails').value;
+      if(!name || service === "Choose a service" || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select a service, and pick your dates."); }
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) { btn.innerHTML = 'Generate Request'; btn.disabled = false; return alert("Authentication required. Please log in."); }
+        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
+        const detailsPayload = { Patient_Name: name, Specific_Service: service, Frequency: selectedFrequency, Selected_Dates: formattedDates, Preferred_Time: timeWindow, Notes: notes };
+        const { error } = await supabaseClient.from('bookings').insert([{ user_email: user.email, service_type: 'Nurse Services', booking_date: primaryDate, status: 'pending', details: JSON.stringify(detailsPayload) }]);
+        if (error) throw error;
+        window.location.href = "dashboard.html";
+      } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Generate Request'; btn.disabled = false; }
     }
   </script>
 </body>
