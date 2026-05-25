@@ -12,45 +12,36 @@
 
   <style>
     :root {
-      /* Neptune Ice Blue Palette */
       --void-bg: #020614;
       --glass-base: rgba(10, 20, 35, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --highlight: #00e5ff; /* Ice Sharp Blue */
+      --highlight: #00e5ff;
       --deep-ocean: #0055ff;
     }
 
     body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
 
-    /* Interactive Night Canvas */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-    
-    /* Water Ripples Container */
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
-    /* Fixed Navbar */
     .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
     .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(0, 229, 255, 0.6); pointer-events: auto;}
     .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(10, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
     .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(0, 229, 255, 0.15); border-color: var(--highlight);}
 
-    /* Layout */
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
     
-    /* LEFT PANE - Spatial Viewport */
     .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
     .left-pane::-webkit-scrollbar { width: 0px; }
     
-    /* Structural Layer Container */
     .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
     .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
     .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 229, 255, 0.6), 0 0 40px rgba(0,0,0,1);}
     .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
 
-    /* Capsule Groups with Floating Mechanics */
     .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
     .capsule-group:nth-child(2) { animation-delay: 1s; z-index: 50; }
     .capsule-group:nth-child(3) { animation-delay: 2s; z-index: 40; }
@@ -59,7 +50,6 @@
 
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-    /* Razor Sharp Photon Tracking system */
     .light-tracker { position: relative; width: 100%; }
     .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
@@ -75,7 +65,6 @@
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
-    /* Transparent High-End Glass */
     .glass-render { 
       width: 100%; padding: 18px 25px; 
       background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
@@ -89,7 +78,6 @@
     .glass-render:hover { background: rgba(15, 25, 45, 0.5); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
-    /* Dropdowns */
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
@@ -101,7 +89,6 @@
     .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 229, 255, 0.2); padding-left: 35px; }
 
-    /* Interactive Parallax Bouncy Calendar */
     .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0, 229, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
     .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
@@ -110,18 +97,13 @@
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
     .cal-date.selected { background: rgba(0, 229, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 229, 255, 0.4); transform: scale(1.3) translateY(-6px);}
 
-    /* Submit Button */
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 229, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 229, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 229, 255, 0.3); text-shadow: 0 0 10px #fff; }
     .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-    /* ==========================================================
-       RIGHT PANE - SEAMLESS PARTITION MASK BLENDING 
-       ========================================================== */
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
-      /* Wide 45% mask removes the central structural boundary edge completely */
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
@@ -252,7 +234,6 @@
         lastRippleTime = now;
       }
 
-      // Track Photon Lighting Coordinate Streams
       document.querySelectorAll('.light-tracker').forEach(el => {
         const rect = el.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -268,7 +249,7 @@
     let stars = [];
     let clouds = [];
     const numStars = 400;
-    const numClouds = 8; // Layered compound clouds
+    const numClouds = 8; 
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -277,7 +258,6 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Populate Twinkling Star Matrix
     for(let i=0; i<numStars; i++) {
       stars.push({
         x: Math.random() * window.innerWidth,
@@ -290,11 +270,10 @@
       });
     }
 
-    // Populate Randomly Contoured Shadow Clouds (Left to Right)
     for(let i=0; i<numClouds; i++) {
       let baseSize = (Math.random() * 180) + 120;
       let subParts = [];
-      let cloudCircles = Math.floor(Math.random() * 3) + 4; // 4 to 6 overlapping points for organic asymmetry
+      let cloudCircles = Math.floor(Math.random() * 3) + 4; 
       
       for(let j=0; j<cloudCircles; j++) {
         subParts.push({
@@ -309,7 +288,7 @@
         y: (Math.random() * canvas.height * 0.85),
         parts: subParts,
         baseSize: baseSize,
-        speed: (Math.random() * 0.25) + 0.12, // Vector pointing RIGHT
+        speed: (Math.random() * 0.25) + 0.12, 
         opacity: (Math.random() * 0.14) + 0.04
       });
     }
@@ -318,32 +297,25 @@
       ctx.fillStyle = '#020614';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Render Stars
       stars.forEach(s => {
         s.x -= s.speed;
         if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
-        
         s.twinklePhase += s.twinkleSpeed;
         let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
-
         ctx.fillStyle = `rgba(${s.color}, ${opacity})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
       });
 
-      // Render Organic Random Shapes drifting LEFT TO RIGHT
       clouds.forEach(c => {
-        c.x += c.speed; // Vector corrected to Right direction drift
+        c.x += c.speed; 
         if(c.x > canvas.width + c.baseSize * 2) { 
             c.x = -c.baseSize * 2; 
             c.y = (Math.random() * canvas.height * 0.85);
         }
-
         ctx.save();
-        // Hardware-accelerated soft feather rendering via soft shadows
         ctx.shadowColor = 'rgba(2, 6, 20, 0.95)';
         ctx.shadowBlur = c.baseSize * 0.6;
         ctx.fillStyle = `rgba(5, 14, 32, ${c.opacity})`;
-
         ctx.beginPath();
         c.parts.forEach(p => {
           ctx.arc(c.x + p.offsetX, c.y + p.offsetY, p.radius, 0, Math.PI * 2);
@@ -356,7 +328,7 @@
     }
     drawSereneSky();
 
-    // --- 3. BUSINESS APPLICATION LAYER ---
+    // --- 3. BUSINESS APPLICATION LAYER & API HOOKS ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -420,26 +392,59 @@
       const childCount = document.getElementById('childCountTrigger').innerText.trim();
       const timeWindow = document.getElementById('timeWindow').value;
 
-      if(!name || childCount === "Select count" || selectedFrequency === "" || selectedDates.length === 0) { 
+      if(!name || childCount.includes("Select") || selectedFrequency === "" || selectedDates.length === 0) { 
         return alert("Please fill your name, select count, and pick your dates."); 
       }
 
       try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; 
+        btn.disabled = true;
+
+        // Verify User Session via Supabase
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { btn.innerHTML = 'Generate Request'; btn.disabled = false; return alert("Authentication required. Please log in."); }
+        if (!user) { 
+            btn.innerHTML = 'Generate Request'; 
+            btn.disabled = false; 
+            return alert("Authentication required. Please log in."); 
+        }
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", ");
-        let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
-        
-        const detailsPayload = { Parent_Name: name, Children: childCount, Frequency: selectedFrequency, Selected_Dates: formattedDates, Timings: timeWindow };
+        const serviceName = "Babysitting - " + childCount;
 
-        const { error } = await supabaseClient.from('bookings').insert([{ user_email: user.email, service_type: 'Babysitters', booking_date: primaryDate, status: 'pending', details: JSON.stringify(detailsPayload) }]);
-        if (error) throw error;
-        window.location.href = "dashboard.html";
+        // 1. Send Payload to Google Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9_K1Agu-TVqLp-e8XjVwvHOK-HXSNArCdUYhYT2bNxGkT9RishH-4XFW0JYG-bvs/exec";
+        
+        const payload = {
+          name: name,
+          email: user.email,
+          phone: "Not Provided",
+          serviceType: serviceName,
+          date: formattedDates,
+          address: "Not Provided",
+          details: "Time: " + timeWindow + " | Frequency: " + selectedFrequency
+        };
+
+        // Fire request to Google Sheets (no-cors mode bypasses security blocks)
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // 2. Format & Trigger WhatsApp Redirection
+        const adminWaNumber = "917439392803"; // <-- ENTER YOUR WHATSAPP NUMBER HERE
+        const waMessage = `*New Booking Request!*\n\n*Service:* ${serviceName}\n*Client:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}`;
+        
+        const waUrl = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`;
+        
+        window.open(waUrl, '_blank'); // Opens WhatsApp in a new tab
+        window.location.href = "dashboard.html"; // Redirects current tab to dashboard
 
       } catch (err) {
-        alert("Transaction aborted: " + err.message); btn.innerHTML = 'Generate Request'; btn.disabled = false;
+        alert("Transaction aborted: " + err.message); 
+        btn.innerHTML = 'Generate Request'; 
+        btn.disabled = false;
       }
     }
   </script>
