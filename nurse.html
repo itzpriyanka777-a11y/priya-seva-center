@@ -106,7 +106,6 @@
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
-    /* RIGHT PANE - Hardware Accelerated Native Video */
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%);
@@ -304,7 +303,7 @@
     }
     drawSereneSky();
 
-    // --- 3. DATA LOGIC ---
+    // --- 3. DATA LOGIC & API HOOKS ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -331,18 +330,63 @@
     document.addEventListener('click', function(e) { if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); } });
 
     async function submitRequest() {
-      const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const notes = document.getElementById('extraDetails').value;
-      if(!name || service === "Choose a service" || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select a service, and pick your dates."); }
+      const btn = document.getElementById('submitBtn'); 
+      const name = document.getElementById('parentName').value; 
+      const service = document.getElementById('serviceTrigger').innerText.trim(); 
+      const timeWindow = document.getElementById('timeWindow').value; 
+      const notes = document.getElementById('extraDetails').value;
+
+      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { 
+        return alert("Please fill your name, select a service, and pick your dates."); 
+      }
+      
       try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; 
+        btn.disabled = true;
+
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { btn.innerHTML = 'Generate Request'; btn.disabled = false; return alert("Authentication required. Please log in."); }
-        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); let primaryDate = `2026-05-${String(selectedDates.sort((a,b)=>a-b)[0]).padStart(2, '0')}`;
-        const detailsPayload = { Patient_Name: name, Specific_Service: service, Frequency: selectedFrequency, Selected_Dates: formattedDates, Preferred_Time: timeWindow, Notes: notes };
-        const { error } = await supabaseClient.from('bookings').insert([{ user_email: user.email, service_type: 'Nurse Services', booking_date: primaryDate, status: 'pending', details: JSON.stringify(detailsPayload) }]);
-        if (error) throw error;
+        if (!user) { 
+            btn.innerHTML = 'Generate Request'; 
+            btn.disabled = false; 
+            return alert("Authentication required. Please log in."); 
+        }
+
+        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
+        
+        // 1. Send Payload to Google Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9_K1Agu-TVqLp-e8XjVwvHOK-HXSNArCdUYhYT2bNxGkT9RishH-4XFW0JYG-bvs/exec";
+        
+        const payload = {
+          name: name,
+          email: user.email,
+          phone: "Not Provided",
+          serviceType: "Nurse: " + service,
+          date: formattedDates,
+          address: "Not Provided",
+          details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Medical Notes: " + notes : "")
+        };
+
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // 2. WhatsApp Direct Link
+        const adminWaNumber = "917439392803"; // <-- ENTER YOUR WHATSAPP NUMBER HERE
+        const waMessage = `*New Nursing Request!*\n\n*Service:* ${service}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${notes || 'None'}`;
+        
+        const waUrl = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`;
+        
+        window.open(waUrl, '_blank');
         window.location.href = "dashboard.html";
-      } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Generate Request'; btn.disabled = false; }
+
+      } catch (err) { 
+        alert("Transaction aborted: " + err.message); 
+        btn.innerHTML = 'Generate Request'; 
+        btn.disabled = false; 
+      }
     }
   </script>
 </body>
