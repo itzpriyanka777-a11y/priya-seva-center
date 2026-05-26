@@ -4,113 +4,172 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Priya Seva Center | Premium Maid, Nurse & Babysitter Services</title>
+  <title>Priya Seva Center | Premium Home Care & Nursing Intelligence</title>
   <meta name="description" content="Book verified maids, certified nurses, health visits, and babysitters in Kolkata.">
-  <meta name="theme-color" content="#1e3c72">
+  <meta name="theme-color" content="#030814">
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    /* CSS Reset removes the annoying white bar at the top */
+    /* CSS Reset absolutely kills any white bars or hidden margins */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    body { font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; overflow-x: hidden; position: relative;}
+    :root {
+      --bg-void: #030814;
+      --glass-panel: rgba(10, 18, 35, 0.6);
+      --glass-border: rgba(0, 243, 255, 0.15);
+      --highlight: #00f3ff; /* Medical Cyan */
+    }
+
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background-color: var(--bg-void); 
+      color: #e2e8f0; 
+      overflow-x: hidden; 
+      position: relative;
+      /* Subtle Futuristic Medical Grid for extreme depth */
+      background-image: 
+        linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+    
     a { text-decoration: none; }
     
-    /* Interactive Water Ripple */
+    /* Interactive Water Ripple Physics */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(52, 152, 219, 0.5); box-shadow: 0 0 20px rgba(52, 152, 219, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.5); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
-    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 250px; height: 250px; opacity: 0; border-width: 0px; } }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
-    .navbar { background-color: transparent; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 100;}
-    .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.3s;}
+    /* Completely Transparent Navbar */
+    .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000; transition: all 0.4s ease;}
+    
+    .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
-    .logo-icon { font-size: 28px; color: #e74c3c; background: white; padding: 10px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .logo-text { color: white; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
+    .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
     
-    .nav-actions { display: flex; align-items: center; gap: 15px; }
+    .nav-actions { display: flex; align-items: center; gap: 20px; }
 
-    /* Fixed Button: white-space nowrap prevents line breaks on phones */
-    .login-trigger-btn { background-color: #ffffff; color: #1e3c72; border: none; padding: 10px 22px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 8px; cursor: pointer; transition: 0.3s ease; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-    .login-trigger-btn:hover { background-color: #f0f2f5; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
+    /* High-Tech Login Button */
+    .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
+    .login-trigger-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-2px);}
 
     .menu-container { position: relative; display: inline-block; }
-    .menu-btn { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 10px 20px; font-size: 16px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(5px);}
-    .menu-btn:hover { background: rgba(255,255,255,0.3); }
-    .dropdown-content { display: none; position: absolute; right: 0; top: 100%; background-color: white; min-width: 220px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; z-index: 99;}
-    .dropdown-content a { color: #2c3e50; padding: 15px 20px; display: block; font-weight: 500; font-size: 15px; border-bottom: 1px solid #f0f2f5; transition: 0.2s;}
-    .dropdown-content a i { width: 25px; color: #1e3c72; }
-    .dropdown-content a:hover { background-color: #f8faff; color: #1e3c72; padding-left: 25px;}
-    .menu-container:hover .dropdown-content { display: block; }
+    .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 20px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
+    .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
+    
+    /* Dark Glass Menu Dropdown */
+    .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 240px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
+    .dropdown-content a { color: #e2e8f0; padding: 16px 22px; display: block; font-weight: 500; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
+    .dropdown-content a i { width: 30px; color: var(--highlight); }
+    .dropdown-content a:hover { background: rgba(0, 243, 255, 0.1); color: white; padding-left: 28px;}
+    .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* The Hero Section + Clinical Floating Canvas */
-    .hero { position: relative; background: linear-gradient(rgba(30, 60, 114, 0.8), rgba(42, 82, 152, 0.8)), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 140px 20px 150px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; overflow: hidden;}
-    #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+    /* THE HERO SECTION
+      The image blends seamlessly into the dark background using a 3-point gradient 
+    */
+    .hero { 
+      position: relative; 
+      /* Perfect Fade: Image -> Dark Blue -> Void Black */
+      background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); 
+      background-size: cover; 
+      background-position: center; 
+      background-attachment: fixed;
+      color: white; 
+      text-align: center; 
+      padding: 220px 20px 180px 20px; 
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Medical Floating Nodes Canvas */
+    #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+    
     .hero-content { position: relative; z-index: 2; }
-    .hero h1 { font-size: 42px; font-weight: 700; margin-bottom: 15px; max-width: 800px; margin: 0 auto; line-height: 1.3; text-shadow: 0 2px 10px rgba(0,0,0,0.3);}
-    .hero p { font-size: 18px; color: #e2e8f0; margin-bottom: 30px; margin-top: 15px; text-shadow: 0 1px 5px rgba(0,0,0,0.3);}
+    .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
+    .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
-    .services-container { max-width: 1100px; margin: -60px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; position: relative; z-index: 10;}
+    /* SERVICE CARDS: DARK GLASSMORPHISM WITH EDGE LIGHTING
+    */
+    .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     
-    /* Gentle Bobbing Animation for Cards */
-    @keyframes gentlyBob { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    /* Independent Bobbing Physics */
+    .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
+    .float-wrap:nth-child(2) { animation-delay: 1.2s; }
+    .float-wrap:nth-child(3) { animation-delay: 0.5s; }
+    .float-wrap:nth-child(4) { animation-delay: 1.8s; }
+    @keyframes gentlyBob { 0% { transform: translateY(0px); } 100% { transform: translateY(-15px); } }
 
-    /* The Cards with Cursor Light Tracking Edge Physics */
-    .service-card { position: relative; background: white; border-radius: 16px; padding: 35px 25px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.08); transition: transform 0.4s; border-bottom: 5px solid transparent; display: flex; flex-direction: column; animation: gentlyBob 6s ease-in-out infinite; cursor: pointer;}
-    .service-card:hover { animation-play-state: paused; transform: translateY(-12px); box-shadow: 0 15px 40px rgba(0,0,0,0.12); }
+    /* The Laser-Edge Light Tracker */
+    .light-tracker { position: relative; width: 100%; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; height: 100%; border: 1px solid rgba(255,255,255,0.03);}
+    .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
     
-    .service-card:nth-child(1) { animation-delay: 0s; border-bottom-color: #3498db;}
-    .service-card:nth-child(2) { animation-delay: 1.5s; border-bottom-color: #2ecc71;}
-    .service-card:nth-child(3) { animation-delay: 0.7s; border-bottom-color: #e74c3c;}
-    .service-card:nth-child(4) { animation-delay: 2.2s; border-bottom-color: #f39c12;}
-
-    /* Futuristic Edge Light Mask */
-    .service-card::after {
+    .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(52, 152, 219, 0.8), transparent 100%);
+      background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
     }
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
 
-    .card-icon { font-size: 45px; margin-bottom: 20px; transition: 0.3s; position: relative; z-index: 2;}
-    .service-card:hover .card-icon { transform: scale(1.1); }
-    .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #2c3e50; position: relative; z-index: 2;}
-    .service-card p { font-size: 14px; color: #7f8c8d; margin-bottom: 25px; line-height: 1.6; flex-grow: 1; position: relative; z-index: 2;}
-    .book-btn { background: #f8faff; color: #2c3e50; border: 2px solid #e2e8f0; padding: 12px 20px; border-radius: 8px; font-weight: 600; transition: 0.3s; width: 100%; box-sizing: border-box; position: relative; z-index: 2;}
+    .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer;}
     
-    .card-maid .card-icon { color: #3498db; } .service-card.card-maid:hover .book-btn { background: #3498db; color: white; border-color: #3498db;}
-    .card-nurse .card-icon { color: #2ecc71; } .service-card.card-nurse:hover .book-btn { background: #2ecc71; color: white; border-color: #2ecc71;}
-    .card-health .card-icon { color: #e74c3c; } .service-card.card-health:hover .book-btn { background: #e74c3c; color: white; border-color: #e74c3c;}
-    .card-baby .card-icon { color: #f39c12; } .service-card.card-baby:hover .book-btn { background: #f39c12; color: white; border-color: #f39c12;}
-
-    .reviews-section { max-width: 1100px; margin: 60px auto; padding: 0 20px; text-align: center; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-    .review-card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: left; border: 1px solid #e2e8f0;}
-    .stars { color: #f39c12; font-size: 16px; margin-bottom: 15px; }
-
-    .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: #1a252f; color: white; padding: 20px; box-sizing: border-box; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s ease; font-size: 13px;}
-    .cookie-btn { padding: 8px 15px; border-radius: 6px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; }
-    .btn-accept { background: #2ecc71; color: white; }
-    .btn-decline { background: transparent; color: #bdc3c7; border: 1px solid #bdc3c7; }
-
-    .chatbot-fab { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 24px; box-shadow: 0 10px 25px rgba(30, 60, 114, 0.4); cursor: pointer; z-index: 9998; transition: transform 0.3s; }
-    .chatbot-fab:hover { transform: scale(1.1); }
-
-    .notify-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 10000; justify-content: center; align-items: center; }
-    .notify-content { background: white; padding: 40px; border-radius: 16px; text-align: center; max-width: 400px; }
-    .notify-content i { font-size: 50px; color: #f39c12; margin-bottom: 15px; }
+    .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
+    .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
     
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
-    .auth-modal { background: white; padding: 35px; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; box-sizing: border-box; text-align: center;}
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #95a5a6; transition: 0.3s;}
-    .close-modal:hover { color: #e74c3c;}
-    .auth-input { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; box-sizing: border-box; outline: none;}
-    .auth-input:focus { border-color: #1e3c72; }
-    .primary-auth-btn { background: #1e3c72; color: white; width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 20px;}
+    .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600; letter-spacing: 0.5px;}
+    .service-card p { font-size: 14px; color: #94a3b8; margin-bottom: 30px; line-height: 1.6; flex-grow: 1;}
+    .book-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 14px 20px; border-radius: 12px; font-weight: 600; transition: 0.3s; width: 100%; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;}
+    
+    /* Neon Glow Accents for each card */
+    .card-maid .card-icon { color: #3498db; } .card-maid:hover .book-btn { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);}
+    .card-nurse .card-icon { color: #2ecc71; } .card-nurse:hover .book-btn { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);}
+    .card-health .card-icon { color: var(--highlight); } .card-health:hover .book-btn { background: rgba(0, 243, 255, 0.2); color: var(--highlight); border-color: var(--highlight); box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);}
+    .card-baby .card-icon { color: #f39c12; } .card-baby:hover .book-btn { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);}
+
+    /* Deep Glass Reviews Section */
+    .reviews-section { max-width: 1100px; margin: 80px auto; padding: 0 20px; text-align: center; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;}
+    .review-card { background: var(--glass-panel); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: left; transition: 0.3s;}
+    .review-card:hover { transform: translateY(-5px); border-color: rgba(0,243,255,0.2); box-shadow: 0 25px 50px rgba(0,0,0,0.6);}
+    .stars { color: #f39c12; font-size: 16px; margin-bottom: 20px; filter: drop-shadow(0 0 5px rgba(243,156,18,0.5));}
+
+    /* Modals & Toggles */
+    .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(3, 8, 20, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,243,255,0.2); color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 13px;}
+    .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; transition: 0.3s;}
+    .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
+    .btn-decline { background: transparent; color: #94a3b8; border: 1px solid #94a3b8; }
+
+    .chatbot-fab { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--highlight); font-size: 24px; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; z-index: 9998; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);}
+    .chatbot-fab:hover { transform: scale(1.1) rotate(-10deg); background: var(--highlight); color: #000; box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
+
+    /* Authentication Dark Glass Modal */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
+    .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; text-align: center; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+    
+    .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
+    .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
+    .auth-input { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 14px; outline: none; transition: 0.3s;}
+    .auth-input:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
+    .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
+    .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
     
     @media (max-width: 768px) {
-      .login-trigger-btn span { display: none; } /* Show icon only on small phones */
+      .hero { padding: 180px 20px 120px 20px; }
+      .hero h1 { font-size: 36px; }
+      .navbar { padding: 20px; }
+      .login-trigger-btn span { display: none; } 
     }
   </style>
 </head>
@@ -120,19 +179,19 @@
 
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-      <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
-      <div class="logo-text">Priya Seva Center</div>
+      <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
+      <div class="logo-text">Priya Seva</div>
     </a>
     <div class="nav-actions">
       <button class="login-trigger-btn" id="mainActionButton" onclick="openLoginModal();">
-        <i class="fa-solid fa-user-lock"></i> <span>Login / Sign Up</span>
+        <i class="fa-solid fa-fingerprint"></i> <span>Secure Portal</span>
       </button>
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
         <div class="dropdown-content">
           <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
           <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
-          <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy & T&C</a>
+          <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
         </div>
       </div>
     </div>
@@ -140,110 +199,117 @@
 
   <section class="hero">
     <canvas id="heroCanvas"></canvas>
+    
     <div class="hero-content">
-      <h1>Priya Seva Center:<br>Premium Home Care & Nursing</h1>
-      <p>Professional Certified Nurses & Trusted Maid Services Across Kolkata.</p>
+      <h1>Advanced Home Care & Nursing Intelligence</h1>
+      <p>Coordinate certified nurses, rigorous health checks, and trusted home management protocols across Kolkata via a state-of-the-art secure platform.</p>
     </div>
   </section>
 
   <section class="services-container">
-    <a href="maid.html" class="service-card card-maid">
-      <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
-      <p>Trusted professionals for daily cleaning, cooking, and complete home caretaking.</p>
-      <div class="book-btn">Customize Maid Plan</div>
-    </a>
-    <a href="nurse.html" class="service-card card-nurse">
-      <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
-      <p>Experienced nursing staff for post-surgery recovery and dedicated patient care.</p>
-      <div class="book-btn">Request Nurse</div>
-    </a>
-    <a href="health.html" class="service-card card-health">
-      <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
-      <p>On-demand home visits for wound dressings, vitals monitoring, and injections.</p>
-      <div class="book-btn">Schedule Visit</div>
-    </a>
-    <a href="babysitter.html" class="service-card card-baby">
-      <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
-      <p>Verified, patient, and highly trained caretakers for your little ones.</p>
-      <div class="book-btn">Find Babysitter</div>
-    </a>
-  </section>
+    <div class="float-wrap">
+      <div class="light-tracker card-maid">
+        <div class="service-card" onclick="window.location.href='maid.html'">
+          <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
+          <p>Verified professionals for daily sanitization, culinary prep, and precision home caretaking.</p>
+          <div class="book-btn">Customize Plan</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="float-wrap">
+      <div class="light-tracker card-nurse">
+        <div class="service-card" onclick="window.location.href='nurse.html'">
+          <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
+          <p>Medical-grade nursing staff for post-operative recovery and critical patient monitoring.</p>
+          <div class="book-btn">Request Nurse</div>
+        </div>
+      </div>
+    </div>
 
-  <section class="reviews-section" id="reviews">
-    <h2 style="color: #1e3c72; font-size: 32px; font-weight: 700;">Trusted by Families Across Kolkata</h2>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        <p>"The automated dashboard is brilliant. I can track exactly when my maid arrives and leave absence notes instantly."</p>
-        <strong>Rahul Banerjee</strong> <span style="font-size:12px; color:#7f8c8d;">- Salt Lake</span>
+    <div class="float-wrap">
+      <div class="light-tracker card-health">
+        <div class="service-card" onclick="window.location.href='health.html'">
+          <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
+          <p>On-demand clinical home visits for wound dressings, vitals tracking, and injections.</p>
+          <div class="book-btn">Schedule Visit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="float-wrap">
+      <div class="light-tracker card-baby">
+        <div class="service-card" onclick="window.location.href='babysitter.html'">
+          <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
+          <p>Psychologically verified, patient, and highly trained pediatric caretakers.</p>
+          <div class="book-btn">Find Babysitter</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="chatbot-fab" onclick="alert('Priya Seva AI Assistant connecting... (Backend API Pending)')">
-    <i class="fa-solid fa-message"></i>
+  <section class="reviews-section" id="reviews">
+    <h2 style="color: #fff; font-size: 32px; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Trusted by Families Across Kolkata</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">"The automated dashboard is brilliant. I can track exactly when my maid arrives and manage my requests instantly without calling anyone."</p>
+        <strong style="color: var(--highlight); font-size: 16px;">Rahul Banerjee</strong> <span style="font-size:12px; color:#64748b;">- Salt Lake</span>
+      </div>
+      <div class="review-card">
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">"Priya Seva provided a certified nurse for my father post-surgery. The level of medical care and sheer professionalism is unmatched in the city."</p>
+        <strong style="color: var(--highlight); font-size: 16px;">Anjali Das</strong> <span style="font-size:12px; color:#64748b;">- New Town</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="chatbot-fab" onclick="alert('Medical Intelligence Assistant connecting...')">
+    <i class="fa-solid fa-microchip"></i>
   </div>
 
   <div class="cookie-banner" id="cookieBanner">
-    <div>🍪 We use cookies to ensure you get the best experience on our website. <a href="policy.html" style="color:#3498db;">Learn more</a>.</div>
+    <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> End-to-end encrypted connection. We use cookies to ensure optimal platform performance. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
     <div style="display:flex; gap: 10px;">
-      <button class="cookie-btn btn-accept" onclick="acceptCookies()">Accept All</button>
-      <button class="cookie-btn btn-decline" onclick="acceptCookies()">Decline</button>
-    </div>
-  </div>
-
-  <div class="notify-modal" id="notifyModal">
-    <div class="notify-content">
-      <i class="fa-solid fa-bell"></i>
-      <h3 style="color:#2c3e50; margin-top:0;">Stay Updated!</h3>
-      <p style="color:#7f8c8d; font-size: 14px;">Would you like to receive email and WhatsApp notifications for your service bookings and reminders?</p>
-      <button onclick="document.getElementById('notifyModal').style.display='none'" style="background:#2ecc71; color:white; border:none; padding: 12px 20px; border-radius: 8px; width:100%; font-weight:600; cursor:pointer; margin-bottom:10px;">Yes, notify me</button>
-      <button onclick="document.getElementById('notifyModal').style.display='none'" style="background:transparent; color:#95a5a6; border:none; cursor:pointer;">No thanks</button>
+      <button class="cookie-btn btn-accept" onclick="acceptCookies()">Accept Security Protocol</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="loginModal">
     <div class="auth-modal">
       <span class="close-modal" onclick="closeLoginModal();">&times;</span>
-      <h2 style="color:#1e3c72; margin-top:0;">Client Login</h2>
-      <input type="email" id="authEmail" class="auth-input" placeholder="Enter Your Email Address">
-      <input type="password" id="authPassword" class="auth-input" placeholder="Enter Password">
-      <button class="primary-auth-btn" onclick="handleEmailLogin();">Login / Sign Up</button>
+      <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-fingerprint"></i></div>
+      <h2 style="color:#fff; margin-top:0; font-weight: 700;">Client Authentication</h2>
+      <p style="color:#94a3b8; font-size: 13px; margin-bottom: 30px;">Enter your details to access your encrypted medical & home management portal.</p>
+      
+      <input type="email" id="authEmail" class="auth-input" placeholder="Registered Email Address">
+      <input type="password" id="authPassword" class="auth-input" placeholder="Vault Password">
+      
+      <button class="primary-auth-btn" onclick="handleEmailLogin();">Authenticate Session</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // --- Light Tracker Cursor Physics ---
-    document.addEventListener('mousemove', (e) => {
-      document.querySelectorAll('.service-card').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-        el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
-    });
-
-    // --- Water Ripple Physics ---
-    const rippleContainer = document.getElementById('rippleContainer');
-    document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.service-card')) return;
-      const ripple = document.createElement('div'); ripple.className = 'water-ripple';
-      ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
-      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
-    });
-
-    // --- Subtle Clinical Floating Nodes inside Hero ---
+    // --- Clinical Floating Nodes (Adds immersive Depth to the Hero image) ---
     const canvas = document.getElementById('heroCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
+    
     function resizeCanvas() { 
       canvas.width = canvas.parentElement.clientWidth; 
       canvas.height = canvas.parentElement.clientHeight; 
     }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
     
-    for(let i=0; i<30; i++) { 
-      nodes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: (Math.random()*15) + 5, speed: (Math.random()*0.5) + 0.2, opacity: (Math.random()*0.15) + 0.05 }); 
+    for(let i=0; i<35; i++) { 
+      nodes.push({ 
+        x: Math.random()*canvas.width, 
+        y: Math.random()*canvas.height, 
+        size: (Math.random()*12) + 4, 
+        speed: (Math.random()*0.5) + 0.1, 
+        opacity: (Math.random()*0.15) + 0.02 
+      }); 
     }
     
     function drawNodes() {
@@ -251,32 +317,67 @@
       nodes.forEach(n => { 
         n.y -= n.speed; 
         if(n.y < -n.size) { n.y = canvas.height + n.size; n.x = Math.random()*canvas.width; }
-        ctx.fillStyle = `rgba(255, 255, 255, ${n.opacity})`; 
+        ctx.fillStyle = `rgba(0, 243, 255, ${n.opacity})`; 
         ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill(); 
       });
       requestAnimationFrame(drawNodes);
     }
     drawNodes();
 
-    // --- Popups ---
-    window.onload = function() {
-      if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000); }
-      setTimeout(() => { document.getElementById('notifyModal').style.display = 'flex'; }, 3000);
-    };
+    // --- Water Ripple Physics ---
+    const rippleContainer = document.getElementById('rippleContainer');
+    document.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal')) return;
+      const ripple = document.createElement('div'); ripple.className = 'water-ripple';
+      ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
+      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
+    });
 
+    // --- Light Tracker Cursor Physics for Deep Glass Cards ---
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // --- Dynamic Background Navbar Scroll ---
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('.navbar');
+      if(window.scrollY > 50) {
+        nav.style.background = 'rgba(3, 8, 20, 0.9)';
+        nav.style.backdropFilter = 'blur(20px)';
+        nav.style.borderBottom = '1px solid rgba(0, 243, 255, 0.1)';
+      } else {
+        nav.style.background = 'transparent';
+        nav.style.backdropFilter = 'none';
+        nav.style.borderBottom = 'none';
+      }
+    });
+
+    // --- Cookies ---
+    window.onload = function() {
+      if(!localStorage.getItem('cookiesAccepted')) {
+        setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000);
+      }
+    };
     function acceptCookies() {
       localStorage.setItem('cookiesAccepted', 'true');
       document.getElementById('cookieBanner').style.bottom = '-100px';
     }
 
-    // --- Authentication ---
+    // --- Supabase Authentication & Session Logic ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-    window.onclick = function(event) { if (event.target == document.getElementById('loginModal')) closeLoginModal(); }
+    
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('loginModal')) closeLoginModal();
+    }
 
     window.addEventListener('load', async function() {
       if (supabaseClient) {
@@ -284,7 +385,7 @@
         if (user) {
           const btn = document.getElementById('mainActionButton');
           if (btn) {
-            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>Go to Dashboard</span>';
+            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>Access Vault</span>';
             btn.onclick = function() { window.location.href = 'dashboard.html'; };
           }
         }
@@ -297,16 +398,17 @@
       const btn = document.querySelector('.primary-auth-btn');
       
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (!error) { window.location.href = "dashboard.html"; return; }
+      
       if (error.message.includes("Invalid login")) {
         await supabaseClient.auth.signUp({ email, password });
-        alert("Account created! Tap login button again to access.");
-        btn.innerHTML = 'Login / Sign Up';
+        alert("Secure Vault Created. Please tap login again to enter.");
+        btn.innerHTML = 'Authenticate Session';
       } else { 
         alert("Error: " + error.message); 
-        btn.innerHTML = 'Login / Sign Up';
+        btn.innerHTML = 'Authenticate Session';
       }
     }
   </script>
