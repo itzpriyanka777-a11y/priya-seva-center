@@ -185,7 +185,13 @@
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
-            <div class="cal-top"><span>Select Dates:</span> <span>May 2026</span></div>
+            <div class="cal-top">
+               <span>Select Dates:</span> 
+               <div style="display:flex; align-items:center; gap: 15px;">
+                   <span>May 2026</span>
+                   <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
+               </div>
+            </div>
             <div class="cal-days" style="margin-bottom:8px;">
               <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
             </div>
@@ -327,7 +333,17 @@
         grid.appendChild(div);
       }
     }
-    document.addEventListener('click', function(e) { if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); } });
+    
+    document.addEventListener('click', function(e) {
+      // Close the standard dropdowns
+      if(!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
+      }
+      // Close the Visual Calendar if clicking completely outside of it or on the close button
+      if(!e.target.closest('.glass-calendar') && !e.target.closest('.custom-select')) {
+        document.getElementById('visualCalendar').style.display = 'none';
+      }
+    });
 
     async function submitRequest() {
       const btn = document.getElementById('submitBtn'); 
@@ -339,12 +355,11 @@
       if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { 
         return alert("Please fill your name, select a service, and pick your dates."); 
       }
-
+      
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; 
         btn.disabled = true;
 
-        // Session check
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) { 
             btn.innerHTML = 'Generate Request'; 
@@ -354,7 +369,7 @@
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
         
-        // 1. Payload to Google Apps Script
+        // 1. Send Payload to Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9_K1Agu-TVqLp-e8XjVwvHOK-HXSNArCdUYhYT2bNxGkT9RishH-4XFW0JYG-bvs/exec";
         
         const payload = {
