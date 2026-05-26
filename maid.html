@@ -197,6 +197,11 @@
             </div>
             <div class="cal-days" id="calGrid"></div>
           </div>
+          
+          <div id="selectedDatesDisplay" style="display: none; margin-top: 15px; padding: 14px 20px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 20px; font-size: 13px; color: #fff; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+            <i class="fa-regular fa-calendar-check" style="color: #00e5ff; margin-right: 8px;"></i> <span id="datesText"></span>
+          </div>
+
         </div>
 
         <div class="capsule-group input-group">
@@ -318,7 +323,27 @@
 
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'One-Time Clean'); }
+    
+    function selectFrequency(value) { 
+      selectOption('freqTrigger', 'freqOptions', value); 
+      selectedFrequency = value; 
+      selectedDates = []; 
+      updateSelectedDatesDisplay();
+      document.getElementById('visualCalendar').style.display = 'block'; 
+      buildCalendarGrid(value === 'One-Time Clean'); 
+    }
+
+    // NEW: Real-time update for Selected Dates Bar
+    function updateSelectedDatesDisplay() {
+      const displayDiv = document.getElementById('selectedDatesDisplay');
+      const datesText = document.getElementById('datesText');
+      if (selectedDates.length > 0) {
+        datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        displayDiv.style.display = 'block';
+      } else {
+        displayDiv.style.display = 'none';
+      }
+    }
 
     function buildCalendarGrid(isSingleSelect) {
       const grid = document.getElementById('calGrid'); grid.innerHTML = '';
@@ -329,6 +354,7 @@
           createRipple(e.clientX, e.clientY);
           if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
           else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
+          updateSelectedDatesDisplay(); // Instantly update UI Bar
         };
         grid.appendChild(div);
       }
