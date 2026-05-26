@@ -260,14 +260,36 @@
     }
 
     async function initializeCalendar(email) {
-      const { data, error } = await client.from('bookings').select('*').eq('user_email', email);
-      allBookingsMap = {};
-      if (!error && data) {
-        data.forEach(item => {
-          if (!allBookingsMap[item.booking_date]) allBookingsMap[item.booking_date] = [];
-          allBookingsMap[item.booking_date].push(item);
-        });
+      // Your active Google Apps Script Web App URL goes here
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKagRyxsOnUZivKgpNscMUBDRAL-1zTMpe58f0UM5EieAevO2E6LYGrl6gwTVxsw/exec"; 
+      const fetchUrl = GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email);
+      
+      try {
+        const response = await fetch(fetchUrl);
+        const result = await response.json();
+        
+        allBookingsMap = {};
+        
+        if (result.status === "success" && result.data) {
+          result.data.forEach(item => {
+            // Format Google Sheet date strings safely
+            let rawDate = new Date(item.booking_date);
+            let formattedDateStr = `${rawDate.getFullYear()}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${String(rawDate.getDate()).padStart(2, '0')}`;
+            
+            if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
+            
+            // Map the Google Sheet data into the dashboard's expected format
+            allBookingsMap[formattedDateStr].push({
+              service_type: item.service_type.split(":")[0].trim(), // Cleans up "Maid: Deep Cleaning" to just "Maid"
+              status: item.status,
+              booking_date: formattedDateStr
+            });
+          });
+        }
+      } catch (err) {
+        console.error("Data Sync Error:", err);
       }
+      
       renderCalendar();
     }
 
