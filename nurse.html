@@ -101,7 +101,7 @@
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
-    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.3); text-shadow: 0 0 10px #fff; }
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
@@ -185,7 +185,13 @@
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
-            <div class="cal-top"><span>Select Dates:</span> <span>May 2026</span></div>
+            <div class="cal-top">
+               <span>Select Dates:</span> 
+               <div style="display:flex; align-items:center; gap: 15px;">
+                   <span>May 2026</span>
+                   <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
+               </div>
+            </div>
             <div class="cal-days" style="margin-bottom:8px;">
               <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
             </div>
@@ -327,7 +333,17 @@
         grid.appendChild(div);
       }
     }
-    document.addEventListener('click', function(e) { if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); } });
+    
+    document.addEventListener('click', function(e) {
+      // Close the standard dropdowns
+      if(!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
+      }
+      // Close the Visual Calendar if clicking completely outside of it or on the close button
+      if(!e.target.closest('.glass-calendar') && !e.target.closest('.custom-select')) {
+        document.getElementById('visualCalendar').style.display = 'none';
+      }
+    });
 
     async function submitRequest() {
       const btn = document.getElementById('submitBtn'); 
