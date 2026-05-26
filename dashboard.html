@@ -19,21 +19,45 @@
       --deep-ocean: #4a00e0;
     }
 
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); color: white; min-height: 100vh; position: relative; overflow-x: hidden;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body { font-family: 'Poppins', sans-serif; background-color: var(--void-bg); color: white; min-height: 100vh; position: relative; overflow-x: hidden;}
     
     /* Interactive Physics Layers */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; }
-    #rippleContainer { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(176, 92, 255, 0.3); box-shadow: 0 0 25px rgba(176, 92, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
-    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+    
+    /* Continuous Bobbing Physics */
+    @keyframes gentlyBob { 0% { transform: translateY(0px); } 100% { transform: translateY(-12px); } }
+    .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; position: relative; z-index: 1;}
+    .float-wrap.delay-1 { animation-delay: 1.5s; }
+    .float-wrap.delay-2 { animation-delay: 0.8s; }
 
-    /* Light Tracker for Dashboard Panels */
-    .light-tracker { position: relative; width: 100%; border-radius: 20px;}
+    /* Interactive Fluid Ripple Engine */
+    #rippleContainer { position: fixed; inset: 0; z-index: 9998; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(176, 92, 255, 0.4); box-shadow: 0 0 25px rgba(176, 92, 255, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%);}
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 250px; height: 250px; opacity: 0; border-width: 0px; } }
+
+    /* Ambient Cursor Trail */
+    .cursor-trail { position: fixed; width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, rgba(176, 92, 255, 0.15) 0%, transparent 70%); pointer-events: none; z-index: 9997; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s;}
+
+    header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(3, 2, 8, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
+    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; transition: 0.3s;}
+    .brand:hover { transform: scale(1.05); color: var(--highlight); }
+    .logout-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; position: relative; z-index: 5;}
+    .logout-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
+    
+    .dashboard-container { max-width: 1200px; margin: 120px auto 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 360px; gap: 30px; position: relative; z-index: 10;}
+    @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
+    .main-panel { display: flex; flex-direction: column; gap: 25px; }
+
+    /* High-Tech Light Tracker Surface */
+    .light-tracker { position: relative; width: 100%; border-radius: 20px; background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .light-tracker:hover { box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 20px rgba(176, 92, 255, 0.1); }
+    
     .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px;
+      background: radial-gradient(circle 150px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
     }
     .light-tracker::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
@@ -41,21 +65,13 @@
       pointer-events: none; z-index: 0;
     }
 
-    header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(3, 2, 8, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
-    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none;}
-    .logout-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; position: relative; z-index: 5;}
-    .logout-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .glass-panel { padding: 30px; position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column;}
     
-    .dashboard-container { max-width: 1200px; margin: 120px auto 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 360px; gap: 30px; position: relative; z-index: 10;}
-    @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
-    .main-panel { display: flex; flex-direction: column; gap: 25px; }
-
-    .glass-panel { background: var(--glass-base); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); padding: 30px; position: relative; z-index: 1; }
-    
-    .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-left: 4px solid var(--highlight);}
+    .welcome-banner { display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--highlight);}
     .welcome-text h2 { margin: 0 0 5px 0; color: #fff; font-size: 22px; font-weight: 700;}
     .welcome-text p { margin: 0; color: rgba(255,255,255,0.7); font-size: 13px;}
     
+    /* Notification Toggles */
     .notification-box { border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.3); width: 260px;}
     .notif-header { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
     .notif-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: rgba(255,255,255,0.7);}
@@ -64,28 +80,48 @@
     .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px;}
-    .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;}
+    .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
     input:checked + .slider { background-color: var(--highlight);}
     input:checked + .slider:before { transform: translateX(16px); }
 
+    /* Calendar UI */
     .service-toggles { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);}
     .toggle-btn { padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); transition: 0.3s; display: flex; align-items: center; gap: 8px; position: relative; z-index: 2;}
-    .toggle-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+    .toggle-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateY(-2px);}
     
-    .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db;}
-    .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71;}
-    .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c;}
-    .toggle-btn.active.baby-tab { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12;}
-    
-    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 12px 20px; border-radius: 12px;}
+    .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);}
+    .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);}
+    .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);}
+    .toggle-btn.active.baby-tab { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 15px rgba(243, 156, 18, 0.2);}
+
+    /* Collapsible Calendar Header */
+    .cal-header-bar { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 15px 20px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; transition: 0.3s; position: relative; z-index: 5;}
+    .cal-header-bar:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2);}
+    .cal-header-bar h3 { margin: 0; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; color: #fff;}
+    .cal-chevron { transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); color: var(--highlight); font-size: 18px;}
+    .cal-chevron.rotated { transform: rotate(180deg); }
+
+    #calendarWrapper { overflow: hidden; transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease; max-height: 800px; opacity: 1; margin-top: 20px;}
+    #calendarWrapper.collapsed { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none;}
+
+    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.02);}
     .month-controls button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; font-size: 13px; position: relative; z-index: 2;}
-    .month-controls button:hover { background: rgba(255,255,255,0.15);}
-    #monthYearDisplay { margin: 0; font-size: 18px; color: #fff; font-weight: 700;}
+    .month-controls button:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px);}
+    #monthYearDisplay { margin: 0; font-size: 18px; color: #fff; font-weight: 700; letter-spacing: 0.5px;}
+
+    /* Custom Tooltip UI for Sync Button */
+    .sync-btn-container { display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative;}
+    .tooltip { visibility: hidden; opacity: 0; background: rgba(0,0,0,0.9); border: 1px solid var(--highlight); color: #fff; text-align: center; border-radius: 8px; padding: 8px 12px; position: absolute; bottom: 125%; left: 50%; transform: translateX(-50%) translateY(10px); width: 220px; font-size: 11px; line-height: 1.4; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100;}
+    .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--highlight) transparent transparent transparent; }
+    .sync-btn-container:hover .tooltip { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .sync-btn { background: rgba(176, 92, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); padding: 6px 15px; font-size: 11px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(176, 92, 255, 0.2); transition: 0.3s; font-family: 'Poppins';}
+    .sync-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 25px rgba(176, 92, 255, 0.5); transform: translateY(-2px);}
 
     .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase;}
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: relative; z-index: 2;}
     
-    .cal-day { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; min-height: 75px; padding: 8px; display: flex; flex-direction: column; transition: 0.3s;}
+    .cal-day { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.03); border-radius: 10px; min-height: 80px; padding: 8px; display: flex; flex-direction: column; transition: 0.3s;}
     .cal-day.empty { background: transparent; border: none; }
     .day-num { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5); align-self: flex-end; margin-bottom: 5px;}
 
@@ -93,23 +129,30 @@
     .cal-day.booked-nurse { background: rgba(46, 204, 113, 0.15); border-color: #2ecc71; cursor: pointer;}
     .cal-day.booked-health { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer;}
     .cal-day.booked-baby { background: rgba(243, 156, 18, 0.15); border-color: #f39c12; cursor: pointer;}
-    .cal-day:hover[class*="booked-"] { transform: translateY(-3px); filter: brightness(1.2); }
+    .cal-day:hover[class*="booked-"] { transform: translateY(-3px) scale(1.05); filter: brightness(1.2); box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
     .booking-label { font-size: 10px; font-weight: 700; text-align: center; margin-top: auto; padding: 4px; border-radius: 6px; letter-spacing: 1px; background: rgba(255,255,255,0.1); color: white;}
 
-    .action-grid { display: flex; flex-direction: column; gap: 18px; }
-    .action-card { background: rgba(20, 10, 35, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 16px; display: flex; align-items: center; gap: 18px; cursor: pointer; text-decoration: none; color: white; transition: 0.3s; position: relative; z-index: 2;}
-    .action-card:hover { border-color: var(--highlight); transform: translateY(-3px); background: rgba(176, 92, 255, 0.1);}
+    /* Action Cards */
+    .action-grid { display: flex; flex-direction: column; gap: 20px; }
+    .action-card { background: transparent; display: flex; align-items: center; gap: 18px; cursor: pointer; text-decoration: none; color: white; position: relative; z-index: 2; height: 100%;}
     
-    .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; background: rgba(0,0,0,0.5); }
-    .action-text h4 { margin: 0 0 5px 0; font-size: 14px; font-weight: 600;}
-    .action-text p { margin: 0; color: rgba(255,255,255,0.5); font-size: 11px;}
+    .icon-box { width: 50px; height: 50px; border-radius: 14px; display: flex; justify-content: center; align-items: center; font-size: 20px; flex-shrink: 0; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
+    .action-text h4 { margin: 0 0 5px 0; font-size: 15px; font-weight: 600; color: #fff;}
+    .action-text p { margin: 0; color: rgba(255,255,255,0.5); font-size: 12px; line-height: 1.5;}
 
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-    .dashboard-modal { background: rgba(10, 5, 20, 0.95); border: 1px solid var(--highlight); padding: 35px; border-radius: 20px; width: 100%; max-width: 450px; position: relative; box-shadow: 0 0 40px rgba(176, 92, 255, 0.2);}
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5);}
-    .close-modal:hover { color: #e74c3c; }
-    .service-link-btn { display: block; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; font-size: 14px;}
-    .service-link-btn:hover { background: rgba(176, 92, 255, 0.2); border-color: var(--highlight); transform: translateX(5px);}
+    .light-tracker:hover .icon-box { transform: scale(1.1) rotate(-5deg); border-color: rgba(255,255,255,0.2);}
+
+    /* Dark Glass Modals */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
+    .dashboard-modal { background: rgba(10, 5, 20, 0.95); border: 1px solid var(--highlight); padding: 35px; border-radius: 24px; width: 100%; max-width: 450px; position: relative; box-shadow: 0 0 50px rgba(176, 92, 255, 0.2); animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
+    
+    .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.3s;}
+    .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
+    
+    .service-link-btn { display: block; background: rgba(0,0,0,0.5); padding: 16px; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); text-align: left; transition: 0.3s; font-size: 14px; display: flex; align-items: center; gap: 15px;}
+    .service-link-btn i { font-size: 18px; width: 20px; text-align: center;}
+    .service-link-btn:hover { background: rgba(176, 92, 255, 0.15); border-color: var(--highlight); transform: translateX(8px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
 
     #page-content { display: none; }
   </style>
@@ -118,80 +161,110 @@
 
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
+  <div class="cursor-trail" id="cursorTrail"></div>
 
   <div id="page-content">
     <header>
-      <a href="index.html" class="brand"><i class="fa-solid fa-hands-holding-child" style="color: var(--highlight);"></i> Priya Seva</a>
+      <a href="index.html" class="brand"><i class="fa-solid fa-notes-medical" style="color: var(--highlight);"></i> Priya Seva</a>
       <div style="display:flex; gap: 12px;">
         <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> Home</button>
-        <button class="logout-btn" onclick="logOut()" style="color: #ff7675;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+        <button class="logout-btn" onclick="logOut()" style="color: #ff7675; border-color: rgba(255,118,117,0.3);"><i class="fa-solid fa-power-off"></i> Log Out</button>
       </div>
     </header>
 
     <div class="dashboard-container">
       <div class="main-panel">
         
-        <div class="light-tracker">
-          <div class="glass-panel welcome-banner">
-            <div class="welcome-text">
-              <h2>Welcome back.</h2>
-              <p><i class="fa-solid fa-shield-halved" style="color:var(--highlight);"></i> Secured as: <strong id="user-email-display" style="color:white;">Loading...</strong></p>
-            </div>
-            
-            <div class="notification-box">
-              <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts (Mail/WA)</div>
-              <div class="notif-row"><span>Maid Services</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-              <div class="notif-row"><span>Nursing Care</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-              <div class="notif-row"><span>Health Visits</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-              <div class="notif-row"><span>Babysitting</span> <label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+        <div class="float-wrap">
+          <div class="light-tracker">
+            <div class="glass-panel welcome-banner">
+              <div class="welcome-text">
+                <h2>Welcome to your vault.</h2>
+                <p><i class="fa-solid fa-shield-check" style="color:var(--highlight);"></i> Encrypted Session: <strong id="user-email-display" style="color:white;">Loading...</strong></p>
+              </div>
+              
+              <div class="notification-box">
+                <div class="notif-header"><i class="fa-regular fa-bell"></i> Priority 1-Hour Alerts</div>
+                <div class="notif-row"><span>Maid Services</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="notif-row"><span>Nursing Care</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="notif-row"><span>Health Visits</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="notif-row"><span>Babysitting</span> <label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="light-tracker">
-          <div class="glass-panel">
-            <div class="service-toggles">
-              <button class="toggle-btn active maid-tab" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid', 'maid-tab')"><i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid</button>
-              <button class="toggle-btn nurse-tab" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse', 'nurse-tab')"><i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse</button>
-              <button class="toggle-btn health-tab" id="tab-health" onclick="switchService('Health Visits', 'tab-health', 'health-tab')"><i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health</button>
-              <button class="toggle-btn baby-tab" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby', 'baby-tab')"><i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby</button>
-            </div>
+        <div class="float-wrap delay-1">
+          <div class="light-tracker">
+            <div class="glass-panel">
+              
+              <div class="cal-header-bar" onclick="toggleCalendar()">
+                <h3><i class="fa-solid fa-calendar-days"></i> Booking Trajectory Map</h3>
+                <i class="fa-solid fa-chevron-up cal-chevron" id="calChevron"></i>
+              </div>
 
-            <div class="month-controls">
-  <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-  
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
-    <h3 id="monthYearDisplay">Loading Data...</h3>
-    <button onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true)" style="background: rgba(176, 92, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); padding: 4px 12px; font-size: 11px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(176, 92, 255, 0.2);"><i class="fa-solid fa-arrows-rotate"></i> Sync Live</button>
-  </div>
-  
-  <button onclick="changeMonth(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
-</div>
-            
-            <div class="cal-weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-            <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 40px;"><i class="fa-solid fa-spinner fa-spin"></i> Syncing records...</div></div>
+              <div id="calendarWrapper">
+                <div class="service-toggles">
+                  <button class="toggle-btn active maid-tab" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid', 'maid-tab')"><i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid</button>
+                  <button class="toggle-btn nurse-tab" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse', 'nurse-tab')"><i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse</button>
+                  <button class="toggle-btn health-tab" id="tab-health" onclick="switchService('Health Visits', 'tab-health', 'health-tab')"><i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health</button>
+                  <button class="toggle-btn baby-tab" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby', 'baby-tab')"><i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby</button>
+                </div>
+
+                <div class="month-controls">
+                  <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                  
+                  <div class="sync-btn-container">
+                    <h3 id="monthYearDisplay">Loading Data...</h3>
+                    <div class="tooltip">Pulls your latest verified data history securely from our encrypted servers.</div>
+                    <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true)"><i class="fa-solid fa-arrows-rotate"></i> Sync Live</button>
+                  </div>
+                  
+                  <button onclick="changeMonth(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="cal-weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+                <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 50px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:24px; margin-bottom:10px;"></i><br>Syncing operational records...</div></div>
+              </div>
+
+            </div>
           </div>
         </div>
+
       </div>
 
       <div class="action-grid">
-        <div class="light-tracker">
-          <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">
-            <div class="icon-box" style="color: #3498db;"><i class="fa-solid fa-calendar-plus"></i></div>
-            <div class="action-text"><h4>Book New Service</h4><p>Schedule instantly.</p></div>
+        <div class="float-wrap delay-2">
+          <div class="light-tracker">
+            <div class="glass-panel" style="padding: 20px;">
+              <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">
+                <div class="icon-box" style="color: #3498db;"><i class="fa-solid fa-calendar-plus"></i></div>
+                <div class="action-text"><h4>Book New Service</h4><p>Schedule new personnel instantly.</p></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="light-tracker">
-          <a href="absent.html" class="action-card">
-            <div class="icon-box" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
-            <div class="action-text"><h4>Log an Absence</h4><p>Pause service manually.</p></div>
-          </a>
+
+        <div class="float-wrap">
+          <div class="light-tracker">
+            <div class="glass-panel" style="padding: 20px;">
+              <a href="absent.html" class="action-card">
+                <div class="icon-box" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
+                <div class="action-text"><h4>Log an Absence</h4><p>Pause service on specific dates.</p></div>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="light-tracker">
-          <a href="grievance.html" class="action-card">
-            <div class="icon-box" style="color: #f39c12;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-            <div class="action-text"><h4>File a Grievance</h4><p>Report an issue to admin.</p></div>
-          </a>
+
+        <div class="float-wrap delay-1">
+          <div class="light-tracker">
+            <div class="glass-panel" style="padding: 20px;">
+              <a href="grievance.html" class="action-card">
+                <div class="icon-box" style="color: #f39c12;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="action-text"><h4>File a Grievance</h4><p>Report issues directly to management.</p></div>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -200,11 +273,11 @@
   <div class="modal-overlay" id="bookModal">
     <div class="dashboard-modal">
       <span class="close-modal" onclick="document.getElementById('bookModal').style.display='none'">&times;</span>
-      <h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px;">Select Allocation</h3>
-      <a href="maid.html" class="service-link-btn"><i class="fa-solid fa-broom" style="color: #3498db; margin-right: 10px;"></i> Configure Maid Plan</a>
-      <a href="nurse.html" class="service-link-btn"><i class="fa-solid fa-user-nurse" style="color: #2ecc71; margin-right: 10px;"></i> Assign Certified Nurse</a>
-      <a href="health.html" class="service-link-btn"><i class="fa-solid fa-house-medical" style="color: #e74c3c; margin-right: 10px;"></i> Schedule Health Visit</a>
-      <a href="babysitter.html" class="service-link-btn"><i class="fa-solid fa-baby-carriage" style="color: #f39c12; margin-right: 10px;"></i> Secure Babysitter</a>
+      <h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 25px; font-weight: 600;">Select Deployment Target</h3>
+      <a href="maid.html" class="service-link-btn"><i class="fa-solid fa-broom" style="color: #3498db;"></i> Configure Maid Plan</a>
+      <a href="nurse.html" class="service-link-btn"><i class="fa-solid fa-user-nurse" style="color: #2ecc71;"></i> Assign Certified Nurse</a>
+      <a href="health.html" class="service-link-btn"><i class="fa-solid fa-house-medical" style="color: #e74c3c;"></i> Schedule Health Visit</a>
+      <a href="babysitter.html" class="service-link-btn"><i class="fa-solid fa-baby-carriage" style="color: #f39c12;"></i> Secure Babysitter</a>
     </div>
   </div>
 
@@ -216,27 +289,44 @@
   </div>
 
   <script>
-    // --- Physics Engine ---
+    // --- Ambient Physics Engine ---
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = [];
+    let nodes = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
-    for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: Math.random()*0.1, color: Math.random()>0.8?'176,92,255':'255,255,255'}); }
+    
+    for(let i=0; i<40; i++) { 
+      nodes.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: (Math.random()*25)+5, speed: (Math.random()*0.2)+0.05, opacity: (Math.random()*0.05)+0.01 }); 
+    }
     function drawSky() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.8)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); });
+      nodes.forEach(n => { 
+        n.y -= n.speed; 
+        if(n.y < -n.size) { n.y = canvas.height + n.size; n.x = Math.random()*canvas.width; }
+        ctx.fillStyle = `rgba(176, 92, 255, ${n.opacity})`; 
+        ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill(); 
+      });
       requestAnimationFrame(drawSky);
     }
     drawSky();
 
     const rippleContainer = document.getElementById('rippleContainer');
+    const trail = document.getElementById('cursorTrail');
+    
     document.addEventListener('click', (e) => {
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
-      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1800);
+      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
     });
+    
     document.addEventListener('mousemove', (e) => {
+      // Glow trail
+      trail.style.left = e.clientX + 'px';
+      trail.style.top = e.clientY + 'px';
+      
+      // Hardware light tracking
       document.querySelectorAll('.light-tracker').forEach(el => {
         const rect = el.getBoundingClientRect();
         el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
@@ -244,7 +334,15 @@
       });
     });
 
-    // --- DB Logic ---
+    // --- UI Interactions ---
+    function toggleCalendar() {
+      const wrapper = document.getElementById('calendarWrapper');
+      const chevron = document.getElementById('calChevron');
+      wrapper.classList.toggle('collapsed');
+      chevron.classList.toggle('rotated');
+    }
+
+    // --- Database Architecture ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -260,41 +358,58 @@
       else {
         document.getElementById('page-content').style.display = 'block';
         document.getElementById('user-email-display').innerText = user.email;
-        initializeCalendar(user.email);
+        initializeCalendar(user.email, false);
       }
     }
 
-    async function initializeCalendar(email) {
-      // Your active Google Apps Script Web App URL goes here
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKagRyxsOnUZivKgpNscMUBDRAL-1zTMpe58f0UM5EieAevO2E6LYGrl6gwTVxsw/exec"; 
+    // Zero-Latency Local Caching + Google Sheet Pipeline
+    async function initializeCalendar(email, forceRefresh = false) {
+      const cacheKey = "cached_bookings_" + email;
+      const cachedData = localStorage.getItem(cacheKey);
+      
+      if (cachedData && !forceRefresh) {
+        console.log("Loading from Local Cache...");
+        parseAndMapBookings(JSON.parse(cachedData));
+        return;
+      }
+      
+      const grid = document.getElementById('calendarGrid');
+      grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 50px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:24px; margin-bottom:10px;"></i><br>Syncing secure records...</div>`;
+      
+      // YOUR GOOGLE SCRIPT URL HERE (Ensure the doPost AND doGet script is deployed)
+      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
       const fetchUrl = GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email);
       
       try {
         const response = await fetch(fetchUrl);
         const result = await response.json();
         
-        allBookingsMap = {};
-        
         if (result.status === "success" && result.data) {
-          result.data.forEach(item => {
-            // Format Google Sheet date strings safely
-            let rawDate = new Date(item.booking_date);
-            let formattedDateStr = `${rawDate.getFullYear()}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${String(rawDate.getDate()).padStart(2, '0')}`;
-            
-            if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
-            
-            // Map the Google Sheet data into the dashboard's expected format
-            allBookingsMap[formattedDateStr].push({
-              service_type: item.service_type.split(":")[0].trim(), // Cleans up "Maid: Deep Cleaning" to just "Maid"
-              status: item.status,
-              booking_date: formattedDateStr
-            });
-          });
+          localStorage.setItem(cacheKey, JSON.stringify(result.data));
+          parseAndMapBookings(result.data);
+        } else {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:rgba(255,255,255,0.4);">No verified records located.</div>`;
         }
       } catch (err) {
         console.error("Data Sync Error:", err);
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c;"><i class="fa-solid fa-triangle-exclamation"></i> Server Sync Timeout.</div>`;
       }
-      
+    }
+
+    function parseAndMapBookings(bookingsArray) {
+      allBookingsMap = {};
+      bookingsArray.forEach(item => {
+        let rawDate = new Date(item.booking_date);
+        let formattedDateStr = `${rawDate.getFullYear()}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${String(rawDate.getDate()).padStart(2, '0')}`;
+        
+        if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
+        
+        allBookingsMap[formattedDateStr].push({
+          service_type: item.service_type.split(":")[0].trim(),
+          status: item.status,
+          booking_date: formattedDateStr
+        });
+      });
       renderCalendar();
     }
 
@@ -314,7 +429,7 @@
       for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
       for (let i = 1; i <= daysInMonth; i++) {
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-        const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
+        const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
         let dayClass = ''; let labelHtml = ''; let clickable = '';
 
         if (dayBookings.length > 0) {
@@ -331,23 +446,28 @@
     function changeMonth(offset) { currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + offset); renderCalendar(); }
 
     function showDayDetails(dateString) {
-      const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
+      const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
       const modal = document.getElementById('dayDetailsModal'); const content = document.getElementById('dayDetailsContent');
       const formattedDate = new Date(dateString).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-regular fa-calendar-check"></i> ${formattedDate}</h3>`;
+      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-solid fa-calendar-day" style="color:var(--highlight); margin-right:10px;"></i> ${formattedDate}</h3>`;
       dayBookings.forEach(item => {
         let isPending = item.status.toLowerCase() === 'pending';
         let statusColor = isPending ? '#f39c12' : '#2ecc71';
-        html += `<div style="padding: 18px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3);">
-            <strong style="color:#fff;">${item.service_type}</strong>
-            <span style="float:right; font-size: 10px; padding: 4px 10px; border-radius: 20px; color: ${statusColor}; border: 1px solid ${statusColor};">${item.status.toUpperCase()}</span>
+        html += `<div style="padding: 18px; border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; margin-bottom: 15px; background: rgba(0,0,0,0.4); display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#fff; font-size:15px; font-weight:600;">${item.service_type}</strong>
+            <span style="font-size: 10px; font-weight:700; padding: 6px 12px; border-radius: 20px; color: ${statusColor}; background: rgba(0,0,0,0.5); border: 1px solid ${statusColor}; letter-spacing:1px;">${item.status.toUpperCase()}</span>
           </div>`;
       });
       content.innerHTML = html; modal.style.display = 'flex';
     }
 
-    async function logOut() { await client.auth.signOut(); window.location.href = "index.html"; }
+    async function logOut() { 
+      await client.auth.signOut(); 
+      localStorage.clear(); // Clears cache securely on logout
+      window.location.href = "index.html"; 
+    }
+    
     window.onload = checkAuth;
   </script>
 </body>
