@@ -5,222 +5,189 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Client Dashboard | Priya Seva</title>
   
-  <meta name="theme-color" content="#050a15">
+  <meta name="theme-color" content="#030208">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #050a15; color: white; min-height: 100vh; position: relative;}
-    
-    /* Background Elements */
-    .bg-gradient { position: fixed; inset: 0; background: linear-gradient(135deg, rgba(5, 10, 20, 1) 0%, rgba(15, 30, 60, 1) 100%); z-index: -2; }
-    
-    /* New High-Tech Dashboard Pattern */
-    .tech-doodles { position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); z-index: -1; pointer-events: none; }
+    :root {
+      --void-bg: #030208;
+      --glass-base: rgba(20, 10, 35, 0.35);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --highlight: #b05cff; /* Deep Neon Purple */
+      --deep-ocean: #4a00e0;
+    }
 
-    /* Fixed Glass Navbar - Prevents Overlap */
-    header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 10, 20, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);}
-    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); text-decoration: none;}
-    .logout-btn { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
-    .logout-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); color: white; min-height: 100vh; position: relative; overflow-x: hidden;}
     
-    /* Layout with heavy margin-top to clear the fixed header */
-    .dashboard-container { max-width: 1200px; margin: 140px auto 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 360px; gap: 30px; position: relative; z-index: 10;}
-    @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; margin-top: 120px;} }
+    /* Interactive Physics Layers */
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; }
+    #rippleContainer { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(176, 92, 255, 0.3); box-shadow: 0 0 25px rgba(176, 92, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+
+    /* Light Tracker for Dashboard Panels */
+    .light-tracker { position: relative; width: 100%; border-radius: 20px;}
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(176, 92, 255, 0.08), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
+
+    header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(3, 2, 8, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
+    .brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none;}
+    .logout-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; position: relative; z-index: 5;}
+    .logout-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    
+    .dashboard-container { max-width: 1200px; margin: 120px auto 40px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 360px; gap: 30px; position: relative; z-index: 10;}
+    @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
     .main-panel { display: flex; flex-direction: column; gap: 25px; }
 
-    /* Reusable Glass Panel Class */
-    .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); padding: 30px; }
+    .glass-panel { background: var(--glass-base); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); padding: 30px; position: relative; z-index: 1; }
     
-    /* Welcome Banner */
-    .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-left: 4px solid #3498db;}
-    .welcome-text h2 { margin: 0 0 5px 0; color: #fff; font-size: 22px; font-weight: 700; letter-spacing: 0.5px;}
+    .welcome-banner { display: flex; justify-content: space-between; align-items: center; padding: 25px 30px; border-left: 4px solid var(--highlight);}
+    .welcome-text h2 { margin: 0 0 5px 0; color: #fff; font-size: 22px; font-weight: 700;}
     .welcome-text p { margin: 0; color: rgba(255,255,255,0.7); font-size: 13px;}
     
-    .notification-box { display: flex; align-items: center; gap: 15px; border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 12px; background: rgba(0,0,0,0.2); }
-    .notif-text { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.2;}
-    .notif-sub { font-size: 10px; color: rgba(255,255,255,0.5); font-weight: 400;}
+    .notification-box { border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; background: rgba(0,0,0,0.3); width: 260px;}
+    .notif-header { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
+    .notif-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: rgba(255,255,255,0.7);}
+    .notif-row:last-child { margin-bottom: 0; }
     
-    .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+    .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
     .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.2); transition: .4s; border-radius: 34px; border: 1px solid rgba(255,255,255,0.1);}
-    .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 4px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.3);}
-    input:checked + .slider { background-color: #2ecc71; border-color: #27ae60;}
-    input:checked + .slider:before { transform: translateX(17px); }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255,255,255,0.1); transition: .4s; border-radius: 34px;}
+    .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;}
+    input:checked + .slider { background-color: var(--highlight);}
+    input:checked + .slider:before { transform: translateX(16px); }
 
-    /* Calendar Container */
-    .calendar-container { padding: 30px; }
-    
     .service-toggles { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);}
-    .toggle-btn { padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(0,0,0,0.3); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); font-family: 'Poppins'; transition: 0.3s; display: flex; align-items: center; gap: 8px;}
+    .toggle-btn { padding: 10px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); transition: 0.3s; display: flex; align-items: center; gap: 8px; position: relative; z-index: 2;}
     .toggle-btn:hover { background: rgba(255,255,255,0.1); color: white; }
     
-    /* Active Toggle Glows */
-    .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);}
-    .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);}
-    .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);}
-    .toggle-btn.active.baby-tab { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);}
+    .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db;}
+    .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71;}
+    .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c;}
+    .toggle-btn.active.baby-tab { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12;}
     
-    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
-    .month-controls button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; font-size: 13px;}
-    .month-controls button:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px);}
-    #monthYearDisplay { margin: 0; font-size: 18px; color: #fff; font-weight: 700; letter-spacing: 0.5px;}
+    .month-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 12px 20px; border-radius: 12px;}
+    .month-controls button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; font-size: 13px; position: relative; z-index: 2;}
+    .month-controls button:hover { background: rgba(255,255,255,0.15);}
+    #monthYearDisplay { margin: 0; font-size: 18px; color: #fff; font-weight: 700;}
 
-    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase;}
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; position: relative; z-index: 2;}
     
-    /* Calendar Boxes - Dark Mode */
-    .cal-day { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; min-height: 75px; padding: 8px; display: flex; flex-direction: column; transition: 0.3s; position: relative;}
+    .cal-day { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; min-height: 75px; padding: 8px; display: flex; flex-direction: column; transition: 0.3s;}
     .cal-day.empty { background: transparent; border: none; }
-    .cal-day.today { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3);}
-    .day-num { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); align-self: flex-end; margin-bottom: 5px;}
+    .day-num { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.5); align-self: flex-end; margin-bottom: 5px;}
 
-    /* Prominent Full-Box Neon Colors */
-    .cal-day.booked-maid { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);}
-    .cal-day.booked-maid .day-num { color: #3498db; }
-    .cal-day.booked-maid .booking-label { background: #3498db; color: white; }
-    
-    .cal-day.booked-nurse { background: rgba(46, 204, 113, 0.15); border-color: #2ecc71; cursor: pointer; box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);}
-    .cal-day.booked-nurse .day-num { color: #2ecc71; }
-    .cal-day.booked-nurse .booking-label { background: #2ecc71; color: #000; }
-    
-    .cal-day.booked-health { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);}
-    .cal-day.booked-health .day-num { color: #e74c3c; }
-    .cal-day.booked-health .booking-label { background: #e74c3c; color: white; }
-    
-    .cal-day.booked-baby { background: rgba(243, 156, 18, 0.15); border-color: #f39c12; cursor: pointer; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);}
-    .cal-day.booked-baby .day-num { color: #f39c12; }
-    .cal-day.booked-baby .booking-label { background: #f39c12; color: #000; }
-
+    .cal-day.booked-maid { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer;}
+    .cal-day.booked-nurse { background: rgba(46, 204, 113, 0.15); border-color: #2ecc71; cursor: pointer;}
+    .cal-day.booked-health { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer;}
+    .cal-day.booked-baby { background: rgba(243, 156, 18, 0.15); border-color: #f39c12; cursor: pointer;}
     .cal-day:hover[class*="booked-"] { transform: translateY(-3px); filter: brightness(1.2); }
-    
-    .booking-label { font-size: 10px; font-weight: 700; text-align: center; margin-top: auto; padding: 4px; border-radius: 6px; letter-spacing: 1px;}
+    .booking-label { font-size: 10px; font-weight: 700; text-align: center; margin-top: auto; padding: 4px; border-radius: 6px; letter-spacing: 1px; background: rgba(255,255,255,0.1); color: white;}
 
-    /* Right Side Actions */
     .action-grid { display: flex; flex-direction: column; gap: 18px; }
-    .action-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); display: flex; align-items: center; gap: 18px; cursor: pointer; text-decoration: none; color: white; transition: 0.3s;}
-    .action-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.3); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.5);}
+    .action-card { background: rgba(20, 10, 35, 0.4); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 16px; display: flex; align-items: center; gap: 18px; cursor: pointer; text-decoration: none; color: white; transition: 0.3s; position: relative; z-index: 2;}
+    .action-card:hover { border-color: var(--highlight); transform: translateY(-3px); background: rgba(176, 92, 255, 0.1);}
     
-    .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
-    .icon-blue { color: #3498db; box-shadow: inset 0 0 10px rgba(52,152,219,0.2); }
-    .icon-orange { color: #f39c12; box-shadow: inset 0 0 10px rgba(243,156,18,0.2); }
-    .icon-red { color: #e74c3c; box-shadow: inset 0 0 10px rgba(231,76,60,0.2); }
-    .icon-purple { color: #9b59b6; box-shadow: inset 0 0 10px rgba(155,89,182,0.2); }
-    .icon-green { color: #2ecc71; box-shadow: inset 0 0 10px rgba(46,204,113,0.2); }
+    .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; flex-shrink: 0; background: rgba(0,0,0,0.5); }
+    .action-text h4 { margin: 0 0 5px 0; font-size: 14px; font-weight: 600;}
+    .action-text p { margin: 0; color: rgba(255,255,255,0.5); font-size: 11px;}
 
-    .action-text h4 { margin: 0 0 5px 0; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;}
-    .action-text p { margin: 0; color: rgba(255,255,255,0.6); font-size: 11px; line-height: 1.4;}
-
-    /* Dark Glass Modals */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-    .dashboard-modal { background: rgba(15, 25, 45, 0.95); border: 1px solid rgba(255,255,255,0.15); padding: 35px; border-radius: 20px; width: 100%; max-width: 450px; position: relative; box-sizing: border-box; max-height: 80vh; overflow-y: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.6);}
-    
-    .dashboard-modal::-webkit-scrollbar { width: 5px; }
-    .dashboard-modal::-webkit-scrollbar-track { background: transparent; }
-    .dashboard-modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.3s;}
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+    .dashboard-modal { background: rgba(10, 5, 20, 0.95); border: 1px solid var(--highlight); padding: 35px; border-radius: 20px; width: 100%; max-width: 450px; position: relative; box-shadow: 0 0 40px rgba(176, 92, 255, 0.2);}
+    .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: rgba(255,255,255,0.5);}
     .close-modal:hover { color: #e74c3c; }
-    
-    .service-link-btn { display: block; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; font-size: 14px;}
-    .service-link-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); transform: translateX(5px);}
+    .service-link-btn { display: block; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 12px; margin-bottom: 12px; text-decoration: none; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.3s; font-size: 14px;}
+    .service-link-btn:hover { background: rgba(176, 92, 255, 0.2); border-color: var(--highlight); transform: translateX(5px);}
 
     #page-content { display: none; }
   </style>
 </head>
 <body>
 
-  <div class="bg-gradient"></div>
-  <div class="tech-doodles"></div>
+  <canvas id="nightCanvas"></canvas>
+  <div id="rippleContainer"></div>
 
   <div id="page-content">
-    
     <header>
-      <a href="index.html" class="brand">
-        <i class="fa-solid fa-hands-holding-child" style="color: #f39c12;"></i> Priya Seva
-      </a>
+      <a href="index.html" class="brand"><i class="fa-solid fa-hands-holding-child" style="color: var(--highlight);"></i> Priya Seva</a>
       <div style="display:flex; gap: 12px;">
         <button class="logout-btn" onclick="window.location.href='index.html'"><i class="fa-solid fa-house"></i> Home</button>
-        <button class="logout-btn" onclick="logOut()" style="border-color: rgba(231,76,60,0.5); color: #ff7675;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
+        <button class="logout-btn" onclick="logOut()" style="color: #ff7675;"><i class="fa-solid fa-right-from-bracket"></i> Log Out</button>
       </div>
     </header>
 
     <div class="dashboard-container">
-      
       <div class="main-panel">
         
-        <div class="glass-panel welcome-banner">
-          <div class="welcome-text">
-            <h2>Welcome back.</h2>
-            <p><i class="fa-solid fa-shield-halved" style="color:#2ecc71;"></i> Secured as: <strong id="user-email-display" style="color:white;">Loading...</strong></p>
-          </div>
-          <div class="notification-box">
-            <div>
-              <div class="notif-text">1-Hour Reminders</div>
-              <div class="notif-sub">(WhatsApp & Email)</div>
+        <div class="light-tracker">
+          <div class="glass-panel welcome-banner">
+            <div class="welcome-text">
+              <h2>Welcome back.</h2>
+              <p><i class="fa-solid fa-shield-halved" style="color:var(--highlight);"></i> Secured as: <strong id="user-email-display" style="color:white;">Loading...</strong></p>
             </div>
-            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+            
+            <div class="notification-box">
+              <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts (Mail/WA)</div>
+              <div class="notif-row"><span>Maid Services</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Nursing Care</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Health Visits</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+              <div class="notif-row"><span>Babysitting</span> <label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+            </div>
           </div>
         </div>
 
-        <div class="glass-panel calendar-container">
-          
-          <div class="service-toggles">
-            <button class="toggle-btn active maid-tab" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid', 'maid-tab')">
-              <i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid
-            </button>
-            <button class="toggle-btn nurse-tab" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse', 'nurse-tab')">
-              <i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse
-            </button>
-            <button class="toggle-btn health-tab" id="tab-health" onclick="switchService('Health Visits', 'tab-health', 'health-tab')">
-              <i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health
-            </button>
-            <button class="toggle-btn baby-tab" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby', 'baby-tab')">
-              <i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby
-            </button>
-          </div>
-
-          <div class="month-controls">
-            <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
-            <h3 id="monthYearDisplay">Loading Data...</h3>
-            <button onclick="changeMonth(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-          
-          <div class="cal-weekdays">
-            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-          </div>
-          
-          <div class="cal-grid" id="calendarGrid">
-            <div style="grid-column: 1/-1; text-align:center; padding: 40px; color: rgba(255,255,255,0.5);">
-              <i class="fa-solid fa-spinner fa-spin" style="font-size:24px; margin-bottom:10px;"></i><br>Syncing secure records...
+        <div class="light-tracker">
+          <div class="glass-panel">
+            <div class="service-toggles">
+              <button class="toggle-btn active maid-tab" id="tab-maid" onclick="switchService('Maid Services', 'tab-maid', 'maid-tab')"><i class="fa-solid fa-broom" style="color:#3498db;"></i> Maid</button>
+              <button class="toggle-btn nurse-tab" id="tab-nurse" onclick="switchService('Certified Nurses', 'tab-nurse', 'nurse-tab')"><i class="fa-solid fa-user-nurse" style="color:#2ecc71;"></i> Nurse</button>
+              <button class="toggle-btn health-tab" id="tab-health" onclick="switchService('Health Visits', 'tab-health', 'health-tab')"><i class="fa-solid fa-house-medical" style="color:#e74c3c;"></i> Health</button>
+              <button class="toggle-btn baby-tab" id="tab-baby" onclick="switchService('Babysitters', 'tab-baby', 'baby-tab')"><i class="fa-solid fa-baby-carriage" style="color:#f39c12;"></i> Baby</button>
             </div>
+
+            <div class="month-controls">
+              <button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+              <h3 id="monthYearDisplay">Loading Data...</h3>
+              <button onclick="changeMonth(1)">Next <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="cal-weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 40px;"><i class="fa-solid fa-spinner fa-spin"></i> Syncing records...</div></div>
           </div>
-
         </div>
-
       </div>
 
       <div class="action-grid">
-        <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">
-          <div class="icon-box icon-blue"><i class="fa-solid fa-calendar-plus"></i></div>
-          <div class="action-text"><h4>Book New Service</h4><p>Schedule a maid, nurse, or babysitter instantly.</p></div>
+        <div class="light-tracker">
+          <div class="action-card" onclick="document.getElementById('bookModal').style.display='flex'">
+            <div class="icon-box" style="color: #3498db;"><i class="fa-solid fa-calendar-plus"></i></div>
+            <div class="action-text"><h4>Book New Service</h4><p>Schedule instantly.</p></div>
+          </div>
         </div>
-
-        <a href="absent.html" class="action-card">
-          <div class="icon-box icon-red"><i class="fa-solid fa-user-xmark"></i></div>
-          <div class="action-text"><h4>Log an Absence</h4><p>Manually pause a service for specific dates.</p></div>
-        </a>
-
-        <a href="grievance.html" class="action-card">
-          <div class="icon-box icon-purple"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div class="action-text"><h4>File a Grievance</h4><p>Report an issue directly to the management team.</p></div>
-        </a>
-
-        <a href="https://search.google.com/local/writereview?placeid=YOUR_GOOGLE_MAPS_ID" target="_blank" class="action-card">
-          <div class="icon-box icon-green"><i class="fa-regular fa-star"></i></div>
-          <div class="action-text"><h4>Leave Feedback</h4><p>Rate our service on Google Reviews.</p></div>
-        </a>
+        <div class="light-tracker">
+          <a href="absent.html" class="action-card">
+            <div class="icon-box" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
+            <div class="action-text"><h4>Log an Absence</h4><p>Pause service manually.</p></div>
+          </a>
+        </div>
+        <div class="light-tracker">
+          <a href="grievance.html" class="action-card">
+            <div class="icon-box" style="color: #f39c12;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="action-text"><h4>File a Grievance</h4><p>Report an issue to admin.</p></div>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -228,7 +195,7 @@
   <div class="modal-overlay" id="bookModal">
     <div class="dashboard-modal">
       <span class="close-modal" onclick="document.getElementById('bookModal').style.display='none'">&times;</span>
-      <h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; font-weight: 600;">Select New Allocation</h3>
+      <h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px;">Select Allocation</h3>
       <a href="maid.html" class="service-link-btn"><i class="fa-solid fa-broom" style="color: #3498db; margin-right: 10px;"></i> Configure Maid Plan</a>
       <a href="nurse.html" class="service-link-btn"><i class="fa-solid fa-user-nurse" style="color: #2ecc71; margin-right: 10px;"></i> Assign Certified Nurse</a>
       <a href="health.html" class="service-link-btn"><i class="fa-solid fa-house-medical" style="color: #e74c3c; margin-right: 10px;"></i> Schedule Health Visit</a>
@@ -244,9 +211,38 @@
   </div>
 
   <script>
+    // --- Physics Engine ---
+    const canvas = document.getElementById('nightCanvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: Math.random()*0.1, color: Math.random()>0.8?'176,92,255':'255,255,255'}); }
+    function drawSky() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.8)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); });
+      requestAnimationFrame(drawSky);
+    }
+    drawSky();
+
+    const rippleContainer = document.getElementById('rippleContainer');
+    document.addEventListener('click', (e) => {
+      const ripple = document.createElement('div'); ripple.className = 'water-ripple';
+      ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
+      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1800);
+    });
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // --- DB Logic ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const myUniqueDatabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
@@ -254,10 +250,9 @@
     let currentActiveService = 'Maid Services';
 
     async function checkAuth() {
-      const { data: { user } } = await myUniqueDatabaseClient.auth.getUser();
-      if (!user) {
-        window.location.href = "index.html";
-      } else {
+      const { data: { user } } = await client.auth.getUser();
+      if (!user) window.location.href = "index.html";
+      else {
         document.getElementById('page-content').style.display = 'block';
         document.getElementById('user-email-display').innerText = user.email;
         initializeCalendar(user.email);
@@ -265,8 +260,7 @@
     }
 
     async function initializeCalendar(email) {
-      const { data, error } = await myUniqueDatabaseClient.from('bookings').select('*').eq('user_email', email);
-      
+      const { data, error } = await client.from('bookings').select('*').eq('user_email', email);
       allBookingsMap = {};
       if (!error && data) {
         data.forEach(item => {
@@ -279,111 +273,54 @@
 
     function switchService(serviceName, btnId, activeClass) {
       currentActiveService = serviceName;
-      document.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.classList.remove('active', 'maid-tab', 'nurse-tab', 'health-tab', 'baby-tab');
-      });
+      document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active', 'maid-tab', 'nurse-tab', 'health-tab', 'baby-tab'));
       document.getElementById(btnId).classList.add('active', activeClass);
       renderCalendar();
     }
 
     function renderCalendar() {
-      const year = currentDisplayedDate.getFullYear();
-      const month = currentDisplayedDate.getMonth();
+      const year = currentDisplayedDate.getFullYear(); const month = currentDisplayedDate.getMonth();
       document.getElementById('monthYearDisplay').innerText = `${monthNames[month]} ${year}`;
+      const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('calendarGrid'); grid.innerHTML = '';
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const grid = document.getElementById('calendarGrid');
-      
-      grid.innerHTML = '';
-
-      for (let i = 0; i < firstDay; i++) {
-        grid.innerHTML += `<div class="cal-day empty"></div>`;
-      }
-
+      for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
       for (let i = 1; i <= daysInMonth; i++) {
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
         const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
-
-        let dayClass = '';
-        let labelHtml = '';
-        let clickable = '';
+        let dayClass = ''; let labelHtml = ''; let clickable = '';
 
         if (dayBookings.length > 0) {
            clickable = `onclick="showDayDetails('${dateString}')"`;
-           if (currentActiveService === 'Maid Services') {
-             dayClass = 'booked-maid';
-             labelHtml = '<div class="booking-label">BOOKED</div>';
-           } else if (currentActiveService === 'Certified Nurses') {
-             dayClass = 'booked-nurse';
-             labelHtml = '<div class="booking-label">BOOKED</div>';
-           } else if (currentActiveService === 'Health Visits') {
-             dayClass = 'booked-health';
-             labelHtml = '<div class="booking-label">BOOKED</div>';
-           } else if (currentActiveService === 'Babysitters') {
-             dayClass = 'booked-baby';
-             labelHtml = '<div class="booking-label">BOOKED</div>';
-           }
+           if (currentActiveService === 'Maid Services') { dayClass = 'booked-maid'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Certified Nurses') { dayClass = 'booked-nurse'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Health Visits') { dayClass = 'booked-health'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Babysitters') { dayClass = 'booked-baby'; labelHtml = '<div class="booking-label">BOOKED</div>'; }
         }
-
-        const isToday = (dateString === new Date().toISOString().split('T')[0] && dayBookings.length === 0) ? 'today' : '';
-
-        grid.innerHTML += `
-          <div class="cal-day ${isToday} ${dayClass}" ${clickable}>
-            <span class="day-num">${i}</span>
-            ${labelHtml}
-          </div>
-        `;
+        grid.innerHTML += `<div class="cal-day ${dayClass}" ${clickable}><span class="day-num">${i}</span>${labelHtml}</div>`;
       }
     }
 
-    function changeMonth(offset) {
-      currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + offset);
-      renderCalendar();
-    }
+    function changeMonth(offset) { currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + offset); renderCalendar(); }
 
     function showDayDetails(dateString) {
       const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type === currentActiveService);
-      const modal = document.getElementById('dayDetailsModal');
-      const content = document.getElementById('dayDetailsContent');
+      const modal = document.getElementById('dayDetailsModal'); const content = document.getElementById('dayDetailsContent');
+      const formattedDate = new Date(dateString).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
-
-      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px; font-weight:600;">
-                    <i class="fa-regular fa-calendar-check" style="color:rgba(255,255,255,0.5); margin-right:10px;"></i> ${formattedDate}
-                  </h3>`;
-
+      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-regular fa-calendar-check"></i> ${formattedDate}</h3>`;
       dayBookings.forEach(item => {
         let isPending = item.status.toLowerCase() === 'pending';
-        let statusIcon = isPending ? '<i class="fa-solid fa-clock-rotate-left"></i>' : '<i class="fa-solid fa-circle-check"></i>';
         let statusColor = isPending ? '#f39c12' : '#2ecc71';
-        let statusBg = isPending ? 'rgba(243,156,18,0.2)' : 'rgba(46,204,113,0.2)';
-
-        let serviceIcon = '<i class="fa-solid fa-broom" style="color:#3498db; width:20px;"></i>';
-        if (item.service_type === 'Certified Nurses') serviceIcon = '<i class="fa-solid fa-user-nurse" style="color:#2ecc71; width:20px;"></i>';
-        if (item.service_type === 'Health Visits') serviceIcon = '<i class="fa-solid fa-house-medical" style="color:#e74c3c; width:20px;"></i>';
-        if (item.service_type === 'Babysitters') serviceIcon = '<i class="fa-solid fa-baby-carriage" style="color:#f39c12; width:20px;"></i>';
-
-        html += `
-          <div style="padding: 18px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3); box-shadow: inset 0 0 10px rgba(0,0,0,0.5);">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong style="color:#fff; font-size:15px; letter-spacing: 0.5px;">${serviceIcon} ${item.service_type}</strong>
-              <span style="font-size: 10px; padding: 6px 12px; border-radius: 20px; font-weight:700; color: ${statusColor}; background: ${statusBg}; border: 1px solid ${statusColor}; letter-spacing: 1px;">${statusIcon} ${item.status.toUpperCase()}</span>
-            </div>
-          </div>
-        `;
+        html += `<div style="padding: 18px; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 15px; background: rgba(0,0,0,0.3);">
+            <strong style="color:#fff;">${item.service_type}</strong>
+            <span style="float:right; font-size: 10px; padding: 4px 10px; border-radius: 20px; color: ${statusColor}; border: 1px solid ${statusColor};">${item.status.toUpperCase()}</span>
+          </div>`;
       });
-
-      content.innerHTML = html;
-      modal.style.display = 'flex';
+      content.innerHTML = html; modal.style.display = 'flex';
     }
 
-    async function logOut() { 
-      await myUniqueDatabaseClient.auth.signOut(); 
-      window.location.href = "index.html"; 
-    }
-    
+    async function logOut() { await client.auth.signOut(); window.location.href = "index.html"; }
     window.onload = checkAuth;
   </script>
 </body>
