@@ -199,6 +199,11 @@
             </div>
             <div class="cal-days" id="calGrid"></div>
           </div>
+          
+          <div id="selectedDatesDisplay" style="display: none; margin-top: 15px; padding: 14px 20px; background: rgba(0, 243, 255, 0.1); border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 20px; font-size: 13px; color: #fff; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+            <i class="fa-regular fa-calendar-check" style="color: #00f3ff; margin-right: 8px;"></i> <span id="datesText"></span>
+          </div>
+
         </div>
 
         <div class="capsule-group input-group">
@@ -408,8 +413,21 @@
       selectOption('freqTrigger', 'freqOptions', value);
       selectedFrequency = value;
       selectedDates = []; 
+      updateSelectedDatesDisplay();
       document.getElementById('visualCalendar').style.display = 'block';
       buildCalendarGrid(value === 'Single Visit');
+    }
+
+    // NEW: Real-time update for Selected Dates Bar
+    function updateSelectedDatesDisplay() {
+      const displayDiv = document.getElementById('selectedDatesDisplay');
+      const datesText = document.getElementById('datesText');
+      if (selectedDates.length > 0) {
+        datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        displayDiv.style.display = 'block';
+      } else {
+        displayDiv.style.display = 'none';
+      }
     }
 
     function buildCalendarGrid(isSingleSelect) {
@@ -429,6 +447,7 @@
             if(this.classList.contains('selected')) selectedDates.push(i);
             else selectedDates = selectedDates.filter(d => d !== i);
           }
+          updateSelectedDatesDisplay(); // Instantly update UI Bar
         };
         grid.appendChild(div);
       }
@@ -491,7 +510,7 @@
           body: JSON.stringify(payload)
         });
 
-        // 2. Format & Trigger WhatsApp Redirection
+        // 2. WhatsApp Direct Link
         const adminWaNumber = "917439392803"; // <-- ENTER YOUR WHATSAPP NUMBER HERE
         const waMessage = `*New Health Appointment!*\n\n*Service:* ${service}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${extraDetails || 'None'}`;
         
