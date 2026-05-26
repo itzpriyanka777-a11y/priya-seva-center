@@ -97,7 +97,7 @@
     .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
     .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
-    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4); transform: scale(1.3) translateY(-6px);}
+    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
@@ -197,6 +197,11 @@
             </div>
             <div class="cal-days" id="calGrid"></div>
           </div>
+          
+          <div id="selectedDatesDisplay" style="display: none; margin-top: 15px; padding: 14px 20px; background: rgba(0, 243, 255, 0.1); border: 1px solid rgba(0, 243, 255, 0.2); border-radius: 20px; font-size: 13px; color: #fff; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+            <i class="fa-regular fa-calendar-check" style="color: #00f3ff; margin-right: 8px;"></i> <span id="datesText"></span>
+          </div>
+
         </div>
 
         <div class="capsule-group input-group">
@@ -318,7 +323,27 @@
 
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'Single Shift (8h)'); }
+    
+    function selectFrequency(value) { 
+      selectOption('freqTrigger', 'freqOptions', value); 
+      selectedFrequency = value; 
+      selectedDates = []; 
+      updateSelectedDatesDisplay();
+      document.getElementById('visualCalendar').style.display = 'block'; 
+      buildCalendarGrid(value === 'Single Shift (8h)'); 
+    }
+
+    // NEW: Real-time update for Selected Dates Bar
+    function updateSelectedDatesDisplay() {
+      const displayDiv = document.getElementById('selectedDatesDisplay');
+      const datesText = document.getElementById('datesText');
+      if (selectedDates.length > 0) {
+        datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        displayDiv.style.display = 'block';
+      } else {
+        displayDiv.style.display = 'none';
+      }
+    }
 
     function buildCalendarGrid(isSingleSelect) {
       const grid = document.getElementById('calGrid'); grid.innerHTML = '';
@@ -329,6 +354,7 @@
           createRipple(e.clientX, e.clientY);
           if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
           else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
+          updateSelectedDatesDisplay(); // Instantly update UI Bar
         };
         grid.appendChild(div);
       }
