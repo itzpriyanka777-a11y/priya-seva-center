@@ -323,3 +323,141 @@
         ctx.shadowBlur = c.baseSize * 0.6;
         ctx.fillStyle = `rgba(5, 14, 32, ${c.opacity})`;
         ctx.beginPath();
+        c.parts.forEach(p => {
+          ctx.arc(c.x + p.offsetX, c.y + p.offsetY, p.radius, 0, Math.PI * 2);
+        });
+        ctx.fill();
+        ctx.restore();
+      });
+
+      requestAnimationFrame(drawSereneSky);
+    }
+    drawSereneSky();
+
+    // --- 3. BUSINESS APPLICATION LAYER & API HOOKS ---
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let selectedFrequency = "";
+    let selectedDates = [];
+
+    function toggleDropdown(id) {
+      document.querySelectorAll('.select-options').forEach(el => {
+        if(el.id !== id) el.classList.remove('show');
+      });
+      document.getElementById(id).classList.toggle('show');
+    }
+
+    function selectOption(triggerId, dropdownId, value) {
+      const trigger = document.getElementById(triggerId);
+      trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`;
+      trigger.classList.add('active'); 
+      document.getElementById(dropdownId).classList.remove('show');
+    }
+
+    function selectFrequency(value) {
+      selectOption('freqTrigger', 'freqOptions', value);
+      selectedFrequency = value;
+      selectedDates = []; 
+      document.getElementById('visualCalendar').style.display = 'block';
+      buildCalendarGrid(value === 'Single Day Need');
+    }
+
+    function buildCalendarGrid(isSingleSelect) {
+      const grid = document.getElementById('calGrid');
+      grid.innerHTML = '';
+      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
+      for(let i=1; i<=31; i++) {
+        const div = document.createElement('div');
+        div.className = 'cal-date'; div.innerText = i;
+        div.onclick = function(e) {
+          createRipple(e.clientX, e.clientY);
+          if(isSingleSelect) {
+            document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected'));
+            selectedDates = [i]; this.classList.add('selected');
+          } else {
+            this.classList.toggle('selected');
+            if(this.classList.contains('selected')) selectedDates.push(i);
+            else selectedDates = selectedDates.filter(d => d !== i);
+          }
+        };
+        grid.appendChild(div);
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      // Close the standard dropdowns
+      if(!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
+      }
+      // Close the Visual Calendar if clicking completely outside of it or on the close button
+      if(!e.target.closest('.glass-calendar') && !e.target.closest('.custom-select')) {
+        document.getElementById('visualCalendar').style.display = 'none';
+      }
+    });
+
+    async function submitRequest() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('parentName').value;
+      const childCount = document.getElementById('childCountTrigger').innerText.trim();
+      const timeWindow = document.getElementById('timeWindow').value;
+
+      if(!name || childCount.includes("Select") || selectedFrequency === "" || selectedDates.length === 0) { 
+        return alert("Please fill your name, select count, and pick your dates."); 
+      }
+
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; 
+        btn.disabled = true;
+
+        // Verify User Session via Supabase
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) { 
+            btn.innerHTML = 'Generate Request'; 
+            btn.disabled = false; 
+            return alert("Authentication required. Please log in."); 
+        }
+
+        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", ");
+        const serviceName = "Babysitting - " + childCount;
+
+        // 1. Send Payload to Google Apps Script
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9_K1Agu-TVqLp-e8XjVwvHOK-HXSNArCdUYhYT2bNxGkT9RishH-4XFW0JYG-bvs/exec";
+        
+        const payload = {
+          name: name,
+          email: user.email,
+          phone: "Not Provided",
+          serviceType: serviceName,
+          date: formattedDates,
+          address: "Not Provided",
+          details: "Time: " + timeWindow + " | Frequency: " + selectedFrequency
+        };
+
+        // Fire request to Google Sheets (no-cors mode bypasses security blocks)
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        // 2. Format & Trigger WhatsApp Redirection
+        const adminWaNumber = "917439392803"; // <-- ENTER YOUR WHATSAPP NUMBER HERE
+        const waMessage = `*New Booking Request!*\n\n*Service:* ${serviceName}\n*Client:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}`;
+        
+        const waUrl = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`;
+        
+        window.open(waUrl, '_blank'); // Opens WhatsApp in a new tab
+        window.location.href = "dashboard.html"; // Redirects current tab to dashboard
+
+      } catch (err) {
+        alert("Transaction aborted: " + err.message); 
+        btn.innerHTML = 'Generate Request'; 
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
