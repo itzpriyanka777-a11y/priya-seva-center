@@ -338,7 +338,7 @@
         if (!user) { btn.innerHTML = 'Generate Request'; btn.disabled = false; return alert("Authentication required. Please log in."); }
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5wlbcNq_wDNsy9lIsULtYt4FZUAk-JfD9iEtaOcwkyhMGQuBI5BfjxmCgFSkV8cc/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxcEfav22X3Rc5lyiJNXc6-mtr8CtaT3WHMDj-T9jvDaOX0cwK-fdBherWoa4OVmPE/exec";
         const payload = { name: name, email: user.email, phone: "Not Provided", serviceType: "Maid: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "") };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
