@@ -12,14 +12,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
-    /* CSS Reset absolutely kills any white bars or hidden margins */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
       --bg-void: #030814;
       --glass-panel: rgba(10, 18, 35, 0.6);
       --glass-border: rgba(0, 243, 255, 0.15);
-      --highlight: #00f3ff; /* Medical Cyan */
+      --highlight: #00f3ff; 
     }
 
     body { 
@@ -28,7 +27,6 @@
       color: #e2e8f0; 
       overflow-x: hidden; 
       position: relative;
-      /* Subtle Futuristic Medical Grid for extreme depth */
       background-image: 
         linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), 
         linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
@@ -37,22 +35,24 @@
     
     a { text-decoration: none; }
     
-    /* Interactive Water Ripple Physics */
+    /* Interactive Water Ripple */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
-    /* Completely Transparent Navbar */
-    .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000; transition: all 0.4s ease;}
+    /* Absolute Navbar - Scrolls naturally without black bars */
+    .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
     
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
     .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
-    .logo-text { color: white; font-size: 24px; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
     
+    /* Desktop vs Mobile Brand Name */
+    .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
+    .mobile-brand { display: none; }
+
     .nav-actions { display: flex; align-items: center; gap: 20px; }
 
-    /* High-Tech Login Button */
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
     .login-trigger-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-2px);}
 
@@ -60,7 +60,6 @@
     .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 20px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
     .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
     
-    /* Dark Glass Menu Dropdown */
     .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 240px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
     .dropdown-content a { color: #e2e8f0; padding: 16px 22px; display: block; font-weight: 500; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
     .dropdown-content a i { width: 30px; color: var(--highlight); }
@@ -68,62 +67,32 @@
     .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* THE HERO SECTION
-      The image blends seamlessly into the dark background using a 3-point gradient 
-    */
-    .hero { 
-      position: relative; 
-      /* Perfect Fade: Image -> Dark Blue -> Void Black */
-      background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); 
-      background-size: cover; 
-      background-position: center; 
-      background-attachment: fixed;
-      color: white; 
-      text-align: center; 
-      padding: 220px 20px 180px 20px; 
-      min-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    /* Medical Floating Nodes Canvas */
+    /* The Hero Section */
+    .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-    
     .hero-content { position: relative; z-index: 2; }
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
-    /* SERVICE CARDS: DARK GLASSMORPHISM WITH EDGE LIGHTING
-    */
+    /* Deskstop Service Cards */
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
-    
-    /* Independent Bobbing Physics */
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
     .float-wrap:nth-child(2) { animation-delay: 1.2s; }
     .float-wrap:nth-child(3) { animation-delay: 0.5s; }
     .float-wrap:nth-child(4) { animation-delay: 1.8s; }
     @keyframes gentlyBob { 0% { transform: translateY(0px); } 100% { transform: translateY(-15px); } }
 
-    /* The Laser-Edge Light Tracker */
     .light-tracker { position: relative; width: 100%; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; height: 100%; border: 1px solid rgba(255,255,255,0.03);}
     .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
     
-    .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px;
-      background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
-    }
-    .light-tracker::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
+    .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
 
-    .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer;}
+    .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     
+    /* Mobile Card Elements (Hidden on PC) */
+    .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
+
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
     
@@ -131,30 +100,25 @@
     .service-card p { font-size: 14px; color: #94a3b8; margin-bottom: 30px; line-height: 1.6; flex-grow: 1;}
     .book-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 14px 20px; border-radius: 12px; font-weight: 600; transition: 0.3s; width: 100%; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;}
     
-    /* Neon Glow Accents for each card */
     .card-maid .card-icon { color: #3498db; } .card-maid:hover .book-btn { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);}
     .card-nurse .card-icon { color: #2ecc71; } .card-nurse:hover .book-btn { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);}
     .card-health .card-icon { color: var(--highlight); } .card-health:hover .book-btn { background: rgba(0, 243, 255, 0.2); color: var(--highlight); border-color: var(--highlight); box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);}
     .card-baby .card-icon { color: #f39c12; } .card-baby:hover .book-btn { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);}
 
-    /* Deep Glass Reviews Section */
     .reviews-section { max-width: 1100px; margin: 80px auto; padding: 0 20px; text-align: center; }
     .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;}
     .review-card { background: var(--glass-panel); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: left; transition: 0.3s;}
     .review-card:hover { transform: translateY(-5px); border-color: rgba(0,243,255,0.2); box-shadow: 0 25px 50px rgba(0,0,0,0.6);}
     .stars { color: #f39c12; font-size: 16px; margin-bottom: 20px; filter: drop-shadow(0 0 5px rgba(243,156,18,0.5));}
 
-    /* Modals & Toggles */
     .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(3, 8, 20, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,243,255,0.2); color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 13px;}
     .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; transition: 0.3s;}
     .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
-    .btn-decline { background: transparent; color: #94a3b8; border: 1px solid #94a3b8; }
-
+    
     .chatbot-fab { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--highlight); font-size: 24px; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; z-index: 9998; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);}
     .chatbot-fab:hover { transform: scale(1.1) rotate(-10deg); background: var(--highlight); color: #000; box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
 
-    /* Authentication Dark Glass Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
     .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; text-align: center; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
     
@@ -165,11 +129,33 @@
     .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
     
+    /* MOBILE REVOLUTION: Custom Animated Video Cards */
     @media (max-width: 768px) {
-      .hero { padding: 180px 20px 120px 20px; }
+      .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
-      .navbar { padding: 20px; }
+      .navbar { padding: 15px 20px; }
       .login-trigger-btn span { display: none; } 
+      .desktop-brand { display: none; }
+      .mobile-brand { display: inline; font-size: 22px;}
+      
+      /* Hide standard content on mobile */
+      .desktop-card-content { display: none; }
+
+      /* Mobile Card Formatting */
+      .service-card { padding: 0; min-height: 250px; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.15);}
+      
+      /* Mobile Title always visible at top */
+      .mobile-title { display: block; position: absolute; top: 20px; left: 0; width: 100%; text-align: center; color: white; z-index: 10; font-size: 20px; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px;}
+      
+      /* Video Layer */
+      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; animation: fadeVideo 10s infinite; border-radius: 20px;}
+      
+      /* Dark Overlay Text Layer */
+      .mobile-overlay-text { display: flex; position: absolute; inset: 0; z-index: 5; align-items: center; justify-content: center; text-align: center; padding: 30px; font-size: 15px; font-weight: 500; color: white; background: rgba(3, 8, 20, 0.85); animation: fadeText 10s infinite; border-radius: 20px; line-height: 1.6;}
+
+      /* Keyframes for the elegant crossfade loop */
+      @keyframes fadeVideo { 0%, 45% { opacity: 0.7; } 50%, 95% { opacity: 0; } 100% { opacity: 0.7; } }
+      @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
     }
   </style>
 </head>
@@ -180,14 +166,17 @@
   <nav class="navbar">
     <a href="index.html" class="logo-container">
       <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
-      <div class="logo-text">Priya Seva</div>
+      <div class="logo-text">
+        <span class="desktop-brand">Priya Seva Center</span>
+        <span class="mobile-brand">Priya Seva</span>
+      </div>
     </a>
     <div class="nav-actions">
       <button class="login-trigger-btn" id="mainActionButton" onclick="openLoginModal();">
         <i class="fa-solid fa-fingerprint"></i> <span>Secure Portal</span>
       </button>
       <div class="menu-container">
-        <button class="menu-btn"><i class="fa-solid fa-bars"></i> Menu</button>
+        <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="dropdown-content">
           <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
           <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
@@ -199,7 +188,6 @@
 
   <section class="hero">
     <canvas id="heroCanvas"></canvas>
-    
     <div class="hero-content">
       <h1>Advanced Home Care & Nursing Intelligence</h1>
       <p>Coordinate certified nurses, rigorous health checks, and trusted home management protocols across Kolkata via a state-of-the-art secure platform.</p>
@@ -210,9 +198,14 @@
     <div class="float-wrap">
       <div class="light-tracker card-maid">
         <div class="service-card" onclick="window.location.href='maid.html'">
-          <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
-          <p>Verified professionals for daily sanitization, culinary prep, and precision home caretaking.</p>
-          <div class="book-btn">Customize Plan</div>
+          <h3 class="mobile-title">Maid Services</h3>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./maid.mp4" type="video/mp4"></video>
+          <div class="mobile-overlay-text">Maid Service so that you can save your energy for that Sunday Brunch!</div>
+          <div class="desktop-card-content">
+            <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
+            <p>Verified professionals for daily sanitization, culinary prep, and precision home caretaking.</p>
+            <div class="book-btn">Customize Plan</div>
+          </div>
         </div>
       </div>
     </div>
@@ -220,9 +213,14 @@
     <div class="float-wrap">
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
-          <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
-          <p>Medical-grade nursing staff for post-operative recovery and critical patient monitoring.</p>
-          <div class="book-btn">Request Nurse</div>
+          <h3 class="mobile-title">Certified Nurses</h3>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./nurse.mp4" type="video/mp4"></video>
+          <div class="mobile-overlay-text">Certified Nursing Care, ensuring total peace of mind for your loved ones.</div>
+          <div class="desktop-card-content">
+            <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
+            <p>Medical-grade nursing staff for post-operative recovery and critical patient monitoring.</p>
+            <div class="book-btn">Request Nurse</div>
+          </div>
         </div>
       </div>
     </div>
@@ -230,9 +228,14 @@
     <div class="float-wrap">
       <div class="light-tracker card-health">
         <div class="service-card" onclick="window.location.href='health.html'">
-          <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
-          <p>On-demand clinical home visits for wound dressings, vitals tracking, and injections.</p>
-          <div class="book-btn">Schedule Visit</div>
+          <h3 class="mobile-title">Health Visits</h3>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4"></video>
+          <div class="mobile-overlay-text">Instant, professional health assessments right in the comfort of your home.</div>
+          <div class="desktop-card-content">
+            <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
+            <p>On-demand clinical home visits for wound dressings, vitals tracking, and injections.</p>
+            <div class="book-btn">Schedule Visit</div>
+          </div>
         </div>
       </div>
     </div>
@@ -240,9 +243,14 @@
     <div class="float-wrap">
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
-          <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
-          <p>Psychologically verified, patient, and highly trained pediatric caretakers.</p>
-          <div class="book-btn">Find Babysitter</div>
+          <h3 class="mobile-title">Babysitting</h3>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./babysitter.mp4" type="video/mp4"></video>
+          <div class="mobile-overlay-text">Expert babysitters so you can enjoy a stress-free evening out!</div>
+          <div class="desktop-card-content">
+            <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
+            <p>Psychologically verified, patient, and highly trained pediatric caretakers.</p>
+            <div class="book-btn">Find Babysitter</div>
+          </div>
         </div>
       </div>
     </div>
@@ -255,11 +263,6 @@
         <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
         <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">"The automated dashboard is brilliant. I can track exactly when my maid arrives and manage my requests instantly without calling anyone."</p>
         <strong style="color: var(--highlight); font-size: 16px;">Rahul Banerjee</strong> <span style="font-size:12px; color:#64748b;">- Salt Lake</span>
-      </div>
-      <div class="review-card">
-        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">"Priya Seva provided a certified nurse for my father post-surgery. The level of medical care and sheer professionalism is unmatched in the city."</p>
-        <strong style="color: var(--highlight); font-size: 16px;">Anjali Das</strong> <span style="font-size:12px; color:#64748b;">- New Town</span>
       </div>
     </div>
   </section>
@@ -281,59 +284,37 @@
       <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-fingerprint"></i></div>
       <h2 style="color:#fff; margin-top:0; font-weight: 700;">Client Authentication</h2>
       <p style="color:#94a3b8; font-size: 13px; margin-bottom: 30px;">Enter your details to access your encrypted medical & home management portal.</p>
-      
       <input type="email" id="authEmail" class="auth-input" placeholder="Registered Email Address">
       <input type="password" id="authPassword" class="auth-input" placeholder="Vault Password">
-      
       <button class="primary-auth-btn" onclick="handleEmailLogin();">Authenticate Session</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // --- Clinical Floating Nodes (Adds immersive Depth to the Hero image) ---
     const canvas = document.getElementById('heroCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
-    
-    function resizeCanvas() { 
-      canvas.width = canvas.parentElement.clientWidth; 
-      canvas.height = canvas.parentElement.clientHeight; 
-    }
+    function resizeCanvas() { canvas.width = canvas.parentElement.clientWidth; canvas.height = canvas.parentElement.clientHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
-    
-    for(let i=0; i<35; i++) { 
-      nodes.push({ 
-        x: Math.random()*canvas.width, 
-        y: Math.random()*canvas.height, 
-        size: (Math.random()*12) + 4, 
-        speed: (Math.random()*0.5) + 0.1, 
-        opacity: (Math.random()*0.15) + 0.02 
-      }); 
-    }
-    
+    for(let i=0; i<35; i++) { nodes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: (Math.random()*12) + 4, speed: (Math.random()*0.5) + 0.1, opacity: (Math.random()*0.15) + 0.02 }); }
     function drawNodes() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      nodes.forEach(n => { 
-        n.y -= n.speed; 
-        if(n.y < -n.size) { n.y = canvas.height + n.size; n.x = Math.random()*canvas.width; }
-        ctx.fillStyle = `rgba(0, 243, 255, ${n.opacity})`; 
-        ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill(); 
+      nodes.forEach(n => { n.y -= n.speed; if(n.y < -n.size) { n.y = canvas.height + n.size; n.x = Math.random()*canvas.width; }
+        ctx.fillStyle = `rgba(0, 243, 255, ${n.opacity})`; ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill(); 
       });
       requestAnimationFrame(drawNodes);
     }
     drawNodes();
 
-    // --- Water Ripple Physics ---
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
     });
 
-    // --- Light Tracker Cursor Physics for Deep Glass Cards ---
     document.addEventListener('mousemove', (e) => {
       document.querySelectorAll('.light-tracker').forEach(el => {
         const rect = el.getBoundingClientRect();
@@ -342,42 +323,18 @@
       });
     });
 
-    // --- Dynamic Background Navbar Scroll ---
-    window.addEventListener('scroll', () => {
-      const nav = document.querySelector('.navbar');
-      if(window.scrollY > 50) {
-        nav.style.background = 'rgba(3, 8, 20, 0.9)';
-        nav.style.backdropFilter = 'blur(20px)';
-        nav.style.borderBottom = '1px solid rgba(0, 243, 255, 0.1)';
-      } else {
-        nav.style.background = 'transparent';
-        nav.style.backdropFilter = 'none';
-        nav.style.borderBottom = 'none';
-      }
-    });
-
-    // --- Cookies ---
     window.onload = function() {
-      if(!localStorage.getItem('cookiesAccepted')) {
-        setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000);
-      }
+      if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000); }
     };
-    function acceptCookies() {
-      localStorage.setItem('cookiesAccepted', 'true');
-      document.getElementById('cookieBanner').style.bottom = '-100px';
-    }
+    function acceptCookies() { localStorage.setItem('cookiesAccepted', 'true'); document.getElementById('cookieBanner').style.bottom = '-100px'; }
 
-    // --- Supabase Authentication & Session Logic ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-    
-    window.onclick = function(event) {
-      if (event.target == document.getElementById('loginModal')) closeLoginModal();
-    }
+    window.onclick = function(event) { if (event.target == document.getElementById('loginModal')) closeLoginModal(); }
 
     window.addEventListener('load', async function() {
       if (supabaseClient) {
@@ -396,20 +353,14 @@
       const email = document.getElementById('authEmail').value;
       const password = document.getElementById('authPassword').value;
       const btn = document.querySelector('.primary-auth-btn');
-      
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
-      
       const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
       if (!error) { window.location.href = "dashboard.html"; return; }
-      
       if (error.message.includes("Invalid login")) {
         await supabaseClient.auth.signUp({ email, password });
         alert("Secure Vault Created. Please tap login again to enter.");
         btn.innerHTML = 'Authenticate Session';
-      } else { 
-        alert("Error: " + error.message); 
-        btn.innerHTML = 'Authenticate Session';
-      }
+      } else { alert("Error: " + error.message); btn.innerHTML = 'Authenticate Session'; }
     }
   </script>
 </body>
