@@ -112,19 +112,19 @@
     }
     
     .video-bg { 
-      position: absolute; top: 50%; left: 50%; 
-      min-width: 100%; min-height: 100%; width: auto; height: auto; 
-      transform: translateX(-50%) translateY(-50%); 
+      position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); 
       opacity: 0; object-fit: cover; z-index: 1; 
-      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .video-bg.playing { opacity: 0.85; }
 
+    /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
-      .split-layout { flex-direction: column; overflow-y: auto; height: auto; display: block;}
       body { overflow: auto; }
-      .right-pane { height: 50vh; width: 100vw; display: block; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%); mask-image: linear-gradient(to bottom, transparent 0%, black 50%); }
-      .left-pane { padding: 120px 20px 40px 20px; min-height: 100vh; display: flex; }
+      .navbar { position: relative !important; padding: 25px 20px !important; background: transparent; }
+      .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
+      .left-pane { padding: 10px 20px 40px 20px; min-height: auto; display: block; overflow-y: visible;}
+      .right-pane { display: none !important; } /* Removes video pane on mobile */
     }
   </style>
 </head>
@@ -201,7 +201,6 @@
           <div id="selectedDatesDisplay" style="display: none; margin-top: 15px; padding: 14px 20px; background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 20px; font-size: 13px; color: #fff; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
             <i class="fa-regular fa-calendar-check" style="color: #00e5ff; margin-right: 8px;"></i> <span id="datesText"></span>
           </div>
-
         </div>
 
         <div class="capsule-group input-group">
@@ -236,7 +235,6 @@
   </div>
 
   <script>
-    // --- 1. LIGHT TRACKER & WATER RIPPLE ENGINE ---
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
       const ripple = document.createElement('div');
@@ -264,57 +262,37 @@
       });
     });
 
-    // --- 2. SERENE STARRY NIGHT SKY & SHADOW CLOUDS ---
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = [];
-    let clouds = [];
-    const numStars = 400;
-    const numClouds = 14;
-
+    let stars = []; let clouds = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<numStars; i++) {
-      stars.push({
-        x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
-        size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05,
-        twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01,
-        color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255'
-      });
+    for(let i=0; i<400; i++) {
+      stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255' });
     }
 
-    for(let i=0; i<numClouds; i++) {
-      clouds.push({
-        x: Math.random() * window.innerWidth, y: (Math.random() * window.innerHeight) - 100,
-        size: (Math.random() * 320) + 220, speed: (Math.random() * 0.4) + 0.15, opacity: (Math.random() * 0.35) + 0.1
-      });
+    for(let i=0; i<14; i++) {
+      clouds.push({ x: Math.random() * window.innerWidth, y: (Math.random() * window.innerHeight) - 100, size: (Math.random() * 320) + 220, speed: (Math.random() * 0.4) + 0.15, opacity: (Math.random() * 0.35) + 0.1 });
     }
 
     function drawSereneSky() {
       ctx.fillStyle = '#020614'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-
       stars.forEach(s => {
-        s.x -= s.speed;
-        if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
+        s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
         s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
-        ctx.fillStyle = `rgba(${s.color}, ${opacity})`;
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = `rgba(${s.color}, ${opacity})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
       });
-
       clouds.forEach(c => {
-        c.x -= c.speed;
-        if(c.x < -c.size) { c.x = canvas.width + c.size; c.y = (Math.random() * canvas.height) - 100; }
+        c.x -= c.speed; if(c.x < -c.size) { c.x = canvas.width + c.size; c.y = (Math.random() * canvas.height) - 100; }
         let grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
         grad.addColorStop(0, `rgba(5, 12, 30, ${c.opacity})`); grad.addColorStop(1, 'rgba(2, 6, 20, 0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath(); ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2); ctx.fill();
       });
       requestAnimationFrame(drawSereneSky);
     }
     drawSereneSky();
 
-    // --- 3. DATA LOGIC & API HOOKS ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -323,26 +301,11 @@
 
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    
-    function selectFrequency(value) { 
-      selectOption('freqTrigger', 'freqOptions', value); 
-      selectedFrequency = value; 
-      selectedDates = []; 
-      updateSelectedDatesDisplay();
-      document.getElementById('visualCalendar').style.display = 'block'; 
-      buildCalendarGrid(value === 'One-Time Clean'); 
-    }
+    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'One-Time Clean'); }
 
-    // NEW: Real-time update for Selected Dates Bar
     function updateSelectedDatesDisplay() {
-      const displayDiv = document.getElementById('selectedDatesDisplay');
-      const datesText = document.getElementById('datesText');
-      if (selectedDates.length > 0) {
-        datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", ");
-        displayDiv.style.display = 'block';
-      } else {
-        displayDiv.style.display = 'none';
-      }
+      const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
+      if (selectedDates.length > 0) { datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", "); displayDiv.style.display = 'block'; } else { displayDiv.style.display = 'none'; }
     }
 
     function buildCalendarGrid(isSingleSelect) {
@@ -354,81 +317,37 @@
           createRipple(e.clientX, e.clientY);
           if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
           else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
-          updateSelectedDatesDisplay(); // Instantly update UI Bar
+          updateSelectedDatesDisplay(); 
         };
         grid.appendChild(div);
       }
     }
     
     document.addEventListener('click', function(e) {
-      // Close the standard dropdowns
-      if(!e.target.closest('.custom-select')) {
-        document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show'));
-      }
-      // Close the Visual Calendar if clicking completely outside of it or on the close button
-      if(!e.target.closest('.glass-calendar') && !e.target.closest('.custom-select')) {
-        document.getElementById('visualCalendar').style.display = 'none';
-      }
+      if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); }
+      if(!e.target.closest('.glass-calendar') && !e.target.closest('.custom-select')) { document.getElementById('visualCalendar').style.display = 'none'; }
     });
 
     async function submitRequest() {
-      const btn = document.getElementById('submitBtn'); 
-      const name = document.getElementById('parentName').value; 
-      const service = document.getElementById('serviceTrigger').innerText.trim(); 
-      const timeWindow = document.getElementById('timeWindow').value; 
-      const notes = document.getElementById('extraDetails').value;
-
-      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { 
-        return alert("Please fill your name, select a service, and pick your dates."); 
-      }
+      const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const notes = document.getElementById('extraDetails').value;
+      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select a service, and pick your dates."); }
       
       try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; 
-        btn.disabled = true;
-
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { 
-            btn.innerHTML = 'Generate Request'; 
-            btn.disabled = false; 
-            return alert("Authentication required. Please log in."); 
-        }
+        if (!user) { btn.innerHTML = 'Generate Request'; btn.disabled = false; return alert("Authentication required. Please log in."); }
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
-        
-        // 1. Send Payload to Google Apps Script
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5wlbcNq_wDNsy9lIsULtYt4FZUAk-JfD9iEtaOcwkyhMGQuBI5BfjxmCgFSkV8cc/exec";
-        
-        const payload = {
-          name: name,
-          email: user.email,
-          phone: "Not Provided",
-          serviceType: "Maid: " + service,
-          date: formattedDates,
-          address: "Not Provided",
-          details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "")
-        };
+        const payload = { name: name, email: user.email, phone: "Not Provided", serviceType: "Maid: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "") };
 
-        await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
-        // 2. WhatsApp Direct Link
-        const adminWaNumber = "917439392803"; // <-- ENTER YOUR WHATSAPP NUMBER HERE
+        const adminWaNumber = "917439392803";
         const waMessage = `*New Maid Booking!*\n\n*Service:* ${service}\n*Client:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${notes || 'None'}`;
-        
-        const waUrl = `https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`;
-        
-        window.open(waUrl, '_blank');
+        window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
-
-      } catch (err) { 
-        alert("Transaction aborted: " + err.message); 
-        btn.innerHTML = 'Generate Request'; 
-        btn.disabled = false; 
-      }
+      } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Generate Request'; btn.disabled = false; }
     }
   </script>
 </body>
