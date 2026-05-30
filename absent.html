@@ -32,7 +32,6 @@
     .spatial-header p { margin: 0 auto; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; max-width: 400px; line-height: 1.6;}
 
     .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
-    .capsule-group:nth-child(2) { animation-delay: 1s; } .capsule-group:nth-child(3) { animation-delay: 2s; } .capsule-group:nth-child(4) { animation-delay: 0.5s; }
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
     .light-tracker { position: relative; width: 100%; }
@@ -83,7 +82,7 @@
         
         <div class="spatial-header">
           <h2>Log an Absence</h2>
-          <p>Going out of town? Inform our dispatch team to pause your daily or weekly services temporarily.</p>
+          <p>Inform our dispatch team to pause services temporarily or report an agent no-show.</p>
         </div>
 
         <div class="capsule-group input-group">
@@ -94,7 +93,20 @@
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Service to Pause</label>
+          <label>Who is Absent?</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="whoTrigger" onclick="toggleDropdown('whoOptions')">
+              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select absence type</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="light-tracker select-options" id="whoOptions">
+            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'Client Absent (I am away)')">Client Absent (I am away)</div>
+            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'Agent Absent (Caregiver did not arrive)')">Agent Absent (Caregiver did not arrive)</div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group custom-select">
+          <label>Service to Pause / Report</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
               <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select service type</span> <i class="fa-solid fa-chevron-down"></i>
@@ -109,13 +121,13 @@
 
         <div style="display: flex; gap: 15px; margin-bottom: 25px;">
           <div class="capsule-group input-group" style="margin-bottom: 0;">
-            <label>Absence Start Date</label>
+            <label>Start Date</label>
             <div class="light-tracker" style="border-radius: 50px;">
               <input type="date" id="startDate" class="glass-render">
             </div>
           </div>
           <div class="capsule-group input-group" style="margin-bottom: 0;">
-            <label>Return Date</label>
+            <label>End Date</label>
             <div class="light-tracker" style="border-radius: 50px;">
               <input type="date" id="endDate" class="glass-render">
             </div>
@@ -144,7 +156,6 @@
   </div>
 
   <script>
-    // Physics Engine
     const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
@@ -163,7 +174,7 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // PASTE YOUR SCRIPT URL HERE
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOm_iUes4Ph91MzXROYCm5w0aGTIqslhc_Qr6ahNKcjIADwSWHvZUsqdCsIomSgTM/exec"; 
 
     function toggleDropdown(id) { document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { 
@@ -175,12 +186,13 @@
     async function submitAbsence() {
       const btn = document.getElementById('submitBtn');
       const name = document.getElementById('clientName').value;
+      const who = document.getElementById('whoTrigger').innerText.trim();
       const service = document.getElementById('serviceTrigger').innerText.trim();
       const start = document.getElementById('startDate').value;
       const end = document.getElementById('endDate').value;
       const reason = document.getElementById('reasonText').value;
 
-      if(!name || service.includes("Select") || !start || !end) return alert("Please complete all required fields.");
+      if(!name || who.includes("Select") || service.includes("Select") || !start || !end) return alert("Please complete all required fields.");
 
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging...'; btn.disabled = true;
@@ -188,17 +200,20 @@
         if (!user) { btn.innerHTML = 'Confirm Absence Log'; btn.disabled = false; return alert("Session expired. Please log in."); }
 
         const payload = {
+          actionType: 'log_absence',
           name: name,
           email: user.email,
-          serviceType: "Absence Logged: " + service,
-          date: start + " to " + end,
-          details: "Reason: " + (reason || "Not specified")
+          absenceType: who,
+          serviceType: service,
+          startDate: start,
+          endDate: end,
+          reason: reason || "Not specified"
         };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
         const adminWaNumber = "917439392803";
-        const waMessage = `*CLIENT ABSENCE LOGGED*\\n\\n*Client:* ${name}\\n*Service Paused:* ${service}\\n*From:* ${start}\\n*To:* ${end}\\n*Reason:* ${reason || 'N/A'}`;
+        const waMessage = `*CLIENT ABSENCE LOGGED*\\n\\n*Client:* ${name}\\n*Type:* ${who}\\n*Service:* ${service}\\n*From:* ${start}\\n*To:* ${end}\\n*Reason:* ${reason || 'N/A'}`;
         window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
 
