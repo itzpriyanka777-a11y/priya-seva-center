@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Priya Seva Center | Premium Home Care & Nursing Intelligence</title>
-  <meta name="description" content="Book verified maids, certified nurses, health visits, and babysitters in Kolkata.">
+  <title>Priya Seva | Reliable Home Care & Nursing Services</title>
+  <meta name="description" content="Book verified maids, certified nurses, health visits, and babysitters in Kolkata easily.">
   <meta name="theme-color" content="#030814">
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -113,9 +113,19 @@
     .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; transition: 0.3s;}
     .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
 
-    /* --- AI Triage Assistant Styles --- */
-    .chatbot-fab { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--highlight); font-size: 24px; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; z-index: 9998; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);}
-    .chatbot-fab:hover { transform: scale(1.1) rotate(-10deg); background: var(--highlight); color: #000; box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
+    /* --- Kelvin AI Chatbot Styles --- */
+    .chatbot-wrapper { position: fixed; bottom: 30px; right: 30px; z-index: 9998; width: 65px; height: 65px; }
+    
+    .chatbot-fab { width: 100%; height: 100%; border-radius: 50%; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); font-size: 22px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); position: relative; z-index: 10;}
+    .chatbot-fab:hover { background: var(--highlight); color: #000; transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
+    
+    .kelvin-bot { position: absolute; bottom: 35px; right: -5px; width: 75px; z-index: 5; filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8)); animation: floatBot 3.5s ease-in-out infinite; pointer-events: none;}
+    
+    .kelvin-bubble { position: absolute; bottom: 120px; right: -10px; width: 220px; background: white; color: black; padding: 12px 15px; border-radius: 15px; border-bottom-right-radius: 0; font-size: 13px; font-weight: 600; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 6; animation: floatBubble 3.5s ease-in-out infinite; transform-origin: bottom right;}
+    .kelvin-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: white transparent transparent transparent; }
+    
+    @keyframes floatBot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     .chat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 10000; justify-content: flex-end; align-items: flex-end; padding: 30px; backdrop-filter: blur(5px);}
     .chat-window { background: rgba(10, 18, 35, 0.95); border: 1px solid var(--highlight); width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 243, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
@@ -141,16 +151,26 @@
     .glass-render { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 12px; outline: none; transition: 0.3s; }
     .glass-render:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
 
-    /* Auth Modals */
+    /* Auth Modals & Buttons */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
     .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; text-align: center; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
     
     .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
-    .auth-input { width: 100%; padding: 15px; margin-bottom: 20px; font-family: 'Poppins', sans-serif; font-size: 14px;}
-    .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
+    .auth-input { width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Poppins', sans-serif; font-size: 14px;}
+    
+    /* New Auth Buttons */
+    .google-btn { width: 100%; background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; margin-bottom: 15px;}
+    .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
+    .auth-divider { display: flex; align-items: center; text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 15px;}
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .auth-divider span { padding: 0 10px; }
+    
+    .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
+    .secondary-auth-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;}
+    .secondary-auth-btn:hover { background: rgba(255,255,255,0.1); border-color: white;}
     
     /* MOBILE REVOLUTION CSS */
     @media (max-width: 768px) {
@@ -169,6 +189,9 @@
       @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
+      
+      .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
+      .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
     }
   </style>
 </head>
@@ -191,7 +214,7 @@
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="dropdown-content">
-          <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File a Grievance</a>
+          <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> Register a Complaint</a>
           <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
           <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
         </div>
@@ -202,8 +225,8 @@
   <section class="hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-content">
-      <h1>Advanced Home Care & Nursing Intelligence</h1>
-      <p>Coordinate certified nurses, rigorous health checks, and trusted home management protocols across Kolkata via a state-of-the-art secure platform.</p>
+      <h1>Reliable Home Care & Nursing Services</h1>
+      <p>Book certified nurses, regular health checks, and trusted maids across Kolkata using our secure and easy platform.</p>
     </div>
   </section>
 
@@ -213,11 +236,11 @@
         <div class="service-card" onclick="window.location.href='maid.html'">
           <h3 class="mobile-title">Maid Services</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./maid.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Maid Service so that you can save your energy for that Sunday Brunch!</div>
+          <div class="mobile-overlay-text">Trusted maids for daily cleaning, cooking, and complete home care.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
-            <p>Verified professionals for daily sanitization, culinary prep, and precision home caretaking.</p>
-            <div class="book-btn">Customize Plan</div>
+            <p>Trusted maids for daily cleaning, cooking, and complete home care.</p>
+            <div class="book-btn">Book a Maid</div>
           </div>
         </div>
       </div>
@@ -228,11 +251,11 @@
         <div class="service-card" onclick="window.location.href='nurse.html'">
           <h3 class="mobile-title">Certified Nurses</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./nurse.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Certified Nursing Care, ensuring total peace of mind for your loved ones.</div>
+          <div class="mobile-overlay-text">Professional nurses for surgery recovery and daily patient care.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
-            <p>Medical-grade nursing staff for post-operative recovery and critical patient monitoring.</p>
-            <div class="book-btn">Request Nurse</div>
+            <p>Professional nurses for surgery recovery and daily patient care.</p>
+            <div class="book-btn">Request a Nurse</div>
           </div>
         </div>
       </div>
@@ -243,11 +266,11 @@
         <div class="service-card" onclick="window.location.href='health.html'">
           <h3 class="mobile-title">Health Visits</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Instant, professional health assessments right in the comfort of your home.</div>
+          <div class="mobile-overlay-text">Quick home visits for check-ups, wound dressing, and injections.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
-            <p>On-demand clinical home visits for wound dressings, vitals tracking, and injections.</p>
-            <div class="book-btn">Schedule Visit</div>
+            <p>Quick home visits for check-ups, wound dressing, and injections.</p>
+            <div class="book-btn">Schedule a Visit</div>
           </div>
         </div>
       </div>
@@ -258,11 +281,11 @@
         <div class="service-card" onclick="window.location.href='babysitter.html'">
           <h3 class="mobile-title">Babysitting</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./babysitter.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Expert babysitters so you can enjoy a stress-free evening out!</div>
+          <div class="mobile-overlay-text">Caring, patient, and verified babysitters for your little ones.</div>
           <div class="desktop-card-content">
-            <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
-            <p>Psychologically verified, patient, and highly trained pediatric caretakers.</p>
-            <div class="book-btn">Find Babysitter</div>
+            <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitting</h3>
+            <p>Caring, patient, and verified babysitters for your little ones.</p>
+            <div class="book-btn">Find a Babysitter</div>
           </div>
         </div>
       </div>
@@ -280,50 +303,63 @@
     </div>
   </section>
 
-  <div class="chatbot-fab" onclick="openChatTriage()">
-    <i class="fa-solid fa-microchip"></i>
+  <div class="chatbot-wrapper">
+    <div class="kelvin-bubble" id="kelvinBubble">Hi, I'm Kelvin, your AI Assistant, tell me your concern!</div>
+    <img src="KELVIN.png" class="kelvin-bot" alt="Kelvin AI">
+    <div class="chatbot-fab" onclick="openChatTriage()">
+      <i class="fa-solid fa-message"></i>
+    </div>
   </div>
 
   <div class="chat-modal-overlay" id="chatModal">
     <div class="chat-window">
       <div class="chat-header">
-        <div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-microchip" style="color:var(--highlight);"></i> Triage Assistant</div>
+        <div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-robot" style="color:var(--highlight);"></i> Kelvin Assistant</div>
         <i class="fa-solid fa-xmark chat-close" onclick="closeChatTriage()"></i>
       </div>
       
       <div class="chat-body" id="chatFlowContainer">
         <div class="chat-bubble bot-intro">
-          <strong>Priya Seva Intelligence</strong><br><br>
-          Hello! I am your automated triage assistant. How can I direct your request today?
+          <strong>Kelvin AI</strong><br><br>
+          Hi! I am your Help Assistant. What can I do for you today?
         </div>
         
         <div class="chat-options-grid" id="mainChatOptions">
-          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Schedule a New Booking</button>
-          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit / Cancel Existing Booking</button>
-          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Log an Absence</button>
-          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. File a Grievance</button>
-          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Support</button>
+          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Book a Service</button>
+          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit or Cancel Booking</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Mark an Absence</button>
+          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. Register a Complaint</button>
+          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Us</button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="cookie-banner" id="cookieBanner">
-    <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> End-to-end encrypted connection. We use cookies to ensure optimal platform performance. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
+    <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> We use secure cookies to make the website easy to use. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
     <div style="display:flex; gap: 10px;">
-      <button class="cookie-btn btn-accept" onclick="acceptCookies()">Accept Security Protocol</button>
+      <button class="cookie-btn btn-accept" onclick="acceptCookies()">Accept</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="loginModal">
     <div class="auth-modal">
       <span class="close-modal" onclick="closeLoginModal();">&times;</span>
-      <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-fingerprint"></i></div>
-      <h2 style="color:#fff; margin-top:0; font-weight: 700;">Client Authentication</h2>
-      <p style="color:#94a3b8; font-size: 13px; margin-bottom: 30px;">Enter your details to access your encrypted medical & home management portal.</p>
-      <input type="email" id="authEmail" class="auth-input glass-render" placeholder="Registered Email Address">
-      <input type="password" id="authPassword" class="auth-input glass-render" placeholder="Vault Password">
-      <button class="primary-auth-btn" onclick="handleEmailLogin();">Authenticate Session</button>
+      <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-user-circle"></i></div>
+      <h2 style="color:#fff; margin-top:0; font-weight: 700;">Login or Sign Up</h2>
+      <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">Access your secure account to manage your home care.</p>
+      
+      <button class="google-btn" onclick="signInWithGoogle()"><i class="fa-brands fa-google" style="color:#EA4335;"></i> Continue with Google</button>
+      
+      <div class="auth-divider"><span>OR</span></div>
+
+      <input type="email" id="authEmail" class="auth-input glass-render" placeholder="Email Address">
+      <input type="password" id="authPassword" class="auth-input glass-render" placeholder="Password">
+      
+      <div style="display: flex; gap: 10px;">
+        <button class="primary-auth-btn" style="flex:1;" onclick="handleEmailAuth(false);">Log In</button>
+        <button class="secondary-auth-btn" style="flex:1;" onclick="handleEmailAuth(true);">Sign Up</button>
+      </div>
     </div>
   </div>
 
@@ -346,7 +382,7 @@
 
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
@@ -384,28 +420,45 @@
         if (user) {
           const btn = document.getElementById('mainActionButton');
           if (btn) {
-            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>Access Vault</span>';
+            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>My Dashboard</span>';
             btn.onclick = function() { window.location.href = 'dashboard.html'; };
           }
         }
       }
     });
 
-    async function handleEmailLogin() {
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      const btn = document.querySelector('.primary-auth-btn');
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating...';
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if (!error) { window.location.href = "dashboard.html"; return; }
-      if (error.message.includes("Invalid login")) {
-        await supabaseClient.auth.signUp({ email, password });
-        alert("Secure Vault Created. Please tap login again to enter.");
-        btn.innerHTML = 'Authenticate Session';
-      } else { alert("Error: " + error.message); btn.innerHTML = 'Authenticate Session'; }
+    // --- Google OAuth Handler ---
+    async function signInWithGoogle() {
+      const { data, error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+      if (error) alert("Error connecting to Google: " + error.message);
     }
 
-    // --- DIRECT CHATBOT LOGIC ENGINE ---
+    // --- Email Login & Sign Up Handler ---
+    async function handleEmailAuth(isSignUp) {
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      
+      if(!email || !password) return alert("Please enter both your email and a password.");
+
+      const loginBtn = document.querySelector('.primary-auth-btn');
+      const signUpBtn = document.querySelector('.secondary-auth-btn');
+      
+      if(isSignUp) {
+        signUpBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+        const { data, error } = await supabaseClient.auth.signUp({ email, password });
+        if (error) alert("Sign up error: " + error.message);
+        else alert("Account created successfully! You can now log in.");
+        signUpBtn.innerHTML = 'Sign Up';
+      } else {
+        loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) alert("Login error: " + error.message);
+        else window.location.href = "dashboard.html";
+        loginBtn.innerHTML = 'Log In';
+      }
+    }
+
+    // --- KELVIN DIRECT CHATBOT LOGIC ENGINE ---
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let chatContextUser = null;
     let chatContextBookings = [];
@@ -415,9 +468,13 @@
       setTimeout(() => c.scrollTop = c.scrollHeight, 50);
     }
 
-    function openChatTriage() { document.getElementById('chatModal').style.display = 'flex'; }
+    function openChatTriage() { 
+      document.getElementById('chatModal').style.display = 'flex'; 
+      document.getElementById('kelvinBubble').style.display = 'none'; // Hide bubble when chat is open
+    }
     function closeChatTriage() { 
       document.getElementById('chatModal').style.display = 'none'; 
+      document.getElementById('kelvinBubble').style.display = 'block'; // Show bubble when chat is closed
       resetChatTriage(); 
     }
 
@@ -437,10 +494,10 @@
       
       if (action === 'booking') {
         flowContainer.innerHTML += `
-          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to schedule a new service.</div>
-          <div class="chat-bubble bot-intro" style="animation: slideUp 0.3s ease;">Please select the deployment target you require:</div>
+          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to book a new service.</div>
+          <div class="chat-bubble bot-intro" style="animation: slideUp 0.3s ease;">Sure! Please select the service you need:</div>
           <div class="chat-options-grid" style="animation: slideUp 0.4s ease;">
-            <button class="chat-btn" onclick="window.location.href='maid.html'"><i class="fa-solid fa-broom"></i> Maid Plan</button>
+            <button class="chat-btn" onclick="window.location.href='maid.html'"><i class="fa-solid fa-broom"></i> Maid Service</button>
             <button class="chat-btn" onclick="window.location.href='nurse.html'"><i class="fa-solid fa-user-nurse"></i> Certified Nurse</button>
             <button class="chat-btn" onclick="window.location.href='health.html'"><i class="fa-solid fa-house-medical"></i> Health Visit</button>
             <button class="chat-btn" onclick="window.location.href='babysitter.html'"><i class="fa-solid fa-baby-carriage"></i> Babysitter</button>
@@ -450,14 +507,14 @@
       } 
       else if (action === 'edit') {
         flowContainer.innerHTML += `<div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to modify a booking.</div>`;
-        flowContainer.innerHTML += `<div class="chat-bubble bot-intro" id="chat-loading" style="animation: slideUp 0.3s ease;"><i class="fa-solid fa-spinner fa-spin"></i> Checking secure vault for active records...</div>`;
+        flowContainer.innerHTML += `<div class="chat-bubble bot-intro" id="chat-loading" style="animation: slideUp 0.3s ease;"><i class="fa-solid fa-spinner fa-spin"></i> Checking your account for active bookings...</div>`;
         scrollToBottom();
 
         // Check Auth
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) {
           document.getElementById('chat-loading').remove();
-          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">Authentication Required. Please log in via the 'Secure Portal' button at the top of the screen first.</div>`;
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You need to log in first. Please click the 'Secure Portal' button at the top of the screen to log in!</div>`;
           appendBackOptions();
           return;
         }
@@ -470,11 +527,10 @@
           document.getElementById('chat-loading').remove();
 
           if (result.status === "success" && result.data && result.data.length > 0) {
-            // Filter out canceled ones
             chatContextBookings = result.data.filter(b => !b.status.toLowerCase().includes('canceled'));
             
             if (chatContextBookings.length === 0) {
-               flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You have no active bookings to modify.</div>`;
+               flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You have no active bookings to modify right now.</div>`;
                appendBackOptions();
                return;
             }
@@ -485,26 +541,26 @@
             });
             optionsHtml += `</div>`;
 
-            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">I found the following active bookings. Which one would you like to manage?</div>` + optionsHtml;
+            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">I found these active bookings. Which one do you want to change?</div>` + optionsHtml;
             appendBackOptions();
           } else {
-            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You do not have any active bookings in your vault.</div>`;
+            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You do not have any active bookings in your account.</div>`;
             appendBackOptions();
           }
         } catch (err) {
-           document.getElementById('chat-loading').innerHTML = `Network Error. Could not connect to dispatch servers.`;
+           document.getElementById('chat-loading').innerHTML = `Sorry, I couldn't connect to our servers right now. Please try again.`;
            appendBackOptions();
         }
       }
       else if (action === 'contact') {
         flowContainer.innerHTML += `
-          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need human assistance.</div>
+          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to talk to a human.</div>
           <div class="chat-bubble bot-intro" style="animation: slideUp 0.3s ease;">
-            I am transferring you to our human operations desk. Our standard response time is under 15 minutes.
+            Sure! Our team usually replies within 15 minutes. How would you like to reach us?
           </div>
           <div class="chat-options-grid" style="animation: slideUp 0.4s ease;">
-            <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Support</button>
-            <button class="chat-btn" onclick="window.location.href='mailto:itzpriyanka777@gmail.com'"><i class="fa-solid fa-envelope"></i> Email Management</button>
+            <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</button>
+            <button class="chat-btn" onclick="window.location.href='mailto:itzpriyanka777@gmail.com'"><i class="fa-solid fa-envelope"></i> Send an Email</button>
           </div>
         `;
         appendBackOptions();
@@ -517,7 +573,6 @@
 
        flowContainer.innerHTML += `<div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">Manage: ${b.service_type}</div>`;
 
-       // 48 hour logic
        let isLocked = false;
        try {
          let parts = b.booking_date.split(" ");
@@ -536,10 +591,10 @@
        } catch(e) {}
 
        if (isLocked) {
-          flowContainer.innerHTML += `<div class="chat-bubble bot-intro" style="border-color:#e74c3c; color:#ff7675;"><strong>Security Lock Active:</strong><br>Modifications within 48 hours of service start time cannot be automated due to dispatch routing.</div>`;
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro" style="border-color:#e74c3c; color:#ff7675;"><strong>Sorry, this booking is locked!</strong><br>You cannot edit or cancel a booking within 48 hours of the service time.</div>`;
           flowContainer.innerHTML += `
             <div class="chat-options-grid">
-              <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> Contact Emergency Dispatch</button>
+              <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> Contact Support Instead</button>
             </div>`;
           appendBackOptions();
        } else {
@@ -557,7 +612,7 @@
        const flowContainer = document.getElementById('chatFlowContainer');
        document.getElementById(`chat-actions-${index}`).style.display = 'none';
        flowContainer.innerHTML += `
-          <div class="chat-bubble bot-intro" style="border-color:#e74c3c;">Are you absolutely sure you want to permanently cancel this service?</div>
+          <div class="chat-bubble bot-intro" style="border-color:#e74c3c;">Are you absolutely sure you want to cancel this service?</div>
           <div class="chat-options-grid" id="chat-confirm-cancel-${index}">
              <button class="chat-btn" onclick="chatExecuteCancel(${index})" style="background:rgba(231, 76, 60, 0.2); border-color:#e74c3c; color:#fff; justify-content:center;">Yes, Cancel It</button>
           </div>`;
@@ -573,7 +628,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ actionType: 'cancel_booking', email: chatContextUser.email, serviceType: b.service_type, date: b.booking_date })
          });
-         document.getElementById(`chat-confirm-cancel-${index}`).innerHTML = `<span style="color:#2ecc71;">Successfully canceled.</span>`;
+         document.getElementById(`chat-confirm-cancel-${index}`).innerHTML = `<span style="color:#2ecc71;">Done! Your booking has been canceled.</span>`;
        } catch(e) { alert("Network error."); }
     }
 
@@ -581,10 +636,10 @@
        const flowContainer = document.getElementById('chatFlowContainer');
        document.getElementById(`chat-actions-${index}`).style.display = 'none';
        flowContainer.innerHTML += `
-          <div class="chat-bubble bot-intro">Please type your new instructions, time requirements, or date adjustments below:</div>
+          <div class="chat-bubble bot-intro">Please type your new instructions, time changes, or date requests below:</div>
           <div class="chat-options-grid" id="chat-edit-form-${index}">
              <textarea id="chat-edit-text-${index}" class="auth-input glass-render" style="resize:vertical; min-height:80px; padding:10px; margin-bottom:5px;" placeholder="Type your updates..."></textarea>
-             <button class="chat-btn" onclick="chatExecuteEdit(${index})" style="background:rgba(52, 152, 219, 0.2); border-color:#3498db; color:#fff; justify-content:center;">Submit Modification</button>
+             <button class="chat-btn" onclick="chatExecuteEdit(${index})" style="background:rgba(52, 152, 219, 0.2); border-color:#3498db; color:#fff; justify-content:center;">Submit Changes</button>
           </div>`;
        scrollToBottom();
     }
@@ -600,7 +655,7 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ actionType: 'edit_booking', email: chatContextUser.email, originalServiceType: b.service_type, originalDate: b.booking_date, newDetails: newDetails })
          });
-         document.getElementById(`chat-edit-form-${index}`).innerHTML = `<span style="color:#2ecc71;">Update submitted to dispatch. Status reverted to Pending.</span>`;
+         document.getElementById(`chat-edit-form-${index}`).innerHTML = `<span style="color:#2ecc71;">All set! I've sent your updates to our team. Your dashboard calendar will reflect the changes soon.</span>`;
        } catch(e) { alert("Network error."); }
     }
 
@@ -608,15 +663,15 @@
       const flowContainer = document.getElementById('chatFlowContainer');
       flowContainer.innerHTML = `
         <div class="chat-bubble bot-intro">
-          <strong>Priya Seva Intelligence</strong><br><br>
-          Hello! I am your automated triage assistant. How can I direct your request today?
+          <strong>Kelvin AI</strong><br><br>
+          Hi! I am your Help Assistant. What can I do for you today?
         </div>
         <div class="chat-options-grid" id="mainChatOptions">
-          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Schedule a New Booking</button>
-          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit / Cancel Existing Booking</button>
-          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Log an Absence</button>
-          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. File a Grievance</button>
-          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Support</button>
+          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Book a Service</button>
+          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit or Cancel Booking</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Mark an Absence</button>
+          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. Register a Complaint</button>
+          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Us</button>
         </div>
       `;
     }
