@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal & Privacy Policy | Priya Seva</title>
+  <meta name="theme-color" content="#030814">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-void: #030814;
+      --glass-panel: rgba(10, 18, 35, 0.7);
+      --glass-border: rgba(0, 243, 255, 0.15);
+      --highlight: #00f3ff; 
+    }
+
+    body { font-family: 'Poppins', sans-serif; background-color: var(--bg-void); color: #e2e8f0; overflow-x: hidden; position: relative;}
+    
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; }
+    #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
+
+    .navbar { background: rgba(3, 8, 20, 0.9); backdrop-filter: blur(15px); padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; border-bottom: 1px solid var(--glass-border);}
+    .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; text-decoration: none;}
+    .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; border: 1px solid rgba(0, 243, 255, 0.3);}
+    .logo-text { color: white; font-weight: 700; letter-spacing: 1px; font-size: 20px;}
+    
+    .nav-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 20px; font-size: 14px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; text-decoration: none;}
+    .nav-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
+
+    .policy-container { max-width: 900px; margin: 150px auto 100px auto; padding: 0 20px; position: relative; z-index: 10;}
+    
+    .glass-document { background: var(--glass-panel); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 60px 50px; box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.05);}
+    
+    .policy-header { border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 40px; text-align: center;}
+    .policy-header h1 { font-size: 36px; color: white; font-weight: 700; margin-bottom: 10px; text-shadow: 0 5px 15px rgba(0,243,255,0.4);}
+    .policy-header p { color: rgba(255,255,255,0.5); font-size: 14px;}
+
+    .policy-section { margin-bottom: 45px;}
+    .policy-section h2 { color: var(--highlight); font-size: 22px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;}
+    .policy-section p { color: #cbd5e1; font-size: 15px; line-height: 1.8; margin-bottom: 15px;}
+    .policy-section ul { padding-left: 20px; margin-bottom: 15px;}
+    .policy-section li { color: #cbd5e1; font-size: 15px; line-height: 1.8; margin-bottom: 8px;}
+    .policy-section strong { color: white; }
+
+    .highlight-box { background: rgba(0, 243, 255, 0.05); border-left: 4px solid var(--highlight); padding: 20px; border-radius: 0 12px 12px 0; margin: 20px 0;}
+
+    @media (max-width: 768px) {
+      .glass-document { padding: 40px 25px; }
+      .policy-header h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="nightCanvas"></canvas>
+  <div id="rippleContainer"></div>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo-container">
+      <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="logo-text">Priya Seva Center</div>
+    </a>
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Return Home</a>
+  </nav>
+
+  <div class="policy-container">
+    <div class="glass-document">
+      
+      <div class="policy-header">
+        <h1>Legal & Privacy Protocol</h1>
+        <p>Effective Date: May 2026 | Governing Jurisdiction: Kolkata, West Bengal</p>
+      </div>
+
+      <div class="policy-section">
+        <h2><i class="fa-solid fa-user-lock"></i> 1. Data Encryption & Privacy</h2>
+        <p>Your security is our primary directive. Priya Seva Center utilizes state-of-the-art decentralized vault storage provided by Supabase. Your authentication credentials, operational timelines, and location data are end-to-end encrypted.</p>
+        <p>We strictly strictly adhere to data protection regulations. We do not sell, rent, or lease your personal information, service history, or medical notes to any third-party marketing entities.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> 2. The 48-Hour Cancellation Rule</h2>
+        <p>To ensure precision deployment of our field personnel, all service modifications are governed by the 48-Hour Protocol.</p>
+        <div class="highlight-box">
+          <p style="margin:0;"><strong>Standard Operations:</strong> Any edits or cancellations made greater than 48 hours prior to the scheduled service time are processed without penalty via your Secure Dashboard.</p>
+          <p style="margin:10px 0 0 0;"><strong>Locked Window:</strong> Cancellations or modifications requested within 48 hours of the service start time are automatically locked by the system to prevent dispatch routing errors. Such changes require manual administrative authorization and may be subject to a late dispatch fee.</p>
+        </div>
+      </div>
+
+      <div class="policy-section">
+        <h2><i class="fa-solid fa-calendar-xmark"></i> 3. Absence Logging & Billing Policy</h2>
+        <p>We understand that life is unpredictable. If you are traveling or unavailable to receive your recurring service, you must log a "Client Absence" via our Resolution Center. Our transparent absence billing structure is as follows:</p>
+        <ul>
+          <li><strong>Standard Absences:</strong> Clients are permitted up to three (3) free "Client Absent" logs per calendar month without incurring service cycle charges.</li>
+          <li><strong>Emergency Absences:</strong> Clients are granted an additional two (2) free emergency absences per month, subject to review.</li>
+          <li><strong>Billing Threshold:</strong> Any absences exceeding the combined free allowance will be billed at the standard daily operational rate to compensate our reserved personnel.</li>
+        </ul>
+        <p>If an agent fails to arrive ("Agent Absent"), you must log it immediately. You will never be billed for an unrendered service resulting from an agent no-show.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2><i class="fa-solid fa-scale-balanced"></i> 4. Liability Disclaimer</h2>
+        <p>Priya Seva Center acts as a premium coordination grid connecting clients with verified personnel. While we enforce rigorous background and medical credential checks:</p>
+        <ul>
+          <li><strong>Medical Non-Liability:</strong> The "Health Visits" and "Certified Nurse" deployments provide clinical support, but Priya Seva Center is not a substitute for an emergency room. In case of acute medical emergencies, please dial emergency services immediately.</li>
+          <li><strong>Contractor Protocol:</strong> Personnel dispatched are registered professionals operating under the Priya Seva Center network. Any disputes regarding specific operational execution should be logged immediately via the Grievance Sub-Portal for management intervention.</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2><i class="fa-solid fa-handshake"></i> 5. Grievance & Dispute Resolution</h2>
+        <p>We hold our network to the highest standard of excellence. If an incident occurs, clients are required to file a report via the "File a Grievance" modal available in the menu. Our administrative desk aims to investigate and initiate a resolution sequence within 24 hours of submission.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('nightCanvas');
+    const ctx = canvas.getContext('2d');
+    let nodes = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    for(let i=0; i<40; i++) { nodes.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: (Math.random()*2) + 1, speed: (Math.random()*0.2) + 0.05, opacity: (Math.random()*0.3) + 0.1 }); }
+    function drawNodes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      nodes.forEach(n => { n.y -= n.speed; if(n.y < 0) { n.y = canvas.height; n.x = Math.random()*canvas.width; }
+        ctx.fillStyle = `rgba(0, 243, 255, ${n.opacity})`; ctx.beginPath(); ctx.arc(n.x, n.y, n.size, 0, Math.PI*2); ctx.fill(); 
+      });
+      requestAnimationFrame(drawNodes);
+    }
+    drawNodes();
+
+    const rippleContainer = document.getElementById('rippleContainer');
+    document.addEventListener('click', (e) => {
+      if(e.target.closest('a')) return;
+      const ripple = document.createElement('div'); ripple.className = 'water-ripple';
+      ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
+      rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
+    });
+  </script>
+</body>
+</html>
