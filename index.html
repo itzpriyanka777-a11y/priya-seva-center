@@ -35,18 +35,15 @@
     
     a { text-decoration: none; }
     
-    /* Interactive Water Ripple */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
-    /* Absolute Navbar */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
     
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
     .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
-    
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
@@ -66,14 +63,12 @@
     .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* The Hero Section */
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
     .hero-content { position: relative; z-index: 2; }
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
-    /* Service Cards */
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
     .float-wrap:nth-child(2) { animation-delay: 1.2s; }
@@ -83,12 +78,10 @@
 
     .light-tracker { position: relative; width: 100%; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; height: 100%; border: 1px solid rgba(255,255,255,0.03);}
     .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
-    
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
 
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
-    
     .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
 
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
@@ -120,7 +113,6 @@
     .chatbot-fab:hover { background: var(--highlight); color: #000; transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
     
     .kelvin-bot { position: absolute; bottom: 35px; right: -5px; width: 75px; z-index: 5; filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8)); animation: floatBot 3.5s ease-in-out infinite; pointer-events: none;}
-    
     .kelvin-bubble { position: absolute; bottom: 120px; right: -10px; width: 220px; background: white; color: black; padding: 12px 15px; border-radius: 15px; border-bottom-right-radius: 0; font-size: 13px; font-weight: 600; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 6; animation: floatBubble 3.5s ease-in-out infinite; transform-origin: bottom right;}
     .kelvin-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: white transparent transparent transparent; }
     
@@ -129,7 +121,6 @@
 
     .chat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 10000; justify-content: flex-end; align-items: flex-end; padding: 30px; backdrop-filter: blur(5px);}
     .chat-window { background: rgba(10, 18, 35, 0.95); border: 1px solid var(--highlight); width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 243, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
-    
     @keyframes slideUp { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
 
     .chat-header { background: rgba(0, 243, 255, 0.1); padding: 20px 25px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); display: flex; justify-content: space-between; align-items: center; color: white; font-weight: 600;}
@@ -151,28 +142,31 @@
     .glass-render { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 12px; outline: none; transition: 0.3s; }
     .glass-render:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
 
-    /* Auth Modals & Buttons */
+    /* --- Multi-Step Auth Modals --- */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
-    .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; text-align: center; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 40px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
     
     .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
+
+    .auth-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; justify-content: center;}
+    .auth-tab-btn { background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 16px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s;}
+    .auth-tab-btn.active { color: var(--highlight); text-shadow: 0 0 10px rgba(0,243,255,0.4); }
+    
     .auth-input { width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Poppins', sans-serif; font-size: 14px;}
     
-    /* New Auth Buttons */
     .google-btn { width: 100%; background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; margin-bottom: 15px;}
     .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
     .auth-divider { display: flex; align-items: center; text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 15px;}
     .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .auth-divider span { padding: 0 10px; }
     
-    .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
+    .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1); width: 100%; margin-top: 10px;}
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
-    .secondary-auth-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;}
-    .secondary-auth-btn:hover { background: rgba(255,255,255,0.1); border-color: white;}
     
-    /* MOBILE REVOLUTION CSS */
+    .hidden { display: none !important; }
+
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
@@ -189,7 +183,6 @@
       @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
-      
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
     }
@@ -208,8 +201,8 @@
       </div>
     </a>
     <div class="nav-actions">
-      <button class="login-trigger-btn" id="mainActionButton" onclick="openLoginModal();">
-        <i class="fa-solid fa-fingerprint"></i> <span>Secure Portal</span>
+      <button class="login-trigger-btn" id="mainActionButton" onclick="openAuthModal('login');">
+        <i class="fa-solid fa-fingerprint"></i> <span>Login</span>
       </button>
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
@@ -342,24 +335,39 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="loginModal">
+  <div class="modal-overlay" id="authOverlay">
     <div class="auth-modal">
-      <span class="close-modal" onclick="closeLoginModal();">&times;</span>
-      <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-user-circle"></i></div>
-      <h2 style="color:#fff; margin-top:0; font-weight: 700;">Login or Sign Up</h2>
-      <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">Access your secure account to manage your home care.</p>
+      <span class="close-modal" onclick="closeAuthModal();">&times;</span>
       
-      <button class="google-btn" onclick="signInWithGoogle()"><i class="fa-brands fa-google" style="color:#EA4335;"></i> Continue with Google</button>
-      
-      <div class="auth-divider"><span>OR</span></div>
-
-      <input type="email" id="authEmail" class="auth-input glass-render" placeholder="Email Address">
-      <input type="password" id="authPassword" class="auth-input glass-render" placeholder="Password">
-      
-      <div style="display: flex; gap: 10px;">
-        <button class="primary-auth-btn" style="flex:1;" onclick="handleEmailAuth(false);">Log In</button>
-        <button class="secondary-auth-btn" style="flex:1;" onclick="handleEmailAuth(true);">Sign Up</button>
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tab-login" onclick="toggleAuthView('login')">Log In</button>
+        <button class="auth-tab-btn" id="tab-signup" onclick="toggleAuthView('signup')">Sign Up</button>
       </div>
+
+      <div id="view-login">
+        <button class="google-btn" onclick="signInWithGoogle()"><i class="fa-brands fa-google" style="color:#EA4335;"></i> Continue with Google</button>
+        <div class="auth-divider"><span>OR</span></div>
+        <input type="email" id="loginEmail" class="auth-input glass-render" placeholder="Email Address">
+        <input type="password" id="loginPassword" class="auth-input glass-render" placeholder="Password">
+        <button class="primary-auth-btn" id="loginBtn" onclick="handleEmailLogin();">Log In</button>
+      </div>
+
+      <div id="view-signup" class="hidden">
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Create a secure account to book and manage your home care.</p>
+        <input type="email" id="signupEmail" class="auth-input glass-render" placeholder="Email Address">
+        <input type="password" id="signupPassword" class="auth-input glass-render" placeholder="Create Password">
+        <input type="password" id="signupConfirm" class="auth-input glass-render" placeholder="Confirm Password">
+        <button class="primary-auth-btn" id="signupBtn" onclick="handleEmailSignup();">Create Account</button>
+      </div>
+
+      <div id="view-otp" class="hidden">
+        <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px;"><i class="fa-solid fa-envelope-open-text"></i></div>
+        <h2 style="color:#fff; margin-top:0; font-weight: 700;">Check Your Email</h2>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a 6-digit verification code to your email. Enter it below to activate your account.</p>
+        <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Enter 6-Digit Code" style="text-align:center; font-size:20px; letter-spacing: 5px;" maxlength="6">
+        <button class="primary-auth-btn" id="otpBtn" onclick="handleOTPVerify();">Verify & Log In</button>
+      </div>
+
     </div>
   </div>
 
@@ -406,12 +414,36 @@
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
 
-    function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
-    function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+    // --- NEW MULTI-STEP AUTH MODAL LOGIC ---
+    function openAuthModal(view) { 
+      document.getElementById('authOverlay').style.display = 'flex'; 
+      toggleAuthView(view);
+    }
+    function closeAuthModal() { document.getElementById('authOverlay').style.display = 'none'; }
     
     window.onclick = function(event) { 
-      if (event.target == document.getElementById('loginModal')) closeLoginModal(); 
+      if (event.target == document.getElementById('authOverlay')) closeAuthModal(); 
       if (event.target == document.getElementById('chatModal')) closeChatTriage();
+    }
+
+    function toggleAuthView(view) {
+      document.getElementById('view-login').classList.add('hidden');
+      document.getElementById('view-signup').classList.add('hidden');
+      document.getElementById('view-otp').classList.add('hidden');
+      document.getElementById('tab-login').classList.remove('active');
+      document.getElementById('tab-signup').classList.remove('active');
+      
+      document.querySelector('.auth-tabs').style.display = (view === 'otp') ? 'none' : 'flex';
+
+      if(view === 'login') {
+        document.getElementById('view-login').classList.remove('hidden');
+        document.getElementById('tab-login').classList.add('active');
+      } else if (view === 'signup') {
+        document.getElementById('view-signup').classList.remove('hidden');
+        document.getElementById('tab-signup').classList.add('active');
+      } else if (view === 'otp') {
+        document.getElementById('view-otp').classList.remove('hidden');
+      }
     }
 
     window.addEventListener('load', async function() {
@@ -427,34 +459,73 @@
       }
     });
 
-    // --- Google OAuth Handler ---
     async function signInWithGoogle() {
-      const { data, error } = await supabaseClient.auth.signInWithOAuth({ provider: 'google' });
+      const { data, error } = await supabaseClient.auth.signInWithOAuth({ 
+        provider: 'google',
+        options: {
+          // THIS FIXES THE 404 ERROR - explicitly telling Supabase to send them back here
+          redirectTo: 'https://itzpriyanka777-a11y.github.io/priya-seva-center/dashboard.html'
+        }
+      });
       if (error) alert("Error connecting to Google: " + error.message);
     }
 
-    // --- Email Login & Sign Up Handler ---
-    async function handleEmailAuth(isSignUp) {
-      const email = document.getElementById('authEmail').value;
-      const password = document.getElementById('authPassword').value;
-      
-      if(!email || !password) return alert("Please enter both your email and a password.");
+    async function handleEmailLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      if(!email || !password) return alert("Please enter your email and password.");
 
-      const loginBtn = document.querySelector('.primary-auth-btn');
-      const signUpBtn = document.querySelector('.secondary-auth-btn');
+      const btn = document.getElementById('loginBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging In...';
       
-      if(isSignUp) {
-        signUpBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
-        const { data, error } = await supabaseClient.auth.signUp({ email, password });
-        if (error) alert("Sign up error: " + error.message);
-        else alert("Account created successfully! You can now log in.");
-        signUpBtn.innerHTML = 'Sign Up';
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      
+      if (error) {
+        alert("Login failed: " + error.message);
+        btn.innerHTML = 'Log In';
       } else {
-        loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
-        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-        if (error) alert("Login error: " + error.message);
-        else window.location.href = "dashboard.html";
-        loginBtn.innerHTML = 'Log In';
+        window.location.href = "dashboard.html";
+      }
+    }
+
+    let pendingSignupEmail = "";
+    async function handleEmailSignup() {
+      const email = document.getElementById('signupEmail').value;
+      const pass = document.getElementById('signupPassword').value;
+      const confirm = document.getElementById('signupConfirm').value;
+      
+      if(!email || !pass) return alert("Please fill out all fields.");
+      if(pass !== confirm) return alert("Passwords do not match.");
+      if(pass.length < 6) return alert("Password must be at least 6 characters.");
+
+      const btn = document.getElementById('signupBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating Account...';
+      
+      const { data, error } = await supabaseClient.auth.signUp({ email: email, password: pass });
+      
+      if (error) {
+        alert("Sign Up Error: " + error.message);
+        btn.innerHTML = 'Create Account';
+      } else {
+        pendingSignupEmail = email;
+        toggleAuthView('otp');
+      }
+    }
+
+    async function handleOTPVerify() {
+      const otpCode = document.getElementById('otpCode').value;
+      if(!otpCode || otpCode.length !== 6) return alert("Please enter the 6-digit code.");
+
+      const btn = document.getElementById('otpBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+
+      const { data, error } = await supabaseClient.auth.verifyOtp({ email: pendingSignupEmail, token: otpCode, type: 'signup' });
+      
+      if (error) {
+        alert("Verification failed: " + error.message);
+        btn.innerHTML = 'Verify & Log In';
+      } else {
+        window.location.href = "dashboard.html";
       }
     }
 
@@ -470,11 +541,11 @@
 
     function openChatTriage() { 
       document.getElementById('chatModal').style.display = 'flex'; 
-      document.getElementById('kelvinBubble').style.display = 'none'; // Hide bubble when chat is open
+      document.getElementById('kelvinBubble').style.display = 'none'; 
     }
     function closeChatTriage() { 
       document.getElementById('chatModal').style.display = 'none'; 
-      document.getElementById('kelvinBubble').style.display = 'block'; // Show bubble when chat is closed
+      document.getElementById('kelvinBubble').style.display = 'block'; 
       resetChatTriage(); 
     }
 
@@ -510,17 +581,15 @@
         flowContainer.innerHTML += `<div class="chat-bubble bot-intro" id="chat-loading" style="animation: slideUp 0.3s ease;"><i class="fa-solid fa-spinner fa-spin"></i> Checking your account for active bookings...</div>`;
         scrollToBottom();
 
-        // Check Auth
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) {
           document.getElementById('chat-loading').remove();
-          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You need to log in first. Please click the 'Secure Portal' button at the top of the screen to log in!</div>`;
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You need to log in first. Please click the 'Login' button at the top of the screen to log in!</div>`;
           appendBackOptions();
           return;
         }
         chatContextUser = user;
 
-        // Fetch Live Bookings
         try {
           const response = await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(user.email));
           const result = await response.json();
