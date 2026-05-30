@@ -307,7 +307,7 @@
         if (!user) { btn.innerHTML = 'Request Appointment'; btn.disabled = false; return alert("Authentication required. Please log in."); }
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzf35umvoCkPHKDMyDFMB1EKQ0iinNxyM77BkijJVmi__klZ53ZNa7OwC-FbuihmwY/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOm_iUes4Ph91MzXROYCm5w0aGTIqslhc_Qr6ahNKcjIADwSWHvZUsqdCsIomSgTM/exec";
         const payload = { name: name, email: user.email, phone: "Not Provided", serviceType: "Health Check: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (extraDetails ? " | Notes: " + extraDetails : "") };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
