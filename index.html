@@ -35,15 +35,18 @@
     
     a { text-decoration: none; }
     
+    /* Interactive Water Ripple */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
+    /* Absolute Navbar */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
     
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
     .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
+    
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
@@ -63,12 +66,14 @@
     .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
+    /* The Hero Section */
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
     .hero-content { position: relative; z-index: 2; }
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
+    /* Service Cards */
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
     .float-wrap:nth-child(2) { animation-delay: 1.2s; }
@@ -188,6 +193,55 @@
     
     .hidden { display: none !important; }
 
+    /* --- THE NEW PROFESSIONAL FOOTER --- */
+    .site-footer {
+      background: rgba(3, 8, 20, 0.9);
+      border-top: 1px solid var(--glass-border);
+      padding: 60px 40px 30px;
+      margin-top: 80px;
+      position: relative;
+      z-index: 10;
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .footer-col p, .footer-col a {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.8;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 10px;
+      transition: 0.3s;
+    }
+    .footer-col a:hover {
+      color: var(--highlight);
+      padding-left: 5px;
+    }
+    .footer-col i {
+      color: var(--highlight);
+      width: 20px;
+      margin-right: 10px;
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+    }
+
     /* MOBILE REVOLUTION CSS */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
@@ -209,6 +263,9 @@
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
       .carousel-container { display: none; /* simplified for mobile */ }
+      
+      .site-footer { padding: 40px 20px 20px; text-align: center;}
+      .footer-col a:hover { padding-left: 0; } /* Remove hover shift on mobile to prevent shaking */
     }
   </style>
 </head>
@@ -342,6 +399,34 @@
     </div>
   </section>
 
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <div class="logo-container" style="margin-bottom: 20px; cursor: default;">
+          <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
+          <div class="logo-text">Priya Seva Center</div>
+        </div>
+        <p>Premium home care, certified nursing, and trusted household management across Kolkata.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="dashboard.html">Client Dashboard</a>
+        <a href="grievance.html">Register a Complaint</a>
+        <a href="absent.html">Log an Absence</a>
+        <a href="policy.html">Privacy Policy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <p><i class="fa-solid fa-location-dot"></i> Kolkata, West Bengal 700031</p>
+        <p><i class="fa-brands fa-whatsapp"></i> +91 7439392803</p>
+        <p><i class="fa-solid fa-envelope"></i> itzpriyanka777@gmail.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Priya Seva Center. All rights reserved.
+    </div>
+  </footer>
+
   <div class="chatbot-wrapper">
     <div class="kelvin-bubble" id="kelvinBubble">Hi, I'm Kelvin, your AI Assistant, tell me your concern!</div>
     <img src="KELVIN.png" class="kelvin-bot" alt="Kelvin AI">
@@ -468,7 +553,7 @@
       revIndex = (revIndex + dir + revCards.length) % revCards.length;
       updateCarousel();
     }
-    updateCarousel(); // Init
+    updateCarousel(); 
 
     // --- Cookies ---
     window.onload = function() {
