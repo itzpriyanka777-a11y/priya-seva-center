@@ -180,10 +180,10 @@
               <div class="notification-box">
                 <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts</div>
                 <div class="notif-toggles">
-                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)"><span class="slider"></span></label></div>
                 </div>
               </div>
             </div>
@@ -337,7 +337,7 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLjRi5sXh__lJCPEpDJBznPkUKemqRYbxlUNkP8qSO0uQYl1EEHx0pXTQe_4r22Po/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz6tqGne1qii5oaqPqQsLSpEhW6wnqZumfhpu3YmINiFOHJ6RSPxRf07Ym9ZQ_TzE/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
@@ -345,11 +345,36 @@
     let currentActiveService = 'Maid Services';
     let lastToggleTime = 0; 
 
-    // THE NEW INSTANT REGISTRATION HANDSHAKE
+    // THE FLICKER-FREE INITIALIZATION PROTOCOL
     async function checkAuth() {
       const { data: { user } } = await client.auth.getUser();
-      if (!user) window.location.href = "index.html";
-      else {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        
+        // 1. Immediately read cache BEFORE showing the page
+        const cacheKey = "cached_bookings_" + user.email;
+        const cachedData = localStorage.getItem(cacheKey);
+        
+        if (cachedData) {
+            try {
+                let parsed = JSON.parse(cachedData);
+                if (parsed.preferences) {
+                    document.getElementById('pref-maid').checked = (parsed.preferences.maid === "true");
+                    document.getElementById('pref-nurse').checked = (parsed.preferences.nurse === "true");
+                    document.getElementById('pref-health').checked = (parsed.preferences.health === "true");
+                    document.getElementById('pref-baby').checked = (parsed.preferences.baby === "true");
+                }
+            } catch(e) {}
+        } else {
+            // New User Fallback: Set ALL to true instantly as per backend
+            document.getElementById('pref-maid').checked = true;
+            document.getElementById('pref-nurse').checked = true;
+            document.getElementById('pref-health').checked = true;
+            document.getElementById('pref-baby').checked = true;
+        }
+
+        // 2. NOW we show the page (it will fade in with the correct toggle states already set!)
         document.getElementById('page-content').style.display = 'block';
         document.getElementById('user-email-display').innerText = user.email;
         
@@ -357,7 +382,7 @@
         if(user.user_metadata && user.user_metadata.full_name) clientName = user.user_metadata.full_name;
         else if(user.email) clientName = user.email.split('@')[0];
 
-        // Ping the server to guarantee registration before pulling data
+        // 3. Ping the server for new users
         try {
            await fetch(GOOGLE_SCRIPT_URL, {
               method: 'POST', mode: 'no-cors',
@@ -366,6 +391,7 @@
            });
         } catch(e) {}
 
+        // 4. Load the calendar data
         initializeCalendar(user.email, clientName, false, false);
         setInterval(() => { initializeCalendar(user.email, clientName, true, true); }, 60000);
       }
@@ -402,14 +428,9 @@
       
       let timeSinceLastToggle = Date.now() - lastToggleTime;
 
+      // Notice we do NOT update toggles from cache here anymore, because checkAuth() already handled the initial load!
       if (cachedData && !forceRefresh && !silent) {
         const parsed = JSON.parse(cachedData);
-        if (parsed.preferences) {
-          document.getElementById('pref-maid').checked = (parsed.preferences.maid === "true");
-          document.getElementById('pref-nurse').checked = (parsed.preferences.nurse === "true");
-          document.getElementById('pref-health').checked = (parsed.preferences.health === "true");
-          document.getElementById('pref-baby').checked = (parsed.preferences.baby === "true");
-        }
         parseAndMapBookings(parsed.data || parsed); 
         return;
       }
@@ -424,7 +445,8 @@
           
           if(timeSinceLastToggle > 5000) { 
              localStorage.setItem(cacheKey, JSON.stringify(result));
-             if (result.preferences) {
+             // ONLY update toggles from server if the user hasn't clicked one in the last 5 seconds
+             if (result.preferences && !silent) {
                 document.getElementById('pref-maid').checked = (result.preferences.maid === "true");
                 document.getElementById('pref-nurse').checked = (result.preferences.nurse === "true");
                 document.getElementById('pref-health').checked = (result.preferences.health === "true");
