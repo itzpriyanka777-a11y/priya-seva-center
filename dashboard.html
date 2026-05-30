@@ -15,22 +15,17 @@
       --void-bg: #050510;
       --glass-base: rgba(15, 10, 30, 0.4);
       --glass-border: rgba(255, 255, 255, 0.08);
-      --highlight: #b05cff; /* Crystal Purple */
+      --highlight: #b05cff; 
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body { font-family: 'Poppins', sans-serif; background-color: var(--void-bg); color: white; min-height: 100vh; overflow-x: hidden; position: relative;}
     
-    /* Deep Space POV Physics Layer */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; }
-    
-    /* Interactive Water Ripple */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(176, 92, 255, 0.5); box-shadow: 0 0 25px rgba(176, 92, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.2); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%);}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
-    /* Floating Panel Physics */
     @keyframes gentlyBob { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
     .floating-wrapper { animation: gentlyBob 7s ease-in-out infinite alternate; position: relative; z-index: 10;}
     .floating-wrapper.delay-1 { animation-delay: 1.5s; }
@@ -43,35 +38,22 @@
     .logout-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
     
     .dashboard-container { max-width: 1350px; margin: 120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 380px; gap: 35px; position: relative; z-index: 10;}
-    @media (max-width: 1050px) { .dashboard-container { grid-template-columns: 1fr; } }
+    @media (max-width: 1100px) { .dashboard-container { grid-template-columns: 1fr; } }
     
     .main-panel { display: flex; flex-direction: column; gap: 30px; }
 
-    /* High-Tech Light Tracker Surface */
-    .light-tracker { position: relative; width: 100%; border-radius: 20px; background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .light-tracker { position: relative; width: 100%; border-radius: 20px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .light-tracker:hover { box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 25px rgba(176, 92, 255, 0.15); }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
     
-    .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px;
-      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
-    }
-    .light-tracker::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(176, 92, 255, 0.1), transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
-
     .glass-panel { padding: 35px; position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column;}
     
-    /* SLEEK HORIZONTAL WELCOME BANNER */
     .welcome-banner { display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; border-left: 5px solid var(--highlight); padding: 25px 35px;}
     .welcome-text h2 { margin: 0 0 8px 0; color: #fff; font-size: 26px; font-weight: 700;}
     .welcome-text p { margin: 0; color: rgba(255,255,255,0.7); font-size: 14px;}
     
-    /* SLEEK PILL-SHAPED NOTIFICATION BAR */
     .notification-box { display: flex; align-items: center; gap: 20px; border: 1px solid rgba(255,255,255,0.1); padding: 12px 25px; border-radius: 50px; background: rgba(0,0,0,0.4); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); width: auto; flex-wrap: wrap;}
-    .notif-header { font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; margin: 0; padding: 0; border: none; border-right: 1px solid rgba(255,255,255,0.15); padding-right: 20px;}
+    .notif-header { font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; margin: 0; border-right: 1px solid rgba(255,255,255,0.15); padding-right: 20px;}
     .notif-toggles { display: flex; align-items: center; gap: 18px; flex-wrap: wrap;}
     .notif-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.8); margin: 0;}
     
@@ -82,7 +64,6 @@
     input:checked + .slider { background-color: var(--highlight);}
     input:checked + .slider:before { transform: translateX(16px); }
 
-    /* Collapsible Calendar Header */
     .cal-header-bar { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 20px 25px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; transition: 0.3s; position: relative; z-index: 5;}
     .cal-header-bar:hover { background: rgba(255,255,255,0.05); border-color: var(--highlight);}
     .cal-header-bar h3 { margin: 0; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 12px; color: #fff;}
@@ -92,38 +73,30 @@
     #calendarWrapper { overflow: hidden; transition: max-height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease; max-height: 1000px; opacity: 1; margin-top: 25px;}
     #calendarWrapper.collapsed { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none;}
 
-    /* Top Layout: Month on Left, Toggles on Right */
     .cal-controls-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 15px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.03); flex-wrap: wrap; gap: 15px;}
-    
     .month-nav { display: flex; align-items: center; gap: 15px; }
-    .month-nav button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; font-size: 13px; position: relative; z-index: 2;}
+    .month-nav button { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; font-size: 13px;}
     .month-nav button:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px);}
     #monthYearDisplay { margin: 0; font-size: 20px; color: #fff; font-weight: 700; width: 140px; text-align: center;}
 
-    /* Service Toggles */
-    .service-toggles { display: flex; gap: 10px; }
-    .toggle-btn { padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); transition: 0.3s; display: flex; align-items: center; gap: 8px; position: relative; z-index: 2;}
+    .service-toggles { display: flex; gap: 10px; flex-wrap: wrap;}
+    .toggle-btn { padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); transition: 0.3s; display: flex; align-items: center; gap: 8px;}
     .toggle-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateY(-2px);}
-    
     .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);}
     .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);}
     .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);}
     .toggle-btn.active.baby-tab { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 15px rgba(243, 156, 18, 0.3);}
 
-    /* Sync Button with Tooltip */
     .sync-wrapper { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px;}
     .sync-btn-container { position: relative; display: inline-block;}
-    .tooltip { visibility: hidden; opacity: 0; background: rgba(0,0,0,0.9); border: 1px solid var(--highlight); color: #fff; text-align: center; border-radius: 8px; padding: 10px 15px; position: absolute; bottom: 130%; left: 50%; transform: translateX(-50%) translateY(10px); width: 250px; font-size: 12px; line-height: 1.5; transition: all 0.3s; z-index: 100;}
-    .tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border-width: 6px; border-style: solid; border-color: var(--highlight) transparent transparent transparent; }
-    .sync-btn-container:hover .tooltip { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
     .sync-btn { background: rgba(176, 92, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); padding: 8px 18px; font-size: 13px; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(176, 92, 255, 0.2); transition: 0.3s; font-family: 'Poppins'; position: relative; z-index: 5;}
     .sync-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(176, 92, 255, 0.5); transform: translateY(-2px);}
 
-    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
+    .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 15px; text-transform: uppercase;}
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; position: relative; z-index: 2;}
-    
     .cal-day { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; min-height: 85px; padding: 10px; display: flex; flex-direction: column; transition: 0.3s;}
     .cal-day.empty { background: transparent; border: none; }
+    .cal-day.past-date { opacity: 0.3; pointer-events: none; background: rgba(0,0,0,0.2); border: none; }
     .day-num { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); align-self: flex-end; margin-bottom: 5px;}
 
     .cal-day.booked-maid { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer;}
@@ -133,21 +106,16 @@
     .cal-day:hover[class*="booked-"] { transform: translateY(-4px) scale(1.03); filter: brightness(1.2); box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
     .booking-label { font-size: 11px; font-weight: 700; text-align: center; margin-top: auto; padding: 5px; border-radius: 6px; letter-spacing: 1px; background: rgba(255,255,255,0.1); color: white;}
 
-    /* Action Cards */
     .action-grid { display: flex; flex-direction: column; gap: 25px; }
     .action-card { background: transparent; display: flex; align-items: center; gap: 20px; cursor: pointer; text-decoration: none; color: white; position: relative; z-index: 2; height: 100%;}
-    
     .icon-box { width: 55px; height: 55px; border-radius: 16px; display: flex; justify-content: center; align-items: center; font-size: 22px; flex-shrink: 0; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .action-text h4 { margin: 0 0 6px 0; font-size: 16px; font-weight: 600; color: #fff;}
     .action-text p { margin: 0; color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.5;}
-
     .light-tracker:hover .icon-box { transform: scale(1.15) rotate(-5deg); border-color: rgba(255,255,255,0.3); box-shadow: 0 10px 20px rgba(0,0,0,0.5);}
 
-    /* Dark Glass Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
-    .dashboard-modal { background: rgba(10, 5, 20, 0.95); border: 1px solid var(--highlight); padding: 40px; border-radius: 24px; width: 100%; max-width: 480px; position: relative; box-shadow: 0 0 60px rgba(176, 92, 255, 0.2); animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .dashboard-modal { background: rgba(10, 5, 20, 0.95); border: 1px solid var(--highlight); padding: 40px; border-radius: 24px; width: 100%; max-width: 500px; position: relative; box-shadow: 0 0 60px rgba(176, 92, 255, 0.2); animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
-    
     .close-modal { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: rgba(255,255,255,0.5); transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
     
@@ -155,8 +123,20 @@
     .service-link-btn i { font-size: 20px; width: 25px; text-align: center;}
     .service-link-btn:hover { background: rgba(176, 92, 255, 0.15); border-color: var(--highlight); transform: translateX(10px); box-shadow: 0 8px 20px rgba(0,0,0,0.4);}
 
-    .edit-btn { display: inline-block; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 8px; color: white; text-decoration: none; font-size: 12px; font-weight: 600; transition: 0.3s; margin-top: 15px;}
-    .edit-btn:hover { background: rgba(231, 76, 60, 0.2); border-color: #e74c3c; color: #e74c3c; }
+    /* EDIT/CANCEL UI ELEMENTS */
+    .edit-actions { display: flex; gap: 10px; margin-top: 15px;}
+    .btn-edit { background: rgba(52, 152, 219, 0.1); border: 1px solid #3498db; color: #3498db; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.3s; flex: 1; display:flex; align-items:center; justify-content:center; gap:8px;}
+    .btn-edit:hover { background: #3498db; color: #fff;}
+    .btn-cancel { background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; color: #e74c3c; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.3s; flex: 1; display:flex; align-items:center; justify-content:center; gap:8px;}
+    .btn-cancel:hover { background: #e74c3c; color: #fff;}
+    
+    .mistake-btn { display: none; background: rgba(243, 156, 18, 0.2); border: 1px solid #f39c12; color: #f39c12; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: 600; font-size: 12px; width: 100%; text-align: center; cursor: pointer; animation: pulseMistake 2s infinite;}
+    @keyframes pulseMistake { 0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(243, 156, 18, 0); } 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); } }
+
+    .edit-form textarea { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 15px; border-radius: 12px; font-family: 'Poppins'; font-size: 13px; margin-top: 15px; resize: vertical; min-height: 80px;}
+    .edit-form textarea:focus { outline: none; border-color: #3498db; }
+    .update-submit-btn { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 10px; cursor: pointer; transition: 0.3s;}
+    .update-submit-btn:hover { background: #2980b9; transform: translateY(-2px);}
 
     #page-content { display: none; }
   </style>
@@ -189,10 +169,10 @@
               <div class="notification-box">
                 <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts</div>
                 <div class="notif-toggles">
-                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)"><span class="slider"></span></label></div>
                 </div>
               </div>
             </div>
@@ -202,18 +182,15 @@
         <div class="floating-wrapper delay-1">
           <div class="light-tracker">
             <div class="glass-panel">
-              
               <div class="cal-header-bar" onclick="toggleCalendar()">
                 <h3><i class="fa-solid fa-calendar-days"></i> Booking Trajectory Map</h3>
                 <i class="fa-solid fa-chevron-up cal-chevron" id="calChevron"></i>
               </div>
 
               <div id="calendarWrapper">
-                
                 <div class="sync-wrapper">
                   <div class="sync-btn-container">
                     <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true)"><i class="fa-solid fa-arrows-rotate"></i> Sync Live Server</button>
-                    <div class="tooltip">Bypasses browser cache to pull your absolute latest verified operational records directly from our secure backend sheets.</div>
                   </div>
                 </div>
 
@@ -235,7 +212,6 @@
                 <div class="cal-weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
                 <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div></div>
               </div>
-
             </div>
           </div>
         </div>
@@ -250,28 +226,6 @@
                 <div class="icon-box" style="color: #3498db;"><i class="fa-solid fa-calendar-plus"></i></div>
                 <div class="action-text"><h4>Book New Service</h4><p>Schedule new personnel instantly.</p></div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="floating-wrapper">
-          <div class="light-tracker">
-            <div class="glass-panel" style="padding: 25px;">
-              <a href="absent.html" class="action-card">
-                <div class="icon-box" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
-                <div class="action-text"><h4>Log an Absence</h4><p>Pause service on specific dates.</p></div>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="floating-wrapper delay-1">
-          <div class="light-tracker">
-            <div class="glass-panel" style="padding: 25px;">
-              <a href="grievance.html" class="action-card">
-                <div class="icon-box" style="color: #f39c12;"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                <div class="action-text"><h4>File a Grievance</h4><p>Report issues directly to management.</p></div>
-              </a>
             </div>
           </div>
         </div>
@@ -298,39 +252,20 @@
   </div>
 
   <script>
-    // --- Space POV Engine ---
+    // --- Physics ---
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
     let stars = [], clouds = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
-    
-    // Stars
     for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: (Math.random()*0.1)+0.02, color: Math.random()>0.8?'176,92,255':'255,255,255'}); }
-    
-    // Purple Nebula Clouds
-    for(let i=0; i<6; i++) {
-      let parts = []; let baseSize = (Math.random()*200)+150;
-      for(let j=0; j<5; j++) parts.push({ ox: (Math.random()-0.5)*baseSize, oy: (Math.random()-0.5)*baseSize*0.5, r: (Math.random()*0.5+0.5)*baseSize });
-      clouds.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, parts: parts, speed: (Math.random()*0.2)+0.05, opacity: (Math.random()*0.05)+0.01 });
-    }
-
     function drawSky() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => { 
-        s.x -= s.speed; if(s.x < 0) s.x = canvas.width; 
-        ctx.fillStyle = `rgba(${s.color}, 0.7)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); 
-      });
-      clouds.forEach(c => {
-        c.x += c.speed; if(c.x > canvas.width + 300) c.x = -300;
-        ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 50; ctx.fillStyle = `rgba(176, 92, 255, ${c.opacity})`;
-        ctx.beginPath(); c.parts.forEach(p => ctx.arc(c.x+p.ox, c.y+p.oy, p.r, 0, Math.PI*2)); ctx.fill(); ctx.restore();
-      });
+      stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.7)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); });
       requestAnimationFrame(drawSky);
     }
     drawSky();
 
-    // --- Water Ripple & Light Edge Physics ---
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
       if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker')) return;
@@ -339,25 +274,18 @@
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1800);
     });
     
-    document.addEventListener('mousemove', (e) => {
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-        el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
-    });
-
     function toggleCalendar() {
-      const wrapper = document.getElementById('calendarWrapper');
-      const chevron = document.getElementById('calChevron');
-      wrapper.classList.toggle('collapsed');
-      chevron.classList.toggle('rotated');
+      document.getElementById('calendarWrapper').classList.toggle('collapsed');
+      document.getElementById('calChevron').classList.toggle('rotated');
     }
 
-    // --- Database Integration ---
+    // --- Authentication & Integration ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // PASTE YOUR NEW APP SCRIPT URL HERE
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
@@ -374,6 +302,18 @@
       }
     }
 
+    async function updatePreference(prefType, isChecked) {
+      const email = document.getElementById('user-email-display').innerText;
+      if (!email || email === "Loading...") return;
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actionType: 'update_prefs', email: email, prefType: prefType, prefValue: isChecked })
+        });
+      } catch (err) { console.error("Pref Error:", err); }
+    }
+
     async function initializeCalendar(email, forceRefresh = false) {
       const cacheKey = "cached_bookings_" + email;
       const cachedData = localStorage.getItem(cacheKey);
@@ -386,14 +326,9 @@
       
       grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div>`;
       
-      // EXTREMELY IMPORTANT: This is the URL you provided. Make sure you Deploy -> "New Deployment" every time you change the App Script code!
-      const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz5wlbcNq_wDNsy9lIsULtYt4FZUAk-JfD9iEtaOcwkyhMGQuBI5BfjxmCgFSkV8cc/exec"; 
-      const fetchUrl = GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email);
-      
       try {
-        const response = await fetch(fetchUrl);
+        const response = await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email));
         const result = await response.json();
-        
         if (result.status === "success" && result.data) {
           localStorage.setItem(cacheKey, JSON.stringify(result.data));
           parseAndMapBookings(result.data);
@@ -401,24 +336,32 @@
           grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:rgba(255,255,255,0.4);">No verified records located.</div>`;
         }
       } catch (err) {
-        console.error("Data Sync Error:", err);
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 12px; background: rgba(231, 76, 60, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:10px;"></i><br>Server Sync Timeout.<br><span style="font-size:11px; color:#fff;">Please ensure your Google Script is deployed as "Execute as Me" and "Access: Anyone".</span></div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 12px; background: rgba(231, 76, 60, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:10px;"></i><br>Server Sync Timeout.</div>`;
       }
     }
 
     function parseAndMapBookings(bookingsArray) {
       allBookingsMap = {};
       bookingsArray.forEach(item => {
-        let rawDate = new Date(item.booking_date);
-        let formattedDateStr = `${rawDate.getFullYear()}-${String(rawDate.getMonth() + 1).padStart(2, '0')}-${String(rawDate.getDate()).padStart(2, '0')}`;
-        
-        if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
-        
-        allBookingsMap[formattedDateStr].push({
-          service_type: item.service_type.split(":")[0].trim(),
-          status: item.status,
-          booking_date: formattedDateStr
-        });
+        // Find specific numeric date from string (e.g., "May 12, 15")
+        let parts = item.booking_date.split(" ");
+        if(parts.length > 1) {
+           let monthStr = parts[0];
+           let dates = parts.slice(1).join("").split(",");
+           dates.forEach(dNum => {
+              let cleanNum = dNum.trim();
+              if(cleanNum) {
+                 // Assume current year for simplicity in this map
+                 let year = new Date().getFullYear();
+                 let monthIndex = monthNames.findIndex(m => m.startsWith(monthStr));
+                 if(monthIndex > -1) {
+                    let formattedDateStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(cleanNum).padStart(2, '0')}`;
+                    if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
+                    allBookingsMap[formattedDateStr].push({ service_type: item.service_type, status: item.status, raw_date_string: item.booking_date, details: item.details });
+                 }
+              }
+           });
+        }
       });
       renderCalendar();
     }
@@ -435,47 +378,132 @@
       document.getElementById('monthYearDisplay').innerText = `${monthNames[month]} ${year}`;
       const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
       const grid = document.getElementById('calendarGrid'); grid.innerHTML = '';
+      
+      const today = new Date(); today.setHours(0,0,0,0);
 
       for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
       for (let i = 1; i <= daysInMonth; i++) {
         const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        const cellDate = new Date(year, month, i);
+        const isPast = cellDate < today; 
+        
         const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
-        let dayClass = ''; let labelHtml = ''; let clickable = '';
+        let dayClass = isPast ? 'past-date' : ''; 
+        let labelHtml = ''; let clickable = '';
 
         if (dayBookings.length > 0) {
            clickable = `onclick="showDayDetails('${dateString}')"`;
-           if (currentActiveService === 'Maid Services') { dayClass = 'booked-maid'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Certified Nurses') { dayClass = 'booked-nurse'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Health Visits') { dayClass = 'booked-health'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Babysitters') { dayClass = 'booked-baby'; labelHtml = '<div class="booking-label">BOOKED</div>'; }
+           dayClass = dayClass.replace('past-date', ''); 
+           if (currentActiveService === 'Maid Services') { dayClass += ' booked-maid'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Certified Nurses') { dayClass += ' booked-nurse'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Health Visits') { dayClass += ' booked-health'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
+           else if (currentActiveService === 'Babysitters') { dayClass += ' booked-baby'; labelHtml = '<div class="booking-label">BOOKED</div>'; }
         }
         grid.innerHTML += `<div class="cal-day ${dayClass}" ${clickable}><span class="day-num">${i}</span>${labelHtml}</div>`;
       }
     }
 
+    function changeMonth(offset) { currentDisplayedDate.setMonth(currentDisplayedDate.getMonth() + offset); renderCalendar(); }
+
+    // --- AUTOMATED EDIT & CANCEL ENGINE ---
     function showDayDetails(dateString) {
       const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
       const modal = document.getElementById('dayDetailsModal'); const content = document.getElementById('dayDetailsContent');
       const formattedDate = new Date(dateString).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-solid fa-calendar-day" style="color:var(--highlight); margin-right:10px;"></i> ${formattedDate}</h3>`;
+      let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-solid fa-calendar-day" style="color:var(--highlight); margin-right:10px;"></i> ${formattedDate}</h3>`;
       
-      dayBookings.forEach(item => {
+      dayBookings.forEach((item, index) => {
         let isPending = item.status.toLowerCase() === 'pending';
         let statusColor = isPending ? '#f39c12' : '#2ecc71';
-        html += `<div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin-bottom: 15px; background: rgba(0,0,0,0.5); display:flex; flex-direction: column;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-              <strong style="color:#fff; font-size:16px; font-weight:600;">${item.service_type}</strong>
-              <span style="font-size: 11px; font-weight:700; padding: 6px 14px; border-radius: 20px; color: ${statusColor}; background: rgba(0,0,0,0.5); border: 1px solid ${statusColor}; letter-spacing:1px;">${item.status.toUpperCase()}</span>
+        
+        // Calculate 48 Hour Rule
+        let serviceDate = new Date(dateString);
+        let timeDiff = serviceDate.getTime() - new Date().getTime();
+        let hoursDiff = timeDiff / (1000 * 3600);
+        let isLocked = hoursDiff < 48 && hoursDiff > 0;
+
+        html += `<div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin-bottom: 15px; background: rgba(0,0,0,0.5);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:#fff; font-size:16px;">${item.service_type}</strong>
+              <span style="font-size: 11px; font-weight:700; padding: 6px 14px; border-radius: 20px; color: ${statusColor}; border: 1px solid ${statusColor};">${item.status.toUpperCase()}</span>
             </div>
-            <a href="#" class="edit-btn" onclick="requestEdit('${item.service_type}', '${dateString}'); return false;"><i class="fa-solid fa-pen-to-square"></i> Request Edit / Cancel</a>
+            <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin: 10px 0 0 0;">Current Details: ${item.details}</p>
+            
+            <div class="edit-actions" id="actions-${index}">
+               <button class="btn-edit" onclick="openEditForm(${index}, ${isLocked}, '${item.service_type}', '${item.raw_date_string}', '${item.details}')"><i class="fa-solid fa-pen"></i> Modify</button>
+               <button class="btn-cancel" onclick="executeCancel(${isLocked}, '${item.service_type}', '${item.raw_date_string}', ${index})"><i class="fa-solid fa-xmark"></i> Cancel Service</button>
+            </div>
+            
+            <div id="mistake-btn-${index}" class="mistake-btn" onclick="fireMistakeAlert('${item.raw_date_string}')"><i class="fa-solid fa-triangle-exclamation"></i> I canceled by mistake! Restore slot.</div>
+
+            <div id="edit-form-${index}" class="edit-form" style="display:none;">
+               <textarea id="new-details-${index}" placeholder="Write your new required times, dates, or details here..."></textarea>
+               <button class="update-submit-btn" onclick="submitEdit('${item.service_type}', '${item.raw_date_string}', ${index})">Submit Update (Reverts to Pending)</button>
+            </div>
           </div>`;
       });
       content.innerHTML = html; modal.style.display = 'flex';
     }
 
-    function requestEdit(service, date) {
-      alert(`To edit or cancel the booking for ${service} on ${date}, please contact our support desk directly via WhatsApp (+91 7439392803) or email (itzpriyanka777@gmail.com).`);
+    function openEditForm(index, isLocked, service, rawDate, currentDetails) {
+      if (isLocked) { return alert("POLICY LOCK: Modifications within 48 hours of service start time cannot be automated due to dispatch routing. Please contact support immediately at +91 7439392803."); }
+      document.getElementById(`actions-${index}`).style.display = 'none';
+      document.getElementById(`edit-form-${index}`).style.display = 'block';
+    }
+
+    async function executeCancel(isLocked, service, rawDate, index) {
+      if (isLocked) { return alert("POLICY LOCK: Cancellations within 48 hours of service require manual authorization to process dispatch fees. Please call support: +91 7439392803."); }
+      if (!confirm("Are you sure you want to cancel this booking? This action will remove the service from your trajectory map.")) return;
+      
+      const email = document.getElementById('user-email-display').innerText;
+      document.getElementById(`actions-${index}`).innerHTML = '<span style="color:#e74c3c; font-size:12px; font-weight:600;"><i class="fa-solid fa-spinner fa-spin"></i> Canceling...</span>';
+      
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actionType: 'cancel_booking', email: email, serviceType: service, date: rawDate })
+        });
+        
+        document.getElementById(`actions-${index}`).innerHTML = '<span style="color:#e74c3c; font-size:12px; font-weight:600;">Service Canceled. Calendar will update on next sync.</span>';
+        
+        // Show Mistake Lifeline
+        const mistakeBtn = document.getElementById(`mistake-btn-${index}`);
+        mistakeBtn.style.display = 'block';
+        setTimeout(() => { mistakeBtn.style.display = 'none'; }, 10000);
+
+      } catch (err) { alert("Network Error: Could not cancel."); }
+    }
+
+    async function submitEdit(originalService, rawDate, index) {
+      const newDetails = document.getElementById(`new-details-${index}`).value;
+      if(!newDetails) return alert("Please type your new requested changes.");
+      
+      const email = document.getElementById('user-email-display').innerText;
+      document.getElementById(`edit-form-${index}`).innerHTML = '<span style="color:#3498db; font-size:12px; font-weight:600;"><i class="fa-solid fa-spinner fa-spin"></i> Submitting Update...</span>';
+      
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actionType: 'edit_booking', email: email, originalServiceType: originalService, originalDate: rawDate, newDetails: newDetails })
+        });
+        
+        document.getElementById(`edit-form-${index}`).innerHTML = '<span style="color:#2ecc71; font-size:12px; font-weight:600;">Update Submitted. Status reverted to Pending. Sync calendar to view changes.</span>';
+      } catch (err) { alert("Network Error: Could not update."); }
+    }
+
+    async function fireMistakeAlert(rawDate) {
+       const email = document.getElementById('user-email-display').innerText;
+       alert("Overriding... sending emergency alert to dispatch desk.");
+       try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actionType: 'cancel_mistake', email: email, date: rawDate })
+        });
+      } catch (err) { }
     }
 
     async function logOut() { 
