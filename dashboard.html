@@ -82,6 +82,8 @@
     .service-toggles { display: flex; gap: 10px; flex-wrap: wrap;}
     .toggle-btn { padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4); cursor: pointer; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.6); transition: 0.3s; display: flex; align-items: center; gap: 8px;}
     .toggle-btn:hover { background: rgba(255,255,255,0.1); color: white; transform: translateY(-2px);}
+    
+    /* Active Toggle Styling Restored */
     .toggle-btn.active.maid-tab { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);}
     .toggle-btn.active.nurse-tab { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);}
     .toggle-btn.active.health-tab { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border-color: #e74c3c; box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);}
@@ -91,6 +93,9 @@
     .sync-btn-container { position: relative; display: inline-block;}
     .sync-btn { background: rgba(176, 92, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); padding: 8px 18px; font-size: 13px; border-radius: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 15px rgba(176, 92, 255, 0.2); transition: 0.3s; font-family: 'Poppins'; position: relative; z-index: 5;}
     .sync-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(176, 92, 255, 0.5); transform: translateY(-2px);}
+    
+    /* New Auto Sync Indicator */
+    .auto-sync-indicator { font-size: 11px; color: rgba(255,255,255,0.4); margin-right: 15px; font-weight: 500;}
 
     .cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 15px; text-transform: uppercase;}
     .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; position: relative; z-index: 2;}
@@ -99,12 +104,14 @@
     .cal-day.past-date { opacity: 0.3; pointer-events: none; background: rgba(0,0,0,0.2); border: none; }
     .day-num { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.5); align-self: flex-end; margin-bottom: 5px;}
 
-    .cal-day.booked-maid { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer;}
-    .cal-day.booked-nurse { background: rgba(46, 204, 113, 0.15); border-color: #2ecc71; cursor: pointer;}
-    .cal-day.booked-health { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer;}
-    .cal-day.booked-baby { background: rgba(243, 156, 18, 0.15); border-color: #f39c12; cursor: pointer;}
-    .cal-day:hover[class*="booked-"] { transform: translateY(-4px) scale(1.03); filter: brightness(1.2); box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
-    .booking-label { font-size: 11px; font-weight: 700; text-align: center; margin-top: auto; padding: 5px; border-radius: 6px; letter-spacing: 1px; background: rgba(255,255,255,0.1); color: white;}
+    /* NEW STATUS COLOR CODING ENGINE */
+    .cal-day.status-pending { background: rgba(243, 156, 18, 0.15); border-color: #f39c12; cursor: pointer;}
+    .cal-day.status-confirmed { background: rgba(46, 204, 113, 0.15); border-color: #2ecc71; cursor: pointer;}
+    .cal-day.status-completed { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer;}
+    .cal-day.status-canceled { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer; opacity: 0.75;}
+    .cal-day:hover[class*="status-"] { transform: translateY(-4px) scale(1.03); filter: brightness(1.2); box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
+    
+    .booking-label { font-size: 11px; font-weight: 700; text-align: center; margin-top: auto; padding: 5px; border-radius: 6px; letter-spacing: 1px;}
 
     .action-grid { display: flex; flex-direction: column; gap: 25px; }
     .action-card { background: transparent; display: flex; align-items: center; gap: 20px; cursor: pointer; text-decoration: none; color: white; position: relative; z-index: 2; height: 100%;}
@@ -123,7 +130,6 @@
     .service-link-btn i { font-size: 20px; width: 25px; text-align: center;}
     .service-link-btn:hover { background: rgba(176, 92, 255, 0.15); border-color: var(--highlight); transform: translateX(10px); box-shadow: 0 8px 20px rgba(0,0,0,0.4);}
 
-    /* EDIT/CANCEL UI ELEMENTS */
     .edit-actions { display: flex; gap: 10px; margin-top: 15px;}
     .btn-edit { background: rgba(52, 152, 219, 0.1); border: 1px solid #3498db; color: #3498db; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.3s; flex: 1; display:flex; align-items:center; justify-content:center; gap:8px;}
     .btn-edit:hover { background: #3498db; color: #fff;}
@@ -169,9 +175,9 @@
               <div class="notification-box">
                 <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts</div>
                 <div class="notif-toggles">
-                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)" checked><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)"><span class="slider"></span></label></div>
                   <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)"><span class="slider"></span></label></div>
                 </div>
               </div>
@@ -189,8 +195,9 @@
 
               <div id="calendarWrapper">
                 <div class="sync-wrapper">
+                  <span class="auto-sync-indicator" id="syncStatusText"><i class="fa-solid fa-circle-check" style="color:#2ecc71;"></i> Live Auto-Sync Active</span>
                   <div class="sync-btn-container">
-                    <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true)"><i class="fa-solid fa-arrows-rotate"></i> Sync Live Server</button>
+                    <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true, false)"><i class="fa-solid fa-arrows-rotate"></i> Manual Sync</button>
                   </div>
                 </div>
 
@@ -210,7 +217,7 @@
                 </div>
                 
                 <div class="cal-weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-                <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div></div>
+                <div class="cal-grid" id="calendarGrid"><div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Initializing operations...</span></div></div>
               </div>
             </div>
           </div>
@@ -275,10 +282,9 @@
   </div>
 
   <script>
-    // --- Physics ---
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = [], clouds = [];
+    let stars = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
     for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: (Math.random()*0.1)+0.02, color: Math.random()>0.8?'176,92,255':'255,255,255'}); }
@@ -291,7 +297,7 @@
 
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.slider')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1800);
@@ -302,12 +308,10 @@
       document.getElementById('calChevron').classList.toggle('rotated');
     }
 
-    // --- Authentication & Integration ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz6tqGne1qii5oaqPqQsLSpEhW6wnqZumfhpu3YmINiFOHJ6RSPxRf07Ym9ZQ_TzE/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
@@ -320,7 +324,14 @@
       else {
         document.getElementById('page-content').style.display = 'block';
         document.getElementById('user-email-display').innerText = user.email;
-        initializeCalendar(user.email, false);
+        
+        // Initial Load (Not Silent)
+        initializeCalendar(user.email, false, false);
+        
+        // PHASE 2: SILENT AUTO-SYNC ENGINE (Fires every 60 seconds)
+        setInterval(() => {
+           initializeCalendar(user.email, true, true);
+        }, 60000);
       }
     }
 
@@ -336,18 +347,21 @@
       } catch (err) { console.error("Pref Error:", err); }
     }
 
-    async function initializeCalendar(email, forceRefresh = false) {
+    // Notice the new 'silent' parameter to prevent interrupting the user
+    async function initializeCalendar(email, forceRefresh = false, silent = false) {
       const cacheKey = "cached_bookings_" + email;
       const cachedData = localStorage.getItem(cacheKey);
       const grid = document.getElementById('calendarGrid');
       
-      if (cachedData && !forceRefresh) {
+      if (cachedData && !forceRefresh && !silent) {
         const parsed = JSON.parse(cachedData);
         parseAndMapBookings(parsed.data || parsed); 
         return;
       }
       
-      grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div>`;
+      if(!silent) {
+         grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div>`;
+      }
       
       try {
         const response = await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email));
@@ -356,7 +370,9 @@
         if (result.status === "success") {
           localStorage.setItem(cacheKey, JSON.stringify(result));
           
-          if (result.preferences) {
+          // Only physically update the toggle switches if this isn't a silent background sync.
+          // Otherwise, it might flip a switch while the user is actively trying to click it!
+          if (result.preferences && !silent) {
             document.getElementById('pref-maid').checked = (result.preferences.maid === "true");
             document.getElementById('pref-nurse').checked = (result.preferences.nurse === "true");
             document.getElementById('pref-health').checked = (result.preferences.health === "true");
@@ -364,12 +380,17 @@
           }
           
           parseAndMapBookings(result.data);
-        } else {
+          
+          if(silent) {
+            const ind = document.getElementById('syncStatusText');
+            ind.innerHTML = `<i class="fa-solid fa-bolt" style="color:var(--highlight);"></i> Synced just now`;
+            setTimeout(()=>{ ind.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#2ecc71;"></i> Live Auto-Sync Active`; }, 3000);
+          }
+        } else if (!silent) {
           grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:rgba(255,255,255,0.4);">No verified records located.</div>`;
         }
       } catch (err) {
-        console.error("Data Sync Error:", err);
-        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 12px; background: rgba(231, 76, 60, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:10px;"></i><br>Server Sync Timeout.</div>`;
+        if(!silent) grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 12px; background: rgba(231, 76, 60, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:10px;"></i><br>Server Sync Timeout.</div>`;
       }
     }
 
@@ -425,10 +446,27 @@
         if (dayBookings.length > 0) {
            clickable = `onclick="showDayDetails('${dateString}')"`;
            dayClass = dayClass.replace('past-date', ''); 
-           if (currentActiveService === 'Maid Services') { dayClass += ' booked-maid'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Certified Nurses') { dayClass += ' booked-nurse'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Health Visits') { dayClass += ' booked-health'; labelHtml = '<div class="booking-label">BOOKED</div>'; } 
-           else if (currentActiveService === 'Babysitters') { dayClass += ' booked-baby'; labelHtml = '<div class="booking-label">BOOKED</div>'; }
+           
+           // PHASE 2: Dynamic Color Coding Based on Status
+           let mainStatus = dayBookings[0].status.toLowerCase();
+           let lblText = mainStatus.toUpperCase();
+           
+           if(mainStatus.includes('pending')) { 
+               dayClass += ' status-pending'; 
+               labelHtml = `<div class="booking-label" style="background:rgba(243, 156, 18, 0.2); color:#f39c12;">PENDING</div>`; 
+           } else if(mainStatus.includes('confirm')) { 
+               dayClass += ' status-confirmed'; 
+               labelHtml = `<div class="booking-label" style="background:rgba(46, 204, 113, 0.2); color:#2ecc71;">CONFIRMED</div>`; 
+           } else if(mainStatus.includes('complet') || mainStatus.includes('done')) { 
+               dayClass += ' status-completed'; 
+               labelHtml = `<div class="booking-label" style="background:rgba(52, 152, 219, 0.2); color:#3498db;">COMPLETED</div>`; 
+           } else if(mainStatus.includes('cancel')) { 
+               dayClass += ' status-canceled'; 
+               labelHtml = `<div class="booking-label" style="background:rgba(231, 76, 60, 0.2); color:#e74c3c;">CANCELED</div>`; 
+           } else { 
+               dayClass += ' status-confirmed'; 
+               labelHtml = `<div class="booking-label" style="background:rgba(255, 255, 255, 0.1); color:#fff;">${lblText}</div>`; 
+           }
         }
         grid.innerHTML += `<div class="cal-day ${dayClass}" ${clickable}><span class="day-num">${i}</span>${labelHtml}</div>`;
       }
@@ -444,14 +482,18 @@
       let html = `<h3 style="margin-top:0; color:#fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; margin-bottom: 25px;"><i class="fa-solid fa-calendar-day" style="color:var(--highlight); margin-right:10px;"></i> ${formattedDate}</h3>`;
       
       dayBookings.forEach((item, index) => {
-        let isPending = item.status.toLowerCase() === 'pending';
-        let statusColor = isPending ? '#f39c12' : '#2ecc71';
+        let currentS = item.status.toLowerCase();
+        let statusColor = '#2ecc71'; // Default green
+        if(currentS.includes('pending')) statusColor = '#f39c12';
+        if(currentS.includes('complet')) statusColor = '#3498db';
+        if(currentS.includes('cancel')) statusColor = '#e74c3c';
         
-        // Calculate 48 Hour Rule
         let serviceDate = new Date(dateString);
         let timeDiff = serviceDate.getTime() - new Date().getTime();
         let hoursDiff = timeDiff / (1000 * 3600);
         let isLocked = hoursDiff < 48 && hoursDiff > 0;
+        
+        let isCanceled = currentS.includes('cancel');
 
         html += `<div style="padding: 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; margin-bottom: 15px; background: rgba(0,0,0,0.5);">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -460,9 +502,10 @@
             </div>
             <p style="font-size: 12px; color: rgba(255,255,255,0.6); margin: 10px 0 0 0;">Current Details: ${item.details}</p>
             
+            ${!isCanceled ? `
             <div class="edit-actions" id="actions-${index}">
-               <button class="btn-edit" onclick="openEditForm(${index}, ${isLocked}, '${item.service_type}', '${item.raw_date_string}', '${item.details}')"><i class="fa-solid fa-pen"></i> Modify</button>
-               <button class="btn-cancel" onclick="executeCancel(${isLocked}, '${item.service_type}', '${item.raw_date_string}', ${index})"><i class="fa-solid fa-xmark"></i> Cancel Service</button>
+               <button class="btn-edit" onclick="openEditForm(${index}, ${isLocked})"><i class="fa-solid fa-pen"></i> Modify</button>
+               <button class="btn-cancel" onclick="executeCancel(${isLocked}, '${item.service_type}', '${item.raw_date_string}', ${index})"><i class="fa-solid fa-xmark"></i> Cancel</button>
             </div>
             
             <div id="mistake-btn-${index}" class="mistake-btn" onclick="fireMistakeAlert('${item.raw_date_string}')"><i class="fa-solid fa-triangle-exclamation"></i> I canceled by mistake! Restore slot.</div>
@@ -471,12 +514,13 @@
                <textarea id="new-details-${index}" placeholder="Write your new required times, dates, or details here..."></textarea>
                <button class="update-submit-btn" onclick="submitEdit('${item.service_type}', '${item.raw_date_string}', ${index})">Submit Update (Reverts to Pending)</button>
             </div>
+            ` : `<p style="font-size:11px; color:#e74c3c; margin-top:15px; font-weight:600;"><i class="fa-solid fa-ban"></i> This service deployment has been canceled.</p>`}
           </div>`;
       });
       content.innerHTML = html; modal.style.display = 'flex';
     }
 
-    function openEditForm(index, isLocked, service, rawDate, currentDetails) {
+    function openEditForm(index, isLocked) {
       if (isLocked) { return alert("POLICY LOCK: Modifications within 48 hours of service start time cannot be automated due to dispatch routing. Please contact support immediately at +91 7439392803."); }
       document.getElementById(`actions-${index}`).style.display = 'none';
       document.getElementById(`edit-form-${index}`).style.display = 'block';
@@ -496,11 +540,14 @@
           body: JSON.stringify({ actionType: 'cancel_booking', email: email, serviceType: service, date: rawDate })
         });
         
-        document.getElementById(`actions-${index}`).innerHTML = '<span style="color:#e74c3c; font-size:12px; font-weight:600;">Service Canceled. Calendar will update on next sync.</span>';
+        document.getElementById(`actions-${index}`).innerHTML = '<span style="color:#e74c3c; font-size:12px; font-weight:600;">Service Canceled. Calendar updating...</span>';
         
         const mistakeBtn = document.getElementById(`mistake-btn-${index}`);
         mistakeBtn.style.display = 'block';
         setTimeout(() => { mistakeBtn.style.display = 'none'; }, 10000);
+        
+        // Force manual sync to instantly show the red block
+        setTimeout(() => { initializeCalendar(email, true, true); }, 2000);
 
       } catch (err) { alert("Network Error: Could not cancel."); }
     }
@@ -519,7 +566,11 @@
           body: JSON.stringify({ actionType: 'edit_booking', email: email, originalServiceType: originalService, originalDate: rawDate, newDetails: newDetails })
         });
         
-        document.getElementById(`edit-form-${index}`).innerHTML = '<span style="color:#2ecc71; font-size:12px; font-weight:600;">Update Submitted. Status reverted to Pending. Sync calendar to view changes.</span>';
+        document.getElementById(`edit-form-${index}`).innerHTML = '<span style="color:#2ecc71; font-size:12px; font-weight:600;">Update Submitted. Status reverted to Pending.</span>';
+        
+        // Force manual sync to instantly show the orange block
+        setTimeout(() => { initializeCalendar(email, true, true); }, 2000);
+        
       } catch (err) { alert("Network Error: Could not update."); }
     }
 
