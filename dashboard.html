@@ -108,6 +108,7 @@
     .cal-day.status-completed { background: rgba(52, 152, 219, 0.15); border-color: #3498db; cursor: pointer;}
     .cal-day.status-canceled { background: rgba(231, 76, 60, 0.15); border-color: #e74c3c; cursor: pointer; opacity: 0.75;}
     .cal-day:hover[class*="status-"] { transform: translateY(-4px) scale(1.03); filter: brightness(1.2); box-shadow: 0 10px 25px rgba(0,0,0,0.6);}
+    
     .booking-label { font-size: 11px; font-weight: 700; text-align: center; margin-top: auto; padding: 5px; border-radius: 6px; letter-spacing: 1px;}
 
     .action-grid { display: flex; flex-direction: column; gap: 25px; }
@@ -179,10 +180,10 @@
               <div class="notification-box">
                 <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts</div>
                 <div class="notif-toggles">
-                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)"><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)"><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)"><span class="slider"></span></label></div>
-                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)"><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)" checked><span class="slider"></span></label></div>
+                  <div class="notif-row"><span>Baby</span> <label class="switch"><input type="checkbox" id="pref-baby" onchange="updatePreference('baby', this.checked)" checked><span class="slider"></span></label></div>
                 </div>
               </div>
             </div>
@@ -201,7 +202,7 @@
                 <div class="sync-wrapper">
                   <span class="auto-sync-indicator" id="syncStatusText"><i class="fa-solid fa-circle-check" style="color:#2ecc71;"></i> Live Auto-Sync Active</span>
                   <div class="sync-btn-container">
-                    <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, true, false)"><i class="fa-solid fa-arrows-rotate"></i> Manual Sync</button>
+                    <button class="sync-btn" onclick="initializeCalendar(document.getElementById('user-email-display').innerText, 'Client', true, false)"><i class="fa-solid fa-arrows-rotate"></i> Manual Sync</button>
                   </div>
                 </div>
 
@@ -336,14 +337,15 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz6tqGne1qii5oaqPqQsLSpEhW6wnqZumfhpu3YmINiFOHJ6RSPxRf07Ym9ZQ_TzE/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLjRi5sXh__lJCPEpDJBznPkUKemqRYbxlUNkP8qSO0uQYl1EEHx0pXTQe_4r22Po/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
     let allBookingsMap = {};
     let currentActiveService = 'Maid Services';
-    let lastToggleTime = 0; // Debounce Timer Flag
+    let lastToggleTime = 0; 
 
+    // THE NEW INSTANT REGISTRATION HANDSHAKE
     async function checkAuth() {
       const { data: { user } } = await client.auth.getUser();
       if (!user) window.location.href = "index.html";
@@ -355,6 +357,15 @@
         if(user.user_metadata && user.user_metadata.full_name) clientName = user.user_metadata.full_name;
         else if(user.email) clientName = user.email.split('@')[0];
 
+        // Ping the server to guarantee registration before pulling data
+        try {
+           await fetch(GOOGLE_SCRIPT_URL, {
+              method: 'POST', mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ actionType: 'register_user', email: user.email, name: clientName })
+           });
+        } catch(e) {}
+
         initializeCalendar(user.email, clientName, false, false);
         setInterval(() => { initializeCalendar(user.email, clientName, true, true); }, 60000);
       }
@@ -364,7 +375,7 @@
       const email = document.getElementById('user-email-display').innerText;
       if (!email || email === "Loading...") return;
 
-      lastToggleTime = Date.now(); // Lock UI from background sync overwrites for 5 seconds
+      lastToggleTime = Date.now(); 
 
       const cacheKey = "cached_bookings_" + email;
       const cachedData = localStorage.getItem(cacheKey);
@@ -381,7 +392,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ actionType: 'update_prefs', email: email, prefType: prefType, prefValue: isChecked })
         });
-      } catch (err) { }
+      } catch (err) { console.error("Pref Error:", err); }
     }
 
     async function initializeCalendar(email, nameStr, forceRefresh = false, silent = false) {
