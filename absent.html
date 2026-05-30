@@ -3,108 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report Absence | Priya Seva</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>Log an Absence | Priya Seva</title>
+  <meta name="theme-color" content="#020614">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #fdf2e9; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    :root { --void-bg: #020614; --glass-base: rgba(10, 20, 35, 0.25); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #e74c3c; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+    #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(231, 76, 60, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+
+    .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; pointer-events: none; }
+    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(231, 76, 60, 0.6); pointer-events: auto;}
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(10, 20, 35, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: 0.4s; pointer-events: auto;}
+    .nav-link:hover { transform: translateY(-3px) scale(1.05); background: rgba(231, 76, 60, 0.15); border-color: var(--highlight);}
+
+    .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+    .left-pane::-webkit-scrollbar { width: 0px; }
+    .form-container { position: relative; width: 100%; max-width: 500px; padding-right: 15px;}
     
-    .absence-card { background: white; width: 90%; max-width: 400px; border-radius: 16px; box-shadow: 0 10px 30px rgba(231, 76, 60, 0.15); padding: 30px; text-align: center; border-top: 6px solid #e74c3c; margin: 40px 0;}
-    
-    .icon-wrapper { background: #fadbd8; width: 70px; height: 70px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto; }
-    .icon-wrapper i { font-size: 30px; color: #e74c3c; }
+    .spatial-header { text-align: center; margin-bottom: 40px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
+    .spatial-header h2 { margin: 0 0 10px 0; font-size: 38px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(231, 76, 60, 0.6), 0 0 40px rgba(0,0,0,1);}
+    .spatial-header p { margin: 0 auto; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; max-width: 400px; line-height: 1.6;}
 
-    h1 { font-size: 24px; color: #c0392b; margin-top: 0; margin-bottom: 10px; }
-    p { font-size: 14px; color: #7f8c8d; margin-bottom: 25px; line-height: 1.5; }
+    .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
+    .capsule-group:nth-child(2) { animation-delay: 1s; } .capsule-group:nth-child(3) { animation-delay: 2s; } .capsule-group:nth-child(4) { animation-delay: 0.5s; }
+    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
-    .form-group { margin-bottom: 20px; text-align: left; }
-    .form-group label { display: block; font-size: 13px; font-weight: 600; color: #2c3e50; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-group input[type="tel"], .form-group input[type="date"] { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: border-color 0.3s; }
-    .form-group input:focus { outline: none; border-color: #e74c3c; background-color: white; }
+    .light-tracker { position: relative; width: 100%; }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
+    .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(231, 76, 60, 0.1), transparent 100%); pointer-events: none; z-index: 0; }
 
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
-    .checkbox-item { display: flex; align-items: center; gap: 8px; background: #f8faff; padding: 12px 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 600; color: #2c3e50; cursor: pointer; transition: 0.2s;}
-    .checkbox-item:hover { border-color: #e74c3c; background: white;}
-    .checkbox-item input { cursor: pointer; width: 16px; height: 16px; accent-color: #e74c3c;}
+    .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
+    .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: 50px; color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; transition: 0.4s; outline: none; position: relative; z-index: 1; }
+    .glass-render::placeholder { color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 400;}
+    .glass-render:focus { transform: scale(1.02); background: rgba(231, 76, 60, 0.1); border-color: var(--highlight); box-shadow: 0 10px 30px rgba(231, 76, 60, 0.2);}
 
-    .submit-btn { background: #e74c3c; color: white; width: 100%; padding: 18px; border: none; border-radius: 8px; font-size: 18px; font-weight: 700; cursor: pointer; transition: background 0.3s; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); }
-    .submit-btn:hover { background: #c0392b; }
+    .custom-select { position: relative; user-select: none; }
+    .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9); z-index: 99;}
+    .select-options.show { display: block; }
+    .option { padding: 16px 25px; color: #fff; font-weight: 500; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);}
+    .option:last-child { border-bottom: none; }
+    .option:hover { background: rgba(231, 76, 60, 0.2); padding-left: 35px; }
 
-    #successMessage { display: none; margin-top: 20px; padding: 15px; background: #d5f5e3; color: #27ae60; border-radius: 8px; font-weight: 600; font-size: 14px; }
+    .submit-btn { width: 100%; padding: 22px; background: rgba(231, 76, 60, 0.1); border: 1px solid var(--highlight); border-radius: 50px; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1;}
+    .submit-btn:hover { transform: translateY(-3px) scale(1.02); background: var(--highlight); color: #fff; box-shadow: 0 15px 30px rgba(231, 76, 60, 0.4); }
+
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); }
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); object-fit: cover; z-index: 1; opacity: 0.6;}
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .navbar { position: relative !important; padding: 25px 20px !important; }
+      .split-layout { flex-direction: column; height: auto; display: block;}
+      .left-pane { padding: 10px 20px 40px 20px; display: block;}
+      .right-pane { display: none !important; } 
+    }
   </style>
 </head>
 <body>
 
-  <div class="absence-card">
-    <div class="icon-wrapper">
-      <i class="fa-solid fa-user-xmark"></i>
-    </div>
-    <h1>Report Absence</h1>
-    <p>Select the services you wish to pause and confirm your number below. Your billing will be adjusted.</p>
+  <nav class="navbar">
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-user-xmark" style="color: #e74c3c;"></i> Priya Seva</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+  </nav>
 
-    <form id="absenceForm" onsubmit="submitAbsence(event)">
-      
-      <div class="form-group">
-        <label>Select Service(s) to Pause</label>
-        <div class="checkbox-grid">
-          <label class="checkbox-item"><input type="checkbox" name="absentService" value="Maid Services"> Maid</label>
-          <label class="checkbox-item"><input type="checkbox" name="absentService" value="Certified Nurses"> Nurse</label>
-          <label class="checkbox-item"><input type="checkbox" name="absentService" value="Health Visits"> Health</label>
-          <label class="checkbox-item"><input type="checkbox" name="absentService" value="Babysitters"> Babysitter</label>
+  <canvas id="nightCanvas"></canvas>
+  <div id="rippleContainer"></div>
+
+  <div class="split-layout">
+    <div class="left-pane">
+      <div class="form-container">
+        
+        <div class="spatial-header">
+          <h2>Log an Absence</h2>
+          <p>Going out of town? Inform our dispatch team to pause your daily or weekly services temporarily.</p>
         </div>
+
+        <div class="capsule-group input-group">
+          <label>Registered Name</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="clientName" class="glass-render" placeholder="Your registered name" required>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group custom-select">
+          <label>Service to Pause</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
+              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select service type</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="light-tracker select-options" id="serviceOptions">
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Maid Services')">Maid Services</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Nursing Care')">Nursing Care</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Babysitting')">Babysitting</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 25px;">
+          <div class="capsule-group input-group" style="margin-bottom: 0;">
+            <label>Absence Start Date</label>
+            <div class="light-tracker" style="border-radius: 50px;">
+              <input type="date" id="startDate" class="glass-render">
+            </div>
+          </div>
+          <div class="capsule-group input-group" style="margin-bottom: 0;">
+            <label>Return Date</label>
+            <div class="light-tracker" style="border-radius: 50px;">
+              <input type="date" id="endDate" class="glass-render">
+            </div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group">
+          <label>Reason / Instructions</label>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="reasonText" class="glass-render" placeholder="E.g., Out of station for family vacation">
+          </div>
+        </div>
+
+        <div class="capsule-group" style="margin-top: 35px;">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <button onclick="submitAbsence()" class="submit-btn" id="submitBtn">Confirm Absence Log</button>
+          </div>
+        </div>
+
       </div>
-
-      <div class="form-group">
-        <label for="clientPhone">Registered Mobile Number</label>
-        <input type="tel" id="clientPhone" placeholder="E.g., 9876543210" required>
-      </div>
-
-      <div class="form-group">
-        <label for="absenceDate">Date of Absence</label>
-        <input type="date" id="absenceDate" required>
-      </div>
-
-      <button type="submit" class="submit-btn" id="btnText">Mark as Absent</button>
-    </form>
-
-    <div id="successMessage">
-      <i class="fa-solid fa-circle-check"></i> Absence logged successfully. Your calendar has been updated.
     </div>
 
-    <div style="display: flex; justify-content: center; gap: 25px; margin-top: 20px;">
-      <a href="index.html" style="color: #7f8c8d; font-size: 13px; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-house"></i> Home</a>
-      <a href="dashboard.html" style="color: #7f8c8d; font-size: 13px; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+    <div class="right-pane">
+      <img src="https://images.pexels.com/photos/10045827/pexels-photo-10045827.jpeg" class="video-bg" alt="Calendar">
     </div>
-
   </div>
 
   <script>
-    document.getElementById('absenceDate').valueAsDate = new Date();
+    // Physics Engine
+    const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: (Math.random()*0.1)+0.02, color: '231,76,60' }); }
+    function drawSky() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.5)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(drawSky); }
+    drawSky();
 
-    async function submitAbsence(event) {
-      event.preventDefault(); 
-      
-      const phone = document.getElementById('clientPhone').value;
-      const date = document.getElementById('absenceDate').value;
-      const btn = document.getElementById('btnText');
-      
-      const checkboxes = document.querySelectorAll('input[name="absentService"]:checked');
-      if(checkboxes.length === 0) {
-          alert("Please select at least one service to pause.");
-          return;
-      }
-      let selectedServices = [];
-      checkboxes.forEach((cb) => { selectedServices.push(cb.value); });
-      const serviceString = selectedServices.join(", ");
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
 
-      btn.innerHTML = "Logging Absence...";
-      btn.style.opacity = "0.7";
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-      // Placeholder for backend automation
-      setTimeout(() => {
-        document.getElementById('absenceForm').style.display = 'none';
-        document.getElementById('successMessage').style.display = 'block';
-      }, 1000);
+    // PASTE YOUR SCRIPT URL HERE
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+
+    function toggleDropdown(id) { document.getElementById(id).classList.toggle('show'); }
+    function selectOption(triggerId, dropdownId, value) { 
+      const trigger = document.getElementById(triggerId); 
+      trigger.innerHTML = `<span style="color:white; font-weight:600;">${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
+      document.getElementById(dropdownId).classList.remove('show'); 
+    }
+
+    async function submitAbsence() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('clientName').value;
+      const service = document.getElementById('serviceTrigger').innerText.trim();
+      const start = document.getElementById('startDate').value;
+      const end = document.getElementById('endDate').value;
+      const reason = document.getElementById('reasonText').value;
+
+      if(!name || service.includes("Select") || !start || !end) return alert("Please complete all required fields.");
+
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging...'; btn.disabled = true;
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) { btn.innerHTML = 'Confirm Absence Log'; btn.disabled = false; return alert("Session expired. Please log in."); }
+
+        const payload = {
+          name: name,
+          email: user.email,
+          serviceType: "Absence Logged: " + service,
+          date: start + " to " + end,
+          details: "Reason: " + (reason || "Not specified")
+        };
+
+        await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+        const adminWaNumber = "917439392803";
+        const waMessage = `*CLIENT ABSENCE LOGGED*\\n\\n*Client:* ${name}\\n*Service Paused:* ${service}\\n*From:* ${start}\\n*To:* ${end}\\n*Reason:* ${reason || 'N/A'}`;
+        window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
+        window.location.href = "dashboard.html";
+
+      } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Confirm Absence Log'; btn.disabled = false; }
     }
   </script>
 </body>
