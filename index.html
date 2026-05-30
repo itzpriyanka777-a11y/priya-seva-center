@@ -96,15 +96,31 @@
     .card-health .card-icon { color: var(--highlight); } .card-health:hover .book-btn { background: rgba(0, 243, 255, 0.2); color: var(--highlight); border-color: var(--highlight); box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);}
     .card-baby .card-icon { color: #f39c12; } .card-baby:hover .book-btn { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);}
 
-    .reviews-section { max-width: 1100px; margin: 80px auto; padding: 0 20px; text-align: center; }
-    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;}
-    .review-card { background: var(--glass-panel); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: left; transition: 0.3s;}
-    .review-card:hover { transform: translateY(-5px); border-color: rgba(0,243,255,0.2); box-shadow: 0 25px 50px rgba(0,0,0,0.6);}
-    .stars { color: #f39c12; font-size: 16px; margin-bottom: 20px; filter: drop-shadow(0 0 5px rgba(243,156,18,0.5));}
+    /* --- 3D REVIEWS CAROUSEL --- */
+    .reviews-section { max-width: 1000px; margin: 80px auto; padding: 0 20px; text-align: center; overflow: hidden; }
+    .carousel-container { display: flex; align-items: center; justify-content: center; gap: 15px; position: relative; height: 320px; margin-top: 40px;}
+    .nav-arrow { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 10;}
+    .nav-arrow:hover { background: var(--highlight); color: black; border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.4);}
+    
+    .carousel-track { position: relative; width: 100%; max-width: 600px; height: 100%; display: flex; justify-content: center; align-items: center;}
+    .review-card { position: absolute; width: 100%; max-width: 380px; background: var(--glass-panel); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 35px 30px; border-radius: 20px; text-align: left; transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); opacity: 0; pointer-events: none;}
+    
+    .review-card.active { transform: translateX(0) scale(1.05); opacity: 1; z-index: 3; border-color: rgba(0,243,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 20px rgba(0,243,255,0.1); pointer-events: auto;}
+    .review-card.prev { transform: translateX(-60%) scale(0.85); opacity: 0.4; z-index: 1; }
+    .review-card.next { transform: translateX(60%) scale(0.85); opacity: 0.4; z-index: 1; }
+    
+    .stars { color: #f39c12; font-size: 15px; margin-bottom: 15px; filter: drop-shadow(0 0 5px rgba(243,156,18,0.5));}
+    .review-card p { color: #cbd5e1; font-size: 14px; line-height: 1.6; margin-bottom: 20px; font-style: italic;}
+    .reviewer-name { color: var(--highlight); font-size: 15px; font-weight: 600;}
+    .reviewer-loc { font-size:12px; color:#64748b;}
 
+    /* Cookie Banner Options */
     .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(3, 8, 20, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,243,255,0.2); color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 13px;}
-    .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; transition: 0.3s;}
-    .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
+    .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s;}
+    .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } 
+    .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
+    .btn-decline { background: transparent; color: #94a3b8; border: 1px solid #94a3b8; }
+    .btn-decline:hover { background: rgba(255,255,255,0.1); color: white;}
 
     /* --- Kelvin AI Chatbot Styles --- */
     .chatbot-wrapper { position: fixed; bottom: 30px; right: 30px; z-index: 9998; width: 65px; height: 65px; }
@@ -113,11 +129,17 @@
     .chatbot-fab:hover { background: var(--highlight); color: #000; transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
     
     .kelvin-bot { position: absolute; bottom: 35px; right: -5px; width: 75px; z-index: 5; filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8)); animation: floatBot 3.5s ease-in-out infinite; pointer-events: none;}
-    .kelvin-bubble { position: absolute; bottom: 120px; right: -10px; width: 220px; background: white; color: black; padding: 12px 15px; border-radius: 15px; border-bottom-right-radius: 0; font-size: 13px; font-weight: 600; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 6; animation: floatBubble 3.5s ease-in-out infinite; transform-origin: bottom right;}
+    
+    /* Timed Pulse Animation for Kelvin's Thought Bubble */
+    .kelvin-bubble { position: absolute; bottom: 120px; right: -10px; width: 220px; background: white; color: black; padding: 12px 15px; border-radius: 15px; border-bottom-right-radius: 0; font-size: 13px; font-weight: 600; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 6; opacity: 0; animation: botBubblePulse 12s ease-in-out infinite; transform-origin: bottom right; pointer-events: none;}
     .kelvin-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: white transparent transparent transparent; }
     
     @keyframes floatBot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes botBubblePulse {
+        0%, 10% { opacity: 0; transform: scale(0.9) translateY(10px); }
+        15%, 85% { opacity: 1; transform: scale(1) translateY(0); }
+        90%, 100% { opacity: 0; transform: scale(0.9) translateY(-10px); }
+    }
 
     .chat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 10000; justify-content: flex-end; align-items: flex-end; padding: 30px; backdrop-filter: blur(5px);}
     .chat-window { background: rgba(10, 18, 35, 0.95); border: 1px solid var(--highlight); width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 243, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
@@ -142,10 +164,9 @@
     .glass-render { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 12px; outline: none; transition: 0.3s; }
     .glass-render:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
 
-    /* --- Multi-Step Auth Modals --- */
+    /* Auth Modals & Buttons */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
     .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 40px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-    @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
     
     .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
@@ -167,6 +188,7 @@
     
     .hidden { display: none !important; }
 
+    /* MOBILE REVOLUTION CSS */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
@@ -183,8 +205,10 @@
       @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
+      
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
+      .carousel-container { display: none; /* simplified for mobile */ }
     }
   </style>
 </head>
@@ -287,12 +311,34 @@
 
   <section class="reviews-section" id="reviews">
     <h2 style="color: #fff; font-size: 32px; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Trusted by Families Across Kolkata</h2>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-        <p style="color: #cbd5e1; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">"The automated dashboard is brilliant. I can track exactly when my maid arrives and manage my requests instantly without calling anyone."</p>
-        <strong style="color: var(--highlight); font-size: 16px;">Rahul Banerjee</strong> <span style="font-size:12px; color:#64748b;">- Salt Lake</span>
+    
+    <div class="carousel-container">
+      <div class="nav-arrow" onclick="slideReview(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+      
+      <div class="carousel-track">
+        <div class="review-card">
+          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p>"The automated dashboard is brilliant. I can track exactly when my maid arrives and manage my requests instantly."</p>
+          <span class="reviewer-name">Rahul Banerjee</span> <span class="reviewer-loc">- Salt Lake</span>
+        </div>
+        <div class="review-card">
+          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p>"Priya Seva provided a certified nurse for my father post-surgery. The level of medical care is unmatched."</p>
+          <span class="reviewer-name">Anjali Das</span> <span class="reviewer-loc">- New Town</span>
+        </div>
+        <div class="review-card">
+          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+          <p>"Having a verified babysitter means we can actually enjoy our weekends again. Highly recommended service."</p>
+          <span class="reviewer-name">Priya & Amit</span> <span class="reviewer-loc">- South Kolkata</span>
+        </div>
+        <div class="review-card">
+          <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+          <p>"The health visit was prompt. The nurse was polite, checked vitals carefully, and logged everything online."</p>
+          <span class="reviewer-name">Vikram C.</span> <span class="reviewer-loc">- Ballygunge</span>
+        </div>
       </div>
+
+      <div class="nav-arrow" onclick="slideReview(1)"><i class="fa-solid fa-chevron-right"></i></div>
     </div>
   </section>
 
@@ -331,7 +377,8 @@
   <div class="cookie-banner" id="cookieBanner">
     <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> We use secure cookies to make the website easy to use. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
     <div style="display:flex; gap: 10px;">
-      <button class="cookie-btn btn-accept" onclick="acceptCookies()">Accept</button>
+      <button class="cookie-btn btn-accept" onclick="handleCookies('accepted')">Accept</button>
+      <button class="cookie-btn btn-decline" onclick="handleCookies('declined')">Decline</button>
     </div>
   </div>
 
@@ -373,6 +420,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // --- Cinematic Background Nodes ---
     const canvas = document.getElementById('heroCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -388,9 +436,10 @@
     }
     drawNodes();
 
+    // --- Interaction Physics ---
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper') || e.target.closest('.nav-arrow')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
@@ -404,17 +453,38 @@
       });
     });
 
+    // --- Reviews 3D Carousel Engine ---
+    let revIndex = 0;
+    const revCards = document.querySelectorAll('.review-card');
+    function updateCarousel() {
+      revCards.forEach((card, i) => {
+        card.className = 'review-card';
+        if (i === revIndex) card.classList.add('active');
+        else if (i === (revIndex - 1 + revCards.length) % revCards.length) card.classList.add('prev');
+        else if (i === (revIndex + 1) % revCards.length) card.classList.add('next');
+      });
+    }
+    function slideReview(dir) {
+      revIndex = (revIndex + dir + revCards.length) % revCards.length;
+      updateCarousel();
+    }
+    updateCarousel(); // Init
+
+    // --- Cookies ---
     window.onload = function() {
       if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000); }
     };
-    function acceptCookies() { localStorage.setItem('cookiesAccepted', 'true'); document.getElementById('cookieBanner').style.bottom = '-100px'; }
+    function handleCookies(choice) { 
+      localStorage.setItem('cookiesAccepted', choice); 
+      document.getElementById('cookieBanner').style.bottom = '-100px'; 
+    }
 
+    // --- Authentication ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
 
-    // --- NEW MULTI-STEP AUTH MODAL LOGIC ---
     function openAuthModal(view) { 
       document.getElementById('authOverlay').style.display = 'flex'; 
       toggleAuthView(view);
@@ -462,10 +532,7 @@
     async function signInWithGoogle() {
       const { data, error } = await supabaseClient.auth.signInWithOAuth({ 
         provider: 'google',
-        options: {
-          // THIS FIXES THE 404 ERROR - explicitly telling Supabase to send them back here
-          redirectTo: 'https://itzpriyanka777-a11y.github.io/priya-seva-center/dashboard.html'
-        }
+        options: { redirectTo: 'https://itzpriyanka777-a11y.github.io/priya-seva-center/dashboard.html' }
       });
       if (error) alert("Error connecting to Google: " + error.message);
     }
