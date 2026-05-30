@@ -320,9 +320,39 @@
       const grid = document.getElementById('calendarGrid');
       
       if (cachedData && !forceRefresh) {
-        parseAndMapBookings(JSON.parse(cachedData));
+        // If loading from cache, parse the data and skip network fetch
+        const parsed = JSON.parse(cachedData);
+        parseAndMapBookings(parsed.data || parsed); // Safe fallback array matching
         return;
       }
+      
+      grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div>`;
+      
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email));
+        const result = await response.json();
+        
+        if (result.status === "success") {
+          // Cache the full server result payload securely
+          localStorage.setItem(cacheKey, JSON.stringify(result));
+          
+          // DYNAMICALLY SYNC TOGGLES WITH YOUR SHEET ENTRIES
+          if (result.preferences) {
+            document.getElementById('pref-maid').checked = (result.preferences.maid === "true");
+            document.getElementById('pref-nurse').checked = (result.preferences.nurse === "true");
+            document.getElementById('pref-health').checked = (result.preferences.health === "true");
+            document.getElementById('pref-baby').checked = (result.preferences.baby === "true");
+          }
+          
+          parseAndMapBookings(result.data);
+        } else {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:rgba(255,255,255,0.4);">No verified records located.</div>`;
+        }
+      } catch (err) {
+        console.error("Data Sync Error:", err);
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); border-radius: 12px; background: rgba(231, 76, 60, 0.1);"><i class="fa-solid fa-triangle-exclamation" style="font-size:24px; margin-bottom:10px;"></i><br>Server Sync Timeout.</div>`;
+      }
+    }
       
       grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 60px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--highlight); font-size:28px; margin-bottom:15px;"></i><br><span style="color:rgba(255,255,255,0.6);">Syncing operational records...</span></div>`;
       
