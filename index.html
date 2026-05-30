@@ -40,14 +40,13 @@
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
-    /* Absolute Navbar - Scrolls naturally without black bars */
+    /* Absolute Navbar */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
     
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
     .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
     
-    /* Desktop vs Mobile Brand Name */
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
@@ -74,7 +73,7 @@
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
-    /* Deskstop Service Cards */
+    /* Service Cards */
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
     .float-wrap:nth-child(2) { animation-delay: 1.2s; }
@@ -90,13 +89,12 @@
 
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     
-    /* Mobile Card Elements (Hidden on PC) */
     .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
 
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
     
-    .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600; letter-spacing: 0.5px;}
+    .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600;}
     .service-card p { font-size: 14px; color: #94a3b8; margin-bottom: 30px; line-height: 1.6; flex-grow: 1;}
     .book-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 14px 20px; border-radius: 12px; font-weight: 600; transition: 0.3s; width: 100%; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;}
     
@@ -114,22 +112,47 @@
     .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(3, 8, 20, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,243,255,0.2); color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 13px;}
     .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; border: none; transition: 0.3s;}
     .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } .btn-accept:hover { background: var(--highlight); color: #000; box-shadow: 0 0 15px rgba(0,243,255,0.4);}
-    
+
+    /* --- AI Triage Assistant Styles --- */
     .chatbot-fab { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); width: 65px; height: 65px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--highlight); font-size: 24px; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; z-index: 9998; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);}
     .chatbot-fab:hover { transform: scale(1.1) rotate(-10deg); background: var(--highlight); color: #000; box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
 
+    .chat-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 10000; justify-content: flex-end; align-items: flex-end; padding: 30px; backdrop-filter: blur(5px);}
+    .chat-window { background: rgba(10, 18, 35, 0.95); border: 1px solid var(--highlight); width: 100%; max-width: 400px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 243, 255, 0.1); display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;}
+    
+    @keyframes slideUp { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+
+    .chat-header { background: rgba(0, 243, 255, 0.1); padding: 20px 25px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); display: flex; justify-content: space-between; align-items: center; color: white; font-weight: 600;}
+    .chat-close { cursor: pointer; color: rgba(255,255,255,0.6); transition: 0.3s; font-size: 20px;}
+    .chat-close:hover { color: #ff7675; transform: rotate(90deg);}
+    
+    .chat-body { padding: 25px; display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto;}
+    .chat-body::-webkit-scrollbar { width: 6px; }
+    .chat-body::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 10px; }
+    
+    .chat-bubble { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; border-bottom-left-radius: 4px; color: #e2e8f0; font-size: 14px; line-height: 1.5; align-self: flex-start; max-width: 90%;}
+    .chat-bubble.bot-intro { border-color: rgba(0, 243, 255, 0.3); background: rgba(0, 243, 255, 0.05);}
+    
+    .chat-options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; width: 100%;}
+    .chat-btn { background: transparent; border: 1px solid rgba(0, 243, 255, 0.3); color: var(--highlight); padding: 12px 18px; border-radius: 12px; font-family: 'Poppins'; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 10px;}
+    .chat-btn:hover { background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); transform: translateX(5px);}
+    .chat-btn i { width: 20px; text-align: center;}
+    
+    .glass-render { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 12px; outline: none; transition: 0.3s; }
+    .glass-render:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
+
+    /* Auth Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
     .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 45px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; text-align: center; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     @keyframes modalPop { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
     
     .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
-    .auth-input { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 14px; outline: none; transition: 0.3s;}
-    .auth-input:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
+    .auth-input { width: 100%; padding: 15px; margin-bottom: 20px; font-family: 'Poppins', sans-serif; font-size: 14px;}
     .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); width: 100%; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1);}
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
     
-    /* MOBILE REVOLUTION: Custom Animated Video Cards */
+    /* MOBILE REVOLUTION CSS */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
@@ -137,25 +160,15 @@
       .login-trigger-btn span { display: none; } 
       .desktop-brand { display: none; }
       .mobile-brand { display: inline; font-size: 22px;}
-      
-      /* Hide standard content on mobile */
       .desktop-card-content { display: none; }
-
-      /* Mobile Card Formatting */
       .service-card { padding: 0; min-height: 250px; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.15);}
-      
-      /* Mobile Title always visible at top */
       .mobile-title { display: block; position: absolute; top: 20px; left: 0; width: 100%; text-align: center; color: white; z-index: 10; font-size: 20px; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px;}
-      
-      /* Video Layer */
       .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; animation: fadeVideo 10s infinite; border-radius: 20px;}
-      
-      /* Dark Overlay Text Layer */
       .mobile-overlay-text { display: flex; position: absolute; inset: 0; z-index: 5; align-items: center; justify-content: center; text-align: center; padding: 30px; font-size: 15px; font-weight: 500; color: white; background: rgba(3, 8, 20, 0.85); animation: fadeText 10s infinite; border-radius: 20px; line-height: 1.6;}
-
-      /* Keyframes for the elegant crossfade loop */
       @keyframes fadeVideo { 0%, 45% { opacity: 0.7; } 50%, 95% { opacity: 0; } 100% { opacity: 0.7; } }
       @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
+      .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
+      .chat-window { max-width: 100%; height: 90vh; }
     }
   </style>
 </head>
@@ -267,8 +280,32 @@
     </div>
   </section>
 
-  <div class="chatbot-fab" onclick="alert('Medical Intelligence Assistant connecting...')">
+  <div class="chatbot-fab" onclick="openChatTriage()">
     <i class="fa-solid fa-microchip"></i>
+  </div>
+
+  <div class="chat-modal-overlay" id="chatModal">
+    <div class="chat-window">
+      <div class="chat-header">
+        <div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-microchip" style="color:var(--highlight);"></i> Triage Assistant</div>
+        <i class="fa-solid fa-xmark chat-close" onclick="closeChatTriage()"></i>
+      </div>
+      
+      <div class="chat-body" id="chatFlowContainer">
+        <div class="chat-bubble bot-intro">
+          <strong>Priya Seva Intelligence</strong><br><br>
+          Hello! I am your automated triage assistant. How can I direct your request today?
+        </div>
+        
+        <div class="chat-options-grid" id="mainChatOptions">
+          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Schedule a New Booking</button>
+          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit / Cancel Existing Booking</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Log an Absence</button>
+          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. File a Grievance</button>
+          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Support</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="cookie-banner" id="cookieBanner">
@@ -284,8 +321,8 @@
       <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,243,255,0.4);"><i class="fa-solid fa-fingerprint"></i></div>
       <h2 style="color:#fff; margin-top:0; font-weight: 700;">Client Authentication</h2>
       <p style="color:#94a3b8; font-size: 13px; margin-bottom: 30px;">Enter your details to access your encrypted medical & home management portal.</p>
-      <input type="email" id="authEmail" class="auth-input" placeholder="Registered Email Address">
-      <input type="password" id="authPassword" class="auth-input" placeholder="Vault Password">
+      <input type="email" id="authEmail" class="auth-input glass-render" placeholder="Registered Email Address">
+      <input type="password" id="authPassword" class="auth-input glass-render" placeholder="Vault Password">
       <button class="primary-auth-btn" onclick="handleEmailLogin();">Authenticate Session</button>
     </div>
   </div>
@@ -309,7 +346,7 @@
 
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
@@ -331,10 +368,15 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
 
     function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
     function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
-    window.onclick = function(event) { if (event.target == document.getElementById('loginModal')) closeLoginModal(); }
+    
+    window.onclick = function(event) { 
+      if (event.target == document.getElementById('loginModal')) closeLoginModal(); 
+      if (event.target == document.getElementById('chatModal')) closeChatTriage();
+    }
 
     window.addEventListener('load', async function() {
       if (supabaseClient) {
@@ -361,6 +403,222 @@
         alert("Secure Vault Created. Please tap login again to enter.");
         btn.innerHTML = 'Authenticate Session';
       } else { alert("Error: " + error.message); btn.innerHTML = 'Authenticate Session'; }
+    }
+
+    // --- DIRECT CHATBOT LOGIC ENGINE ---
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let chatContextUser = null;
+    let chatContextBookings = [];
+
+    function scrollToBottom() {
+      const c = document.getElementById('chatFlowContainer');
+      setTimeout(() => c.scrollTop = c.scrollHeight, 50);
+    }
+
+    function openChatTriage() { document.getElementById('chatModal').style.display = 'flex'; }
+    function closeChatTriage() { 
+      document.getElementById('chatModal').style.display = 'none'; 
+      resetChatTriage(); 
+    }
+
+    function appendBackOptions() {
+      const flowContainer = document.getElementById('chatFlowContainer');
+      flowContainer.innerHTML += `
+        <div class="chat-options-grid" style="margin-top:15px; animation: slideUp 0.3s ease;">
+          <button class="chat-btn" onclick="resetChatTriage()" style="border-color:rgba(255,255,255,0.2); color:white;"><i class="fa-solid fa-arrow-left"></i> Main Menu</button>
+        </div>`;
+      scrollToBottom();
+    }
+
+    async function chatSelect(action) {
+      const flowContainer = document.getElementById('chatFlowContainer');
+      const mainOptions = document.getElementById('mainChatOptions');
+      if(mainOptions) mainOptions.style.display = 'none'; 
+      
+      if (action === 'booking') {
+        flowContainer.innerHTML += `
+          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to schedule a new service.</div>
+          <div class="chat-bubble bot-intro" style="animation: slideUp 0.3s ease;">Please select the deployment target you require:</div>
+          <div class="chat-options-grid" style="animation: slideUp 0.4s ease;">
+            <button class="chat-btn" onclick="window.location.href='maid.html'"><i class="fa-solid fa-broom"></i> Maid Plan</button>
+            <button class="chat-btn" onclick="window.location.href='nurse.html'"><i class="fa-solid fa-user-nurse"></i> Certified Nurse</button>
+            <button class="chat-btn" onclick="window.location.href='health.html'"><i class="fa-solid fa-house-medical"></i> Health Visit</button>
+            <button class="chat-btn" onclick="window.location.href='babysitter.html'"><i class="fa-solid fa-baby-carriage"></i> Babysitter</button>
+          </div>
+        `;
+        appendBackOptions();
+      } 
+      else if (action === 'edit') {
+        flowContainer.innerHTML += `<div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need to modify a booking.</div>`;
+        flowContainer.innerHTML += `<div class="chat-bubble bot-intro" id="chat-loading" style="animation: slideUp 0.3s ease;"><i class="fa-solid fa-spinner fa-spin"></i> Checking secure vault for active records...</div>`;
+        scrollToBottom();
+
+        // Check Auth
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) {
+          document.getElementById('chat-loading').remove();
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">Authentication Required. Please log in via the 'Secure Portal' button at the top of the screen first.</div>`;
+          appendBackOptions();
+          return;
+        }
+        chatContextUser = user;
+
+        // Fetch Live Bookings
+        try {
+          const response = await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(user.email));
+          const result = await response.json();
+          document.getElementById('chat-loading').remove();
+
+          if (result.status === "success" && result.data && result.data.length > 0) {
+            // Filter out canceled ones
+            chatContextBookings = result.data.filter(b => !b.status.toLowerCase().includes('canceled'));
+            
+            if (chatContextBookings.length === 0) {
+               flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You have no active bookings to modify.</div>`;
+               appendBackOptions();
+               return;
+            }
+
+            let optionsHtml = `<div class="chat-options-grid" style="animation: slideUp 0.4s ease;">`;
+            chatContextBookings.forEach((b, index) => {
+               optionsHtml += `<button class="chat-btn" onclick="chatSelectBookingToEdit(${index})"><i class="fa-solid fa-calendar-check"></i> ${b.service_type} (${b.booking_date})</button>`;
+            });
+            optionsHtml += `</div>`;
+
+            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">I found the following active bookings. Which one would you like to manage?</div>` + optionsHtml;
+            appendBackOptions();
+          } else {
+            flowContainer.innerHTML += `<div class="chat-bubble bot-intro">You do not have any active bookings in your vault.</div>`;
+            appendBackOptions();
+          }
+        } catch (err) {
+           document.getElementById('chat-loading').innerHTML = `Network Error. Could not connect to dispatch servers.`;
+           appendBackOptions();
+        }
+      }
+      else if (action === 'contact') {
+        flowContainer.innerHTML += `
+          <div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">I need human assistance.</div>
+          <div class="chat-bubble bot-intro" style="animation: slideUp 0.3s ease;">
+            I am transferring you to our human operations desk. Our standard response time is under 15 minutes.
+          </div>
+          <div class="chat-options-grid" style="animation: slideUp 0.4s ease;">
+            <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Support</button>
+            <button class="chat-btn" onclick="window.location.href='mailto:itzpriyanka777@gmail.com'"><i class="fa-solid fa-envelope"></i> Email Management</button>
+          </div>
+        `;
+        appendBackOptions();
+      }
+    }
+
+    function chatSelectBookingToEdit(index) {
+       const b = chatContextBookings[index];
+       const flowContainer = document.getElementById('chatFlowContainer');
+
+       flowContainer.innerHTML += `<div class="chat-bubble" style="align-self: flex-end; background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); color: var(--highlight);">Manage: ${b.service_type}</div>`;
+
+       // 48 hour logic
+       let isLocked = false;
+       try {
+         let parts = b.booking_date.split(" ");
+         if(parts.length > 1) {
+            let monthStr = parts[0];
+            let firstDateStr = parts.slice(1).join("").split(",")[0].trim();
+            let year = new Date().getFullYear();
+            let monthIndex = monthNames.findIndex(m => m.startsWith(monthStr));
+            if(monthIndex > -1) {
+               let parsedDate = new Date(year, monthIndex, parseInt(firstDateStr));
+               let timeDiff = parsedDate.getTime() - new Date().getTime();
+               let hoursDiff = timeDiff / (1000 * 3600);
+               isLocked = (hoursDiff < 48 && hoursDiff > 0);
+            }
+         }
+       } catch(e) {}
+
+       if (isLocked) {
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro" style="border-color:#e74c3c; color:#ff7675;"><strong>Security Lock Active:</strong><br>Modifications within 48 hours of service start time cannot be automated due to dispatch routing.</div>`;
+          flowContainer.innerHTML += `
+            <div class="chat-options-grid">
+              <button class="chat-btn" onclick="window.open('https://wa.me/917439392803', '_blank')"><i class="fa-brands fa-whatsapp"></i> Contact Emergency Dispatch</button>
+            </div>`;
+          appendBackOptions();
+       } else {
+          flowContainer.innerHTML += `<div class="chat-bubble bot-intro">What would you like to do with this booking?</div>`;
+          flowContainer.innerHTML += `
+            <div class="chat-options-grid" id="chat-actions-${index}">
+              <button class="chat-btn" onclick="chatInitiateEdit(${index})" style="border-color:#3498db; color:#3498db;"><i class="fa-solid fa-pen"></i> Edit Details</button>
+              <button class="chat-btn" onclick="chatInitiateCancel(${index})" style="border-color:#e74c3c; color:#e74c3c;"><i class="fa-solid fa-xmark"></i> Cancel Booking</button>
+            </div>`;
+          appendBackOptions();
+       }
+    }
+
+    function chatInitiateCancel(index) {
+       const flowContainer = document.getElementById('chatFlowContainer');
+       document.getElementById(`chat-actions-${index}`).style.display = 'none';
+       flowContainer.innerHTML += `
+          <div class="chat-bubble bot-intro" style="border-color:#e74c3c;">Are you absolutely sure you want to permanently cancel this service?</div>
+          <div class="chat-options-grid" id="chat-confirm-cancel-${index}">
+             <button class="chat-btn" onclick="chatExecuteCancel(${index})" style="background:rgba(231, 76, 60, 0.2); border-color:#e74c3c; color:#fff; justify-content:center;">Yes, Cancel It</button>
+          </div>`;
+       scrollToBottom();
+    }
+
+    async function chatExecuteCancel(index) {
+       const b = chatContextBookings[index];
+       document.getElementById(`chat-confirm-cancel-${index}`).innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+       try {
+         await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ actionType: 'cancel_booking', email: chatContextUser.email, serviceType: b.service_type, date: b.booking_date })
+         });
+         document.getElementById(`chat-confirm-cancel-${index}`).innerHTML = `<span style="color:#2ecc71;">Successfully canceled.</span>`;
+       } catch(e) { alert("Network error."); }
+    }
+
+    function chatInitiateEdit(index) {
+       const flowContainer = document.getElementById('chatFlowContainer');
+       document.getElementById(`chat-actions-${index}`).style.display = 'none';
+       flowContainer.innerHTML += `
+          <div class="chat-bubble bot-intro">Please type your new instructions, time requirements, or date adjustments below:</div>
+          <div class="chat-options-grid" id="chat-edit-form-${index}">
+             <textarea id="chat-edit-text-${index}" class="auth-input glass-render" style="resize:vertical; min-height:80px; padding:10px; margin-bottom:5px;" placeholder="Type your updates..."></textarea>
+             <button class="chat-btn" onclick="chatExecuteEdit(${index})" style="background:rgba(52, 152, 219, 0.2); border-color:#3498db; color:#fff; justify-content:center;">Submit Modification</button>
+          </div>`;
+       scrollToBottom();
+    }
+
+    async function chatExecuteEdit(index) {
+       const newDetails = document.getElementById(`chat-edit-text-${index}`).value;
+       if(!newDetails) return;
+       const b = chatContextBookings[index];
+       document.getElementById(`chat-edit-form-${index}`).innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+       try {
+         await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ actionType: 'edit_booking', email: chatContextUser.email, originalServiceType: b.service_type, originalDate: b.booking_date, newDetails: newDetails })
+         });
+         document.getElementById(`chat-edit-form-${index}`).innerHTML = `<span style="color:#2ecc71;">Update submitted to dispatch. Status reverted to Pending.</span>`;
+       } catch(e) { alert("Network error."); }
+    }
+
+    function resetChatTriage() {
+      const flowContainer = document.getElementById('chatFlowContainer');
+      flowContainer.innerHTML = `
+        <div class="chat-bubble bot-intro">
+          <strong>Priya Seva Intelligence</strong><br><br>
+          Hello! I am your automated triage assistant. How can I direct your request today?
+        </div>
+        <div class="chat-options-grid" id="mainChatOptions">
+          <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Schedule a New Booking</button>
+          <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit / Cancel Existing Booking</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Log an Absence</button>
+          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. File a Grievance</button>
+          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Support</button>
+        </div>
+      `;
     }
   </script>
 </body>
