@@ -301,7 +301,7 @@
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
         const serviceName = "Babysitting - " + childCount;
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaeyO5M-9RWXHUKndbvGUQvv1EnpcRlqHaFWrP5YyJB5wJxC3HLsPggIcq1HdF0qA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLjRi5sXh__lJCPEpDJBznPkUKemqRYbxlUNkP8qSO0uQYl1EEHx0pXTQe_4r22Po/exec";
         const payload = { name: name, email: user.email, phone: "Not Provided", serviceType: serviceName, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Frequency: " + selectedFrequency };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
