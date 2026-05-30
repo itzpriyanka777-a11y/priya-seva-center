@@ -3,101 +3,162 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Report an Issue | Priya Seva Center</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>File a Grievance | Priya Seva</title>
+  <meta name="theme-color" content="#030814">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: #f8faff; color: #333; }
+    :root { --void-bg: #030814; --glass-base: rgba(10, 15, 25, 0.4); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #f39c12; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     
-    header { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: white; text-align: center; padding: 40px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
-    header h1 { font-size: 32px; font-weight: 700; margin-bottom: 10px; }
-    header p { font-size: 16px; color: #fdebd0; max-width: 600px; margin: 0 auto; }
+    .navbar { position: absolute; top: 0; left: 0; width: 100%; padding: 30px 50px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; z-index: 9999; }
+    .logo-text { font-size: 26px; font-weight: 700; color: white; display: flex; align-items: center; gap: 12px; text-decoration: none; text-shadow: 0 0 15px rgba(243, 156, 18, 0.6); }
+    .nav-link { color: white; text-decoration: none; font-weight: 600; font-size: 14px; background: rgba(10, 15, 25, 0.6); backdrop-filter: blur(20px); padding: 12px 24px; border-radius: 30px; border: 1px solid var(--glass-border); transition: 0.4s;}
+    .nav-link:hover { transform: translateY(-3px); background: rgba(243, 156, 18, 0.15); border-color: var(--highlight);}
 
-    .back-btn { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.5); padding: 5px 15px; border-radius: 5px; transition: all 0.3s ease; }
-    .back-btn:hover { background: white; color: #c0392b; }
-
-    .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-
-    .booking-section { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-top: 5px solid #c0392b; }
+    .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden;}
+    .left-pane::-webkit-scrollbar { width: 0px; }
+    .form-container { position: relative; width: 100%; max-width: 500px;}
     
-    .form-group { margin-bottom: 25px; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #2c3e50; font-size: 15px; }
-    .form-group input[type="text"], .form-group input[type="email"], .form-group select, .form-group textarea { width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 15px; box-sizing: border-box; background-color: #f8faff; transition: border-color 0.3s ease; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #c0392b; background-color: white; }
+    .spatial-header { text-align: center; margin-bottom: 40px; }
+    .spatial-header h2 { margin: 0 0 10px 0; font-size: 38px; font-weight: 700; color: #fff; letter-spacing: 1px;}
+    .spatial-header p { margin: 0 auto; font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6;}
+
+    .capsule-group { width: 100%; margin-bottom: 25px; position: relative;}
     
-    /* File Upload Styling */
-    .file-upload-wrapper { border: 2px dashed #bdc3c7; padding: 20px; text-align: center; border-radius: 8px; background-color: #f8faff; cursor: pointer; transition: all 0.3s ease; }
-    .file-upload-wrapper:hover { border-color: #c0392b; background-color: #fdf2e9; }
-    .file-upload-wrapper input[type="file"] { width: 100%; cursor: pointer; }
+    .light-tracker { position: relative; width: 100%; }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
+    .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(243, 156, 18, 0.08), transparent 100%); pointer-events: none; z-index: 0; }
 
-    .submit-btn { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%); color: white; font-size: 18px; font-weight: 700; padding: 16px; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3); transition: transform 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px; }
-    .submit-btn:hover { transform: translateY(-2px); }
+    .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px;}
+    .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; color: #ffffff; font-family: 'Poppins'; font-size: 14px; font-weight: 500; box-sizing: border-box; transition: 0.4s; outline: none; position: relative; z-index: 1; }
+    .glass-render:focus { transform: scale(1.02); background: rgba(243, 156, 18, 0.1); border-color: var(--highlight); }
+    
+    textarea.glass-render { resize: vertical; min-height: 120px; border-radius: 20px;}
 
-    .disclaimer { font-size: 13px; color: #7f8c8d; text-align: center; margin-top: 15px; }
+    .submit-btn { width: 100%; padding: 22px; background: rgba(243, 156, 18, 0.1); border: 1px solid var(--highlight); border-radius: 50px; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1;}
+    .submit-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3); }
 
-    @media (max-width: 768px) { .back-btn { position: relative; display: inline-block; top: 0; left: 0; margin-bottom: 20px; } }
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); }
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); object-fit: cover; z-index: 1; opacity: 0.3; filter: grayscale(100%);}
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .navbar { position: relative !important; padding: 25px 20px !important; }
+      .split-layout { flex-direction: column; height: auto; display: block;}
+      .left-pane { padding: 10px 20px 40px 20px; display: block;}
+      .right-pane { display: none !important; } 
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    
-    <a href="index.html" style="text-decoration: none; color: white;">
-      <h1><i class="fa-solid fa-triangle-exclamation"></i> Report an Issue</h1>
-    </a>
-    
-    <p>We take your concerns seriously. Please detail your grievance below, and our management team will investigate immediately.</p>
-  </header>
+  <nav class="navbar">
+    <a href="index.html" class="logo-text"><i class="fa-solid fa-triangle-exclamation" style="color: #f39c12;"></i> Priya Seva</a>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+  </nav>
 
-  <div class="container">
-    <div class="booking-section">
-      <form action="https://formspree.io/f/xredelkr" method="POST" enctype="multipart/form-data">
+  <canvas id="nightCanvas"></canvas>
+
+  <div class="split-layout">
+    <div class="left-pane">
+      <div class="form-container">
         
-        <div class="form-group">
-          <label for="clientName">1. Your Full Name</label>
-          <input type="text" id="clientName" name="Client Name" placeholder="E.g., Rahul Banerjee" required>
+        <div class="spatial-header">
+          <h2>Resolution Center</h2>
+          <p>We hold our personnel to the highest standards. Log your incident here for immediate review by management.</p>
         </div>
 
-        <div class="form-group">
-          <label for="clientEmail">2. Your Email Address (For Updates)</label>
-          <input type="email" id="clientEmail" name="Client Email" placeholder="E.g., rahul@example.com" required>
-        </div>
-
-        <div class="form-group">
-          <label for="serviceType">3. Which Service is this regarding?</label>
-          <select id="serviceType" name="Service Type" required>
-            <option value="" disabled selected>Select the service...</option>
-            <option value="Maid Services">Maid Services</option>
-            <option value="Certified Nurses">Certified Nurses</option>
-            <option value="Health Visits">Health Visits</option>
-            <option value="Babysitters">Babysitters</option>
-            <option value="General Management / Billing">General Management / Billing</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="grievanceDetails">4. Please describe the issue in detail</label>
-          <textarea id="grievanceDetails" name="Grievance Details" rows="5" placeholder="E.g., The assigned maid did not arrive at 8 AM, or the nurse was unprofessional..." required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="evidenceFile">5. Attach Photo or Evidence (Optional)</label>
-          <div class="file-upload-wrapper">
-            <input type="file" id="evidenceFile" name="Evidence Upload" accept="image/*,.pdf,.doc">
-            <p style="margin: 5px 0 0 0; font-size: 13px; color: #7f8c8d;">Accepted formats: JPG, PNG, PDF</p>
+        <div class="capsule-group input-group">
+          <label>Registered Name</label>
+          <div class="light-tracker" style="border-radius: 25px;">
+            <input type="text" id="clientName" class="glass-render" placeholder="Your registered name" required>
           </div>
         </div>
 
-        <input type="hidden" name="_next" value="https://priyasevacenter.netlify.app">
+        <div class="capsule-group input-group">
+          <label>Date of Incident</label>
+          <div class="light-tracker" style="border-radius: 25px;">
+            <input type="date" id="incidentDate" class="glass-render">
+          </div>
+        </div>
 
-        <button type="submit" class="submit-btn">
-          <i class="fa-solid fa-paper-plane"></i> Submit Grievance Securely
-        </button>
-        <p class="disclaimer"><i class="fa-solid fa-lock"></i> This report is sent directly to management.</p>
-      </form>
+        <div class="capsule-group input-group">
+          <label>Details of Incident</label>
+          <div class="light-tracker" style="border-radius: 20px;">
+            <textarea id="complaintText" class="glass-render" placeholder="Please describe the issue in detail..."></textarea>
+          </div>
+        </div>
+
+        <div class="capsule-group" style="margin-top: 35px;">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <button onclick="submitGrievance()" class="submit-btn" id="submitBtn">Submit Report to Management</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="right-pane">
+      <img src="https://images.pexels.com/photos/5668772/pexels-photo-5668772.jpeg" class="video-bg" alt="Support">
     </div>
   </div>
 
+  <script>
+    const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeCanvas); resizeCanvas();
+    for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: (Math.random()*0.1)+0.02, color: '243,156,18' }); }
+    function drawSky() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.5)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(drawSky); }
+    drawSky();
+
+    document.addEventListener('mousemove', (e) => {
+      document.querySelectorAll('.light-tracker').forEach(el => {
+        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // PASTE YOUR SCRIPT URL HERE
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+
+    async function submitGrievance() {
+      const btn = document.getElementById('submitBtn');
+      const name = document.getElementById('clientName').value;
+      const date = document.getElementById('incidentDate').value;
+      const text = document.getElementById('complaintText').value;
+
+      if(!name || !date || !text) return alert("Please complete all fields to file a report.");
+
+      try {
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...'; btn.disabled = true;
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (!user) { btn.innerHTML = 'Submit Report to Management'; btn.disabled = false; return alert("Session expired. Please log in."); }
+
+        const payload = {
+          name: name,
+          email: user.email,
+          serviceType: "Grievance Report",
+          date: date,
+          details: "Complaint: " + text
+        };
+
+        await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+        const adminWaNumber = "917439392803";
+        const waMessage = `*🚨 NEW GRIEVANCE REPORT*\\n\\n*Client:* ${name}\\n*Incident Date:* ${date}\\n*Details:* ${text}`;
+        window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
+        window.location.href = "dashboard.html";
+
+      } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Submit Report to Management'; btn.disabled = false; }
+    }
+  </script>
 </body>
 </html>
