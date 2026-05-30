@@ -229,6 +229,29 @@
             </div>
           </div>
         </div>
+        
+        <div class="floating-wrapper">
+          <div class="light-tracker">
+            <div class="glass-panel" style="padding: 25px;">
+              <a href="absent.html" class="action-card">
+                <div class="icon-box" style="color: #e74c3c;"><i class="fa-solid fa-user-xmark"></i></div>
+                <div class="action-text"><h4>Log an Absence</h4><p>Pause service on specific dates.</p></div>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="floating-wrapper delay-1">
+          <div class="light-tracker">
+            <div class="glass-panel" style="padding: 25px;">
+              <a href="grievance.html" class="action-card">
+                <div class="icon-box" style="color: #f39c12;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="action-text"><h4>File a Grievance</h4><p>Report issues directly to management.</p></div>
+              </a>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -284,7 +307,6 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // PASTE YOUR NEW APP SCRIPT URL HERE
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz6tqGne1qii5oaqPqQsLSpEhW6wnqZumfhpu3YmINiFOHJ6RSPxRf07Ym9ZQ_TzE/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
