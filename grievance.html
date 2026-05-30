@@ -38,7 +38,13 @@
     .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: 25px; color: #ffffff; font-family: 'Poppins'; font-size: 14px; font-weight: 500; box-sizing: border-box; transition: 0.4s; outline: none; position: relative; z-index: 1; }
     .glass-render:focus { transform: scale(1.02); background: rgba(243, 156, 18, 0.1); border-color: var(--highlight); }
     
+    /* Checkbox Styling */
+    .checkbox-group { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; background: var(--glass-base); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);}
+    .checkbox-label { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #fff; cursor: pointer; font-weight: 500;}
+    .checkbox-label input { width: 18px; height: 18px; accent-color: var(--highlight); cursor: pointer; }
+
     textarea.glass-render { resize: vertical; min-height: 120px; border-radius: 20px;}
+    .char-counter { font-size: 11px; color: rgba(255,255,255,0.5); text-align: right; margin-top: 5px; display: block; }
 
     .submit-btn { width: 100%; padding: 22px; background: rgba(243, 156, 18, 0.1); border: 1px solid var(--highlight); border-radius: 50px; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px; position: relative; z-index: 1;}
     .submit-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 10px 30px rgba(243, 156, 18, 0.3); }
@@ -88,9 +94,22 @@
         </div>
 
         <div class="capsule-group input-group">
+          <label>Services Involved (Select all that apply)</label>
+          <div class="light-tracker" style="border-radius: 20px;">
+            <div class="checkbox-group">
+              <label class="checkbox-label"><input type="checkbox" value="Maid Services" class="service-check"> Maid Services</label>
+              <label class="checkbox-label"><input type="checkbox" value="Certified Nurses" class="service-check"> Certified Nurses</label>
+              <label class="checkbox-label"><input type="checkbox" value="Health Visits" class="service-check"> Health Visits</label>
+              <label class="checkbox-label"><input type="checkbox" value="Babysitters" class="service-check"> Babysitters</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="capsule-group input-group">
           <label>Details of Incident</label>
           <div class="light-tracker" style="border-radius: 20px;">
-            <textarea id="complaintText" class="glass-render" placeholder="Please describe the issue in detail..."></textarea>
+            <textarea id="complaintText" class="glass-render" maxlength="500" placeholder="Please describe the issue in detail (max 500 characters)..." oninput="updateCounter()"></textarea>
+            <span class="char-counter" id="charCount">0 / 500</span>
           </div>
         </div>
 
@@ -122,12 +141,17 @@
       });
     });
 
+    function updateCounter() {
+      const field = document.getElementById('complaintText');
+      document.getElementById('charCount').innerText = `${field.value.length} / 500`;
+    }
+
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // PASTE YOUR SCRIPT URL HERE
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOm_iUes4Ph91MzXROYCm5w0aGTIqslhc_Qr6ahNKcjIADwSWHvZUsqdCsIomSgTM/exec"; 
 
     async function submitGrievance() {
       const btn = document.getElementById('submitBtn');
@@ -135,7 +159,12 @@
       const date = document.getElementById('incidentDate').value;
       const text = document.getElementById('complaintText').value;
 
-      if(!name || !date || !text) return alert("Please complete all fields to file a report.");
+      // Get all checked services
+      const checkboxes = document.querySelectorAll('.service-check:checked');
+      let selectedServices = [];
+      checkboxes.forEach((cb) => selectedServices.push(cb.value));
+
+      if(!name || !date || !text || selectedServices.length === 0) return alert("Please complete all fields and select at least one service to file a report.");
 
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...'; btn.disabled = true;
@@ -143,18 +172,17 @@
         if (!user) { btn.innerHTML = 'Submit Report to Management'; btn.disabled = false; return alert("Session expired. Please log in."); }
 
         const payload = {
+          actionType: 'file_grievance',
           name: name,
           email: user.email,
-          serviceType: "Grievance Report",
+          services: selectedServices.join(", "),
           date: date,
-          details: "Complaint: " + text
+          details: text
         };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
-        const adminWaNumber = "917439392803";
-        const waMessage = `*🚨 NEW GRIEVANCE REPORT*\\n\\n*Client:* ${name}\\n*Incident Date:* ${date}\\n*Details:* ${text}`;
-        window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
+        alert("Grievance submitted successfully. Please check your email for confirmation.");
         window.location.href = "dashboard.html";
 
       } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Submit Report to Management'; btn.disabled = false; }
