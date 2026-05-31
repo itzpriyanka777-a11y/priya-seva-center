@@ -155,6 +155,7 @@
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
 
+  <!-- Content starts hidden to avoid the visual flicker -->
   <div id="page-content">
     <header class="universal-header">
       <a href="index.html" class="universal-brand">
@@ -180,6 +181,7 @@
               <div class="notification-box">
                 <div class="notif-header"><i class="fa-regular fa-bell"></i> 1-Hour Alerts</div>
                 <div class="notif-toggles">
+                  <!-- ALL HTML TOGGLES UNCHECKED BY DEFAULT TO PREVENT FLICKER -->
                   <div class="notif-row"><span>Maid</span> <label class="switch"><input type="checkbox" id="pref-maid" onchange="updatePreference('maid', this.checked)"><span class="slider"></span></label></div>
                   <div class="notif-row"><span>Nurse</span> <label class="switch"><input type="checkbox" id="pref-nurse" onchange="updatePreference('nurse', this.checked)"><span class="slider"></span></label></div>
                   <div class="notif-row"><span>Health</span> <label class="switch"><input type="checkbox" id="pref-health" onchange="updatePreference('health', this.checked)"><span class="slider"></span></label></div>
@@ -337,7 +339,7 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxz6tqGne1qii5oaqPqQsLSpEhW6wnqZumfhpu3YmINiFOHJ6RSPxRf07Ym9ZQ_TzE/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec"; 
 
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let currentDisplayedDate = new Date();
@@ -428,7 +430,6 @@
       
       let timeSinceLastToggle = Date.now() - lastToggleTime;
 
-      // Notice we do NOT update toggles from cache here anymore, because checkAuth() already handled the initial load!
       if (cachedData && !forceRefresh && !silent) {
         const parsed = JSON.parse(cachedData);
         parseAndMapBookings(parsed.data || parsed); 
@@ -445,7 +446,6 @@
           
           if(timeSinceLastToggle > 5000) { 
              localStorage.setItem(cacheKey, JSON.stringify(result));
-             // ONLY update toggles from server if the user hasn't clicked one in the last 5 seconds
              if (result.preferences && !silent) {
                 document.getElementById('pref-maid').checked = (result.preferences.maid === "true");
                 document.getElementById('pref-nurse').checked = (result.preferences.nurse === "true");
@@ -469,26 +469,38 @@
       }
     }
 
+    // THE ADVANCED REGEX PARSER FOR CALENDAR DATES
     function parseAndMapBookings(bookingsArray) {
       allBookingsMap = {};
       bookingsArray.forEach(item => {
-        let parts = item.booking_date.split(" ");
-        if(parts.length > 1) {
-           let monthStr = parts[0];
-           let dates = parts.slice(1).join("").split(",");
-           dates.forEach(dNum => {
-              let cleanNum = dNum.trim();
-              if(cleanNum) {
-                 let year = new Date().getFullYear();
-                 let monthIndex = monthNames.findIndex(m => m.startsWith(monthStr));
-                 if(monthIndex > -1) {
-                    let formattedDateStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(cleanNum).padStart(2, '0')}`;
-                    if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
-                    allBookingsMap[formattedDateStr].push({ service_type: item.service_type, status: item.status, raw_date_string: item.booking_date, details: item.details });
-                 }
-              }
-           });
-        }
+        try {
+          let rawDate = String(item.booking_date);
+          let monthMatch = rawDate.match(/[a-zA-Z]+/);
+          let numbers = rawDate.match(/\d+/g);
+          
+          if (monthMatch && numbers) {
+             let monthStr = monthMatch[0];
+             let year = new Date().getFullYear();
+             let monthIndex = monthNames.findIndex(m => m.toLowerCase().startsWith(monthStr.toLowerCase()));
+             
+             if (monthIndex > -1) {
+                numbers.forEach(numStr => {
+                   let cleanNum = parseInt(numStr);
+                   if (cleanNum > 0 && cleanNum <= 31) {
+                      let formattedDateStr = `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(cleanNum).padStart(2, '0')}`;
+                      if (!allBookingsMap[formattedDateStr]) allBookingsMap[formattedDateStr] = [];
+                      
+                      allBookingsMap[formattedDateStr].push({ 
+                        service_type: item.service_type, 
+                        status: item.status, 
+                        raw_date_string: rawDate, 
+                        details: item.details
+                      });
+                   }
+                });
+             }
+          }
+        } catch(e) {}
       });
       renderCalendar();
     }
@@ -514,7 +526,16 @@
         const cellDate = new Date(year, month, i);
         const isPast = cellDate < today; 
         
-        const dayBookings = (allBookingsMap[dateString] || []).filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
+        const dayBookings = (allBookingsMap[dateString] || []).filter(b => {
+            let activeCat = currentActiveService.toLowerCase();
+            let rowSvc = b.service_type.toLowerCase();
+            if(activeCat.includes('maid') && rowSvc.includes('maid')) return true;
+            if(activeCat.includes('nurse') && rowSvc.includes('nurse')) return true;
+            if(activeCat.includes('health') && rowSvc.includes('health')) return true;
+            if(activeCat.includes('baby') && rowSvc.includes('baby')) return true;
+            return false;
+        });
+
         let dayClass = isPast ? 'past-date' : ''; 
         let labelHtml = ''; let clickable = '';
 
@@ -596,7 +617,15 @@
     function showDayDetails(dateString, autoOpenEdit = false) {
       let dayBookings = allBookingsMap[dateString] || [];
       if(!autoOpenEdit) {
-         dayBookings = dayBookings.filter(b => b.service_type.includes(currentActiveService.split(" ")[0]));
+         dayBookings = dayBookings.filter(b => {
+            let activeCat = currentActiveService.toLowerCase();
+            let rowSvc = b.service_type.toLowerCase();
+            if(activeCat.includes('maid') && rowSvc.includes('maid')) return true;
+            if(activeCat.includes('nurse') && rowSvc.includes('nurse')) return true;
+            if(activeCat.includes('health') && rowSvc.includes('health')) return true;
+            if(activeCat.includes('baby') && rowSvc.includes('baby')) return true;
+            return false;
+         });
       }
       
       const modal = document.getElementById('dayDetailsModal'); const content = document.getElementById('dayDetailsContent');
