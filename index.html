@@ -175,6 +175,7 @@
     
     .hidden { display: none !important; }
 
+    /* FOOTER */
     .site-footer { background: rgba(3, 8, 20, 0.9); border-top: 1px solid var(--glass-border); padding: 60px 40px 30px; margin-top: 80px; position: relative; z-index: 10; }
     .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
     .footer-col h4 { color: white; font-size: 18px; font-weight: 600; margin-bottom: 20px; }
@@ -436,6 +437,7 @@
         <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px;"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2 style="color:#fff; margin-top:0; font-weight: 700;">Check Your Email</h2>
         <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a verification code to your email. Enter it below to activate your account.</p>
+        <!-- Removed maxlength to support Supabase hashes -->
         <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Verification Code" style="text-align:center; font-size:20px; letter-spacing: 5px;">
         <button class="primary-auth-btn" id="otpBtn" onclick="handleOTPVerify();">Verify & Log In</button>
       </div>
@@ -461,7 +463,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // --- Cinematic Background Nodes ---
     const canvas = document.getElementById('heroCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -477,7 +478,6 @@
     }
     drawNodes();
 
-    // --- Interaction Physics ---
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
       if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper') || e.target.closest('.nav-arrow')) return;
@@ -494,7 +494,6 @@
       });
     });
 
-    // --- Reviews 3D Carousel Engine ---
     let revIndex = 0;
     const revCards = document.querySelectorAll('.review-card');
     function updateCarousel() {
@@ -511,7 +510,6 @@
     }
     updateCarousel(); 
 
-    // --- Cookies ---
     window.onload = function() {
       if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000); }
     };
@@ -520,11 +518,10 @@
       document.getElementById('cookieBanner').style.bottom = '-100px'; 
     }
 
-    // --- Authentication Engine ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec"; 
 
     function openAuthModal(view) { 
       document.getElementById('authOverlay').style.display = 'flex'; 
@@ -630,7 +627,6 @@
       }
     }
 
-    // --- FORGOT PASSWORD ENGINE ---
     async function sendRecoveryCode() {
       const email = document.getElementById('forgotEmail').value;
       if(!email) return alert("Please enter your email.");
@@ -660,7 +656,6 @@
       else { alert("Password updated successfully!"); window.location.href = "dashboard.html"; }
     }
 
-    // --- KELVIN DIRECT CHATBOT LOGIC ENGINE ---
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let chatContextUser = null;
     let chatContextBookings = [];
