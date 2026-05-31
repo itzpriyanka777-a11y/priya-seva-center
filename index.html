@@ -35,23 +35,18 @@
     
     a { text-decoration: none; }
     
-    /* Interactive Water Ripple */
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
-    /* Absolute Navbar */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
-    
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
     .logo-container:hover { transform: scale(1.05); }
     .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
-    
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
     .nav-actions { display: flex; align-items: center; gap: 20px; }
-
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
     .login-trigger-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-2px);}
 
@@ -66,14 +61,12 @@
     .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* The Hero Section */
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
     .hero-content { position: relative; z-index: 2; }
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
 
-    /* Service Cards */
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
     .float-wrap:nth-child(2) { animation-delay: 1.2s; }
@@ -81,27 +74,24 @@
     .float-wrap:nth-child(4) { animation-delay: 1.8s; }
     @keyframes gentlyBob { 0% { transform: translateY(0px); } 100% { transform: translateY(-15px); } }
 
-    .light-tracker { position: relative; width: 100%; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; height: 100%; border: 1px solid rgba(255,255,255,0.03);}
+    .light-tracker { position: relative; width: 100%; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; height: 100%; border: 1px solid rgba(255,255,255,0.03);}
     .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
 
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
-
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
-    
     .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600;}
     .service-card p { font-size: 14px; color: #94a3b8; margin-bottom: 30px; line-height: 1.6; flex-grow: 1;}
     .book-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 14px 20px; border-radius: 12px; font-weight: 600; transition: 0.3s; width: 100%; font-size: 14px; letter-spacing: 1px; text-transform: uppercase;}
     
-    .card-maid .card-icon { color: #3498db; } .card-maid:hover .book-btn { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db; box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);}
-    .card-nurse .card-icon { color: #2ecc71; } .card-nurse:hover .book-btn { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71; box-shadow: 0 0 20px rgba(46, 204, 113, 0.3);}
-    .card-health .card-icon { color: var(--highlight); } .card-health:hover .book-btn { background: rgba(0, 243, 255, 0.2); color: var(--highlight); border-color: var(--highlight); box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);}
-    .card-baby .card-icon { color: #f39c12; } .card-baby:hover .book-btn { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12; box-shadow: 0 0 20px rgba(243, 156, 18, 0.3);}
+    .card-maid .card-icon { color: #3498db; } .card-maid:hover .book-btn { background: rgba(52, 152, 219, 0.2); color: #3498db; border-color: #3498db;}
+    .card-nurse .card-icon { color: #2ecc71; } .card-nurse:hover .book-btn { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border-color: #2ecc71;}
+    .card-health .card-icon { color: var(--highlight); } .card-health:hover .book-btn { background: rgba(0, 243, 255, 0.2); color: var(--highlight); border-color: var(--highlight);}
+    .card-baby .card-icon { color: #f39c12; } .card-baby:hover .book-btn { background: rgba(243, 156, 18, 0.2); color: #f39c12; border-color: #f39c12;}
 
-    /* --- 3D REVIEWS CAROUSEL --- */
     .reviews-section { max-width: 1000px; margin: 80px auto; padding: 0 20px; text-align: center; overflow: hidden; }
     .carousel-container { display: flex; align-items: center; justify-content: center; gap: 15px; position: relative; height: 320px; margin-top: 40px;}
     .nav-arrow { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 10;}
@@ -119,7 +109,6 @@
     .reviewer-name { color: var(--highlight); font-size: 15px; font-weight: 600;}
     .reviewer-loc { font-size:12px; color:#64748b;}
 
-    /* Cookie Banner Options */
     .cookie-banner { position: fixed; bottom: -100px; left: 0; width: 100%; background: rgba(3, 8, 20, 0.95); backdrop-filter: blur(10px); border-top: 1px solid rgba(0,243,255,0.2); color: white; padding: 20px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 9999; transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 13px;}
     .cookie-btn { padding: 10px 20px; border-radius: 8px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s;}
     .btn-accept { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); } 
@@ -127,15 +116,11 @@
     .btn-decline { background: transparent; color: #94a3b8; border: 1px solid #94a3b8; }
     .btn-decline:hover { background: rgba(255,255,255,0.1); color: white;}
 
-    /* --- Kelvin AI Chatbot Styles --- */
+    /* Chatbot Styles */
     .chatbot-wrapper { position: fixed; bottom: 30px; right: 30px; z-index: 9998; width: 65px; height: 65px; }
-    
     .chatbot-fab { width: 100%; height: 100%; border-radius: 50%; background: rgba(0, 243, 255, 0.1); border: 1px solid var(--highlight); color: var(--highlight); font-size: 22px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 25px rgba(0, 243, 255, 0.2); cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px); position: relative; z-index: 10;}
     .chatbot-fab:hover { background: var(--highlight); color: #000; transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 243, 255, 0.5);}
-    
     .kelvin-bot { position: absolute; bottom: 35px; right: -5px; width: 75px; z-index: 5; filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8)); animation: floatBot 3.5s ease-in-out infinite; pointer-events: none;}
-    
-    /* Timed Pulse Animation for Kelvin's Thought Bubble */
     .kelvin-bubble { position: absolute; bottom: 120px; right: -10px; width: 220px; background: white; color: black; padding: 12px 15px; border-radius: 15px; border-bottom-right-radius: 0; font-size: 13px; font-weight: 600; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 6; opacity: 0; animation: botBubblePulse 12s ease-in-out infinite; transform-origin: bottom right; pointer-events: none;}
     .kelvin-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: white transparent transparent transparent; }
     
@@ -153,21 +138,15 @@
     .chat-header { background: rgba(0, 243, 255, 0.1); padding: 20px 25px; border-bottom: 1px solid rgba(0, 243, 255, 0.2); display: flex; justify-content: space-between; align-items: center; color: white; font-weight: 600;}
     .chat-close { cursor: pointer; color: rgba(255,255,255,0.6); transition: 0.3s; font-size: 20px;}
     .chat-close:hover { color: #ff7675; transform: rotate(90deg);}
-    
     .chat-body { padding: 25px; display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto;}
     .chat-body::-webkit-scrollbar { width: 6px; }
     .chat-body::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 10px; }
-    
     .chat-bubble { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; border-bottom-left-radius: 4px; color: #e2e8f0; font-size: 14px; line-height: 1.5; align-self: flex-start; max-width: 90%;}
     .chat-bubble.bot-intro { border-color: rgba(0, 243, 255, 0.3); background: rgba(0, 243, 255, 0.05);}
-    
     .chat-options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 5px; width: 100%;}
     .chat-btn { background: transparent; border: 1px solid rgba(0, 243, 255, 0.3); color: var(--highlight); padding: 12px 18px; border-radius: 12px; font-family: 'Poppins'; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.3s; text-align: left; display: flex; align-items: center; gap: 10px;}
     .chat-btn:hover { background: rgba(0, 243, 255, 0.1); border-color: var(--highlight); transform: translateX(5px);}
     .chat-btn i { width: 20px; text-align: center;}
-    
-    .glass-render { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 12px; outline: none; transition: 0.3s; }
-    .glass-render:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
 
     /* Auth Modals & Buttons */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
@@ -180,7 +159,8 @@
     .auth-tab-btn { background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 16px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s;}
     .auth-tab-btn.active { color: var(--highlight); text-shadow: 0 0 10px rgba(0,243,255,0.4); }
     
-    .auth-input { width: 100%; padding: 15px; margin-bottom: 15px; font-family: 'Poppins', sans-serif; font-size: 14px;}
+    .auth-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 15px; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 14px; margin-bottom: 15px; transition: 0.3s; outline: none;}
+    .auth-input:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
     
     .google-btn { width: 100%; background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; margin-bottom: 15px;}
     .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
@@ -190,59 +170,19 @@
     
     .primary-auth-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; box-shadow: 0 0 20px rgba(0,243,255,0.1); width: 100%; margin-top: 10px;}
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
+    .secondary-auth-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;}
+    .secondary-auth-btn:hover { background: rgba(255,255,255,0.1); border-color: white;}
     
     .hidden { display: none !important; }
 
-    /* --- THE NEW PROFESSIONAL FOOTER --- */
-    .site-footer {
-      background: rgba(3, 8, 20, 0.9);
-      border-top: 1px solid var(--glass-border);
-      padding: 60px 40px 30px;
-      margin-top: 80px;
-      position: relative;
-      z-index: 10;
-    }
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-    .footer-col h4 {
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 20px;
-    }
-    .footer-col p, .footer-col a {
-      color: #94a3b8;
-      font-size: 14px;
-      line-height: 1.8;
-      text-decoration: none;
-      display: block;
-      margin-bottom: 10px;
-      transition: 0.3s;
-    }
-    .footer-col a:hover {
-      color: var(--highlight);
-      padding-left: 5px;
-    }
-    .footer-col i {
-      color: var(--highlight);
-      width: 20px;
-      margin-right: 10px;
-    }
-    .footer-bottom {
-      text-align: center;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      color: rgba(255,255,255,0.4);
-      font-size: 13px;
-    }
+    .site-footer { background: rgba(3, 8, 20, 0.9); border-top: 1px solid var(--glass-border); padding: 60px 40px 30px; margin-top: 80px; position: relative; z-index: 10; }
+    .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px; }
+    .footer-col h4 { color: white; font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+    .footer-col p, .footer-col a { color: #94a3b8; font-size: 14px; line-height: 1.8; text-decoration: none; display: block; margin-bottom: 10px; transition: 0.3s; }
+    .footer-col a:hover { color: var(--highlight); padding-left: 5px; }
+    .footer-col i { color: var(--highlight); width: 20px; margin-right: 10px; }
+    .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); font-size: 13px; }
 
-    /* MOBILE REVOLUTION CSS */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
@@ -259,13 +199,11 @@
       @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
-      
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
-      .carousel-container { display: none; /* simplified for mobile */ }
-      
+      .carousel-container { display: none; }
       .site-footer { padding: 40px 20px 20px; text-align: center;}
-      .footer-col a:hover { padding-left: 0; } /* Remove hover shift on mobile to prevent shaking */
+      .footer-col a:hover { padding-left: 0; } 
     }
   </style>
 </head>
@@ -319,7 +257,6 @@
         </div>
       </div>
     </div>
-    
     <div class="float-wrap">
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
@@ -334,7 +271,6 @@
         </div>
       </div>
     </div>
-
     <div class="float-wrap">
       <div class="light-tracker card-health">
         <div class="service-card" onclick="window.location.href='health.html'">
@@ -349,7 +285,6 @@
         </div>
       </div>
     </div>
-
     <div class="float-wrap">
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
@@ -471,7 +406,7 @@
     <div class="auth-modal">
       <span class="close-modal" onclick="closeAuthModal();">&times;</span>
       
-      <div class="auth-tabs">
+      <div class="auth-tabs" id="authTabsContainer">
         <button class="auth-tab-btn active" id="tab-login" onclick="toggleAuthView('login')">Log In</button>
         <button class="auth-tab-btn" id="tab-signup" onclick="toggleAuthView('signup')">Sign Up</button>
       </div>
@@ -481,6 +416,11 @@
         <div class="auth-divider"><span>OR</span></div>
         <input type="email" id="loginEmail" class="auth-input glass-render" placeholder="Email Address">
         <input type="password" id="loginPassword" class="auth-input glass-render" placeholder="Password">
+        
+        <div style="text-align: right; margin-bottom: 15px; margin-top: -5px;">
+           <a href="#" onclick="toggleAuthView('forgot'); return false;" style="color: rgba(255,255,255,0.6); font-size: 11px; text-decoration: underline;">Forgot Password?</a>
+        </div>
+        
         <button class="primary-auth-btn" id="loginBtn" onclick="handleEmailLogin();">Log In</button>
       </div>
 
@@ -495,9 +435,25 @@
       <div id="view-otp" class="hidden">
         <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px;"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2 style="color:#fff; margin-top:0; font-weight: 700;">Check Your Email</h2>
-        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a 6-digit verification code to your email. Enter it below to activate your account.</p>
-        <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Enter 6-Digit Code" style="text-align:center; font-size:20px; letter-spacing: 5px;" maxlength="6">
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a verification code to your email. Enter it below to activate your account.</p>
+        <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Verification Code" style="text-align:center; font-size:20px; letter-spacing: 5px;">
         <button class="primary-auth-btn" id="otpBtn" onclick="handleOTPVerify();">Verify & Log In</button>
+      </div>
+
+      <div id="view-forgot" class="hidden">
+        <h2 style="color:#fff; margin-top:0; font-weight: 700;">Reset Password</h2>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Enter your email to receive a secure recovery code.</p>
+        <input type="email" id="forgotEmail" class="auth-input glass-render" placeholder="Registered Email Address">
+        <button class="primary-auth-btn" id="forgotBtn" onclick="sendRecoveryCode();">Send Recovery Code</button>
+        <button class="secondary-auth-btn" style="width:100%; margin-top:10px;" onclick="toggleAuthView('login');">Back to Login</button>
+      </div>
+
+      <div id="view-reset" class="hidden">
+        <h2 style="color:#fff; margin-top:0; font-weight: 700;">Create New Password</h2>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Enter the code sent to your email and choose a new password.</p>
+        <input type="text" id="resetOtp" class="auth-input glass-render" placeholder="Verification Code" style="text-align:center; font-size:16px; letter-spacing: 2px;">
+        <input type="password" id="resetNewPass" class="auth-input glass-render" placeholder="Enter New Password">
+        <button class="primary-auth-btn" id="resetBtn" onclick="submitNewPassword();">Update Password & Log In</button>
       </div>
 
     </div>
@@ -564,7 +520,7 @@
       document.getElementById('cookieBanner').style.bottom = '-100px'; 
     }
 
-    // --- Authentication ---
+    // --- Authentication Engine ---
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -582,23 +538,16 @@
     }
 
     function toggleAuthView(view) {
-      document.getElementById('view-login').classList.add('hidden');
-      document.getElementById('view-signup').classList.add('hidden');
-      document.getElementById('view-otp').classList.add('hidden');
+      const views = ['login', 'signup', 'otp', 'forgot', 'reset'];
+      views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
       document.getElementById('tab-login').classList.remove('active');
       document.getElementById('tab-signup').classList.remove('active');
       
-      document.querySelector('.auth-tabs').style.display = (view === 'otp') ? 'none' : 'flex';
+      document.getElementById('authTabsContainer').style.display = (view === 'login' || view === 'signup') ? 'flex' : 'none';
 
-      if(view === 'login') {
-        document.getElementById('view-login').classList.remove('hidden');
-        document.getElementById('tab-login').classList.add('active');
-      } else if (view === 'signup') {
-        document.getElementById('view-signup').classList.remove('hidden');
-        document.getElementById('tab-signup').classList.add('active');
-      } else if (view === 'otp') {
-        document.getElementById('view-otp').classList.remove('hidden');
-      }
+      document.getElementById(`view-${view}`).classList.remove('hidden');
+      if (view === 'login') document.getElementById('tab-login').classList.add('active');
+      if (view === 'signup') document.getElementById('tab-signup').classList.add('active');
     }
 
     window.addEventListener('load', async function() {
@@ -666,7 +615,7 @@
 
     async function handleOTPVerify() {
       const otpCode = document.getElementById('otpCode').value;
-      if(!otpCode || otpCode.length !== 6) return alert("Please enter the 6-digit code.");
+      if(!otpCode) return alert("Please enter the verification code.");
 
       const btn = document.getElementById('otpBtn');
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
@@ -679,6 +628,36 @@
       } else {
         window.location.href = "dashboard.html";
       }
+    }
+
+    // --- FORGOT PASSWORD ENGINE ---
+    async function sendRecoveryCode() {
+      const email = document.getElementById('forgotEmail').value;
+      if(!email) return alert("Please enter your email.");
+      
+      const btn = document.getElementById('forgotBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+      
+      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(email);
+      if(error) { alert("Error: " + error.message); btn.innerHTML = 'Send Recovery Code'; }
+      else { pendingSignupEmail = email; toggleAuthView('reset'); }
+    }
+
+    async function submitNewPassword() {
+      const otp = document.getElementById('resetOtp').value;
+      const newPass = document.getElementById('resetNewPass').value;
+      if(!otp || !newPass) return alert("Please enter both the code and a new password.");
+      if(newPass.length < 6) return alert("Password must be at least 6 characters.");
+      
+      const btn = document.getElementById('resetBtn');
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+
+      const { data, error } = await supabaseClient.auth.verifyOtp({ email: pendingSignupEmail, token: otp, type: 'recovery' });
+      if(error) { alert("Verification failed: " + error.message); btn.innerHTML = 'Update Password & Log In'; return; }
+      
+      const { data: updateData, error: updateError } = await supabaseClient.auth.updateUser({ password: newPass });
+      if(updateError) { alert("Failed to update password: " + updateError.message); btn.innerHTML = 'Update Password & Log In'; }
+      else { alert("Password updated successfully!"); window.location.href = "dashboard.html"; }
     }
 
     // --- KELVIN DIRECT CHATBOT LOGIC ENGINE ---
