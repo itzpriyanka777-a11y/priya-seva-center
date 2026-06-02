@@ -73,6 +73,16 @@
     .glass-render:hover { background: rgba(10, 15, 25, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
 
+    /* TIME PICKER FIX */
+    input[type="time"].glass-render {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    input[type="time"].glass-render::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(1);
+    }
+
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
@@ -80,8 +90,22 @@
     
     .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;}
     .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
+
+    /* HOVER CHAT BUBBLE ENGINE */
+    .helper-bubble {
+      display: none; position: absolute; top: -50px; right: 0; 
+      background: rgba(0, 243, 255, 0.95); color: #000; padding: 12px 18px; 
+      border-radius: 14px; border-bottom-right-radius: 0; font-size: 12px; 
+      font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
+      z-index: 200; pointer-events: none; animation: dropBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .helper-bubble::after {
+      content: ''; position: absolute; bottom: -8px; right: 10px; 
+      border-width: 10px 10px 0 0; border-style: solid; 
+      border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent;
+    }
 
     .glass-calendar { display: none; background: rgba(5, 8, 15, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
@@ -147,43 +171,57 @@
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Select Health Service</label>
+          <label>Select Health Services</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
-              <span>Choose a service</span> <i class="fa-solid fa-chevron-down"></i>
+              <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'BP & Vitals Check')">BP & Vitals Check</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Oxygen Levels Check')">Oxygen Levels Check</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Vaccinations')">Vaccinations</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Post-Surgery Dressing')">Post-Surgery Dressing</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Physiotherapy')">Physiotherapy</div>
+            <div class="option" onclick="toggleMultiOption('BP & Vitals Check', this)">
+              <i class="fa-regular fa-square check-icon"></i> BP & Vitals Check
+            </div>
+            <div class="option" onclick="toggleMultiOption('Oxygen Levels Check', this)">
+              <i class="fa-regular fa-square check-icon"></i> Oxygen Levels Check
+            </div>
+            <div class="option" onclick="toggleMultiOption('Vaccinations', this)">
+              <i class="fa-regular fa-square check-icon"></i> Vaccinations
+            </div>
+            <div class="option" onclick="toggleMultiOption('Post-Surgery Dressing', this)">
+              <i class="fa-regular fa-square check-icon"></i> Post-Surgery Dressing
+            </div>
+            <div class="option" onclick="toggleMultiOption('Physiotherapy', this)">
+              <i class="fa-regular fa-square check-icon"></i> Physiotherapy
+            </div>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
           <label>Schedule Frequency</label>
+          
+          <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
+
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
               <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectFrequency('Single Visit')">Single Visit</div>
-            <div class="option" onclick="selectFrequency('Recurring Daily')">Recurring Daily</div>
-            <div class="option" onclick="selectFrequency('Custom Schedule')">Custom Schedule</div>
+            <div class="option" onclick="selectFrequency('Single Visit')" onmouseenter="showFreqHelper('Book for one specific date.')" onmouseleave="hideFreqHelper()">Single Visit</div>
+            <div class="option" onclick="selectFrequency('Recurring Days')" onmouseenter="showFreqHelper('Select specific days to repeat weekly (e.g., Every Monday).')" onmouseleave="hideFreqHelper()">Recurring Days</div>
+            <div class="option" onclick="selectFrequency('Recurring Monthly')" onmouseenter="showFreqHelper('Select a date to repeat every month (e.g., 15th).')" onmouseleave="hideFreqHelper()">Recurring Monthly</div>
+            <div class="option" onclick="selectFrequency('Custom Schedule')" onmouseenter="showFreqHelper('Pick multiple specific dates freely.')" onmouseleave="hideFreqHelper()">Custom Schedule</div>
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
             <div class="cal-top">
-               <span>Select Dates:</span> 
+               <span id="calTopText">Select Dates:</span> 
                <div style="display:flex; align-items:center; gap: 15px;">
                    <span>May 2026</span>
                    <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
                </div>
             </div>
-            <div class="cal-days" style="margin-bottom:8px;">
+            <div class="cal-days" id="daysHeader" style="margin-bottom:8px;">
               <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
             </div>
             <div class="cal-days" id="calGrid"></div>
@@ -197,7 +235,7 @@
         <div class="capsule-group input-group">
           <label>Preferred Arrival Time</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="time" id="timeWindow" class="glass-render">
+            <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
@@ -284,28 +322,156 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let selectedFrequency = ""; let selectedDates = [];
+    let selectedHealthServices = []; // Holds multiple selected services
+
+    function showFreqHelper(text) {
+       const bubble = document.getElementById('freqHelperBubble');
+       bubble.innerText = text;
+       bubble.style.display = 'block';
+    }
+    function hideFreqHelper() {
+       document.getElementById('freqHelperBubble').style.display = 'none';
+    }
 
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'Single Visit'); }
+    
+    function toggleMultiOption(value, el) {
+      const index = selectedHealthServices.indexOf(value);
+      const icon = el.querySelector('.check-icon');
+      
+      if(index > -1) {
+        selectedHealthServices.splice(index, 1);
+        icon.classList.replace('fa-square-check', 'fa-square');
+        icon.classList.replace('fa-solid', 'fa-regular');
+        el.style.background = 'transparent';
+        el.style.paddingLeft = '25px';
+        icon.style.color = 'white';
+      } else {
+        selectedHealthServices.push(value);
+        icon.classList.replace('fa-square', 'fa-square-check');
+        icon.classList.replace('fa-regular', 'fa-solid');
+        el.style.background = 'rgba(0, 243, 255, 0.15)';
+        el.style.paddingLeft = '35px';
+        icon.style.color = 'var(--highlight)';
+      }
+      
+      const triggerSpan = document.querySelector('#serviceTrigger span');
+      if(selectedHealthServices.length === 0) {
+        triggerSpan.innerText = "Choose services";
+        triggerSpan.parentElement.classList.remove('active');
+      } else if(selectedHealthServices.length <= 2) {
+        triggerSpan.innerText = selectedHealthServices.join(", ");
+        triggerSpan.parentElement.classList.add('active');
+      } else {
+        triggerSpan.innerText = selectedHealthServices.length + " Services Selected";
+        triggerSpan.parentElement.classList.add('active');
+      }
+    }
+
+    function selectFrequency(value) { 
+        const trigger = document.getElementById('freqTrigger'); 
+        trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
+        trigger.classList.add('active'); 
+        document.getElementById('freqOptions').classList.remove('show'); 
+        
+        selectedFrequency = value; 
+        selectedDates = []; 
+        updateSelectedDatesDisplay(); 
+        document.getElementById('visualCalendar').style.display = 'block'; 
+        
+        const calTopText = document.getElementById('calTopText');
+        if (value === 'Single Visit') {
+            calTopText.innerText = "Select Date:";
+            buildCalendarGrid('single'); 
+        } else if (value === 'Recurring Days') {
+            calTopText.innerText = "Select Days of Week:";
+            buildCalendarGrid('days');
+        } else if (value === 'Recurring Monthly') {
+            calTopText.innerText = "Select Monthly Date:";
+            buildCalendarGrid('monthly');
+        } else {
+            calTopText.innerText = "Select Dates:";
+            buildCalendarGrid('custom');
+        }
+    }
+
+    function getOrdinal(n) {
+      let s=["th","st","nd","rd"], v=n%100;
+      return n+(s[(v-20)%10]||s[v]||s[0]);
+    }
 
     function updateSelectedDatesDisplay() {
       const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
-      if (selectedDates.length > 0) { datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", "); displayDiv.style.display = 'block'; } else { displayDiv.style.display = 'none'; }
+      if (selectedDates.length > 0) { 
+          let prefix = "Selected: ";
+          let suffix = "";
+          let sortedDates = [...selectedDates];
+          
+          if (selectedFrequency === 'Single Visit' || selectedFrequency === 'Custom Schedule') {
+             prefix = "Selected: May ";
+             sortedDates = sortedDates.sort((a,b)=>a-b);
+          } else if (selectedFrequency === 'Recurring Monthly') {
+             prefix = "Every month on the ";
+             suffix = getOrdinal(sortedDates[0]);
+             sortedDates = [suffix];
+          } else if (selectedFrequency === 'Recurring Days') {
+             prefix = "Every: ";
+          }
+          
+          datesText.innerText = prefix + sortedDates.join(", "); 
+          displayDiv.style.display = 'block'; 
+      } else { 
+          displayDiv.style.display = 'none'; 
+      }
     }
 
-    function buildCalendarGrid(isSingleSelect) {
+    function buildCalendarGrid(mode) {
       const grid = document.getElementById('calGrid'); grid.innerHTML = '';
-      for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
-      for(let i=1; i<=31; i++) {
-        const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
-        div.onclick = function(e) {
-          createRipple(e.clientX, e.clientY);
-          if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
-          else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
-          updateSelectedDatesDisplay(); 
-        };
-        grid.appendChild(div);
+      const daysHeader = document.getElementById('daysHeader'); 
+      
+      if (mode === 'days') {
+         daysHeader.style.display = 'none'; 
+         grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+         
+         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+         daysOfWeek.forEach(day => {
+            const div = document.createElement('div'); 
+            div.className = 'cal-date'; 
+            div.innerText = day;
+            div.style.padding = "12px 10px"; 
+            div.onclick = function(e) {
+                createRipple(e.clientX, e.clientY);
+                this.classList.toggle('selected');
+                if(this.classList.contains('selected')) selectedDates.push(day); 
+                else selectedDates = selectedDates.filter(d => d !== day);
+                updateSelectedDatesDisplay();
+            };
+            grid.appendChild(div);
+         });
+      } else {
+         daysHeader.style.display = 'grid'; 
+         grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+         let isSingleSelect = (mode === 'single' || mode === 'monthly');
+         
+         for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
+         for(let i=1; i<=31; i++) {
+           const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
+           div.onclick = function(e) {
+             createRipple(e.clientX, e.clientY);
+             if(isSingleSelect) { 
+                 document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); 
+                 selectedDates = [i]; 
+                 this.classList.add('selected'); 
+             } else { 
+                 this.classList.toggle('selected'); 
+                 if(this.classList.contains('selected')) selectedDates.push(i); 
+                 else selectedDates = selectedDates.filter(d => d !== i); 
+             }
+             updateSelectedDatesDisplay(); 
+           };
+           grid.appendChild(div);
+         }
       }
     }
     
@@ -315,22 +481,33 @@
     });
 
     async function submitRequest() {
-      const btn = document.getElementById('submitBtn'); const name = document.getElementById('patientName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const extraDetails = document.getElementById('extraDetails').value;
-      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select a service, and pick your dates."); }
+      const btn = document.getElementById('submitBtn'); const name = document.getElementById('patientName').value; const timeWindow = document.getElementById('timeWindow').value; const extraDetails = document.getElementById('extraDetails').value;
+      
+      if(!name || selectedHealthServices.length === 0 || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { return alert("Please fill your name, select at least one service, pick your dates, and specify a time."); }
+      
+      const finalServices = selectedHealthServices.join(", ");
       
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) { btn.innerHTML = 'Request Appointment'; btn.disabled = false; return alert("Authentication required. Please log in."); }
 
-        let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
+        let formattedDates = "";
+        if (selectedFrequency === 'Recurring Monthly') {
+           formattedDates = "Every month on the " + getOrdinal(selectedDates[0]);
+        } else if (selectedFrequency === 'Recurring Days') {
+           formattedDates = "Every " + selectedDates.join(", ");
+        } else {
+           formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
+        }
+        
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
-        const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Health Check: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (extraDetails ? " | Notes: " + extraDetails : "") };
+        const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Health Check: " + finalServices, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (extraDetails ? " | Notes: " + extraDetails : "") };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
         const adminWaNumber = "917439392803";
-        const waMessage = `*New Health Appointment!*\n\n*Service:* ${service}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${extraDetails || 'None'}`;
+        const waMessage = `*New Health Appointment!*\n\n*Services:* ${finalServices}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${extraDetails || 'None'}`;
         window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
       } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Request Appointment'; btn.disabled = false; }
