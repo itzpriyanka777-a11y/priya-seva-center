@@ -13,6 +13,7 @@
   
   <script>
     if (document.cookie.indexOf('googtrans') === -1) {
+      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
       document.cookie = "googtrans=/en/bn; path=/";
     }
   </script>
@@ -27,15 +28,17 @@
       --highlight: #00f3ff; 
     }
 
-    /* THE ULTIMATE GOOGLE TRANSLATE BANNER NUKE */
+    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
     body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    .skiptranslate { display: none !important; width: 0 !important; height: 0 !important; }
     iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
     .VIpgJd-Zvi9od-aZ2wEe-wOHMyf { display: none !important; }
     .VIpgJd-Zvi9od-ORHb-OEVmcd { display: none !important; }
     #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
-    /* ANTI-FLASH CINEMATIC FADE (Hides the choppy translation) */
+    /* ANTI-FLASH FADE */
     body { 
       opacity: 0; 
       animation: smoothLoad 0.8s ease-in 0.6s forwards; 
@@ -255,9 +258,9 @@
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="dropdown-content">
-          <a href="packages.html"><i class="fa-solid fa-box-medical"></i> Health Care Packages</a>
-          <a href="#reviews"><i class="fa-solid fa-star"></i> Testimonials</a>
-          <a href="join.html"><i class="fa-solid fa-handshake-angle"></i> Join Us</a>
+          <a href="packages.html"><i class="fa-solid fa-box-medical"></i> Health Care Plans</a>
+          <a href="#reviews"><i class="fa-solid fa-star"></i> Reviews</a>
+          <a href="join.html"><i class="fa-solid fa-handshake-angle"></i> Work With Us</a>
           <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> File Complaint</a>
           <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Rules</a>
         </div>
@@ -334,7 +337,7 @@
   </section>
 
   <section class="reviews-section" id="reviews">
-    <h2 style="color: #fff; font-size: 32px; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Trusted by Families Across Kolkata</h2>
+    <h2 style="color: #fff; font-size: 32px; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Trusted by Families in Kolkata</h2>
     
     <div class="carousel-container">
       <div class="nav-arrow" onclick="slideReview(-1)"><i class="fa-solid fa-chevron-left"></i></div>
@@ -508,13 +511,16 @@
 
     // THE ULTIMATE ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
     const observer = new MutationObserver(() => {
-        if (document.body.style.top !== '0px') {
-            document.body.style.top = '0px';
-        }
+        document.body.style.top = '0px';
+        document.documentElement.style.top = '0px';
+        document.body.style.marginTop = '0px';
+        document.documentElement.style.marginTop = '0px';
+        
         const gtFrame = document.querySelector('.goog-te-banner-frame');
         if(gtFrame) gtFrame.remove();
     });
     observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
@@ -610,7 +616,7 @@
         if (user) {
           const btn = document.getElementById('mainActionButton');
           if (btn) {
-            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>My Dashboard</span>';
+            btn.innerHTML = '<i class="fa-solid fa-chart-pie"></i> <span>My Account</span>';
             btn.onclick = function() { window.location.href = 'dashboard.html'; };
           }
         }
