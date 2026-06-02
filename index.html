@@ -34,6 +34,12 @@
     }
     
     a { text-decoration: none; }
+
+    /* Google Translate Native Overrides to hide ugly banners */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; }
     
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
@@ -46,7 +52,7 @@
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
-    .nav-actions { display: flex; align-items: center; gap: 20px; }
+    .nav-actions { display: flex; align-items: center; gap: 15px; }
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
     .login-trigger-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-2px);}
 
@@ -210,6 +216,8 @@
 </head>
 <body>
 
+  <div id="google_translate_element" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
+
   <div id="rippleContainer"></div>
 
   <nav class="navbar">
@@ -221,9 +229,20 @@
       </div>
     </a>
     <div class="nav-actions">
+      
       <button class="login-trigger-btn" id="mainActionButton" onclick="openAuthModal('login');">
         <i class="fa-solid fa-fingerprint"></i> <span>Login</span>
       </button>
+
+      <div class="menu-container">
+        <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
+        <div class="dropdown-content" style="min-width: 150px; right: 0;">
+          <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+          <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
+          <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
+        </div>
+      </div>
+
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="dropdown-content">
@@ -234,6 +253,7 @@
           <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
         </div>
       </div>
+
     </div>
   </nav>
 
@@ -461,6 +481,25 @@
 
     </div>
   </div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,bn', // English, Hindi, Bengali
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+
+    function changeLanguage(langCode) {
+      const selectField = document.querySelector('select.goog-te-combo');
+      if (selectField) {
+        selectField.value = langCode;
+        selectField.dispatchEvent(new Event('change'));
+      }
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
