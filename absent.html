@@ -78,6 +78,46 @@
       .right-pane { display: none !important; } 
     }
   </style>
+  <style>
+    /* ANTI-FLASH & NUKE GOOGLE BARS */
+    body { opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; top: 0px !important; position: static !important; }
+    @keyframes smoothLoad { to { opacity: 1; } }
+    .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
+    html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
+  </style>
+
+  <script type="text/javascript">
+    // 1. Shared Site Memory: Default to Bengali ('bn') if no choice is made yet
+    let currentLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    
+    // 2. Force the Google Translate Cookie
+    document.cookie = `googtrans=/en/${currentLang}; path=/`;
+
+    // 3. Initialize Google Translate
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
+    }
+
+    // 4. Fluid Language Changer (Used by your dropdown menu)
+    function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Save choice to shared memory
+      document.cookie = `googtrans=/en/${langCode}; path=/`; // Update cookie
+      window.location.reload(); // Reload instantly in new language
+    }
+
+    // 5. Aggressive Google Bar Nuke
+    const observer = new MutationObserver(() => {
+        document.body.style.top = '0px';
+        document.documentElement.style.top = '0px';
+        const gtFrame = document.querySelector('.goog-te-banner-frame');
+        if(gtFrame) gtFrame.remove();
+    });
+    window.addEventListener("DOMContentLoaded", () => {
+        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    });
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
