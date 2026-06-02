@@ -94,6 +94,16 @@
     .glass-render:hover { background: rgba(15, 25, 45, 0.5); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
+    /* TIME PICKER FIX: Natively turns clock icon white and makes the whole box clickable */
+    input[type="time"].glass-render {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    input[type="time"].glass-render::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(1);
+    }
+
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
@@ -101,7 +111,7 @@
     
     .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 10, 20, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;}
     .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 229, 255, 0.2); padding-left: 35px; }
 
@@ -171,18 +181,28 @@
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Select Service Required</label>
+          <label>Select Services Required</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
-              <span>Choose a service</span> <i class="fa-solid fa-chevron-down"></i>
+              <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Standard House Cleaning')">Standard House Cleaning</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Deep Cleaning')">Deep Cleaning</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Cooking & Prep')">Cooking & Prep</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Laundry & Ironing')">Laundry & Ironing</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Full Day Housekeeping')">Full Day Housekeeping</div>
+            <div class="option" onclick="toggleMultiOption('Standard House Cleaning', this)">
+              <i class="fa-regular fa-square check-icon"></i> Standard House Cleaning
+            </div>
+            <div class="option" onclick="toggleMultiOption('Deep Cleaning', this)">
+              <i class="fa-regular fa-square check-icon"></i> Deep Cleaning
+            </div>
+            <div class="option" onclick="toggleMultiOption('Cooking & Prep', this)">
+              <i class="fa-regular fa-square check-icon"></i> Cooking & Prep
+            </div>
+            <div class="option" onclick="toggleMultiOption('Laundry & Ironing', this)">
+              <i class="fa-regular fa-square check-icon"></i> Laundry & Ironing
+            </div>
+            <div class="option" onclick="toggleMultiOption('Full Day Housekeeping', this)">
+              <i class="fa-regular fa-square check-icon"></i> Full Day Housekeeping
+            </div>
           </div>
         </div>
 
@@ -194,14 +214,14 @@
             </div>
           </div>
           <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectFrequency('One-Time Clean')">One-Time Clean</div>
-            <div class="option" onclick="selectFrequency('Daily Routine')">Daily Routine</div>
-            <div class="option" onclick="selectFrequency('Weekly Deep Clean')">Weekly Deep Clean</div>
+            <div class="option" onclick="selectFrequency('One-Time Service')">One-Time Service</div>
+            <div class="option" onclick="selectFrequency('Ongoing Service')">Ongoing Service</div>
+            <div class="option" onclick="selectFrequency('Custom Dates')">Custom Dates</div>
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
             <div class="cal-top">
-               <span>Select Dates:</span> 
+               <span id="calTopText">Select Dates:</span> 
                <div style="display:flex; align-items:center; gap: 15px;">
                    <span>May 2026</span>
                    <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
@@ -221,7 +241,7 @@
         <div class="capsule-group input-group">
           <label>Preferred Arrival Time</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="time" id="timeWindow" class="glass-render">
+            <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
@@ -313,14 +333,86 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let selectedFrequency = ""; let selectedDates = [];
+    let selectedMaidServices = []; // NEW: Array to hold multiple selected services
 
-    function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
-    function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'One-Time Clean'); }
+    function toggleDropdown(id) { 
+        document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); 
+        document.getElementById(id).classList.toggle('show'); 
+    }
+
+    // NEW: Multi-select function for services
+    function toggleMultiOption(value, el) {
+      const index = selectedMaidServices.indexOf(value);
+      const icon = el.querySelector('.check-icon');
+      
+      if(index > -1) {
+        // Remove selection
+        selectedMaidServices.splice(index, 1);
+        icon.classList.replace('fa-square-check', 'fa-square');
+        icon.classList.replace('fa-solid', 'fa-regular');
+        el.style.background = 'transparent';
+        el.style.paddingLeft = '25px';
+        icon.style.color = 'white';
+      } else {
+        // Add selection
+        selectedMaidServices.push(value);
+        icon.classList.replace('fa-square', 'fa-square-check');
+        icon.classList.replace('fa-regular', 'fa-solid');
+        el.style.background = 'rgba(0, 229, 255, 0.15)';
+        el.style.paddingLeft = '35px';
+        icon.style.color = 'var(--highlight)';
+      }
+      
+      // Update UI Trigger Span
+      const triggerSpan = document.querySelector('#serviceTrigger span');
+      if(selectedMaidServices.length === 0) {
+        triggerSpan.innerText = "Choose services";
+        triggerSpan.parentElement.classList.remove('active');
+      } else if(selectedMaidServices.length <= 2) {
+        triggerSpan.innerText = selectedMaidServices.join(", ");
+        triggerSpan.parentElement.classList.add('active');
+      } else {
+        triggerSpan.innerText = selectedMaidServices.length + " Services Selected";
+        triggerSpan.parentElement.classList.add('active');
+      }
+    }
+
+    function selectFrequency(value) { 
+        const trigger = document.getElementById('freqTrigger'); 
+        trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
+        trigger.classList.add('active'); 
+        document.getElementById('freqOptions').classList.remove('show'); 
+        
+        selectedFrequency = value; 
+        selectedDates = []; 
+        updateSelectedDatesDisplay(); 
+        document.getElementById('visualCalendar').style.display = 'block'; 
+        
+        // Dynamically change calendar grid and text based on selection
+        const calTopText = document.getElementById('calTopText');
+        if (value === 'Ongoing Service') {
+            calTopText.innerText = "Select Start Date:";
+            buildCalendarGrid(true); 
+        } else if (value === 'One-Time Service') {
+            calTopText.innerText = "Select Date:";
+            buildCalendarGrid(true);
+        } else {
+            calTopText.innerText = "Select Dates:";
+            buildCalendarGrid(false);
+        }
+    }
 
     function updateSelectedDatesDisplay() {
-      const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
-      if (selectedDates.length > 0) { datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", "); displayDiv.style.display = 'block'; } else { displayDiv.style.display = 'none'; }
+      const displayDiv = document.getElementById('selectedDatesDisplay'); 
+      const datesText = document.getElementById('datesText');
+      if (selectedDates.length > 0) { 
+          let prefix = "Selected: May ";
+          if (selectedFrequency === 'Ongoing Service') prefix = "Starting: May ";
+          datesText.innerText = prefix + selectedDates.sort((a,b)=>a-b).join(", "); 
+          displayDiv.style.display = 'block'; 
+      } else { 
+          displayDiv.style.display = 'none'; 
+      }
     }
 
     function buildCalendarGrid(isSingleSelect) {
@@ -330,8 +422,15 @@
         const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
         div.onclick = function(e) {
           createRipple(e.clientX, e.clientY);
-          if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
-          else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
+          if(isSingleSelect) { 
+              document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); 
+              selectedDates = [i]; 
+              this.classList.add('selected'); 
+          } else { 
+              this.classList.toggle('selected'); 
+              if(this.classList.contains('selected')) selectedDates.push(i); 
+              else selectedDates = selectedDates.filter(d => d !== i); 
+          }
           updateSelectedDatesDisplay(); 
         };
         grid.appendChild(div);
@@ -344,8 +443,18 @@
     });
 
     async function submitRequest() {
-      const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const notes = document.getElementById('extraDetails').value;
-      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select a service, and pick your dates."); }
+      const btn = document.getElementById('submitBtn'); 
+      const name = document.getElementById('parentName').value; 
+      const timeWindow = document.getElementById('timeWindow').value; 
+      const notes = document.getElementById('extraDetails').value;
+
+      // VALIDATION: Ensured that name, multi-service array, freq, dates, and time are all completely filled
+      if(!name || selectedMaidServices.length === 0 || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { 
+          return alert("Please fill your name, select at least one service, set your dates, and specify a time."); 
+      }
+      
+      // Merge multiple services into a single clean string
+      const finalServices = selectedMaidServices.join(", ");
       
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
@@ -354,12 +463,23 @@
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
-        const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Maid: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "") };
+        
+        // PAYLOAD INCLUDES actionType: 'new_booking'
+        const payload = { 
+            actionType: 'new_booking', 
+            name: name, 
+            email: user.email, 
+            phone: "Not Provided", 
+            serviceType: "Maid: " + finalServices, 
+            date: formattedDates, 
+            address: "Not Provided", 
+            details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "") 
+        };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
         const adminWaNumber = "917439392803";
-        const waMessage = `*New Maid Booking!*\n\n*Service:* ${service}\n*Client:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${notes || 'None'}`;
+        const waMessage = `*New Maid Booking!*\n\n*Services:* ${finalServices}\n*Client:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${notes || 'None'}`;
         window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
       } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Generate Request'; btn.disabled = false; }
