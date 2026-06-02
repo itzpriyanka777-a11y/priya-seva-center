@@ -31,11 +31,7 @@
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
     body { top: 0px !important; margin-top: 0px !important; position: static !important; }
-    .skiptranslate { display: none !important; width: 0 !important; height: 0 !important; }
-    iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
-    .VIpgJd-Zvi9od-aZ2wEe-wOHMyf { display: none !important; }
-    .VIpgJd-Zvi9od-ORHb-OEVmcd { display: none !important; }
-    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+    .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
     /* ANTI-FLASH FADE */
@@ -228,7 +224,7 @@
 </head>
 <body>
 
-  <div id="google_translate_element" style="width:0;height:0;overflow:hidden;position:absolute;"></div>
+  <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
 
   <div id="rippleContainer"></div>
 
@@ -276,7 +272,6 @@
       <p>Book good nurses, health checks, and safe maids in Kolkata easily.</p>
     </div>
   </section>
-
   <section class="services-container">
     <div class="float-wrap">
       <div class="light-tracker card-maid">
@@ -493,7 +488,6 @@
 
     </div>
   </div>
-
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -519,8 +513,10 @@
         const gtFrame = document.querySelector('.goog-te-banner-frame');
         if(gtFrame) gtFrame.remove();
     });
-    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    window.addEventListener("DOMContentLoaded", () => {
+        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
