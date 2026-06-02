@@ -3,31 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Log an Absence | Priya Seva</title>
+  <title>Mark Absent | Priya Seva</title>
   <meta name="theme-color" content="#020614">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <script>
+    if (document.cookie.indexOf('googtrans') === -1) {
+      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=/en/bn; path=/";
+    }
+  </script>
+
   <style>
     :root { --void-bg: #020614; --glass-base: rgba(10, 20, 35, 0.25); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #e74c3c; }
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
+
+    /* ANTI-FLASH FADE */
+    body { 
+      opacity: 0; 
+      animation: smoothLoad 0.8s ease-in 0.6s forwards; 
+      font-family: 'Poppins', sans-serif; 
+      background-color: var(--void-bg); 
+      color: white; 
+      overflow: hidden; 
+    }
+    @keyframes smoothLoad { to { opacity: 1; } }
+
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(231, 76, 60, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
-    /* =========================================
-       UNIVERSAL OPAQUE NAVBAR MODULE 
-       ========================================= */
+    /* UNIVERSAL HEADER */
     .universal-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 5, 16, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-sizing: border-box;}
     .universal-brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2); transition: 0.3s;}
     .universal-brand:hover { transform: scale(1.05); color: #e74c3c; }
-    .universal-nav-right { display: flex; gap: 15px; }
+    .universal-nav-right { display: flex; gap: 15px; align-items: center;}
     .universal-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; text-decoration: none; display: flex; align-items: center; gap: 8px;}
     .universal-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
     .btn-dash { border-color: rgba(231, 76, 60, 0.3); color: #e74c3c; }
     .btn-dash:hover { background: rgba(231, 76, 60, 0.1); box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);}
+
+    /* LANGUAGE DROPDOWN CSS */
+    .menu-container { position: relative; display: inline-block; }
+    .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 15px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
+    .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
+    .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 150px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
+    .dropdown-content a { color: #e2e8f0; padding: 16px 22px; display: block; font-weight: 500; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-decoration: none;}
+    .dropdown-content a:hover { background: rgba(231, 76, 60, 0.1); color: white; padding-left: 28px;}
+    .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
        .universal-header { padding: 15px 20px; }
@@ -56,6 +90,9 @@
     .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: 50px; color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; transition: 0.4s; outline: none; position: relative; z-index: 1; }
     .glass-render::placeholder { color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 400;}
     .glass-render:focus { transform: scale(1.02); background: rgba(231, 76, 60, 0.1); border-color: var(--highlight); box-shadow: 0 10px 30px rgba(231, 76, 60, 0.2);}
+    
+    /* Make date pickers look good in dark mode */
+    input[type="date"].glass-render { color-scheme: dark; cursor: pointer; }
 
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
@@ -78,48 +115,11 @@
       .right-pane { display: none !important; } 
     }
   </style>
-  <style>
-    /* ANTI-FLASH & NUKE GOOGLE BARS */
-    body { opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; top: 0px !important; position: static !important; }
-    @keyframes smoothLoad { to { opacity: 1; } }
-    .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
-    .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
-    html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-  </style>
 
-  <script type="text/javascript">
-    // 1. Shared Site Memory: Default to Bengali ('bn') if no choice is made yet
-    let currentLang = localStorage.getItem('priyaSevaLang') || 'bn';
-    
-    // 2. Force the Google Translate Cookie
-    document.cookie = `googtrans=/en/${currentLang}; path=/`;
-
-    // 3. Initialize Google Translate
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
-    }
-
-    // 4. Fluid Language Changer (Used by your dropdown menu)
-    function changeLanguage(langCode) {
-      localStorage.setItem('priyaSevaLang', langCode); // Save choice to shared memory
-      document.cookie = `googtrans=/en/${langCode}; path=/`; // Update cookie
-      window.location.reload(); // Reload instantly in new language
-    }
-
-    // 5. Aggressive Google Bar Nuke
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-    });
-  </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
+
+  <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
 
   <header class="universal-header">
     <a href="index.html" class="universal-brand">
@@ -128,6 +128,16 @@
     <div class="universal-nav-right">
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
       <a href="dashboard.html" class="universal-btn btn-dash"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a>
+      
+      <div class="menu-container">
+        <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+          <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
+          <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
+        </div>
+      </div>
+
     </div>
   </header>
 
@@ -139,14 +149,14 @@
       <div class="form-container">
         
         <div class="spatial-header">
-          <h2>Log an Absence</h2>
-          <p>Inform our dispatch team to pause services temporarily or report an agent no-show.</p>
+          <h2>Mark Absent</h2>
+          <p>Tell us if you are going away or if your worker did not come to work today.</p>
         </div>
 
         <div class="capsule-group input-group">
-          <label>Registered Name</label>
+          <label>Your Full Name</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="clientName" class="glass-render" placeholder="Your registered name" required>
+            <input type="text" id="clientName" class="glass-render" placeholder="Type your name" required>
           </div>
         </div>
 
@@ -154,26 +164,26 @@
           <label>Who is Absent?</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="whoTrigger" onclick="toggleDropdown('whoOptions')">
-              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select absence type</span> <i class="fa-solid fa-chevron-down"></i>
+              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select one</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="whoOptions">
-            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'Client Absent (I am away)')">Client Absent (I am away)</div>
-            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'Agent Absent (Caregiver did not arrive)')">Agent Absent (Caregiver did not arrive)</div>
+            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'I am going away')">I am going away</div>
+            <div class="option" onclick="selectOption('whoTrigger', 'whoOptions', 'Worker did not come')">Worker did not come</div>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Service to Pause / Report</label>
+          <label>Choose Service</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
-              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select service type</span> <i class="fa-solid fa-chevron-down"></i>
+              <span style="color:rgba(255,255,255,0.5); font-weight:400;">Select service</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions">
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Maid Services')">Maid Services</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Nursing Care')">Nursing Care</div>
-            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Babysitting')">Babysitting</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Maid')">Maid</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Nurse')">Nurse</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Babysitter')">Babysitter</div>
           </div>
         </div>
 
@@ -181,27 +191,27 @@
           <div class="capsule-group input-group" style="margin-bottom: 0;">
             <label>Start Date</label>
             <div class="light-tracker" style="border-radius: 50px;">
-              <input type="date" id="startDate" class="glass-render">
+              <input type="date" id="startDate" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
             </div>
           </div>
           <div class="capsule-group input-group" style="margin-bottom: 0;">
             <label>End Date</label>
             <div class="light-tracker" style="border-radius: 50px;">
-              <input type="date" id="endDate" class="glass-render">
+              <input type="date" id="endDate" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
             </div>
           </div>
         </div>
 
         <div class="capsule-group input-group">
-          <label>Reason / Instructions</label>
+          <label>Reason</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="reasonText" class="glass-render" placeholder="E.g., Out of station for family vacation">
+            <input type="text" id="reasonText" class="glass-render" placeholder="Example: Going on holiday">
           </div>
         </div>
 
         <div class="capsule-group" style="margin-top: 35px;">
           <div class="light-tracker" style="border-radius: 50px;">
-            <button onclick="submitAbsence()" class="submit-btn" id="submitBtn">Confirm Absence Log</button>
+            <button onclick="submitAbsence()" class="submit-btn" id="submitBtn">Send Request</button>
           </div>
         </div>
 
@@ -212,6 +222,32 @@
       <img src="https://images.pexels.com/photos/10045827/pexels-photo-10045827.jpeg" class="video-bg" alt="Calendar">
     </div>
   </div>
+
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
+    }
+
+    function changeLanguage(langCode) {
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      window.location.reload();
+    }
+
+    const observer = new MutationObserver(() => {
+        document.body.style.top = '0px';
+        document.documentElement.style.top = '0px';
+        document.body.style.marginTop = '0px';
+        document.documentElement.style.marginTop = '0px';
+        const gtFrame = document.querySelector('.goog-te-banner-frame');
+        if(gtFrame) gtFrame.remove();
+    });
+    window.addEventListener("DOMContentLoaded", () => {
+        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    });
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <script>
     const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
@@ -230,7 +266,7 @@
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxE2la4J0jjNG3j8lB5DWa-hAAFhRF-1Yg4-XWFLwMY5yp-E3dN9Rplnb0g4HfPCzs/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec"; 
 
     function toggleDropdown(id) { document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { 
@@ -248,12 +284,12 @@
       const end = document.getElementById('endDate').value;
       const reason = document.getElementById('reasonText').value;
 
-      if(!name || who.includes("Select") || service.includes("Select") || !start || !end) return alert("Please complete all required fields.");
+      if(!name || who.includes("Select") || service.includes("Select") || !start || !end) return alert("Please complete all fields.");
 
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging...'; btn.disabled = true;
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { btn.innerHTML = 'Confirm Absence Log'; btn.disabled = false; return alert("Session expired. Please log in."); }
+        if (!user) { btn.innerHTML = 'Send Request'; btn.disabled = false; return alert("Please log in first."); }
 
         const payload = {
           actionType: 'log_absence',
@@ -263,17 +299,17 @@
           serviceType: service,
           startDate: start,
           endDate: end,
-          reason: reason || "Not specified"
+          reason: reason || "None"
         };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
         const adminWaNumber = "917439392803";
-        const waMessage = `*CLIENT ABSENCE LOGGED*\\n\\n*Client:* ${name}\\n*Type:* ${who}\\n*Service:* ${service}\\n*From:* ${start}\\n*To:* ${end}\\n*Reason:* ${reason || 'N/A'}`;
+        const waMessage = `*CLIENT ABSENCE LOGGED*\n\n*Client:* ${name}\n*Type:* ${who}\n*Service:* ${service}\n*From:* ${start}\n*To:* ${end}\n*Reason:* ${reason || 'None'}`;
         window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
 
-      } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Confirm Absence Log'; btn.disabled = false; }
+      } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Send Request'; btn.disabled = false; }
     }
   </script>
 </body>
