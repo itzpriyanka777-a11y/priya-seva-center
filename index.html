@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Priya Seva | Trusted Home Care & Nursing</title>
-  <meta name="description" content="Book good maids, certified nurses, health visits, and babysitters in Kolkata easily.">
+  <meta name="description" content="Book good maids, expert nurses, health visits, and babysitters in Kolkata easily.">
   <meta name="theme-color" content="#030814">
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,8 @@
   
   <script>
     if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = 'googtrans=/en/bn; path=/';
+      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
+      document.cookie = "googtrans=/en/bn; path=/";
     }
   </script>
 
@@ -28,19 +29,18 @@
     }
 
     /* THE ULTIMATE GOOGLE TRANSLATE BANNER NUKE */
-    iframe.goog-te-banner-frame { display: none !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    iframe.goog-te-banner-frame { display: none !important; visibility: hidden !important; }
     .VIpgJd-Zvi9od-aZ2wEe-wOHMyf { display: none !important; }
     .VIpgJd-Zvi9od-ORHb-OEVmcd { display: none !important; }
     #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; }
-    html, body { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; position: static !important; }
 
     body { 
       font-family: 'Poppins', sans-serif; 
       background-color: var(--bg-void); 
       color: #e2e8f0; 
       overflow-x: hidden; 
-      position: relative;
       background-image: 
         linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), 
         linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
@@ -60,7 +60,7 @@
     .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
     .mobile-brand { display: none; }
 
-    .nav-actions { display: flex; align-items: center; gap: 15px; }
+    .nav-actions { display: flex; align-items: center; gap: 20px; }
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
     .login-trigger-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0, 243, 255, 0.4); transform: translateY(-2px);}
 
@@ -341,22 +341,22 @@
       <div class="carousel-track">
         <div class="review-card">
           <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-          <p>"The automated dashboard is brilliant. I can track exactly when my maid arrives and manage my requests instantly."</p>
+          <p>"The app is very easy. I can see when my maid comes and book easily."</p>
           <span class="reviewer-name">Rahul Banerjee</span> <span class="reviewer-loc">- Salt Lake</span>
         </div>
         <div class="review-card">
           <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-          <p>"Priya Seva provided a certified nurse for my father post-surgery. The level of medical care is unmatched."</p>
+          <p>"Priya Seva gave a very good nurse for my father after his surgery. The care is great."</p>
           <span class="reviewer-name">Anjali Das</span> <span class="reviewer-loc">- New Town</span>
         </div>
         <div class="review-card">
           <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
-          <p>"Having a verified babysitter means we can actually enjoy our weekends again. Highly recommended service."</p>
+          <p>"Having a trusted babysitter means we can enjoy our time out. Very good service."</p>
           <span class="reviewer-name">Priya & Amit</span> <span class="reviewer-loc">- South Kolkata</span>
         </div>
         <div class="review-card">
           <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-          <p>"The health visit was prompt. The nurse was polite, checked vitals carefully, and logged everything online."</p>
+          <p>"The health visit was fast. The nurse was polite, checked carefully, and noted everything online."</p>
           <span class="reviewer-name">Vikram C.</span> <span class="reviewer-loc">- Ballygunge</span>
         </div>
       </div>
@@ -372,7 +372,7 @@
           <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
           <div class="logo-text">Priya Seva Center</div>
         </div>
-        <p>Good home care, certified nurses, and trusted maids across Kolkata.</p>
+        <p>Good home care, expert nurses, and trusted maids across Kolkata.</p>
       </div>
       <div class="footer-col">
         <h4>Quick Links</h4>
@@ -426,7 +426,7 @@
   </div>
 
   <div class="cookie-banner" id="cookieBanner">
-    <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> We use secure cookies to make the website easy to use. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
+    <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> We use cookies to make the website easy to use. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
     <div style="display:flex; gap: 10px;">
       <button class="cookie-btn btn-accept" onclick="handleCookies('accepted')">Accept</button>
       <button class="cookie-btn btn-decline" onclick="handleCookies('declined')">Decline</button>
@@ -494,15 +494,24 @@
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn', // English, Hindi, Bengali
+        includedLanguages: 'en,hi,bn',
         autoDisplay: false
       }, 'google_translate_element');
     }
 
     function changeLanguage(langCode) {
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
       window.location.reload();
     }
+
+    // ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
+    const observer = new MutationObserver(() => {
+        if (document.body.style.top === '40px' || document.body.style.top !== '0px') {
+            document.body.style.top = '0px';
+        }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
