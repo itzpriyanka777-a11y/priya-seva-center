@@ -4,13 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Priya Seva | Reliable Home Care & Nursing Services</title>
-  <meta name="description" content="Book verified maids, certified nurses, health visits, and babysitters in Kolkata easily.">
+  <title>Priya Seva | Trusted Home Care & Nursing</title>
+  <meta name="description" content="Book good maids, certified nurses, health visits, and babysitters in Kolkata easily.">
   <meta name="theme-color" content="#030814">
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
+  <script>
+    if (document.cookie.indexOf('googtrans') === -1) {
+      document.cookie = 'googtrans=/en/bn; path=/';
+    }
+  </script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -20,6 +26,14 @@
       --glass-border: rgba(0, 243, 255, 0.15);
       --highlight: #00f3ff; 
     }
+
+    /* THE ULTIMATE GOOGLE TRANSLATE BANNER NUKE */
+    iframe.goog-te-banner-frame { display: none !important; }
+    .VIpgJd-Zvi9od-aZ2wEe-wOHMyf { display: none !important; }
+    .VIpgJd-Zvi9od-ORHb-OEVmcd { display: none !important; }
+    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; }
+    html, body { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; position: static !important; }
 
     body { 
       font-family: 'Poppins', sans-serif; 
@@ -34,12 +48,6 @@
     }
     
     a { text-decoration: none; }
-
-    /* Google Translate Native Overrides to hide ugly banners */
-    .goog-te-banner-frame.skiptranslate { display: none !important; }
-    body { top: 0px !important; }
-    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
-    .goog-text-highlight { background: none !important; box-shadow: none !important; }
     
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
@@ -260,8 +268,8 @@
   <section class="hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-content">
-      <h1>Reliable Home Care & Nursing Services</h1>
-      <p>Book certified nurses, regular health checks, and trusted maids across Kolkata using our secure and easy platform.</p>
+      <h1>Trusted Home Care and Nursing Services</h1>
+      <p>Book good nurses, health check-ups, and trusted maids in Kolkata easily.</p>
     </div>
   </section>
 
@@ -271,10 +279,10 @@
         <div class="service-card" onclick="window.location.href='maid.html'">
           <h3 class="mobile-title">Maid Services</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./maid.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Trusted maids for daily cleaning, cooking, and complete home care.</div>
+          <div class="mobile-overlay-text">Good maids for daily cleaning, cooking, and home care.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maid Services</h3>
-            <p>Trusted maids for daily cleaning, cooking, and complete home care.</p>
+            <p>Good maids for daily cleaning, cooking, and home care.</p>
             <div class="book-btn">Book a Maid</div>
           </div>
         </div>
@@ -285,10 +293,10 @@
         <div class="service-card" onclick="window.location.href='nurse.html'">
           <h3 class="mobile-title">Certified Nurses</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./nurse.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Professional nurses for surgery recovery and daily patient care.</div>
+          <div class="mobile-overlay-text">Expert nurses to care for patients at home.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Certified Nurses</h3>
-            <p>Professional nurses for surgery recovery and daily patient care.</p>
+            <p>Expert nurses to care for patients at home.</p>
             <div class="book-btn">Request a Nurse</div>
           </div>
         </div>
@@ -299,10 +307,10 @@
         <div class="service-card" onclick="window.location.href='health.html'">
           <h3 class="mobile-title">Health Visits</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Quick home visits for check-ups, wound dressing, and injections.</div>
+          <div class="mobile-overlay-text">Fast home visits for check-ups, bandaging, and injections.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Visits</h3>
-            <p>Quick home visits for check-ups, wound dressing, and injections.</p>
+            <p>Fast home visits for check-ups, bandaging, and injections.</p>
             <div class="book-btn">Schedule a Visit</div>
           </div>
         </div>
@@ -313,10 +321,10 @@
         <div class="service-card" onclick="window.location.href='babysitter.html'">
           <h3 class="mobile-title">Babysitting</h3>
           <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./babysitter.mp4" type="video/mp4"></video>
-          <div class="mobile-overlay-text">Caring, patient, and verified babysitters for your little ones.</div>
+          <div class="mobile-overlay-text">Caring and trusted babysitters for your children.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitting</h3>
-            <p>Caring, patient, and verified babysitters for your little ones.</p>
+            <p>Caring and trusted babysitters for your children.</p>
             <div class="book-btn">Find a Babysitter</div>
           </div>
         </div>
@@ -364,7 +372,7 @@
           <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
           <div class="logo-text">Priya Seva Center</div>
         </div>
-        <p>Premium home care, certified nursing, and trusted household management across Kolkata.</p>
+        <p>Good home care, certified nurses, and trusted maids across Kolkata.</p>
       </div>
       <div class="footer-col">
         <h4>Quick Links</h4>
@@ -386,8 +394,8 @@
   </footer>
 
   <div class="chatbot-wrapper">
-    <div class="kelvin-bubble" id="kelvinBubble">Hi, I'm Kelvin, your AI Assistant, tell me your concern!</div>
-    <img src="KELVIN.png" class="kelvin-bot" alt="Kelvin AI">
+    <div class="kelvin-bubble" id="kelvinBubble">Hi, I'm your Help Assistant, tell me your concern!</div>
+    <img src="KELVIN.png" class="kelvin-bot" alt="Help Assistant">
     <div class="chatbot-fab" onclick="openChatTriage()">
       <i class="fa-solid fa-message"></i>
     </div>
@@ -396,13 +404,13 @@
   <div class="chat-modal-overlay" id="chatModal">
     <div class="chat-window">
       <div class="chat-header">
-        <div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-robot" style="color:var(--highlight);"></i> Kelvin Assistant</div>
+        <div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-robot" style="color:var(--highlight);"></i> Help Assistant</div>
         <i class="fa-solid fa-xmark chat-close" onclick="closeChatTriage()"></i>
       </div>
       
       <div class="chat-body" id="chatFlowContainer">
         <div class="chat-bubble bot-intro">
-          <strong>Kelvin AI</strong><br><br>
+          <strong>Help Assistant</strong><br><br>
           Hi! I am your Help Assistant. What can I do for you today?
         </div>
         
@@ -448,7 +456,7 @@
       </div>
 
       <div id="view-signup" class="hidden">
-        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Create a secure account to book and manage your home care.</p>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Make an account to book and manage your services.</p>
         <input type="email" id="signupEmail" class="auth-input glass-render" placeholder="Email Address">
         <input type="password" id="signupPassword" class="auth-input glass-render" placeholder="Create Password">
         <input type="password" id="signupConfirm" class="auth-input glass-render" placeholder="Confirm Password">
@@ -458,14 +466,14 @@
       <div id="view-otp" class="hidden">
         <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px;"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2 style="color:#fff; margin-top:0; font-weight: 700;">Check Your Email</h2>
-        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a verification code to your email. Enter it below to activate your account.</p>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We sent a code to your email. Enter it below to start.</p>
         <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Verification Code" style="text-align:center; font-size:20px; letter-spacing: 5px;">
         <button class="primary-auth-btn" id="otpBtn" onclick="handleOTPVerify();">Verify & Log In</button>
       </div>
 
       <div id="view-forgot" class="hidden">
         <h2 style="color:#fff; margin-top:0; font-weight: 700;">Reset Password</h2>
-        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Enter your email to receive a secure recovery code.</p>
+        <p style="color:#94a3b8; font-size: 13px; margin-bottom: 20px;">Enter your email to get a code to change your password.</p>
         <input type="email" id="forgotEmail" class="auth-input glass-render" placeholder="Registered Email Address">
         <button class="primary-auth-btn" id="forgotBtn" onclick="sendRecoveryCode();">Send Recovery Code</button>
         <button class="secondary-auth-btn" style="width:100%; margin-top:10px;" onclick="toggleAuthView('login');">Back to Login</button>
@@ -492,11 +500,8 @@
     }
 
     function changeLanguage(langCode) {
-      const selectField = document.querySelector('select.goog-te-combo');
-      if (selectField) {
-        selectField.value = langCode;
-        selectField.dispatchEvent(new Event('change'));
-      }
+      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      window.location.reload();
     }
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -898,7 +903,7 @@
       const flowContainer = document.getElementById('chatFlowContainer');
       flowContainer.innerHTML = `
         <div class="chat-bubble bot-intro">
-          <strong>Kelvin AI</strong><br><br>
+          <strong>Help Assistant</strong><br><br>
           Hi! I am your Help Assistant. What can I do for you today?
         </div>
         <div class="chat-options-grid" id="mainChatOptions">
