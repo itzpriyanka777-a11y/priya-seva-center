@@ -54,7 +54,7 @@
     .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 20px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
     .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
     
-    .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 240px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
+    .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 250px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
     .dropdown-content a { color: #e2e8f0; padding: 16px 22px; display: block; font-weight: 500; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s;}
     .dropdown-content a i { width: 30px; color: var(--highlight); }
     .dropdown-content a:hover { background: rgba(0, 243, 255, 0.1); color: white; padding-left: 28px;}
@@ -227,8 +227,10 @@
       <div class="menu-container">
         <button class="menu-btn"><i class="fa-solid fa-bars"></i></button>
         <div class="dropdown-content">
+          <a href="packages.html"><i class="fa-solid fa-box-medical"></i> Health Care Packages</a>
+          <a href="#reviews"><i class="fa-solid fa-star"></i> Testimonials</a>
+          <a href="join.html"><i class="fa-solid fa-handshake-angle"></i> Join Us</a>
           <a href="grievance.html"><i class="fa-solid fa-triangle-exclamation"></i> Register a Complaint</a>
-          <a href="#reviews"><i class="fa-solid fa-star"></i> Customer Reviews</a>
           <a href="policy.html"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
         </div>
       </div>
@@ -437,7 +439,6 @@
         <div style="font-size: 45px; color: var(--highlight); margin-bottom: 15px;"><i class="fa-solid fa-envelope-open-text"></i></div>
         <h2 style="color:#fff; margin-top:0; font-weight: 700;">Check Your Email</h2>
         <p style="color:#94a3b8; font-size: 13px; margin-bottom: 25px;">We just sent a verification code to your email. Enter it below to activate your account.</p>
-        <!-- Removed maxlength to support Supabase hashes -->
         <input type="text" id="otpCode" class="auth-input glass-render" placeholder="Verification Code" style="text-align:center; font-size:20px; letter-spacing: 5px;">
         <button class="primary-auth-btn" id="otpBtn" onclick="handleOTPVerify();">Verify & Log In</button>
       </div>
@@ -864,9 +865,9 @@
         <div class="chat-options-grid" id="mainChatOptions">
           <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Book a Service</button>
           <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Edit or Cancel Booking</button>
-          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Mark an Absence</button>
-          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. Register a Complaint</button>
-          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Us</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'\"><i class="fa-solid fa-user-xmark"></i> 3. Mark an Absence</button>
+          <button class=\"chat-btn\" onclick=\"window.location.href='grievance.html'\"><i class=\"fa-solid fa-triangle-exclamation\"></i> 4. Register a Complaint</button>
+          <button class=\"chat-btn\" onclick=\"chatSelect('contact')\"><i class=\"fa-solid fa-headset\"></i> 5. Contact Us</button>
         </div>
       `;
     }
