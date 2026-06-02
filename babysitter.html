@@ -73,6 +73,30 @@
     .glass-render:hover { background: rgba(10, 20, 35, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
+    /* TIME PICKER FIX: Natively turns clock icon white and makes the whole box clickable */
+    input[type="time"].glass-render {
+      color-scheme: dark;
+      cursor: pointer;
+    }
+    input[type="time"].glass-render::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      filter: invert(1);
+    }
+
+    /* HOVER CHAT BUBBLE ENGINE */
+    .helper-bubble {
+      display: none; position: absolute; top: -50px; right: 0; 
+      background: rgba(0, 243, 255, 0.95); color: #000; padding: 12px 18px; 
+      border-radius: 14px; border-bottom-right-radius: 0; font-size: 12px; 
+      font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
+      z-index: 200; pointer-events: none; animation: dropBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .helper-bubble::after {
+      content: ''; position: absolute; bottom: -8px; right: 10px; 
+      border-width: 10px 10px 0 0; border-style: solid; 
+      border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent;
+    }
+
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
@@ -158,20 +182,23 @@
 
         <div class="capsule-group input-group custom-select">
           <label>Service Frequency</label>
+          
+          <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
+
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
               <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectFrequency('Single Day Need')">Single Day Need</div>
-            <div class="option" onclick="selectFrequency('Recurring Weekly')">Recurring Weekly</div>
-            <div class="option" onclick="selectFrequency('Customized Dates')">Customized Dates</div>
+            <div class="option" onclick="selectFrequency('One-Time Service')" onmouseenter="showFreqHelper('Book for one specific date.')" onmouseleave="hideFreqHelper()">One-Time Service</div>
+            <div class="option" onclick="selectFrequency('Ongoing Service')" onmouseenter="showFreqHelper('Select a start date for continuous daily service.')" onmouseleave="hideFreqHelper()">Ongoing Service</div>
+            <div class="option" onclick="selectFrequency('Custom Dates')" onmouseenter="showFreqHelper('Pick multiple specific dates freely.')" onmouseleave="hideFreqHelper()">Custom Dates</div>
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
             <div class="cal-top">
-               <span>Select Dates:</span> 
+               <span id="calTopText">Select Dates:</span> 
                <div style="display:flex; align-items:center; gap: 15px;">
                    <span>May 2026</span>
                    <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
@@ -192,7 +219,7 @@
         <div class="capsule-group input-group">
           <label>Required Time Window</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="timeWindow" class="glass-render" placeholder="E.g., 9:00 AM to 5:00 PM">
+            <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
@@ -261,13 +288,48 @@
 
     let selectedFrequency = ""; let selectedDates = [];
 
+    function showFreqHelper(text) {
+       const bubble = document.getElementById('freqHelperBubble');
+       bubble.innerText = text;
+       bubble.style.display = 'block';
+    }
+    function hideFreqHelper() {
+       document.getElementById('freqHelperBubble').style.display = 'none';
+    }
+
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
-    function selectFrequency(value) { selectOption('freqTrigger', 'freqOptions', value); selectedFrequency = value; selectedDates = []; updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; buildCalendarGrid(value === 'Single Day Need'); }
+    
+    function selectFrequency(value) { 
+        selectOption('freqTrigger', 'freqOptions', value); 
+        selectedFrequency = value; 
+        selectedDates = []; 
+        updateSelectedDatesDisplay(); 
+        document.getElementById('visualCalendar').style.display = 'block'; 
+        
+        const calTopText = document.getElementById('calTopText');
+        if (value === 'Ongoing Service') {
+            calTopText.innerText = "Select Start Date:";
+            buildCalendarGrid(true); 
+        } else if (value === 'One-Time Service') {
+            calTopText.innerText = "Select Date:";
+            buildCalendarGrid(true);
+        } else {
+            calTopText.innerText = "Select Dates:";
+            buildCalendarGrid(false);
+        }
+    }
 
     function updateSelectedDatesDisplay() {
       const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
-      if (selectedDates.length > 0) { datesText.innerText = "Selected: May " + selectedDates.sort((a,b)=>a-b).join(", "); displayDiv.style.display = 'block'; } else { displayDiv.style.display = 'none'; }
+      if (selectedDates.length > 0) { 
+          let prefix = "Selected: May ";
+          if (selectedFrequency === 'Ongoing Service') prefix = "Starting: May ";
+          datesText.innerText = prefix + selectedDates.sort((a,b)=>a-b).join(", "); 
+          displayDiv.style.display = 'block'; 
+      } else { 
+          displayDiv.style.display = 'none'; 
+      }
     }
 
     function buildCalendarGrid(isSingleSelect) {
@@ -292,7 +354,7 @@
 
     async function submitRequest() {
       const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const childCount = document.getElementById('childCountTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value;
-      if(!name || childCount.includes("Select") || selectedFrequency === "" || selectedDates.length === 0) { return alert("Please fill your name, select count, and pick your dates."); }
+      if(!name || childCount.includes("Select") || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { return alert("Please fill your name, select count, pick your dates, and specify a time."); }
       
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
@@ -301,11 +363,7 @@
 
         let formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
         const serviceName = "Babysitting - " + childCount;
-        
-        // THIS IS THE UPDATED APP SCRIPT URL
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
-        
-        // PAYLOAD UPGRADED WITH new_booking ACTION TYPE
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLjRi5sXh__lJCPEpDJBznPkUKemqRYbxlUNkP8qSO0uQYl1EEHx0pXTQe_4r22Po/exec";
         const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: serviceName, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Frequency: " + selectedFrequency };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
