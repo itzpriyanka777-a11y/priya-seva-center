@@ -10,14 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    }
-  </script>
-
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     :root { --void-bg: #050510; --glass-base: rgba(15, 10, 30, 0.4); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #00f3ff; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -186,8 +183,6 @@
 </head>
 <body>
 
-  <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
-
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
 
@@ -349,6 +344,7 @@
       <div id="dayDetailsContent"></div>
     </div>
   </div>
+  
   <script>
     // --- Background Stars Physics ---
     const canvas = document.getElementById('nightCanvas');
@@ -372,10 +368,20 @@
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1800);
     });
     
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
+    let isMouseTicking = false;
     document.addEventListener('mousemove', (e) => {
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
+      if (!isMouseTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect(); 
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isMouseTicking = false;
+        });
+        isMouseTicking = true;
+      }
     });
 
     function toggleCalendar() {
@@ -842,30 +848,56 @@
     window.onload = checkAuth;
   </script>
 
-  <!-- Google Translate Scripts (Global Translation Engine) -->
   <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload();
+      window.location.reload(); // Reloads instantly in the correct language
     }
 
-    // THE ULTIMATE ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
-    const globalObserver = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        globalObserver.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        globalObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    // 4. Popup & Loading Mask Controller (For index.html)
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      if (mask && popup) {
+        if (!choiceMade) {
+          // First time visitor: Show mask for 1s, then show Popup
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1000);
+        } else {
+          // Returning visitor: Just hide the mask smoothly
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 800);
+        }
+      }
+      
+      // Nuke the ugly Google Translate Bar permanently
+      const observer = new MutationObserver(() => {
+          document.body.style.top = '0px';
+          document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame');
+          if(gtFrame) gtFrame.remove();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
