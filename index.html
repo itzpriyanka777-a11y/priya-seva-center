@@ -10,20 +10,12 @@
   
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <script>
-    let savedLang = localStorage.getItem('priyaSevaLang');
-    if (!savedLang) {
-      localStorage.setItem('priyaSevaLang', 'bn');
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    } else {
-      document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${savedLang}; path=/`;
-    }
-  </script>
 
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
@@ -37,7 +29,7 @@
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
     body { top: 0px !important; margin-top: 0px !important; position: static !important; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
-    .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
+    .goog-text-highlight { background: transparent !important; box-shadow: none !important; border: none !important;}
 
     body { 
       font-family: 'Poppins', sans-serif; 
@@ -107,8 +99,10 @@
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
     .hero-content { position: relative; z-index: 2; }
-    .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px;}
-    .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400;}
+    
+    /* HIGHLIGHT FIX: pointer-events: none completely stops Google Translate from highlighting the text */
+    .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px; pointer-events: none; user-select: none; }
+    .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400; pointer-events: none; user-select: none; }
 
     .services-container { max-width: 1200px; margin: -120px auto 50px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; position: relative; z-index: 10;}
     .float-wrap { animation: gentlyBob 7s ease-in-out infinite alternate; }
@@ -121,7 +115,6 @@
     .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
-
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
@@ -309,7 +302,6 @@
 
     </div>
   </nav>
-
   <section class="hero">
     <canvas id="heroCanvas"></canvas>
     <div class="hero-content">
@@ -322,7 +314,7 @@
       <div class="light-tracker card-maid">
         <div class="service-card" onclick="window.location.href='maid.html'">
           <h3 class="mobile-title">Maids</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./maid.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-cleaning-the-living-room-2751/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Good maids for home cleaning and cooking.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maids</h3>
@@ -336,7 +328,7 @@
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
           <h3 class="mobile-title">Expert Nurses</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./nurse.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Expert nurses to care for sick family members at home.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Expert Nurses</h3>
@@ -364,7 +356,7 @@
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
           <h3 class="mobile-title">Babysitters</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="./babysitter.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Safe and caring babysitters for your kids.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
@@ -532,75 +524,52 @@
 
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // 1. THE MASTER LANGUAGE ENGINE
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
 
-  <script type="text/javascript">
     function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,bn', // English, Hindi, Bengali
-        autoDisplay: false
-      }, 'google_translate_element');
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
     function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode);
+      localStorage.setItem('langChoiceMade', 'true');
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
       window.location.reload();
     }
 
-    // THE LANGUAGE POPUP & MASK LOGIC
-    window.addEventListener('load', () => {
-      const mask = document.getElementById('contentMask');
-      const popup = document.getElementById('langPopupOverlay');
-      const choiceMade = localStorage.getItem('langChoiceMade');
-
-      // If no choice has been made, wait 1.5 seconds (allowing GT to load quietly) then show popup
-      if (!choiceMade) {
-        setTimeout(() => {
-          mask.style.opacity = '0';
-          setTimeout(() => { 
-            mask.style.display = 'none'; 
-            popup.style.display = 'flex';
-          }, 800);
-        }, 1500);
-      } else {
-        // If choice is already made, just fade out the mask smoothly
-        setTimeout(() => {
-          mask.style.opacity = '0';
-          setTimeout(() => { mask.style.display = 'none'; }, 800);
-        }, 1000);
-      }
-    });
-
     function saveLangChoice(lang) {
       localStorage.setItem('langChoiceMade', 'true');
       localStorage.setItem('priyaSevaLang', lang);
       document.getElementById('langPopupOverlay').style.display = 'none';
-      
-      // Check if we need to reload to apply the new language, otherwise just stay
-      const currentSaved = localStorage.getItem('priyaSevaLang');
-      if (lang !== 'bn' || currentSaved !== 'bn') {
-         changeLanguage(lang);
-      }
+      changeLanguage(lang);
     }
 
-    // THE ULTIMATE ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
-  </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
+      if (mask && popup) {
+        if (!choiceMade) {
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 1000);
+        }
+      }
+    });
+
     const canvas = document.getElementById('heroCanvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -624,12 +593,20 @@
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
     });
 
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
+    let isMouseTicking = false;
     document.addEventListener('mousemove', (e) => {
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-        el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
+      if (!isMouseTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect(); 
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isMouseTicking = false;
+        });
+        isMouseTicking = true;
+      }
     });
 
     let revIndex = 0;
@@ -794,9 +771,9 @@
       else { alert("Password updated successfully!"); window.location.href = "dashboard.html"; }
     }
 
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let chatContextUser = null;
     let chatContextBookings = [];
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     function scrollToBottom() {
       const c = document.getElementById('chatFlowContainer');
@@ -1002,12 +979,13 @@
         <div class="chat-options-grid" id="mainChatOptions">
           <button class="chat-btn" onclick="chatSelect('booking')"><i class="fa-solid fa-calendar-plus"></i> 1. Book Service</button>
           <button class="chat-btn" onclick="chatSelect('edit')"><i class="fa-solid fa-pen-to-square"></i> 2. Change Booking</button>
-          <button class="chat-btn" onclick="window.location.href='absent.html'\"><i class="fa-solid fa-user-xmark"></i> 3. Mark Absent</button>
-          <button class=\"chat-btn\" onclick=\"window.location.href='grievance.html'\"><i class=\"fa-solid fa-triangle-exclamation\"></i> 4. File Complaint</button>
-          <button class=\"chat-btn\" onclick=\"chatSelect('contact')\"><i class=\"fa-solid fa-headset\"></i> 5. Contact Us</button>
+          <button class="chat-btn" onclick="window.location.href='absent.html'"><i class="fa-solid fa-user-xmark"></i> 3. Mark Absent</button>
+          <button class="chat-btn" onclick="window.location.href='grievance.html'"><i class="fa-solid fa-triangle-exclamation"></i> 4. File Complaint</button>
+          <button class="chat-btn" onclick="chatSelect('contact')"><i class="fa-solid fa-headset"></i> 5. Contact Us</button>
         </div>
       `;
     }
   </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
