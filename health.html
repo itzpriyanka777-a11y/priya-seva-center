@@ -10,15 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- FORCE BENGALI ON FIRST LOAD -->
-  <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    }
-  </script>
-
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     :root {
       --void-bg: #03040b;
       --glass-base: rgba(10, 15, 25, 0.25);
@@ -154,13 +150,7 @@
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); }
-    .cinematic-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.1) translateX(-20px); transition: opacity 1.5s ease, transform 6s ease-out; z-index: 1;}
-    .cinematic-img.active { opacity: 0.7; transform: scale(1) translateX(0); z-index: 2;}
-    .cinematic-img.swipe-out { transform: translateX(120vw) rotate(5deg); opacity: 0; transition: transform 1.2s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.8s ease; z-index: 3;}
-    .final-message-container { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 60px; z-index: 10; opacity: 0; transform: scale(0.95); transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); text-align: center; }
-    .final-message-container.show { opacity: 1; transform: scale(1); }
-    .final-message-container h3 { font-family: 'Poppins', sans-serif; font-size: 36px; font-weight: 300; line-height: 1.5; color: #fff; text-shadow: 0 5px 20px rgba(0, 0, 0, 0.9); }
-    .final-message-container strong { font-weight: 700; background: -webkit-linear-gradient(45deg, #00f3ff, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(0,243,255,0.6));}
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); object-fit: cover; z-index: 1;}
 
     /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
@@ -168,13 +158,11 @@
       .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
       .left-pane { padding: 100px 20px 40px 20px; min-height: auto; display: block; overflow-y: visible;}
       .right-pane { display: none !important; } 
-      .final-message-container h3 { font-size: 24px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HIDDEN GOOGLE TRANSLATE ELEMENT -->
   <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
 
   <header class="universal-header">
@@ -185,7 +173,6 @@
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
       <a href="dashboard.html" class="universal-btn btn-dash"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a>
       
-      <!-- LANGUAGE TRANSLATION MENU -->
       <div class="menu-container">
         <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
         <div class="dropdown-content" style="min-width: 150px; right: 0;">
@@ -301,17 +288,12 @@
     </div>
 
     <div class="right-pane">
-      <img src="pexels-yaroslav-shuraev-8088852.jpg" class="cinematic-img" id="img-0" alt="Health Care">
-      <img src="pexels-rd-270521240-32712474.jpg" class="cinematic-img" id="img-1" alt="Stethoscope">
-      <img src="pexels-perfect-lens-15499663.jpg" class="cinematic-img" id="img-2" alt="Hygiene">
-      <img src="pexels-thirdman-7659569.jpg" class="cinematic-img" id="img-3" alt="Doctor Patient">
-      <div class="final-message-container" id="finalMessage">
-        <h3>There are 1000 of doctors & only <strong>one you!</strong><br><br>Get Health Check Up at Bucks Worth and stay updated with your body notifications the way u need to stay updated on your ig~</h3>
-      </div>
+      <video autoplay loop muted playsinline class="video-bg" style="opacity: 0.7;">
+        <source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4">
+      </video>
     </div>
 
   </div>
-
   <script>
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
@@ -320,13 +302,24 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
     let lastRippleTime = 0;
+    let isTicking = false;
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
       if(now - lastRippleTime > 150) { createRipple(e.clientX, e.clientY); lastRippleTime = now; }
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
+      
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect(); 
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isTicking = false;
+        });
+        isTicking = true;
+      }
     });
 
     const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d');
@@ -353,9 +346,11 @@
     }
     drawSereneSky();
 
-    const sequenceImages = [ document.getElementById('img-0'), document.getElementById('img-1'), document.getElementById('img-2'), document.getElementById('img-3') ];
+    // Cinematic Sequence disabled safely as Live Cloud Video is now active.
+    const sequenceImages = [ document.getElementById('img-0'), document.getElementById('img-1'), document.getElementById('img-2'), document.getElementById('img-3') ].filter(Boolean);
     const finalMessage = document.getElementById('finalMessage'); let currentImgIndex = 0;
     function runCinematicSequence() {
+      if (sequenceImages.length === 0) return; // Prevents errors since images were replaced by video
       if (currentImgIndex >= sequenceImages.length) { finalMessage.classList.add('show'); return; }
       const activeImg = sequenceImages[currentImgIndex]; activeImg.classList.add('active');
       setTimeout(() => { activeImg.classList.remove('active'); activeImg.classList.add('swipe-out'); currentImgIndex++; setTimeout(runCinematicSequence, 300); }, 3500);
@@ -560,29 +555,55 @@
   </script>
 
   <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload();
+      window.location.reload(); // Reloads instantly in the correct language
     }
 
-    // THE ULTIMATE ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    // 4. Popup & Loading Mask Controller (For index.html)
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      if (mask && popup) {
+        if (!choiceMade) {
+          // First time visitor: Show mask for 1s, then show Popup
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1000);
+        } else {
+          // Returning visitor: Just hide the mask smoothly
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 800);
+        }
+      }
+      
+      // Nuke the ugly Google Translate Bar permanently
+      const observer = new MutationObserver(() => {
+          document.body.style.top = '0px';
+          document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame');
+          if(gtFrame) gtFrame.remove();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
