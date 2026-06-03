@@ -10,15 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- FORCE BENGALI ON FIRST LOAD -->
-  <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    }
-  </script>
-
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     :root {
       --void-bg: #03040b;
       --glass-base: rgba(10, 15, 25, 0.25);
@@ -141,22 +137,29 @@
       border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent;
     }
 
-    .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
+    .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 229, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
     .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; position: relative; z-index: 1;}
     .cal-day-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,1);}
     .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
-    .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4); transform: scale(1.3) translateY(-6px);}
+    .cal-date.selected { background: rgba(0, 229, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 229, 255, 0.4); transform: scale(1.3) translateY(-6px);}
     .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
-    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
-    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.3); text-shadow: 0 0 10px #fff; }
-    
-    @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    .submit-btn { width: 100%; padding: 22px; background: rgba(0, 229, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
+    .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 229, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 229, 255, 0.3); text-shadow: 0 0 10px #fff; }
+    .submit-btn:active { transform: translateY(5px) scale(0.95); }
 
-    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
+    }
+    
+    .video-bg { 
+      position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); 
+      opacity: 0; object-fit: cover; z-index: 1; 
+      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
     .video-bg.playing { opacity: 0.85; }
 
     @media (max-width: 900px) {
@@ -169,7 +172,6 @@
 </head>
 <body>
 
-  <!-- HIDDEN GOOGLE TRANSLATE ELEMENT -->
   <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
 
   <header class="universal-header">
@@ -180,7 +182,6 @@
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
       <a href="dashboard.html" class="universal-btn btn-dash"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a>
       
-      <!-- LANGUAGE TRANSLATION MENU -->
       <div class="menu-container">
         <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
         <div class="dropdown-content">
@@ -287,9 +288,10 @@
 
       </div>
     </div>
+    
     <div class="right-pane">
       <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
-        <source src="./nurse.mp4" type="video/mp4">
+        <source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4">
       </video>
     </div>
 
@@ -307,20 +309,29 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
     let lastRippleTime = 0;
+    let isTicking = false;
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
       if(now - lastRippleTime > 150) { 
         createRipple(e.clientX, e.clientY);
         lastRippleTime = now;
       }
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        el.style.setProperty('--mouse-x', `${x}px`);
-        el.style.setProperty('--mouse-y', `${y}px`);
-      });
+      
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            el.style.setProperty('--mouse-x', `${x}px`);
+            el.style.setProperty('--mouse-y', `${y}px`);
+          });
+          isTicking = false;
+        });
+        isTicking = true;
+      }
     });
 
     const canvas = document.getElementById('nightCanvas');
@@ -463,25 +474,55 @@
   </script>
 
   <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
+
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload();
+      window.location.reload(); // Reloads instantly in the correct language
     }
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+
+    // 4. Popup & Loading Mask Controller (For index.html)
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      if (mask && popup) {
+        if (!choiceMade) {
+          // First time visitor: Show mask for 1s, then show Popup
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1000);
+        } else {
+          // Returning visitor: Just hide the mask smoothly
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 800);
+        }
+      }
+      
+      // Nuke the ugly Google Translate Bar permanently
+      const observer = new MutationObserver(() => {
+          document.body.style.top = '0px';
+          document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame');
+          if(gtFrame) gtFrame.remove();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
