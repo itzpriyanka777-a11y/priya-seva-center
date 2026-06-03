@@ -9,14 +9,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    }
-  </script>
-
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     :root { --void-bg: #020614; --glass-base: rgba(10, 20, 35, 0.25); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #e74c3c; }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -224,93 +221,18 @@
   </div>
 
   <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload();
-    }
-
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
-    });
-  </script>
-  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-  <script>
-    const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
-    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeCanvas); resizeCanvas();
-    for(let i=0; i<300; i++) { stars.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, size: Math.random()*1.5, speed: (Math.random()*0.1)+0.02, color: '231,76,60' }); }
-    function drawSky() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.x -= s.speed; if(s.x < 0) s.x = canvas.width; ctx.fillStyle = `rgba(${s.color}, 0.5)`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill(); }); requestAnimationFrame(drawSky); }
-    drawSky();
-
-    document.addEventListener('mousemove', (e) => {
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
-    });
-
-    const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec"; 
-
-    function toggleDropdown(id) { document.getElementById(id).classList.toggle('show'); }
-    function selectOption(triggerId, dropdownId, value) { 
-      const trigger = document.getElementById(triggerId); 
-      trigger.innerHTML = `<span style="color:white; font-weight:600;">${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
-      document.getElementById(dropdownId).classList.remove('show'); 
-    }
-
-    async function submitAbsence() {
-      const btn = document.getElementById('submitBtn');
-      const name = document.getElementById('clientName').value;
-      const who = document.getElementById('whoTrigger').innerText.trim();
-      const service = document.getElementById('serviceTrigger').innerText.trim();
-      const start = document.getElementById('startDate').value;
-      const end = document.getElementById('endDate').value;
-      const reason = document.getElementById('reasonText').value;
-
-      if(!name || who.includes("Select") || service.includes("Select") || !start || !end) return alert("Please complete all fields.");
-
-      try {
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging...'; btn.disabled = true;
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { btn.innerHTML = 'Send Request'; btn.disabled = false; return alert("Please log in first."); }
-
-        const payload = {
-          actionType: 'log_absence',
-          name: name,
-          email: user.email,
-          absenceType: who,
-          serviceType: service,
-          startDate: start,
-          endDate: end,
-          reason: reason || "None"
-        };
-
-        await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
-        const adminWaNumber = "917439392803";
-        const waMessage = `*CLIENT ABSENCE LOGGED*\n\n*Client:* ${name}\n*Type:* ${who}\n*Service:* ${service}\n*From:* ${start}\n*To:* ${end}\n*Reason:* ${reason || 'None'}`;
-        window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
-        window.location.href = "dashboard.html";
-
-      } catch(err) { alert("Error connecting to server."); btn.innerHTML = 'Send Request'; btn.disabled = false; }
-    }
-  </script>
-</body>
-</html>
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.
