@@ -12,9 +12,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
+    let savedLang = localStorage.getItem('priyaSevaLang');
+    if (!savedLang) {
+      localStorage.setItem('priyaSevaLang', 'bn');
       document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
       document.cookie = "googtrans=/en/bn; path=/";
+    } else {
+      document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+      document.cookie = `googtrans=/en/${savedLang}; path=/`;
     }
   </script>
 
@@ -34,10 +39,7 @@
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
-    /* ANTI-FLASH FADE */
     body { 
-      opacity: 0; 
-      animation: smoothLoad 0.8s ease-in 0.6s forwards; 
       font-family: 'Poppins', sans-serif; 
       background-color: var(--bg-void); 
       color: #e2e8f0; 
@@ -45,10 +47,38 @@
       background-image: linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
       background-size: 50px 50px;
     }
-    @keyframes smoothLoad { to { opacity: 1; } }
     
     a { text-decoration: none; }
     
+    /* SMOOTH LOADING MASK: Hides the choppy translation flash completely */
+    #contentMask {
+      position: fixed; inset: 0; background: #030814; z-index: 999999;
+      display: flex; justify-content: center; align-items: center; flex-direction: column;
+      transition: opacity 0.8s ease;
+    }
+
+    /* LANGUAGE POPUP UI */
+    .lang-popup-overlay {
+      position: fixed; inset: 0; background: rgba(3, 8, 20, 0.98); z-index: 1000000;
+      display: flex; justify-content: center; align-items: center; backdrop-filter: blur(20px);
+    }
+    .lang-popup-box {
+      background: rgba(10, 18, 35, 0.95); border: 1px solid #00f3ff; padding: 40px;
+      border-radius: 24px; text-align: center; box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+      max-width: 400px; width: 90%; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .lang-popup-box h3 { color: white; margin-bottom: 10px; font-size: 20px; line-height: 1.4;}
+    .lang-popup-box p { color: #94a3b8; font-size: 13px; margin-bottom: 25px; }
+    .lang-btn {
+      display: block; width: 100%; background: rgba(0, 243, 255, 0.1); border: 1px solid #00f3ff;
+      color: #00f3ff; padding: 15px; margin-bottom: 12px; border-radius: 12px; font-size: 16px;
+      font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Poppins';
+    }
+    .lang-btn:hover { background: #00f3ff; color: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 243, 255, 0.3); }
+    .lang-btn.primary { background: #00f3ff; color: #000; }
+    .lang-btn.primary:hover { background: #00d0d0; }
+    @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
     #rippleContainer { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; }
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
@@ -73,7 +103,6 @@
     .dropdown-content a i { width: 30px; color: var(--highlight); }
     .dropdown-content a:hover { background: rgba(0, 243, 255, 0.1); color: white; padding-left: 28px;}
     .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
@@ -225,6 +254,22 @@
 <body>
 
   <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
+
+  <div id="contentMask">
+    <i class="fa-solid fa-spinner fa-spin" style="color: #00f3ff; font-size: 40px; margin-bottom: 20px;"></i>
+    <h3 style="color: white; font-family: 'Poppins'; font-weight: 500;">Priya Seva Center</h3>
+    <p style="color: rgba(255,255,255,0.5); font-family: 'Poppins'; font-size: 13px; margin-top: 10px;">Translating / অনুবাদ করা হচ্ছে...</p>
+  </div>
+
+  <div class="lang-popup-overlay" id="langPopupOverlay" style="display:none;">
+    <div class="lang-popup-box">
+      <h3>Choose Language <br> <span style="font-size: 18px; color: #00f3ff; display: block; margin-top: 8px;">ভাষা নির্বাচন করুন</span></h3>
+      <p>You can always change this later from the globe icon at the top.</p>
+      <button class="lang-btn primary" onclick="saveLangChoice('bn')">বাংলা (Bengali)</button>
+      <button class="lang-btn" onclick="saveLangChoice('en')">English</button>
+      <button class="lang-btn" onclick="saveLangChoice('hi')">हिन्दी (Hindi)</button>
+    </div>
+  </div>
 
   <div id="rippleContainer"></div>
 
@@ -423,7 +468,6 @@
       </div>
     </div>
   </div>
-
   <div class="cookie-banner" id="cookieBanner">
     <div><i class="fa-solid fa-shield-halved" style="color:var(--highlight); font-size: 18px;"></i> We use cookies to make the website easy to use. <a href="policy.html" style="color:var(--highlight); text-decoration: underline;">Learn more</a>.</div>
     <div style="display:flex; gap: 10px;">
@@ -488,6 +532,7 @@
 
     </div>
   </div>
+
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
@@ -503,6 +548,42 @@
       window.location.reload();
     }
 
+    // THE LANGUAGE POPUP & MASK LOGIC
+    window.addEventListener('load', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      // If no choice has been made, wait 1.5 seconds (allowing GT to load quietly) then show popup
+      if (!choiceMade) {
+        setTimeout(() => {
+          mask.style.opacity = '0';
+          setTimeout(() => { 
+            mask.style.display = 'none'; 
+            popup.style.display = 'flex';
+          }, 800);
+        }, 1500);
+      } else {
+        // If choice is already made, just fade out the mask smoothly
+        setTimeout(() => {
+          mask.style.opacity = '0';
+          setTimeout(() => { mask.style.display = 'none'; }, 800);
+        }, 1000);
+      }
+    });
+
+    function saveLangChoice(lang) {
+      localStorage.setItem('langChoiceMade', 'true');
+      localStorage.setItem('priyaSevaLang', lang);
+      document.getElementById('langPopupOverlay').style.display = 'none';
+      
+      // Check if we need to reload to apply the new language, otherwise just stay
+      const currentSaved = localStorage.getItem('priyaSevaLang');
+      if (lang !== 'bn' || currentSaved !== 'bn') {
+         changeLanguage(lang);
+      }
+    }
+
     // THE ULTIMATE ANTI-GOOGLE TRANSLATE BODY SHIFT SCRIPT
     const observer = new MutationObserver(() => {
         document.body.style.top = '0px';
@@ -513,10 +594,8 @@
         const gtFrame = document.querySelector('.goog-te-banner-frame');
         if(gtFrame) gtFrame.remove();
     });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
-    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
@@ -539,7 +618,7 @@
 
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
-      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper') || e.target.closest('.nav-arrow')) return;
+      if(e.target.closest('button') || e.target.closest('a') || e.target.closest('.light-tracker') || e.target.closest('.auth-modal') || e.target.closest('.service-card') || e.target.closest('.chat-window') || e.target.closest('.chatbot-wrapper') || e.target.closest('.nav-arrow') || e.target.closest('.lang-popup-box')) return;
       const ripple = document.createElement('div'); ripple.className = 'water-ripple';
       ripple.style.left = e.clientX + 'px'; ripple.style.top = e.clientY + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
@@ -569,9 +648,9 @@
     }
     updateCarousel(); 
 
-    window.onload = function() {
-      if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 1000); }
-    };
+    window.addEventListener('load', function() {
+      if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 3000); }
+    });
     function handleCookies(choice) { 
       localStorage.setItem('cookiesAccepted', choice); 
       document.getElementById('cookieBanner').style.bottom = '-100px'; 
