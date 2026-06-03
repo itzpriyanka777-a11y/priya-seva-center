@@ -11,6 +11,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
+    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
+    .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
+
     :root {
       --void-bg: #020614;
       --glass-base: rgba(10, 20, 35, 0.25);
@@ -19,7 +29,8 @@
       --deep-ocean: #0055ff;
     }
 
-    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; }
+    body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background-color: var(--void-bg); overflow: hidden; color: white; opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; }
+    @keyframes smoothLoad { to { opacity: 1; } }
 
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
@@ -32,11 +43,21 @@
     .universal-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 5, 16, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-sizing: border-box;}
     .universal-brand { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2); transition: 0.3s;}
     .universal-brand:hover { transform: scale(1.05); color: #00f3ff; }
-    .universal-nav-right { display: flex; gap: 15px; }
+    .universal-nav-right { display: flex; gap: 15px; align-items: center; }
     .universal-btn { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 13px; transition: 0.3s; text-decoration: none; display: flex; align-items: center; gap: 8px;}
     .universal-btn:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);}
     .btn-dash { border-color: rgba(0, 243, 255, 0.3); color: #00f3ff; }
     .btn-dash:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);}
+
+    /* LANGUAGE DROPDOWN CSS */
+    .menu-container { position: relative; display: inline-block; }
+    .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 15px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
+    .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
+    .dropdown-content { display: none; position: absolute; right: 0; top: 110%; background: rgba(5, 10, 20, 0.95); backdrop-filter: blur(20px); min-width: 150px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); border-radius: 12px; border: 1px solid var(--glass-border); overflow: hidden; z-index: 99;}
+    .dropdown-content a { color: #e2e8f0; padding: 16px 22px; display: block; font-weight: 500; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-decoration: none;}
+    .dropdown-content a:hover { background: rgba(0, 229, 255, 0.1); color: white; padding-left: 28px;}
+    .menu-container:hover .dropdown-content { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
        .universal-header { padding: 15px 20px; }
@@ -73,7 +94,7 @@
     .glass-render:hover { background: rgba(10, 20, 35, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
-    /* TIME PICKER FIX: Natively turns clock icon white and makes the whole box clickable */
+    /* TIME PICKER FIX */
     input[type="time"].glass-render {
       color-scheme: dark;
       cursor: pointer;
@@ -123,8 +144,6 @@
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .video-bg.playing { opacity: 0.85; }
 
     /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
@@ -137,6 +156,8 @@
 </head>
 <body>
 
+  <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
+
   <header class="universal-header">
     <a href="index.html" class="universal-brand">
       <i class="fa-solid fa-hands-holding-child" style="color: #00e5ff;"></i> <span>Priya Seva Center</span>
@@ -144,6 +165,16 @@
     <div class="universal-nav-right">
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
       <a href="dashboard.html" class="universal-btn btn-dash"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a>
+      
+      <div class="menu-container">
+        <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
+        <div class="dropdown-content">
+          <a href="#" onclick="changeLanguage('en'); return false;">English</a>
+          <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
+          <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
+        </div>
+      </div>
+
     </div>
   </header>
 
@@ -233,13 +264,67 @@
     </div>
 
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
+      <video autoplay loop muted playsinline class="video-bg" style="opacity: 0.7;">
         <source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4">
-        <source src="./babysitter.mp4" type="video/mp4">
       </video>
     </div>
 
   </div>
+
+  <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
+    }
+
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
+    function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      window.location.reload(); // Reloads instantly in the correct language
+    }
+
+    // 4. Popup & Loading Mask Controller (For index.html)
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      if (mask && popup) {
+        if (!choiceMade) {
+          // First time visitor: Show mask for 1s, then show Popup
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1000);
+        } else {
+          // Returning visitor: Just hide the mask smoothly
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 800);
+        }
+      }
+      
+      // Nuke the ugly Google Translate Bar permanently
+      const observer = new MutationObserver(() => {
+          document.body.style.top = '0px';
+          document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame');
+          if(gtFrame) gtFrame.remove();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    });
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 
   <script>
     const rippleContainer = document.getElementById('rippleContainer');
@@ -249,13 +334,24 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
     let lastRippleTime = 0;
+    let isTicking = false;
     document.addEventListener('mousemove', (e) => {
       const now = Date.now();
       if(now - lastRippleTime > 150) { createRipple(e.clientX, e.clientY); lastRippleTime = now; }
-      document.querySelectorAll('.light-tracker').forEach(el => {
-        const rect = el.getBoundingClientRect(); el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-      });
+      
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect(); 
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isTicking = false;
+        });
+        isTicking = true;
+      }
     });
 
     const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d');
