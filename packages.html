@@ -10,14 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    if (document.cookie.indexOf('googtrans') === -1) {
-      document.cookie = "googtrans=/en/bn; path=/; domain=" + window.location.hostname;
-      document.cookie = "googtrans=/en/bn; path=/";
-    }
-  </script>
-
   <style>
+    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+
     :root { --bg-void: #030814; --glass-panel: rgba(10, 18, 35, 0.6); --glass-border: rgba(0, 243, 255, 0.15); --highlight: #00f3ff; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -85,6 +82,7 @@
     
     .light-tracker { position: relative; border-radius: 24px; background: var(--glass-panel); backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); transition: 0.4s;}
     .light-tracker:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); border-color: rgba(0,243,255,0.3);}
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
     
     .package-card { padding: 40px 30px; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2;}
     .pkg-title { font-size: 22px; font-weight: 700; color: white; margin-bottom: 10px;}
@@ -162,7 +160,7 @@
       
       <div class="menu-container">
         <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
-        <div class="dropdown-content">
+        <div class="dropdown-content" style="min-width: 150px; right: 0;">
           <a href="#" onclick="changeLanguage('en'); return false;">English</a>
           <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
           <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
@@ -309,6 +307,22 @@
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
     });
 
+    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
+    let isTicking = false;
+    document.addEventListener('mousemove', (e) => {
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          document.querySelectorAll('.light-tracker').forEach(el => {
+            const rect = el.getBoundingClientRect(); 
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isTicking = false;
+        });
+        isTicking = true;
+      }
+    });
+
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -434,26 +448,55 @@
   </script>
 
   <script type="text/javascript">
+    // 1. Force the language immediately to stop the choppy English flash
+    let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
+    document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${savedLang}; path=/`;
+
+    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
+
+    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
+      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
+      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload();
+      window.location.reload(); // Reloads instantly in the correct language
     }
-    
-    const observer = new MutationObserver(() => {
-        document.body.style.top = '0px';
-        document.documentElement.style.top = '0px';
-        document.body.style.marginTop = '0px';
-        document.documentElement.style.marginTop = '0px';
-        const gtFrame = document.querySelector('.goog-te-banner-frame');
-        if(gtFrame) gtFrame.remove();
-    });
-    window.addEventListener("DOMContentLoaded", () => {
-        observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+
+    // 4. Popup & Loading Mask Controller (For index.html)
+    window.addEventListener('DOMContentLoaded', () => {
+      const mask = document.getElementById('contentMask');
+      const popup = document.getElementById('langPopupOverlay');
+      const choiceMade = localStorage.getItem('langChoiceMade');
+
+      if (mask && popup) {
+        if (!choiceMade) {
+          // First time visitor: Show mask for 1s, then show Popup
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
+          }, 1000);
+        } else {
+          // Returning visitor: Just hide the mask smoothly
+          setTimeout(() => {
+            mask.style.opacity = '0';
+            setTimeout(() => { mask.style.display = 'none'; }, 800);
+          }, 800);
+        }
+      }
+      
+      // Nuke the ugly Google Translate Bar permanently
+      const observer = new MutationObserver(() => {
+          document.body.style.top = '0px';
+          document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame');
+          if(gtFrame) gtFrame.remove();
+      });
+      observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
