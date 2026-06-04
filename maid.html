@@ -27,7 +27,7 @@
 
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; --cursor-x: -1000px; --cursor-y: -1000px; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
@@ -43,8 +43,18 @@
     @keyframes smoothLoad { to { opacity: 1; } }
 
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-    
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+    
+    /* NEW SURFACE AGITATION PHYSICS */
+    #breezeWake {
+      position: fixed; inset: 0; pointer-events: none; z-index: 3;
+      background: repeating-linear-gradient( 45deg, transparent, transparent 15px, rgba(0, 229, 255, 0.035) 15px, rgba(0, 229, 255, 0.035) 30px );
+      -webkit-mask-image: radial-gradient(circle 350px at var(--cursor-x) var(--cursor-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+      mask-image: radial-gradient(circle 350px at var(--cursor-x) var(--cursor-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+      animation: gentleFlow 15s linear infinite;
+    }
+    @keyframes gentleFlow { 0% { background-position: 0px 0px; } 100% { background-position: 150px 150px; } }
+
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
@@ -217,8 +227,7 @@
 
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
-
-  <div class="split-layout">
+  <div id="breezeWake"></div> <div class="split-layout">
     
     <div class="left-pane">
       <div class="form-container" id="mainForm">
@@ -327,6 +336,14 @@
 
   </div>
   <script>
+    // VIDEO FREEZE ENFORCER: Forces playback bypassing browser block
+    window.addEventListener('DOMContentLoaded', () => {
+      const video = document.getElementById('cinematicVideo');
+      if (video) {
+        video.play().catch(err => console.log("Playback required user interaction:", err));
+      }
+    });
+
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
       const ripple = document.createElement('div');
@@ -338,10 +355,14 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX: Cached elements and removed DOM element spam during mouse move
+    // UI LAG FIX + NEW BREEZE WAKE PHYSICS
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
+      // Passes coordinates to the global body for the breeze overlay
+      document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
+      document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
+      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
@@ -371,7 +392,6 @@
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    // UI LAG FIX: Reduced star count from 400 to 100 to stop CPU throttling on load
     for(let i=0; i<100; i++) {
       stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255' });
     }
@@ -564,26 +584,22 @@
   </script>
 
   <script type="text/javascript">
-    // 1. Force the language immediately to stop the choppy English flash
     let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
     document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
     document.cookie = `googtrans=/en/${savedLang}; path=/`;
 
-    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
-    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
-      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
-      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
+      localStorage.setItem('priyaSevaLang', langCode);
+      localStorage.setItem('langChoiceMade', 'true');  
       document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
       document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload(); // Reloads instantly in the correct language
+      window.location.reload(); 
     }
 
-    // 4. Popup & Loading Mask Controller (For index.html)
     window.addEventListener('DOMContentLoaded', () => {
       const mask = document.getElementById('contentMask');
       const popup = document.getElementById('langPopupOverlay');
@@ -591,13 +607,11 @@
 
       if (mask && popup) {
         if (!choiceMade) {
-          // First time visitor: Show mask for 1s, then show Popup
           setTimeout(() => {
             mask.style.opacity = '0';
             setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
           }, 1000);
         } else {
-          // Returning visitor: Just hide the mask smoothly
           setTimeout(() => {
             mask.style.opacity = '0';
             setTimeout(() => { mask.style.display = 'none'; }, 800);
@@ -605,7 +619,6 @@
         }
       }
       
-      // Nuke the ugly Google Translate Bar permanently
       const observer = new MutationObserver(() => {
           document.body.style.top = '0px';
           document.documentElement.style.top = '0px';
