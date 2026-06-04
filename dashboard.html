@@ -79,7 +79,7 @@
     
     .main-panel { display: flex; flex-direction: column; gap: 30px; }
 
-    /* RESTORED RAYTRACE CURSOR PHYSICS */
+    /* RESTORED RAYTRACE CURSOR PHYSICS - NO INNER BLUR */
     .light-tracker { position: relative; width: 100%; border-radius: 20px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .light-tracker:hover { box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 25px rgba(0, 243, 255, 0.15); }
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
@@ -458,6 +458,7 @@
       if (!email || email === "Loading...") return;
 
       lastToggleTime = Date.now(); 
+
       const cacheKey = "cached_bookings_" + email;
       const cachedData = localStorage.getItem(cacheKey);
       if (cachedData) {
