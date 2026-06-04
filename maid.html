@@ -342,7 +342,7 @@
     }, { passive: true });
 
     // =================================================================================
-    // NATIVE WATER REFRACTION & STAR PHYSICS ENGINE
+    // DRIFTING STAR PHYSICS ENGINE (No Jitter)
     // =================================================================================
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
@@ -350,25 +350,15 @@
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
     let stars = []; 
-    let waterWaves = [];
-    let lastWaveTime = 0;
 
-    // Spawns physical water waves gently based on cursor movement
-    document.addEventListener('mousemove', (e) => {
-        let now = Date.now();
-        if (now - lastWaveTime > 50) {
-            waterWaves.push({ x: e.clientX, y: e.clientY, radius: 0, strength: 1 });
-            lastWaveTime = now;
-        }
-    });
-
-    // Initializes mathematical sine-wave stars
+    // Initializes mathematical sine-wave stars with accelerated horizontal drifting
     for(let i=0; i<250; i++) {
       let isShifter = Math.random() > 0.65; 
       stars.push({ 
         x: Math.random() * window.innerWidth, 
         y: Math.random() * window.innerHeight, 
         size: Math.random() * 1.5 + 0.4, 
+        speed: (Math.random() * 0.8) + 0.2, // Boosted horizontal drift speed
         phase: Math.random() * Math.PI * 2, 
         phaseSpeed: (Math.random() * 0.02) + 0.005, 
         isShifter: isShifter,
@@ -381,33 +371,15 @@
       ctx.fillStyle = '#020614'; 
       ctx.fillRect(0, 0, canvas.width, canvas.height); 
 
-      // 1. Process Water Waves
-      for(let i=0; i < waterWaves.length; i++) {
-          waterWaves[i].radius += 3; // Expansion speed of the wave
-          waterWaves[i].strength -= 0.012; // Fade out physics
-          
-          if (waterWaves[i].strength <= 0) {
-              waterWaves.splice(i, 1);
-              i--;
-              continue;
-          }
-
-          // Draw the physical water ripples (Subtle Cyan Edge + Shadow)
-          ctx.beginPath();
-          ctx.arc(waterWaves[i].x, waterWaves[i].y, waterWaves[i].radius, 0, Math.PI * 2);
-          ctx.lineWidth = 2;
-          ctx.strokeStyle = `rgba(0, 229, 255, ${waterWaves[i].strength * 0.08})`; 
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.arc(waterWaves[i].x, waterWaves[i].y, waterWaves[i].radius - 2, 0, Math.PI * 2);
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = `rgba(0, 0, 0, ${waterWaves[i].strength * 0.15})`; 
-          ctx.stroke();
-      }
-      
-      // 2. Process Star Glimmer & Optical Refraction
+      // Process Star Drifting, Glimmer & Color Shifting
       stars.forEach(s => {
+        // Drift the star horizontally
+        s.x -= s.speed; 
+        if(s.x < -10) { 
+           s.x = canvas.width + 10; 
+           s.y = Math.random() * canvas.height; 
+        }
+
         s.phase += s.phaseSpeed;
         let wave = Math.sin(s.phase);
         let alpha = Math.abs(wave); // 0 to 1 Fade cycle
@@ -421,34 +393,17 @@
             }
         }
 
-        // BEND THE LIGHT (Refraction Mathematics)
-        let drawX = s.x;
-        let drawY = s.y;
-
-        waterWaves.forEach(w => {
-            let dist = Math.hypot(s.x - w.x, s.y - w.y);
-            let diff = dist - w.radius;
-            // If the star sits directly beneath the ripple's edge
-            if (Math.abs(diff) < 30) {
-                let angle = Math.atan2(s.y - w.y, s.x - w.x);
-                // Bends the starlight drastically based on wave strength
-                let displacement = Math.sin(diff * 0.15) * w.strength * 12; 
-                drawX += Math.cos(angle) * displacement;
-                drawY += Math.sin(angle) * displacement;
-            }
-        });
-        
         ctx.save();
         ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
         ctx.shadowBlur = s.size * 6; // Realistic glowing aura
         ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
-        ctx.beginPath(); ctx.arc(drawX, drawY, s.size, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
         
         // Draw crystalline light rays for large stars
         if (s.size > 1.2 && Math.abs(wave) > 0.5) {
            ctx.beginPath();
-           ctx.moveTo(drawX, drawY - s.size * 3); ctx.lineTo(drawX, drawY + s.size * 3);
-           ctx.moveTo(drawX - s.size * 3, drawY); ctx.lineTo(drawX + s.size * 3, drawY);
+           ctx.moveTo(s.x, s.y - s.size * 3); ctx.lineTo(s.x, s.y + s.size * 3);
+           ctx.moveTo(s.x - s.size * 3, s.y); ctx.lineTo(s.x + s.size * 3, s.y);
            ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.5})`;
            ctx.lineWidth = 0.5;
            ctx.stroke();
