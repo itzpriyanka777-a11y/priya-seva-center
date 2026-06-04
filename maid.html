@@ -27,7 +27,7 @@
 
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; --cursor-x: -1000px; --cursor-y: -1000px; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
@@ -44,6 +44,16 @@
 
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+
+    /* NEW: GRAVITY WATER SURFACE DISTURBANCE (LIGHT & SHADOW PHYSICS) */
+    #gravityWell {
+      position: fixed; inset: 0; z-index: 3; pointer-events: none;
+      background:
+        radial-gradient(circle 350px at calc(var(--cursor-x) - 25px) calc(var(--cursor-y) - 25px), rgba(255, 255, 255, 0.05), transparent 60%),
+        radial-gradient(circle 350px at calc(var(--cursor-x) + 25px) calc(var(--cursor-y) + 25px), rgba(0, 0, 0, 0.4), transparent 60%);
+      mix-blend-mode: hard-light;
+      transition: background 0.1s ease-out;
+    }
 
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
@@ -123,15 +133,8 @@
     .glass-render:hover { background: rgba(15, 25, 45, 0.5); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 229, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 229, 255, 0.2), inset 0 2px 10px rgba(0, 229, 255, 0.2); }
 
-    /* TIME PICKER FIX */
-    input[type="time"].glass-render {
-      color-scheme: dark;
-      cursor: pointer;
-    }
-    input[type="time"].glass-render::-webkit-calendar-picker-indicator {
-      cursor: pointer;
-      filter: invert(1);
-    }
+    input[type="time"].glass-render { color-scheme: dark; cursor: pointer; }
+    input[type="time"].glass-render::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(1); }
 
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
@@ -144,7 +147,6 @@
     .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 229, 255, 0.2); padding-left: 35px; }
 
-    /* HOVER CHAT BUBBLE ENGINE */
     .helper-bubble {
       display: none; position: absolute; top: -50px; right: 0; 
       background: rgba(0, 243, 255, 0.95); color: #000; padding: 12px 18px; 
@@ -152,11 +154,7 @@
       font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
       z-index: 200; pointer-events: none; animation: dropBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .helper-bubble::after {
-      content: ''; position: absolute; bottom: -8px; right: 10px; 
-      border-width: 10px 10px 0 0; border-style: solid; 
-      border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent;
-    }
+    .helper-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent; }
 
     .glass-calendar { display: none; background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 229, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
@@ -176,13 +174,14 @@
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
     
+    /* VIDEO CROP & GRAIN FIX: Uses modern bounding structure */
     .video-bg { 
-      position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); 
-      opacity: 0.85; object-fit: cover; z-index: 1; 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      object-fit: cover; object-position: center center;
+      opacity: 0.85; z-index: 1; 
       transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
       body { overflow: auto; }
       .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
@@ -211,14 +210,12 @@
           <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
         </div>
       </div>
-
     </div>
   </header>
 
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
-
-  <div class="split-layout">
+  <div id="gravityWell"></div> <div class="split-layout">
     
     <div class="left-pane">
       <div class="form-container" id="mainForm">
@@ -243,29 +240,17 @@
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
-            <div class="option" onclick="toggleMultiOption('Standard House Cleaning', this)">
-              <i class="fa-regular fa-square check-icon"></i> Standard House Cleaning
-            </div>
-            <div class="option" onclick="toggleMultiOption('Deep Cleaning', this)">
-              <i class="fa-regular fa-square check-icon"></i> Deep Cleaning
-            </div>
-            <div class="option" onclick="toggleMultiOption('Cooking & Prep', this)">
-              <i class="fa-regular fa-square check-icon"></i> Cooking & Prep
-            </div>
-            <div class="option" onclick="toggleMultiOption('Laundry & Ironing', this)">
-              <i class="fa-regular fa-square check-icon"></i> Laundry & Ironing
-            </div>
-            <div class="option" onclick="toggleMultiOption('Full Day Housekeeping', this)">
-              <i class="fa-regular fa-square check-icon"></i> Full Day Housekeeping
-            </div>
+            <div class="option" onclick="toggleMultiOption('Standard House Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Standard House Cleaning</div>
+            <div class="option" onclick="toggleMultiOption('Deep Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Deep Cleaning</div>
+            <div class="option" onclick="toggleMultiOption('Cooking & Prep', this)"><i class="fa-regular fa-square check-icon"></i> Cooking & Prep</div>
+            <div class="option" onclick="toggleMultiOption('Laundry & Ironing', this)"><i class="fa-regular fa-square check-icon"></i> Laundry & Ironing</div>
+            <div class="option" onclick="toggleMultiOption('Full Day Housekeeping', this)"><i class="fa-regular fa-square check-icon"></i> Full Day Housekeeping</div>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
           <label>How Often?</label>
-          
           <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
-
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
               <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
@@ -327,14 +312,13 @@
 
   </div>
   <script>
-    // AGGRESSIVE VIDEO FREEZE ENFORCER: Keeps trying to play until the browser yields
     window.addEventListener('load', () => {
       const video = document.getElementById('cinematicVideo');
       if (video) {
-        video.muted = true; // Hard enforce mute to bypass block
+        video.muted = true; 
         const forcePlay = () => {
           video.play().catch(() => {
-            setTimeout(forcePlay, 500); // Push again every half second
+            setTimeout(forcePlay, 500); 
           });
         };
         forcePlay();
@@ -352,10 +336,12 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX: Reverted to the lightweight mouse tracker
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
+      document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
+      document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
+      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
@@ -371,7 +357,6 @@
       }
     });
 
-    // SCROLL FIX: Forward mouse wheel events outside the left-pane directly to it
     window.addEventListener('wheel', (e) => {
       const leftPane = document.querySelector('.left-pane');
       if (!leftPane.contains(e.target)) {
@@ -385,8 +370,20 @@
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<100; i++) {
-      stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255' });
+    // NEW STAR PHYSICS: Color transitioning using Sine Wave
+    for(let i=0; i<200; i++) {
+      let rand = Math.random();
+      let altColor = rand > 0.85 ? '160, 80, 255' : (rand > 0.7 ? '255, 80, 120' : '255, 255, 255');
+      stars.push({ 
+        x: Math.random() * window.innerWidth, 
+        y: Math.random() * window.innerHeight, 
+        size: Math.random() * 1.5 + 0.5, 
+        speed: (Math.random() * 0.1) + 0.02, 
+        phase: Math.random() * Math.PI * 2, 
+        phaseSpeed: (Math.random() * 0.015) + 0.005, 
+        base: '255, 255, 255', 
+        alt: altColor 
+      });
     }
 
     for(let i=0; i<14; i++) {
@@ -395,11 +392,22 @@
 
     function drawSereneSky() {
       ctx.fillStyle = '#020614'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
       stars.forEach(s => {
         s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
-        s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
-        ctx.fillStyle = `rgba(${s.color}, ${opacity})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+        
+        // Advance phase
+        s.phase += s.phaseSpeed;
+        let wave = Math.sin(s.phase);
+        
+        // Calculate dip in opacity and color shift
+        let opacity = Math.abs(wave) * 0.8 + 0.1; 
+        let color = wave > 0 ? s.base : s.alt;
+        
+        ctx.fillStyle = `rgba(${color}, ${opacity})`; 
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
       });
+
       clouds.forEach(c => {
         c.x -= c.speed; if(c.x < -c.size) { c.x = canvas.width + c.size; c.y = (Math.random() * canvas.height) - 100; }
         let grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
