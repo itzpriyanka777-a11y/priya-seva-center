@@ -27,7 +27,7 @@
 
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; --cursor-x: -1000px; --cursor-y: -1000px; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
@@ -44,16 +44,6 @@
 
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-    
-    /* NEW SURFACE AGITATION PHYSICS */
-    #breezeWake {
-      position: fixed; inset: 0; pointer-events: none; z-index: 3;
-      background: repeating-linear-gradient( 45deg, transparent, transparent 15px, rgba(0, 229, 255, 0.035) 15px, rgba(0, 229, 255, 0.035) 30px );
-      -webkit-mask-image: radial-gradient(circle 350px at var(--cursor-x) var(--cursor-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-      mask-image: radial-gradient(circle 350px at var(--cursor-x) var(--cursor-y), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
-      animation: gentleFlow 15s linear infinite;
-    }
-    @keyframes gentleFlow { 0% { background-position: 0px 0px; } 100% { background-position: 150px 150px; } }
 
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
@@ -227,7 +217,8 @@
 
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
-  <div id="breezeWake"></div> <div class="split-layout">
+
+  <div class="split-layout">
     
     <div class="left-pane">
       <div class="form-container" id="mainForm">
@@ -329,18 +320,24 @@
     </div>
     
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
+      <video preload="auto" autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
         <source src="./maid.mp4" type="video/mp4">
       </video>
     </div>
 
   </div>
   <script>
-    // VIDEO FREEZE ENFORCER: Forces playback bypassing browser block
-    window.addEventListener('DOMContentLoaded', () => {
+    // AGGRESSIVE VIDEO FREEZE ENFORCER: Keeps trying to play until the browser yields
+    window.addEventListener('load', () => {
       const video = document.getElementById('cinematicVideo');
       if (video) {
-        video.play().catch(err => console.log("Playback required user interaction:", err));
+        video.muted = true; // Hard enforce mute to bypass block
+        const forcePlay = () => {
+          video.play().catch(() => {
+            setTimeout(forcePlay, 500); // Push again every half second
+          });
+        };
+        forcePlay();
       }
     });
 
@@ -355,14 +352,10 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX + NEW BREEZE WAKE PHYSICS
+    // UI LAG FIX: Reverted to the lightweight mouse tracker
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
-      // Passes coordinates to the global body for the breeze overlay
-      document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
-      document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
-      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
