@@ -27,7 +27,7 @@
 
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; background-color: var(--void-bg); }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
@@ -36,15 +36,33 @@
       opacity: 0; 
       animation: smoothLoad 0.8s ease-in 0.6s forwards; 
       font-family: 'Poppins', sans-serif; 
-      background-color: var(--void-bg); 
       overflow: hidden; 
       color: white; 
     }
     @keyframes smoothLoad { to { opacity: 1; } }
 
-    /* BACKGROUND & PHYSICS CANVASES */
-    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-    #fluidCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+    /* ========================================================
+      NO COMPROMISES: WEBGL FLUID & STAR LAYERS 
+      ========================================================
+    */
+    
+    /* 1. The True WebGL Fluid Dynamics Canvas */
+    #fluidCanvas { 
+      position: fixed !important; inset: 0 !important; 
+      width: 100vw !important; height: 100vh !important; 
+      z-index: 0 !important; pointer-events: none !important; 
+      /* This magical lens converts default rainbow fluid into moody deep-sea water */
+      filter: grayscale(100%) sepia(100%) hue-rotate(190deg) saturate(400%) brightness(0.7) contrast(1.4) !important;
+      opacity: 0.9 !important;
+    }
+
+    /* 2. The Transparent Star Canvas (Overlays the water) */
+    #nightCanvas { 
+      position: fixed; inset: 0; 
+      width: 100vw; height: 100vh; 
+      z-index: 1; pointer-events: none; 
+    }
+    
     #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
@@ -98,6 +116,12 @@
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
     .light-tracker { position: relative; width: 100%; }
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
     .light-tracker::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
       background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
@@ -160,7 +184,6 @@
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
     
-    /* HD VIDEO FIX: Proper framing prevents excessive zoom and grain */
     .video-bg { 
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
       object-fit: cover; object-position: center 20%;
@@ -199,8 +222,10 @@
     </div>
   </header>
 
-  <canvas id="nightCanvas"></canvas>
-  <canvas id="fluidCanvas"></canvas> <div id="rippleContainer"></div>
+  <canvas id="fluidCanvas"></canvas> 
+  <canvas id="nightCanvas"></canvas> 
+  
+  <div id="rippleContainer"></div>
 
   <div class="split-layout">
     
@@ -298,89 +323,30 @@
     </div>
 
   </div>
+  <script src="https://cdn.jsdelivr.net/gh/PavelDoGreat/WebGL-Fluid-Simulation@master/script.js"></script>
+
   <script>
-    // AGGRESSIVE VIDEO FREEZE ENFORCER
+    // WEBGL MOUSE EVENT PROXY: Forwards mouse movement to the deep canvas safely
+    const fluidCanvas = document.getElementById('fluidCanvas');
+    window.addEventListener('mousemove', (e) => {
+        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY }));
+    });
+    window.addEventListener('mousedown', (e) => {
+        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mousedown', { clientX: e.clientX, clientY: e.clientY }));
+    });
+    window.addEventListener('mouseup', (e) => {
+        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mouseup', { clientX: e.clientX, clientY: e.clientY }));
+    });
+
+    // VIDEO FREEZE ENFORCER
     window.addEventListener('load', () => {
       const video = document.getElementById('cinematicVideo');
       if (video) {
         video.muted = true; 
-        const forcePlay = () => {
-          video.play().catch(() => {
-            setTimeout(forcePlay, 500); 
-          });
-        };
+        const forcePlay = () => { video.play().catch(() => { setTimeout(forcePlay, 500); }); };
         forcePlay();
       }
     });
-
-    // --------------------------------------------------------
-    // THE "GENTLE RAIN" WATER DISTURBANCE ENGINE
-    // --------------------------------------------------------
-    const fluidCanvas = document.getElementById('fluidCanvas');
-    const fctx = fluidCanvas.getContext('2d');
-    function resizeFluid() { fluidCanvas.width = window.innerWidth; fluidCanvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeFluid); resizeFluid();
-
-    let waterRipples = [];
-    let fluidTrail = [];
-    let lastRippleTime = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      let now = Date.now();
-      // Pushes the bioluminescent neon trail
-      fluidTrail.push({x: e.clientX, y: e.clientY, life: 1});
-      
-      // Spawns physical 3D water displacement ripples periodically
-      if(now - lastRippleTime > 40) {
-        waterRipples.push({x: e.clientX, y: e.clientY, radius: 0, alpha: 1});
-        lastRippleTime = now;
-      }
-    });
-
-    function animateFluidEngine() {
-      fctx.clearRect(0, 0, fluidCanvas.width, fluidCanvas.height);
-      
-      // 1. Draw glowing liquid trail (Screen Blend Mode for Neon Glow)
-      fctx.globalCompositeOperation = 'screen';
-      for(let i = 0; i < fluidTrail.length; i++) {
-        let p = fluidTrail[i];
-        p.life -= 0.02; // fade out speed
-        if(p.life <= 0) { fluidTrail.splice(i, 1); i--; continue; }
-        
-        let radius = (1 - p.life) * 60 + 20; 
-        let gradient = fctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
-        gradient.addColorStop(0, `rgba(0, 229, 255, ${p.life * 0.2})`);
-        gradient.addColorStop(0.6, `rgba(0, 100, 255, ${p.life * 0.05})`);
-        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        fctx.beginPath(); fctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-        fctx.fillStyle = gradient; fctx.fill();
-      }
-
-      // 2. Draw 3D Water Displacement Waves (Overlay Blend Mode for Light/Shadow Physics)
-      fctx.globalCompositeOperation = 'overlay';
-      for(let i = 0; i < waterRipples.length; i++) {
-        let r = waterRipples[i];
-        r.radius += 3; // Expansion speed
-        r.alpha -= 0.02; // Fade speed
-        if(r.alpha <= 0) { waterRipples.splice(i, 1); i--; continue; }
-        
-        // Light crest of the wave
-        fctx.beginPath(); fctx.arc(r.x, r.y, r.radius, 0, Math.PI*2);
-        fctx.lineWidth = 1.5 + (r.alpha * 3);
-        fctx.strokeStyle = `rgba(255, 255, 255, ${r.alpha * 0.5})`;
-        fctx.stroke();
-        
-        // Dark trough of the wave (creates the 3D refraction illusion)
-        fctx.beginPath(); fctx.arc(r.x + 3, r.y + 3, r.radius, 0, Math.PI*2);
-        fctx.lineWidth = 3 + (r.alpha * 3);
-        fctx.strokeStyle = `rgba(0, 0, 0, ${r.alpha * 0.6})`;
-        fctx.stroke();
-      }
-      requestAnimationFrame(animateFluidEngine);
-    }
-    animateFluidEngine();
-    // --------------------------------------------------------
 
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
@@ -400,10 +366,8 @@
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
             const rect = el.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            el.style.setProperty('--mouse-x', `${x}px`);
-            el.style.setProperty('--mouse-y', `${y}px`);
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
           });
           isTicking = false;
         });
@@ -413,77 +377,58 @@
 
     window.addEventListener('wheel', (e) => {
       const leftPane = document.querySelector('.left-pane');
-      if (!leftPane.contains(e.target)) {
-        leftPane.scrollTop += e.deltaY;
-      }
+      if (!leftPane.contains(e.target)) leftPane.scrollTop += e.deltaY;
     }, { passive: true });
 
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = []; let clouds = [];
+    let stars = []; 
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    // --------------------------------------------------------
-    // UPGRADED STAR PHYSICS: Sine-wave glow and multi-colored transitions
-    for(let i=0; i<150; i++) {
-      let rand = Math.random();
-      let altColor = rand > 0.85 ? '160, 80, 255' : (rand > 0.7 ? '255, 80, 120' : '255, 255, 255');
+    // UPGRADED TRUE STAR PHYSICS: Mathematical Sine Waves & Color Fading
+    for(let i=0; i<250; i++) {
+      let isShifter = Math.random() > 0.65; // 35% of stars are color shifters
       stars.push({ 
         x: Math.random() * window.innerWidth, 
         y: Math.random() * window.innerHeight, 
-        size: Math.random() * 1.5 + 0.5, 
-        speed: (Math.random() * 0.1) + 0.02, 
+        size: Math.random() * 1.5 + 0.4, 
         phase: Math.random() * Math.PI * 2, 
-        phaseSpeed: (Math.random() * 0.015) + 0.005, 
-        base: '255, 255, 255', 
-        alt: altColor 
+        phaseSpeed: (Math.random() * 0.02) + 0.005, // Exceptionally slow, deliberate blinking
+        isShifter: isShifter,
+        targetColor: isShifter ? (Math.random() > 0.5 ? {r:160, g:80, b:255} : {r:255, g:50, b:80}) : {r:255, g:255, b:255},
+        currentColor: {r:255, g:255, b:255}
       });
-    }
-
-    for(let i=0; i<14; i++) {
-      clouds.push({ x: Math.random() * window.innerWidth, y: (Math.random() * window.innerHeight) - 100, size: (Math.random() * 320) + 220, speed: (Math.random() * 0.4) + 0.15, opacity: (Math.random() * 0.35) + 0.1 });
     }
 
     function drawSereneSky() {
-      ctx.fillStyle = '#020614'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Must use clearRect instead of fillRect to prevent covering the WebGL Water underneath
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
       
       stars.forEach(s => {
-        s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
-        
         s.phase += s.phaseSpeed;
         let wave = Math.sin(s.phase);
+        let alpha = Math.abs(wave); // 0 to 1 Fade cycle
         
-        let opacity = Math.abs(wave) * 0.8 + 0.1; 
-        let color = wave > 0 ? s.base : s.alt;
+        // When star completely fades into the darkness, snap the color to the target
+        if (s.isShifter && alpha < 0.05) {
+            if (s.currentColor.r === 255 && s.currentColor.g === 255 && s.currentColor.b === 255) {
+                s.currentColor = s.targetColor; // Reveal Purple/Red
+            } else {
+                s.currentColor = {r:255, g:255, b:255}; // Reset to White
+            }
+        }
         
         ctx.save();
-        ctx.fillStyle = `rgba(${color}, ${opacity})`; 
-        ctx.shadowBlur = s.size * 6; 
-        ctx.shadowColor = `rgba(${color}, ${opacity})`;
+        ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
+        ctx.shadowBlur = s.size * 6; // Adds realistic glowing aura
+        ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
-        
-        if (s.size > 1.2 && Math.abs(wave) > 0.5) {
-           ctx.beginPath();
-           ctx.moveTo(s.x, s.y - s.size * 3); ctx.lineTo(s.x, s.y + s.size * 3);
-           ctx.moveTo(s.x - s.size * 3, s.y); ctx.lineTo(s.x + s.size * 3, s.y);
-           ctx.strokeStyle = `rgba(${color}, ${opacity * 0.5})`;
-           ctx.lineWidth = 0.5;
-           ctx.stroke();
-        }
         ctx.restore();
-      });
-
-      clouds.forEach(c => {
-        c.x -= c.speed; if(c.x < -c.size) { c.x = canvas.width + c.size; c.y = (Math.random() * canvas.height) - 100; }
-        let grad = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.size);
-        grad.addColorStop(0, `rgba(5, 12, 30, ${c.opacity})`); grad.addColorStop(1, 'rgba(2, 6, 20, 0)');
-        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(c.x, c.y, c.size, 0, Math.PI * 2); ctx.fill();
       });
       requestAnimationFrame(drawSereneSky);
     }
     drawSereneSky();
-    // --------------------------------------------------------
 
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
@@ -494,18 +439,13 @@
 
     function showFreqHelper(text) {
        const bubble = document.getElementById('freqHelperBubble');
-       bubble.innerText = text;
-       bubble.style.display = 'block';
+       bubble.innerText = text; bubble.style.display = 'block';
     }
-    function hideFreqHelper() {
-       document.getElementById('freqHelperBubble').style.display = 'none';
-    }
-
+    function hideFreqHelper() { document.getElementById('freqHelperBubble').style.display = 'none'; }
     function toggleDropdown(id) { 
         document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); 
         document.getElementById(id).classList.toggle('show'); 
     }
-
     function selectOption(triggerId, dropdownId, value) { 
       const trigger = document.getElementById(triggerId); 
       trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
@@ -519,68 +459,45 @@
       
       if(index > -1) {
         selectedMaidServices.splice(index, 1);
-        icon.classList.replace('fa-square-check', 'fa-square');
-        icon.classList.replace('fa-solid', 'fa-regular');
-        el.style.background = 'transparent';
-        el.style.paddingLeft = '25px';
-        icon.style.color = 'white';
+        icon.classList.replace('fa-square-check', 'fa-square'); icon.classList.replace('fa-solid', 'fa-regular');
+        el.style.background = 'transparent'; el.style.paddingLeft = '25px'; icon.style.color = 'white';
       } else {
         selectedMaidServices.push(value);
-        icon.classList.replace('fa-square', 'fa-square-check');
-        icon.classList.replace('fa-regular', 'fa-solid');
-        el.style.background = 'rgba(0, 229, 255, 0.15)';
-        el.style.paddingLeft = '35px';
-        icon.style.color = 'var(--highlight)';
+        icon.classList.replace('fa-square', 'fa-square-check'); icon.classList.replace('fa-regular', 'fa-solid');
+        el.style.background = 'rgba(0, 229, 255, 0.15)'; el.style.paddingLeft = '35px'; icon.style.color = 'var(--highlight)';
       }
       
       const triggerSpan = document.querySelector('#serviceTrigger span');
       if(selectedMaidServices.length === 0) {
-        triggerSpan.innerText = "Choose services";
-        triggerSpan.parentElement.classList.remove('active');
+        triggerSpan.innerText = "Choose services"; triggerSpan.parentElement.classList.remove('active');
       } else if(selectedMaidServices.length <= 2) {
-        triggerSpan.innerText = selectedMaidServices.join(", ");
-        triggerSpan.parentElement.classList.add('active');
+        triggerSpan.innerText = selectedMaidServices.join(", "); triggerSpan.parentElement.classList.add('active');
       } else {
-        triggerSpan.innerText = selectedMaidServices.length + " Services Selected";
-        triggerSpan.parentElement.classList.add('active');
+        triggerSpan.innerText = selectedMaidServices.length + " Services Selected"; triggerSpan.parentElement.classList.add('active');
       }
     }
 
     function selectFrequency(value) { 
         const trigger = document.getElementById('freqTrigger'); 
         trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
-        trigger.classList.add('active'); 
-        document.getElementById('freqOptions').classList.remove('show'); 
+        trigger.classList.add('active'); document.getElementById('freqOptions').classList.remove('show'); 
         
-        selectedFrequency = value; 
-        selectedDates = []; 
-        updateSelectedDatesDisplay(); 
-        document.getElementById('visualCalendar').style.display = 'block'; 
+        selectedFrequency = value; selectedDates = []; 
+        updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; 
         
         const calTopText = document.getElementById('calTopText');
-        if (value === 'Ongoing Service') {
-            calTopText.innerText = "Select Start Date:";
-            buildCalendarGrid(true); 
-        } else if (value === 'One-Time Service') {
-            calTopText.innerText = "Select Date:";
-            buildCalendarGrid(true);
-        } else {
-            calTopText.innerText = "Select Dates:";
-            buildCalendarGrid(false);
-        }
+        if (value === 'Ongoing Service') { calTopText.innerText = "Select Start Date:"; buildCalendarGrid(true); } 
+        else if (value === 'One-Time Service') { calTopText.innerText = "Select Date:"; buildCalendarGrid(true); } 
+        else { calTopText.innerText = "Select Dates:"; buildCalendarGrid(false); }
     }
 
     function updateSelectedDatesDisplay() {
-      const displayDiv = document.getElementById('selectedDatesDisplay'); 
-      const datesText = document.getElementById('datesText');
+      const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
       if (selectedDates.length > 0) { 
-          let prefix = "Selected: May ";
-          if (selectedFrequency === 'Ongoing Service') prefix = "Starting: May ";
+          let prefix = (selectedFrequency === 'Ongoing Service') ? "Starting: May " : "Selected: May ";
           datesText.innerText = prefix + selectedDates.sort((a,b)=>a-b).join(", "); 
           displayDiv.style.display = 'block'; 
-      } else { 
-          displayDiv.style.display = 'none'; 
-      }
+      } else { displayDiv.style.display = 'none'; }
     }
 
     function buildCalendarGrid(isSingleSelect) {
@@ -592,12 +509,10 @@
           createRipple(e.clientX, e.clientY);
           if(isSingleSelect) { 
               document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); 
-              selectedDates = [i]; 
-              this.classList.add('selected'); 
+              selectedDates = [i]; this.classList.add('selected'); 
           } else { 
               this.classList.toggle('selected'); 
-              if(this.classList.contains('selected')) selectedDates.push(i); 
-              else selectedDates = selectedDates.filter(d => d !== i); 
+              if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); 
           }
           updateSelectedDatesDisplay(); 
         };
@@ -619,7 +534,6 @@
       if(!name || selectedMaidServices.length === 0 || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { 
           return alert("Please fill your name, select at least one service, set your dates, and specify a time."); 
       }
-      
       const finalServices = selectedMaidServices.join(", ");
       
       try {
@@ -631,13 +545,8 @@
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
         
         const payload = { 
-            actionType: 'new_booking', 
-            name: name, 
-            email: user.email, 
-            phone: "Not Provided", 
-            serviceType: "Maid: " + finalServices, 
-            date: formattedDates, 
-            address: "Not Provided", 
+            actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", 
+            serviceType: "Maid: " + finalServices, date: formattedDates, address: "Not Provided", 
             details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Notes: " + notes : "") 
         };
 
@@ -661,37 +570,26 @@
     }
 
     function changeLanguage(langCode) {
-      localStorage.setItem('priyaSevaLang', langCode);
-      localStorage.setItem('langChoiceMade', 'true');  
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
+      localStorage.setItem('priyaSevaLang', langCode); localStorage.setItem('langChoiceMade', 'true');  
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`; document.cookie = `googtrans=/en/${langCode}; path=/`;
       window.location.reload(); 
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const mask = document.getElementById('contentMask');
-      const popup = document.getElementById('langPopupOverlay');
+      const mask = document.getElementById('contentMask'); const popup = document.getElementById('langPopupOverlay');
       const choiceMade = localStorage.getItem('langChoiceMade');
 
       if (mask && popup) {
         if (!choiceMade) {
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
-          }, 1000);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800); }, 1000);
         } else {
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; }, 800);
-          }, 800);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; }, 800); }, 800);
         }
       }
       
       const observer = new MutationObserver(() => {
-          document.body.style.top = '0px';
-          document.documentElement.style.top = '0px';
-          const gtFrame = document.querySelector('.goog-te-banner-frame');
-          if(gtFrame) gtFrame.remove();
+          document.body.style.top = '0px'; document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame'); if(gtFrame) gtFrame.remove();
       });
       observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
