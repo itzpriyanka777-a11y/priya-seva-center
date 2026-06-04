@@ -151,9 +151,8 @@
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .video-bg.playing { opacity: 0.85; }
-
+    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0.85; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    
     @media (max-width: 900px) {
       body { overflow: auto; }
       .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
@@ -281,13 +280,12 @@
       </div>
     </div>
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
+      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
         <source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4">
       </video>
     </div>
 
   </div>
-
   <script>
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
@@ -300,19 +298,13 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
-    let lastRippleTime = 0;
+    // UI LAG FIX: Cached elements and removed DOM element spam during mouse move
+    const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
-      const now = Date.now();
-      if(now - lastRippleTime > 150) { 
-        createRipple(e.clientX, e.clientY);
-        lastRippleTime = now;
-      }
-      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
-          document.querySelectorAll('.light-tracker').forEach(el => {
+          lightTrackers.forEach(el => {
             const rect = el.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
@@ -325,13 +317,22 @@
       }
     });
 
+    // SCROLL FIX: Forward mouse wheel events outside the left-pane directly to it
+    window.addEventListener('wheel', (e) => {
+      const leftPane = document.querySelector('.left-pane');
+      if (!leftPane.contains(e.target)) {
+        leftPane.scrollTop += e.deltaY;
+      }
+    }, { passive: true });
+
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
     let stars = []; let clouds = [];
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<400; i++) {
+    // UI LAG FIX: Reduced star count from 400 to 100 to stop CPU throttling on load
+    for(let i=0; i<100; i++) {
       stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.15) + 0.05, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '135, 235, 255' : '255, 255, 255' });
     }
 
@@ -340,7 +341,7 @@
     }
 
     function drawSereneSky() {
-      ctx.fillStyle = '#020614'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#03040b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
       stars.forEach(s => {
         s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
         s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2;
