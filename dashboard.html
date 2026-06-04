@@ -15,6 +15,7 @@
     ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
     * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 
+    /* RESTORED PURPLISH THEME */
     :root { --void-bg: #050510; --glass-base: rgba(15, 10, 30, 0.4); --glass-border: rgba(255, 255, 255, 0.08); --highlight: #00f3ff; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -77,6 +78,8 @@
     @media (max-width: 1100px) { .dashboard-container { grid-template-columns: 1fr; } }
     
     .main-panel { display: flex; flex-direction: column; gap: 30px; }
+
+    /* RESTORED RAYTRACE CURSOR PHYSICS */
     .light-tracker { position: relative; width: 100%; border-radius: 20px; background: var(--glass-base); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.05); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .light-tracker:hover { box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 25px rgba(0, 243, 255, 0.15); }
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; z-index: 10; }
@@ -339,13 +342,13 @@
       <div id="activeBookingsContent"></div>
     </div>
   </div>
-
   <div class="modal-overlay" id="dayDetailsModal">
     <div class="dashboard-modal">
       <span class="close-modal" onclick="closeModal('dayDetailsModal')">&times;</span>
       <div id="dayDetailsContent"></div>
     </div>
   </div>
+  
   <script>
     // --- Background Stars Physics ---
     const canvas = document.getElementById('nightCanvas');
