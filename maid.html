@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    /* SCROLLBAR NUKE */
     ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
     * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 
@@ -25,44 +25,19 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    /* TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; background-color: var(--void-bg); }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; background-color: var(--void-bg); overflow: hidden; color: white; opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; font-family: 'Poppins', sans-serif; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
-
-    /* ANTI-FLASH FADE */
-    body { 
-      opacity: 0; 
-      animation: smoothLoad 0.8s ease-in 0.6s forwards; 
-      font-family: 'Poppins', sans-serif; 
-      overflow: hidden; 
-      color: white; 
-    }
     @keyframes smoothLoad { to { opacity: 1; } }
 
-    /* ========================================================
-       NO COMPROMISES: LAYERED PHYSICS CANVASES
-       ======================================================== */
-       
-    /* 1. The Transparent Star Canvas (Base Layer) */
-    #nightCanvas { 
-      position: fixed; inset: 0; 
-      width: 100vw; height: 100vh; 
-      z-index: 1; pointer-events: none; 
-    }
-
-    /* 2. The True WebGL Fluid Dynamics Canvas (Sits over stars, under the form) */
-    #fluidCanvas { 
-      position: fixed !important; inset: 0 !important; 
-      width: 100vw !important; height: 100vh !important; 
-      z-index: 2 !important; pointer-events: none !important; 
-    }
-    
+    /* UNIFIED PHYSICS CANVAS */
+    #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
-    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: clickRipple 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes clickRipple { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
     /* UNIVERSAL HEADER */
     .universal-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 5, 16, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-sizing: border-box;}
@@ -74,7 +49,7 @@
     .btn-dash { border-color: rgba(0, 243, 255, 0.3); color: #00f3ff; }
     .btn-dash:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);}
 
-    /* LANGUAGE DROPDOWN CSS */
+    /* LANGUAGE DROPDOWN */
     .menu-container { position: relative; display: inline-block; }
     .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 15px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
     .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
@@ -92,10 +67,8 @@
     }
 
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
-    
     .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
     .left-pane::-webkit-scrollbar { width: 0px; }
-    
     .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
     .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
@@ -110,6 +83,24 @@
     .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
 
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+
+    /* THE RESTORED LIGHT TRACKER EDGE TRACING PHYSICS */
+    .light-tracker { position: relative; width: 100%; }
+    
+    /* This ::after block creates the outer glowing cyan/purple edge */
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
+    
+    /* This ::before block creates the inner faint glow */
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
@@ -205,7 +196,9 @@
     </div>
   </header>
 
-  <canvas id="nightCanvas"></canvas> <canvas id="fluidCanvas"></canvas> <div id="rippleContainer"></div>
+  <canvas id="nightCanvas"></canvas> 
+  
+  <div id="rippleContainer"></div>
 
   <div class="split-layout">
     
@@ -219,17 +212,19 @@
 
         <div class="capsule-group input-group">
           <label>Your Full Name</label>
-          <div class="glass-render" style="border-radius: 50px;">
-            <input type="text" id="parentName" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" placeholder="E.g., Anjali Sharma" required>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="parentName" class="glass-render" placeholder="E.g., Anjali Sharma" required>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
           <label>Choose Services</label>
-          <div class="glass-render select-trigger" id="serviceTrigger" style="border-radius: 50px;" onclick="toggleDropdown('serviceOptions')">
-            <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
+              <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
           </div>
-          <div class="select-options" id="serviceOptions" style="border-radius: 25px; margin-top: 10px;">
+          <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
             <div class="option" onclick="toggleMultiOption('Standard House Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Standard House Cleaning</div>
             <div class="option" onclick="toggleMultiOption('Deep Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Deep Cleaning</div>
             <div class="option" onclick="toggleMultiOption('Cooking & Prep', this)"><i class="fa-regular fa-square check-icon"></i> Cooking & Prep</div>
@@ -241,16 +236,18 @@
         <div class="capsule-group input-group custom-select">
           <label>How Often?</label>
           <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
-          <div class="glass-render select-trigger" id="freqTrigger" style="border-radius: 50px;" onclick="toggleDropdown('freqOptions')">
-            <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
+              <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
           </div>
-          <div class="select-options" id="freqOptions" style="border-radius: 25px; margin-top: 10px;">
+          <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
             <div class="option" onclick="selectFrequency('One-Time Service')" onmouseenter="showFreqHelper('Book for one day.')" onmouseleave="hideFreqHelper()">One-Time Service</div>
             <div class="option" onclick="selectFrequency('Ongoing Service')" onmouseenter="showFreqHelper('Pick a start day for daily help.')" onmouseleave="hideFreqHelper()">Ongoing Service</div>
             <div class="option" onclick="selectFrequency('Custom Dates')" onmouseenter="showFreqHelper('Pick any days you want.')" onmouseleave="hideFreqHelper()">Custom Dates</div>
           </div>
           
-          <div class="glass-calendar" id="visualCalendar" style="border-radius: 35px; background: rgba(5, 10, 20, 0.85);">
+          <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
             <div class="cal-top">
                <span id="calTopText">Select Dates:</span> 
                <div style="display:flex; align-items:center; gap: 15px;">
@@ -271,20 +268,22 @@
 
         <div class="capsule-group input-group">
           <label>Choose Time</label>
-          <div class="glass-render" style="border-radius: 50px;">
-            <input type="time" id="timeWindow" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" onclick="this.showPicker ? this.showPicker() : null">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
         <div class="capsule-group input-group">
           <label>Additional Notes</label>
-          <div class="glass-render" style="border-radius: 50px;">
-            <input type="text" id="extraDetails" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" placeholder="Any special instructions?">
+          <div class="light-tracker" style="border-radius: 50px;">
+            <input type="text" id="extraDetails" class="glass-render" placeholder="Any special instructions?">
           </div>
         </div>
 
         <div class="capsule-group" style="margin-top: 35px;">
-          <button onclick="submitRequest()" class="submit-btn" style="border-radius: 50px;" id="submitBtn">Book Now</button>
+          <div class="light-tracker" style="border-radius: 50px;">
+            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Book Now</button>
+          </div>
         </div>
 
       </div>
@@ -298,60 +297,6 @@
 
   </div>
   <script>
-    // --------------------------------------------------------
-    // NATIVE WEBGL FLUID DYNAMICS CONFIGURATION
-    // --------------------------------------------------------
-    // We define this object BEFORE loading the script so the script reads our parameters instead of its defaults.
-    window.config = {
-        SIM_RESOLUTION: 128,      // Detail of the fluid
-        DYE_RESOLUTION: 1024,     // Detail of the color
-        CAPTURE_RESOLUTION: 512,
-        DENSITY_DISSIPATION: 1,   // How fast the water settles
-        VELOCITY_DISSIPATION: 0.2, // How fast the water stops moving
-        PRESSURE: 0.8,            // Fluid thickness
-        PRESSURE_ITERATIONS: 20,
-        CURL: 30,                 // Swirl physics
-        SPLAT_RADIUS: 0.25,       // Size of the cursor disturbance
-        SPLAT_FORCE: 6000,        // Strength of the disturbance
-        SHADING: true,            // Enables 3D light & shadow
-        COLORFUL: false,          // DISABLES the default rainbow effect
-        COLOR_UPDATE_SPEED: 10,
-        PAUSED: false,
-        BACK_COLOR: { r: 0, g: 0, b: 0 }, // Completely transparent background so stars show through
-        TRANSPARENT: true,        // Crucial for layering
-        BLOOM: true,
-        BLOOM_ITERATIONS: 8,
-        BLOOM_RESOLUTION: 256,
-        BLOOM_INTENSITY: 0.8,
-        BLOOM_THRESHOLD: 0.6,
-        BLOOM_SOFT_KNEE: 0.7,
-        SUNRAYS: true,
-        SUNRAYS_RESOLUTION: 196,
-        SUNRAYS_WEIGHT: 1.0,
-    };
-  </script>
-  
-  <script src="https://cdn.jsdelivr.net/gh/PavelDoGreat/WebGL-Fluid-Simulation@master/script.js"></script>
-
-  <script>
-    // Force the fluid color to match your deep oceanic theme
-    setTimeout(() => {
-        if(window.fluid && window.fluid.splat) {
-            // Overrides the splat function to always inject #00e5ff (Cyan)
-            const originalSplat = window.fluid.splat;
-            window.fluid.splat = function(x, y, dx, dy, color) {
-                // R:0 G:229 B:255 mapping
-                originalSplat.call(this, x, y, dx, dy, {r: 0, g: 0.9, b: 1}); 
-            };
-        }
-    }, 1000);
-
-    // WEBGL MOUSE EVENT PROXY
-    const fluidCanvas = document.getElementById('fluidCanvas');
-    window.addEventListener('mousemove', (e) => {
-        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY }));
-    });
-
     // VIDEO FREEZE ENFORCER
     window.addEventListener('load', () => {
       const video = document.getElementById('cinematicVideo');
@@ -363,7 +308,7 @@
     });
 
     const rippleContainer = document.getElementById('rippleContainer');
-    function createRipple(x, y) {
+    function createClickRipple(x, y) {
       const ripple = document.createElement('div');
       ripple.className = 'water-ripple';
       ripple.style.left = x + 'px';
@@ -371,62 +316,150 @@
       rippleContainer.appendChild(ripple);
       setTimeout(() => { ripple.remove(); }, 1800);
     }
-    document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+    document.addEventListener('click', (e) => createClickRipple(e.clientX, e.clientY));
+    
+    // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
+    const lightTrackers = document.querySelectorAll('.light-tracker');
+    let isTicking = false;
+    document.addEventListener('mousemove', (e) => {
+      if (!isTicking) {
+        window.requestAnimationFrame(() => {
+          lightTrackers.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            // Maps the exact mouse coordinate relative to each form field wrapper
+            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+          });
+          isTicking = false;
+        });
+        isTicking = true;
+      }
+    });
 
     window.addEventListener('wheel', (e) => {
       const leftPane = document.querySelector('.left-pane');
       if (!leftPane.contains(e.target)) leftPane.scrollTop += e.deltaY;
     }, { passive: true });
 
+    // =================================================================================
+    // NATIVE WATER REFRACTION & STAR PHYSICS ENGINE
+    // =================================================================================
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
-    let stars = []; 
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    // UPGRADED TRUE STAR PHYSICS: Mathematical Sine Waves & Color Fading
+    let stars = []; 
+    let waterWaves = [];
+    let lastWaveTime = 0;
+
+    // Spawns physical water waves gently based on cursor movement
+    document.addEventListener('mousemove', (e) => {
+        let now = Date.now();
+        if (now - lastWaveTime > 50) {
+            waterWaves.push({ x: e.clientX, y: e.clientY, radius: 0, strength: 1 });
+            lastWaveTime = now;
+        }
+    });
+
+    // Initializes mathematical sine-wave stars
     for(let i=0; i<250; i++) {
-      let isShifter = Math.random() > 0.65; // 35% of stars are color shifters
+      let isShifter = Math.random() > 0.65; 
       stars.push({ 
         x: Math.random() * window.innerWidth, 
         y: Math.random() * window.innerHeight, 
         size: Math.random() * 1.5 + 0.4, 
         phase: Math.random() * Math.PI * 2, 
-        phaseSpeed: (Math.random() * 0.02) + 0.005, // Exceptionally slow, deliberate blinking
+        phaseSpeed: (Math.random() * 0.02) + 0.005, 
         isShifter: isShifter,
         targetColor: isShifter ? (Math.random() > 0.5 ? {r:160, g:80, b:255} : {r:255, g:50, b:80}) : {r:255, g:255, b:255},
         currentColor: {r:255, g:255, b:255}
       });
     }
 
-    function drawSereneSky() {
-      // Must use clearRect instead of fillRect to prevent covering the WebGL Water underneath
-      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    function drawPhysicsEngine() {
+      ctx.fillStyle = '#020614'; 
+      ctx.fillRect(0, 0, canvas.width, canvas.height); 
+
+      // 1. Process Water Waves
+      for(let i=0; i < waterWaves.length; i++) {
+          waterWaves[i].radius += 3; // Expansion speed of the wave
+          waterWaves[i].strength -= 0.012; // Fade out physics
+          
+          if (waterWaves[i].strength <= 0) {
+              waterWaves.splice(i, 1);
+              i--;
+              continue;
+          }
+
+          // Draw the physical water ripples (Subtle Cyan Edge + Shadow)
+          ctx.beginPath();
+          ctx.arc(waterWaves[i].x, waterWaves[i].y, waterWaves[i].radius, 0, Math.PI * 2);
+          ctx.lineWidth = 2;
+          ctx.strokeStyle = `rgba(0, 229, 255, ${waterWaves[i].strength * 0.08})`; 
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(waterWaves[i].x, waterWaves[i].y, waterWaves[i].radius - 2, 0, Math.PI * 2);
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = `rgba(0, 0, 0, ${waterWaves[i].strength * 0.15})`; 
+          ctx.stroke();
+      }
       
+      // 2. Process Star Glimmer & Optical Refraction
       stars.forEach(s => {
         s.phase += s.phaseSpeed;
         let wave = Math.sin(s.phase);
         let alpha = Math.abs(wave); // 0 to 1 Fade cycle
         
-        // When star completely fades into the darkness, snap the color to the target
+        // Color shifting in the dark
         if (s.isShifter && alpha < 0.05) {
             if (s.currentColor.r === 255 && s.currentColor.g === 255 && s.currentColor.b === 255) {
-                s.currentColor = s.targetColor; // Reveal Purple/Red
+                s.currentColor = s.targetColor; 
             } else {
-                s.currentColor = {r:255, g:255, b:255}; // Reset to White
+                s.currentColor = {r:255, g:255, b:255}; 
             }
         }
+
+        // BEND THE LIGHT (Refraction Mathematics)
+        let drawX = s.x;
+        let drawY = s.y;
+
+        waterWaves.forEach(w => {
+            let dist = Math.hypot(s.x - w.x, s.y - w.y);
+            let diff = dist - w.radius;
+            // If the star sits directly beneath the ripple's edge
+            if (Math.abs(diff) < 30) {
+                let angle = Math.atan2(s.y - w.y, s.x - w.x);
+                // Bends the starlight drastically based on wave strength
+                let displacement = Math.sin(diff * 0.15) * w.strength * 12; 
+                drawX += Math.cos(angle) * displacement;
+                drawY += Math.sin(angle) * displacement;
+            }
+        });
         
         ctx.save();
         ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
-        ctx.shadowBlur = s.size * 6; // Adds realistic glowing aura
+        ctx.shadowBlur = s.size * 6; // Realistic glowing aura
         ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(drawX, drawY, s.size, 0, Math.PI * 2); ctx.fill();
+        
+        // Draw crystalline light rays for large stars
+        if (s.size > 1.2 && Math.abs(wave) > 0.5) {
+           ctx.beginPath();
+           ctx.moveTo(drawX, drawY - s.size * 3); ctx.lineTo(drawX, drawY + s.size * 3);
+           ctx.moveTo(drawX - s.size * 3, drawY); ctx.lineTo(drawX + s.size * 3, drawY);
+           ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.5})`;
+           ctx.lineWidth = 0.5;
+           ctx.stroke();
+        }
         ctx.restore();
       });
-      requestAnimationFrame(drawSereneSky);
+
+      requestAnimationFrame(drawPhysicsEngine);
     }
-    drawSereneSky();
+    drawPhysicsEngine();
+    // =================================================================================
 
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
@@ -504,7 +537,7 @@
       for(let i=1; i<=31; i++) {
         const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
         div.onclick = function(e) {
-          createRipple(e.clientX, e.clientY);
+          createClickRipple(e.clientX, e.clientY);
           if(isSingleSelect) { 
               document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); 
               selectedDates = [i]; this.classList.add('selected'); 
