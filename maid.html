@@ -42,25 +42,21 @@
     @keyframes smoothLoad { to { opacity: 1; } }
 
     /* ========================================================
-      NO COMPROMISES: WEBGL FLUID & STAR LAYERS 
-      ========================================================
-    */
-    
-    /* 1. The True WebGL Fluid Dynamics Canvas */
-    #fluidCanvas { 
-      position: fixed !important; inset: 0 !important; 
-      width: 100vw !important; height: 100vh !important; 
-      z-index: 0 !important; pointer-events: none !important; 
-      /* This magical lens converts default rainbow fluid into moody deep-sea water */
-      filter: grayscale(100%) sepia(100%) hue-rotate(190deg) saturate(400%) brightness(0.7) contrast(1.4) !important;
-      opacity: 0.9 !important;
-    }
-
-    /* 2. The Transparent Star Canvas (Overlays the water) */
+       NO COMPROMISES: LAYERED PHYSICS CANVASES
+       ======================================================== */
+       
+    /* 1. The Transparent Star Canvas (Base Layer) */
     #nightCanvas { 
       position: fixed; inset: 0; 
       width: 100vw; height: 100vh; 
       z-index: 1; pointer-events: none; 
+    }
+
+    /* 2. The True WebGL Fluid Dynamics Canvas (Sits over stars, under the form) */
+    #fluidCanvas { 
+      position: fixed !important; inset: 0 !important; 
+      width: 100vw !important; height: 100vh !important; 
+      z-index: 2 !important; pointer-events: none !important; 
     }
     
     #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
@@ -114,19 +110,6 @@
     .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
 
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-
-    .light-tracker { position: relative; width: 100%; }
-    .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
-    }
-    .light-tracker::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
@@ -222,10 +205,7 @@
     </div>
   </header>
 
-  <canvas id="fluidCanvas"></canvas> 
-  <canvas id="nightCanvas"></canvas> 
-  
-  <div id="rippleContainer"></div>
+  <canvas id="nightCanvas"></canvas> <canvas id="fluidCanvas"></canvas> <div id="rippleContainer"></div>
 
   <div class="split-layout">
     
@@ -239,19 +219,17 @@
 
         <div class="capsule-group input-group">
           <label>Your Full Name</label>
-          <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="parentName" class="glass-render" placeholder="E.g., Anjali Sharma" required>
+          <div class="glass-render" style="border-radius: 50px;">
+            <input type="text" id="parentName" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" placeholder="E.g., Anjali Sharma" required>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
           <label>Choose Services</label>
-          <div class="light-tracker" style="border-radius: 50px;">
-            <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
-              <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
-            </div>
+          <div class="glass-render select-trigger" id="serviceTrigger" style="border-radius: 50px;" onclick="toggleDropdown('serviceOptions')">
+            <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
+          <div class="select-options" id="serviceOptions" style="border-radius: 25px; margin-top: 10px;">
             <div class="option" onclick="toggleMultiOption('Standard House Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Standard House Cleaning</div>
             <div class="option" onclick="toggleMultiOption('Deep Cleaning', this)"><i class="fa-regular fa-square check-icon"></i> Deep Cleaning</div>
             <div class="option" onclick="toggleMultiOption('Cooking & Prep', this)"><i class="fa-regular fa-square check-icon"></i> Cooking & Prep</div>
@@ -263,18 +241,16 @@
         <div class="capsule-group input-group custom-select">
           <label>How Often?</label>
           <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
-          <div class="light-tracker" style="border-radius: 50px;">
-            <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
-              <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
-            </div>
+          <div class="glass-render select-trigger" id="freqTrigger" style="border-radius: 50px;" onclick="toggleDropdown('freqOptions')">
+            <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
+          <div class="select-options" id="freqOptions" style="border-radius: 25px; margin-top: 10px;">
             <div class="option" onclick="selectFrequency('One-Time Service')" onmouseenter="showFreqHelper('Book for one day.')" onmouseleave="hideFreqHelper()">One-Time Service</div>
             <div class="option" onclick="selectFrequency('Ongoing Service')" onmouseenter="showFreqHelper('Pick a start day for daily help.')" onmouseleave="hideFreqHelper()">Ongoing Service</div>
             <div class="option" onclick="selectFrequency('Custom Dates')" onmouseenter="showFreqHelper('Pick any days you want.')" onmouseleave="hideFreqHelper()">Custom Dates</div>
           </div>
           
-          <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
+          <div class="glass-calendar" id="visualCalendar" style="border-radius: 35px; background: rgba(5, 10, 20, 0.85);">
             <div class="cal-top">
                <span id="calTopText">Select Dates:</span> 
                <div style="display:flex; align-items:center; gap: 15px;">
@@ -295,22 +271,20 @@
 
         <div class="capsule-group input-group">
           <label>Choose Time</label>
-          <div class="light-tracker" style="border-radius: 50px;">
-            <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
+          <div class="glass-render" style="border-radius: 50px;">
+            <input type="time" id="timeWindow" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
         <div class="capsule-group input-group">
           <label>Additional Notes</label>
-          <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="extraDetails" class="glass-render" placeholder="Any special instructions?">
+          <div class="glass-render" style="border-radius: 50px;">
+            <input type="text" id="extraDetails" class="glass-render" style="box-shadow:none; border:none; padding:0; background:transparent;" placeholder="Any special instructions?">
           </div>
         </div>
 
         <div class="capsule-group" style="margin-top: 35px;">
-          <div class="light-tracker" style="border-radius: 50px;">
-            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Book Now</button>
-          </div>
+          <button onclick="submitRequest()" class="submit-btn" style="border-radius: 50px;" id="submitBtn">Book Now</button>
         </div>
 
       </div>
@@ -323,19 +297,59 @@
     </div>
 
   </div>
+  <script>
+    // --------------------------------------------------------
+    // NATIVE WEBGL FLUID DYNAMICS CONFIGURATION
+    // --------------------------------------------------------
+    // We define this object BEFORE loading the script so the script reads our parameters instead of its defaults.
+    window.config = {
+        SIM_RESOLUTION: 128,      // Detail of the fluid
+        DYE_RESOLUTION: 1024,     // Detail of the color
+        CAPTURE_RESOLUTION: 512,
+        DENSITY_DISSIPATION: 1,   // How fast the water settles
+        VELOCITY_DISSIPATION: 0.2, // How fast the water stops moving
+        PRESSURE: 0.8,            // Fluid thickness
+        PRESSURE_ITERATIONS: 20,
+        CURL: 30,                 // Swirl physics
+        SPLAT_RADIUS: 0.25,       // Size of the cursor disturbance
+        SPLAT_FORCE: 6000,        // Strength of the disturbance
+        SHADING: true,            // Enables 3D light & shadow
+        COLORFUL: false,          // DISABLES the default rainbow effect
+        COLOR_UPDATE_SPEED: 10,
+        PAUSED: false,
+        BACK_COLOR: { r: 0, g: 0, b: 0 }, // Completely transparent background so stars show through
+        TRANSPARENT: true,        // Crucial for layering
+        BLOOM: true,
+        BLOOM_ITERATIONS: 8,
+        BLOOM_RESOLUTION: 256,
+        BLOOM_INTENSITY: 0.8,
+        BLOOM_THRESHOLD: 0.6,
+        BLOOM_SOFT_KNEE: 0.7,
+        SUNRAYS: true,
+        SUNRAYS_RESOLUTION: 196,
+        SUNRAYS_WEIGHT: 1.0,
+    };
+  </script>
+  
   <script src="https://cdn.jsdelivr.net/gh/PavelDoGreat/WebGL-Fluid-Simulation@master/script.js"></script>
 
   <script>
-    // WEBGL MOUSE EVENT PROXY: Forwards mouse movement to the deep canvas safely
+    // Force the fluid color to match your deep oceanic theme
+    setTimeout(() => {
+        if(window.fluid && window.fluid.splat) {
+            // Overrides the splat function to always inject #00e5ff (Cyan)
+            const originalSplat = window.fluid.splat;
+            window.fluid.splat = function(x, y, dx, dy, color) {
+                // R:0 G:229 B:255 mapping
+                originalSplat.call(this, x, y, dx, dy, {r: 0, g: 0.9, b: 1}); 
+            };
+        }
+    }, 1000);
+
+    // WEBGL MOUSE EVENT PROXY
     const fluidCanvas = document.getElementById('fluidCanvas');
     window.addEventListener('mousemove', (e) => {
         if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY }));
-    });
-    window.addEventListener('mousedown', (e) => {
-        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mousedown', { clientX: e.clientX, clientY: e.clientY }));
-    });
-    window.addEventListener('mouseup', (e) => {
-        if(fluidCanvas) fluidCanvas.dispatchEvent(new MouseEvent('mouseup', { clientX: e.clientX, clientY: e.clientY }));
     });
 
     // VIDEO FREEZE ENFORCER
@@ -358,22 +372,6 @@
       setTimeout(() => { ripple.remove(); }, 1800);
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
-    
-    const lightTrackers = document.querySelectorAll('.light-tracker');
-    let isTicking = false;
-    document.addEventListener('mousemove', (e) => {
-      if (!isTicking) {
-        window.requestAnimationFrame(() => {
-          lightTrackers.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-          });
-          isTicking = false;
-        });
-        isTicking = true;
-      }
-    });
 
     window.addEventListener('wheel', (e) => {
       const leftPane = document.querySelector('.left-pane');
