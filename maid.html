@@ -45,14 +45,25 @@
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 
-    /* NEW: GRAVITY WATER SURFACE DISTURBANCE (LIGHT & SHADOW PHYSICS) */
-    #gravityWell {
-      position: fixed; inset: 0; z-index: 3; pointer-events: none;
-      background:
-        radial-gradient(circle 350px at calc(var(--cursor-x) - 25px) calc(var(--cursor-y) - 25px), rgba(255, 255, 255, 0.05), transparent 60%),
-        radial-gradient(circle 350px at calc(var(--cursor-x) + 25px) calc(var(--cursor-y) + 25px), rgba(0, 0, 0, 0.4), transparent 60%);
-      mix-blend-mode: hard-light;
-      transition: background 0.1s ease-out;
+    /* NEW LIQUID WAVE DISTURBANCE (REFRACTION PHYSICS) */
+    #cursor-wave {
+      position: fixed;
+      width: 140px; height: 140px;
+      left: var(--cursor-x); top: var(--cursor-y);
+      transform: translate(-50%, -50%);
+      pointer-events: none; z-index: 3;
+      /* Asymmetrical morphing border to mimic a liquid surface anomaly */
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      /* Bends and magnifies the light beneath it */
+      backdrop-filter: blur(4px) brightness(1.15) contrast(1.05);
+      -webkit-backdrop-filter: blur(4px) brightness(1.15);
+      box-shadow: inset 10px 0 20px rgba(0, 229, 255, 0.15), inset -10px 0 20px rgba(255, 255, 255, 0.1);
+      animation: liquidTwist 4s linear infinite;
+    }
+    @keyframes liquidTwist {
+      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+      50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; transform: translate(-50%, -50%) rotate(180deg) scale(1.05); }
+      100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(-50%, -50%) rotate(360deg) scale(1); }
     }
 
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
@@ -174,10 +185,10 @@
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
     
-    /* VIDEO CROP & GRAIN FIX: Uses modern bounding structure */
+    /* VIDEO CROP & GRAIN FIX: Uses optimal framing for a vertical video inside a landscape container */
     .video-bg { 
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-      object-fit: cover; object-position: center center;
+      object-fit: cover; object-position: center 20%;
       opacity: 0.85; z-index: 1; 
       transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
@@ -215,7 +226,7 @@
 
   <canvas id="nightCanvas"></canvas>
   <div id="rippleContainer"></div>
-  <div id="gravityWell"></div> <div class="split-layout">
+  <div id="cursor-wave"></div> <div class="split-layout">
     
     <div class="left-pane">
       <div class="form-container" id="mainForm">
@@ -370,7 +381,7 @@
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    // NEW STAR PHYSICS: Color transitioning using Sine Wave
+    // UPGRADED STAR PHYSICS: Sine-wave glow and multi-colored transitions
     for(let i=0; i<200; i++) {
       let rand = Math.random();
       let altColor = rand > 0.85 ? '160, 80, 255' : (rand > 0.7 ? '255, 80, 120' : '255, 255, 255');
@@ -404,8 +415,23 @@
         let opacity = Math.abs(wave) * 0.8 + 0.1; 
         let color = wave > 0 ? s.base : s.alt;
         
+        // Draw actual glowing star
+        ctx.save();
         ctx.fillStyle = `rgba(${color}, ${opacity})`; 
+        ctx.shadowBlur = s.size * 6; // Adds the organic shine
+        ctx.shadowColor = `rgba(${color}, ${opacity})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
+        
+        // Draw light rays (sparkle crosses) for larger stars
+        if (s.size > 1.2 && Math.abs(wave) > 0.5) {
+           ctx.beginPath();
+           ctx.moveTo(s.x, s.y - s.size * 3); ctx.lineTo(s.x, s.y + s.size * 3);
+           ctx.moveTo(s.x - s.size * 3, s.y); ctx.lineTo(s.x + s.size * 3, s.y);
+           ctx.strokeStyle = `rgba(${color}, ${opacity * 0.5})`;
+           ctx.lineWidth = 0.5;
+           ctx.stroke();
+        }
+        ctx.restore();
       });
 
       clouds.forEach(c => {
