@@ -27,7 +27,7 @@
 
     /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; --cursor-x: -1000px; --cursor-y: -1000px; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
 
@@ -42,29 +42,10 @@
     }
     @keyframes smoothLoad { to { opacity: 1; } }
 
+    /* BACKGROUND & PHYSICS CANVASES */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-    #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-
-    /* NEW LIQUID WAVE DISTURBANCE (REFRACTION PHYSICS) */
-    #cursor-wave {
-      position: fixed;
-      width: 140px; height: 140px;
-      left: var(--cursor-x); top: var(--cursor-y);
-      transform: translate(-50%, -50%);
-      pointer-events: none; z-index: 3;
-      /* Asymmetrical morphing border to mimic a liquid surface anomaly */
-      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-      /* Bends and magnifies the light beneath it */
-      backdrop-filter: blur(4px) brightness(1.15) contrast(1.05);
-      -webkit-backdrop-filter: blur(4px) brightness(1.15);
-      box-shadow: inset 10px 0 20px rgba(0, 229, 255, 0.15), inset -10px 0 20px rgba(255, 255, 255, 0.1);
-      animation: liquidTwist 4s linear infinite;
-    }
-    @keyframes liquidTwist {
-      0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-      50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 60%; transform: translate(-50%, -50%) rotate(180deg) scale(1.05); }
-      100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-    }
+    #fluidCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 2; pointer-events: none; }
+    #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 229, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
@@ -117,12 +98,6 @@
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
 
     .light-tracker { position: relative; width: 100%; }
-    .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
-    }
     .light-tracker::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
       background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 229, 255, 0.1), transparent 100%);
@@ -185,7 +160,7 @@
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 45%);
     }
     
-    /* VIDEO CROP & GRAIN FIX: Uses optimal framing for a vertical video inside a landscape container */
+    /* HD VIDEO FIX: Proper framing prevents excessive zoom and grain */
     .video-bg { 
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
       object-fit: cover; object-position: center 20%;
@@ -225,8 +200,9 @@
   </header>
 
   <canvas id="nightCanvas"></canvas>
-  <div id="rippleContainer"></div>
-  <div id="cursor-wave"></div> <div class="split-layout">
+  <canvas id="fluidCanvas"></canvas> <div id="rippleContainer"></div>
+
+  <div class="split-layout">
     
     <div class="left-pane">
       <div class="form-container" id="mainForm">
@@ -317,12 +293,13 @@
     
     <div class="right-pane">
       <video preload="auto" autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
-        <source src="./maid.mp4" type="video/mp4">
+        <source src="https://github.com/itzpriyanka777-a11y/priya-seva-center/releases/download/v1.0.0/maid.mp4" type="video/mp4">
       </video>
     </div>
 
   </div>
   <script>
+    // AGGRESSIVE VIDEO FREEZE ENFORCER
     window.addEventListener('load', () => {
       const video = document.getElementById('cinematicVideo');
       if (video) {
@@ -335,6 +312,75 @@
         forcePlay();
       }
     });
+
+    // --------------------------------------------------------
+    // THE "GENTLE RAIN" WATER DISTURBANCE ENGINE
+    // --------------------------------------------------------
+    const fluidCanvas = document.getElementById('fluidCanvas');
+    const fctx = fluidCanvas.getContext('2d');
+    function resizeFluid() { fluidCanvas.width = window.innerWidth; fluidCanvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeFluid); resizeFluid();
+
+    let waterRipples = [];
+    let fluidTrail = [];
+    let lastRippleTime = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      let now = Date.now();
+      // Pushes the bioluminescent neon trail
+      fluidTrail.push({x: e.clientX, y: e.clientY, life: 1});
+      
+      // Spawns physical 3D water displacement ripples periodically
+      if(now - lastRippleTime > 40) {
+        waterRipples.push({x: e.clientX, y: e.clientY, radius: 0, alpha: 1});
+        lastRippleTime = now;
+      }
+    });
+
+    function animateFluidEngine() {
+      fctx.clearRect(0, 0, fluidCanvas.width, fluidCanvas.height);
+      
+      // 1. Draw glowing liquid trail (Screen Blend Mode for Neon Glow)
+      fctx.globalCompositeOperation = 'screen';
+      for(let i = 0; i < fluidTrail.length; i++) {
+        let p = fluidTrail[i];
+        p.life -= 0.02; // fade out speed
+        if(p.life <= 0) { fluidTrail.splice(i, 1); i--; continue; }
+        
+        let radius = (1 - p.life) * 60 + 20; 
+        let gradient = fctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
+        gradient.addColorStop(0, `rgba(0, 229, 255, ${p.life * 0.2})`);
+        gradient.addColorStop(0.6, `rgba(0, 100, 255, ${p.life * 0.05})`);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        
+        fctx.beginPath(); fctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+        fctx.fillStyle = gradient; fctx.fill();
+      }
+
+      // 2. Draw 3D Water Displacement Waves (Overlay Blend Mode for Light/Shadow Physics)
+      fctx.globalCompositeOperation = 'overlay';
+      for(let i = 0; i < waterRipples.length; i++) {
+        let r = waterRipples[i];
+        r.radius += 3; // Expansion speed
+        r.alpha -= 0.02; // Fade speed
+        if(r.alpha <= 0) { waterRipples.splice(i, 1); i--; continue; }
+        
+        // Light crest of the wave
+        fctx.beginPath(); fctx.arc(r.x, r.y, r.radius, 0, Math.PI*2);
+        fctx.lineWidth = 1.5 + (r.alpha * 3);
+        fctx.strokeStyle = `rgba(255, 255, 255, ${r.alpha * 0.5})`;
+        fctx.stroke();
+        
+        // Dark trough of the wave (creates the 3D refraction illusion)
+        fctx.beginPath(); fctx.arc(r.x + 3, r.y + 3, r.radius, 0, Math.PI*2);
+        fctx.lineWidth = 3 + (r.alpha * 3);
+        fctx.strokeStyle = `rgba(0, 0, 0, ${r.alpha * 0.6})`;
+        fctx.stroke();
+      }
+      requestAnimationFrame(animateFluidEngine);
+    }
+    animateFluidEngine();
+    // --------------------------------------------------------
 
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
@@ -350,9 +396,6 @@
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
-      document.body.style.setProperty('--cursor-x', `${e.clientX}px`);
-      document.body.style.setProperty('--cursor-y', `${e.clientY}px`);
-      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
@@ -381,8 +424,9 @@
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
+    // --------------------------------------------------------
     // UPGRADED STAR PHYSICS: Sine-wave glow and multi-colored transitions
-    for(let i=0; i<200; i++) {
+    for(let i=0; i<150; i++) {
       let rand = Math.random();
       let altColor = rand > 0.85 ? '160, 80, 255' : (rand > 0.7 ? '255, 80, 120' : '255, 255, 255');
       stars.push({ 
@@ -407,22 +451,18 @@
       stars.forEach(s => {
         s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
         
-        // Advance phase
         s.phase += s.phaseSpeed;
         let wave = Math.sin(s.phase);
         
-        // Calculate dip in opacity and color shift
         let opacity = Math.abs(wave) * 0.8 + 0.1; 
         let color = wave > 0 ? s.base : s.alt;
         
-        // Draw actual glowing star
         ctx.save();
         ctx.fillStyle = `rgba(${color}, ${opacity})`; 
-        ctx.shadowBlur = s.size * 6; // Adds the organic shine
+        ctx.shadowBlur = s.size * 6; 
         ctx.shadowColor = `rgba(${color}, ${opacity})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
         
-        // Draw light rays (sparkle crosses) for larger stars
         if (s.size > 1.2 && Math.abs(wave) > 0.5) {
            ctx.beginPath();
            ctx.moveTo(s.x, s.y - s.size * 3); ctx.lineTo(s.x, s.y + s.size * 3);
@@ -443,6 +483,7 @@
       requestAnimationFrame(drawSereneSky);
     }
     drawSereneSky();
+    // --------------------------------------------------------
 
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
