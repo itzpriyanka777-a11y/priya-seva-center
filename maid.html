@@ -32,7 +32,7 @@
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
     @keyframes smoothLoad { to { opacity: 1; } }
 
-    /* UNIFIED PHYSICS CANVAS (FLUID CANVAS REMOVED) */
+    /* UNIFIED PHYSICS CANVAS */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 
@@ -195,7 +195,6 @@
   </header>
 
   <canvas id="nightCanvas"></canvas> 
-  
   <div id="rippleContainer"></div>
 
   <div class="split-layout">
@@ -324,7 +323,6 @@
         window.requestAnimationFrame(() => {
           lightTrackers.forEach(el => {
             const rect = el.getBoundingClientRect();
-            // Maps the exact mouse coordinate relative to each form field wrapper
             el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
             el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
           });
@@ -340,7 +338,7 @@
     }, { passive: true });
 
     // =================================================================================
-    // DRIFTING STAR PHYSICS ENGINE (Reduced Size, Slowed Speed, Custom Colors)
+    // MICRO-STAR PHYSICS ENGINE (Smooth Drift, No Jitter, Custom Palette)
     // =================================================================================
     const canvas = document.getElementById('nightCanvas');
     const ctx = canvas.getContext('2d');
@@ -357,24 +355,23 @@
         {r: 220, g: 20, b: 60},    // Crimson
         {r: 128, g: 0, b: 128},    // Purple
         {r: 199, g: 21, b: 133},   // Reddish Purple
-        {r: 138, g: 43, b: 226}    // Mix/Shade (Blue Violet)
+        {r: 255, g: 255, b: 255}   // Soft White
     ];
 
-    // Initialize stars with precise parameters
-    for(let i=0; i<250; i++) {
-      let isShifter = Math.random() > 0.5; // 50% chance to color-shift in the dark
+    // Initialize stars with microscopic size and smooth drift
+    for(let i=0; i<200; i++) {
+      let isShifter = Math.random() > 0.3; // 70% chance to color-shift in the dark
       let startColor = starColors[Math.floor(Math.random() * starColors.length)];
-      let targetColor = starColors[Math.floor(Math.random() * starColors.length)];
       
       stars.push({ 
         x: Math.random() * window.innerWidth, 
         y: Math.random() * window.innerHeight, 
-        size: Math.random() * 0.8 + 0.2, // Drastically reduced maximum size
-        speed: (Math.random() * 0.15) + 0.05, // Much slower, calmer horizontal drift
+        size: (Math.random() * 0.5) + 0.2, // Tiny pinpricks (Max 0.7 radius)
+        speed: (Math.random() * 0.15) + 0.05, // Slow but steady right-to-left drift
         phase: Math.random() * Math.PI * 2, 
-        phaseSpeed: (Math.random() * 0.015) + 0.005, 
+        phaseSpeed: (Math.random() * 0.008) + 0.002, // Extremely slow breathing fade (No Jitter)
         isShifter: isShifter,
-        targetColor: targetColor,
+        targetColor: starColors[Math.floor(Math.random() * starColors.length)],
         currentColor: {r: startColor.r, g: startColor.g, b: startColor.b}
       });
     }
@@ -385,7 +382,7 @@
 
       // Process Star Drifting, Glimmer & Color Shifting
       stars.forEach(s => {
-        // Calmly drift the star horizontally
+        // Calmly drift the star horizontally right-to-left
         s.x -= s.speed; 
         if(s.x < -10) { 
            s.x = canvas.width + 10; 
@@ -394,7 +391,7 @@
 
         s.phase += s.phaseSpeed;
         let wave = Math.sin(s.phase);
-        let alpha = Math.abs(wave); // 0 to 1 Fade cycle
+        let alpha = Math.abs(wave); // Smooth 0 to 1 Fade cycle
         
         // Dynamic color shifting when the star fades completely out
         if (s.isShifter && alpha < 0.05) {
@@ -404,17 +401,21 @@
 
         ctx.save();
         ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
-        ctx.shadowBlur = s.size * 6; // Realistic glowing aura
+        // Tiny shadow blur for elegance, not distraction
+        ctx.shadowBlur = s.size * 4; 
         ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
-        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill();
         
-        // Draw crystalline light rays (adjusted threshold for the newly reduced star sizes)
-        if (s.size > 0.7 && Math.abs(wave) > 0.5) {
+        ctx.beginPath(); 
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); 
+        ctx.fill();
+        
+        // Draw delicate cross light rays only for the "largest" of the tiny stars at their brightest
+        if (s.size > 0.5 && alpha > 0.8) {
            ctx.beginPath();
-           ctx.moveTo(s.x, s.y - s.size * 3); ctx.lineTo(s.x, s.y + s.size * 3);
-           ctx.moveTo(s.x - s.size * 3, s.y); ctx.lineTo(s.x + s.size * 3, s.y);
-           ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.5})`;
-           ctx.lineWidth = 0.5;
+           ctx.moveTo(s.x, s.y - s.size * 4); ctx.lineTo(s.x, s.y + s.size * 4);
+           ctx.moveTo(s.x - s.size * 4, s.y); ctx.lineTo(s.x + s.size * 4, s.y);
+           ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.4})`;
+           ctx.lineWidth = 0.3;
            ctx.stroke();
         }
         ctx.restore();
