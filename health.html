@@ -11,7 +11,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    /* SCROLLBAR NUKE */
     ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
     * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 
@@ -20,31 +20,24 @@
       --glass-base: rgba(10, 15, 25, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
       --highlight: #00f3ff; 
+      --deep-ocean: #0055ff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    /* TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; background-color: var(--void-bg); overflow: hidden; color: white; opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; font-family: 'Poppins', sans-serif; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
-
-    /* ANTI-FLASH FADE */
-    body { 
-      opacity: 0; 
-      animation: smoothLoad 0.8s ease-in 0.6s forwards; 
-      font-family: 'Poppins', sans-serif; 
-      background-color: var(--void-bg); 
-      overflow: hidden; 
-      color: white; 
-    }
     @keyframes smoothLoad { to { opacity: 1; } }
 
+    /* UNIFIED PHYSICS CANVAS */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-    #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
-    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+    #rippleContainer { position: fixed; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
+
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: clickRipple 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes clickRipple { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
     /* UNIVERSAL HEADER */
     .universal-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 5, 16, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-sizing: border-box;}
@@ -56,7 +49,7 @@
     .btn-dash { border-color: rgba(0, 243, 255, 0.3); color: #00f3ff; }
     .btn-dash:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);}
 
-    /* LANGUAGE DROPDOWN CSS */
+    /* LANGUAGE DROPDOWN */
     .menu-container { position: relative; display: inline-block; }
     .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 15px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
     .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
@@ -91,26 +84,39 @@
 
     @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
 
+    /* LIGHT TRACKER EDGE TRACING PHYSICS */
     .light-tracker { position: relative; width: 100%; }
-    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 255, 255, 1), rgba(160, 100, 255, 0.8) 40%, transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
-    .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%); pointer-events: none; z-index: 0; }
+    
+    .light-tracker::after {
+      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
+    }
+    
+    .light-tracker::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%);
+      pointer-events: none; z-index: 0;
+    }
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
-    .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1); }
+    .glass-render { 
+      width: 100%; padding: 18px 25px; 
+      background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+      border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; 
+      color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
+      position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1); 
+    }
     .glass-render::placeholder { color: rgba(255,255,255,0.6); text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
     .glass-render:hover { background: rgba(10, 15, 25, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
 
-    /* TIME PICKER FIX */
-    input[type="time"].glass-render {
-      color-scheme: dark;
-      cursor: pointer;
-    }
-    input[type="time"].glass-render::-webkit-calendar-picker-indicator {
-      cursor: pointer;
-      filter: invert(1);
-    }
+    input[type="time"].glass-render { color-scheme: dark; cursor: pointer; }
+    input[type="time"].glass-render::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(1); }
 
     .custom-select { position: relative; user-select: none; }
     .select-trigger { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
@@ -120,9 +126,9 @@
     .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;}
+    .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
 
-    /* HOVER CHAT BUBBLE ENGINE */
     .helper-bubble {
       display: none; position: absolute; top: -50px; right: 0; 
       background: rgba(0, 243, 255, 0.95); color: #000; padding: 12px 18px; 
@@ -130,11 +136,7 @@
       font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
       z-index: 200; pointer-events: none; animation: dropBounce 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .helper-bubble::after {
-      content: ''; position: absolute; bottom: -8px; right: 10px; 
-      border-width: 10px 10px 0 0; border-style: solid; 
-      border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent;
-    }
+    .helper-bubble::after { content: ''; position: absolute; bottom: -8px; right: 10px; border-width: 10px 10px 0 0; border-style: solid; border-color: rgba(0, 243, 255, 0.95) transparent transparent transparent; }
 
     .glass-calendar { display: none; background: rgba(5, 8, 15, 0.7); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; padding: 25px; margin-top: 15px; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
     .cal-top { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; font-size: 14px; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,1); position: relative; z-index: 1;}
@@ -147,12 +149,36 @@
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     
-    @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    /* THE SMARTPHONE SCROLL & POPUP CSS */
+    .right-pane { 
+      flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; 
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
+      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
+    }
+    .cinematic-container { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+    .cinematic-img { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
+      opacity: 0; transform: translateX(-50px); transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 1;
+    }
+    .cinematic-img.active { opacity: 0.85; transform: translateX(0); z-index: 2; }
+    /* The Left-to-Right Swipe Out effect */
+    .cinematic-img.swipe-out { opacity: 0; transform: translateX(100%); z-index: 3; } 
 
-    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); object-fit: cover; z-index: 1;}
+    /* The "Write Up" Popup styling */
+    .final-message {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+      opacity: 0; z-index: 5; text-align: center;
+      background: rgba(5, 8, 15, 0.8); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      padding: 45px 35px; border-radius: 25px; border: 1px solid rgba(0, 243, 255, 0.2);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05);
+      transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      color: white; width: 85%; max-width: 420px; pointer-events: auto;
+    }
+    .final-message.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .final-message h3 { font-size: 26px; font-weight: 700; color: var(--highlight); margin-bottom: 15px; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0, 243, 255, 0.4); }
+    .final-message p { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.7; font-weight: 500; }
 
-    /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
       body { overflow: auto; }
       .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
@@ -211,28 +237,17 @@
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
-            <div class="option" onclick="toggleMultiOption('BP & Vitals Check', this)">
-              <i class="fa-regular fa-square check-icon"></i> BP & Vitals Check
-            </div>
-            <div class="option" onclick="toggleMultiOption('Oxygen Levels Check', this)">
-              <i class="fa-regular fa-square check-icon"></i> Oxygen Levels Check
-            </div>
-            <div class="option" onclick="toggleMultiOption('Vaccinations', this)">
-              <i class="fa-regular fa-square check-icon"></i> Vaccinations
-            </div>
-            <div class="option" onclick="toggleMultiOption('Post-Surgery Dressing', this)">
-              <i class="fa-regular fa-square check-icon"></i> Post-Surgery Dressing
-            </div>
-            <div class="option" onclick="toggleMultiOption('Physiotherapy', this)">
-              <i class="fa-regular fa-square check-icon"></i> Physiotherapy
-            </div>
+            <div class="option" onclick="toggleMultiOption('BP & Vitals Check', this)"><i class="fa-regular fa-square check-icon"></i> BP & Vitals Check</div>
+            <div class="option" onclick="toggleMultiOption('Oxygen Levels Check', this)"><i class="fa-regular fa-square check-icon"></i> Oxygen Levels Check</div>
+            <div class="option" onclick="toggleMultiOption('Vaccinations', this)"><i class="fa-regular fa-square check-icon"></i> Vaccinations</div>
+            <div class="option" onclick="toggleMultiOption('Post-Surgery Dressing', this)"><i class="fa-regular fa-square check-icon"></i> Post-Surgery Dressing</div>
+            <div class="option" onclick="toggleMultiOption('Physiotherapy', this)"><i class="fa-regular fa-square check-icon"></i> Physiotherapy</div>
           </div>
         </div>
+
         <div class="capsule-group input-group custom-select">
           <label>Schedule Frequency</label>
-          
           <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
-
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
               <span>Set frequency</span> <i class="fa-solid fa-chevron-down"></i>
@@ -288,13 +303,51 @@
     </div>
 
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" style="opacity: 0.7;">
-        <source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4">
-      </video>
+      <div class="cinematic-container">
+        <img src="./pexels-perfect-lens-15499663.jpg" id="img-0" class="cinematic-img">
+        <img src="./pexels-rd-270521240-32712474.jpg" id="img-1" class="cinematic-img">
+        <img src="./pexels-thirdman-7659569.jpg" id="img-2" class="cinematic-img">
+        <img src="./pexels-yaroslav-shuraev-8088852.jpg" id="img-3" class="cinematic-img">
+        
+        <div id="finalMessage" class="final-message">
+            <h3>Your Health, Our Priority</h3>
+            <p>Expert diagnostic care and professional nursing brought directly to your home. Accurate, safe, and entirely reliable.</p>
+        </div>
+      </div>
     </div>
 
-  </div>
+  </div>\
   <script>
+    // SMARTPHONE SCROLL CINEMATIC SEQUENCE LOGIC
+    const sequenceImages = [ 
+      document.getElementById('img-0'), 
+      document.getElementById('img-1'), 
+      document.getElementById('img-2'), 
+      document.getElementById('img-3') 
+    ].filter(Boolean);
+    
+    const finalMessage = document.getElementById('finalMessage'); 
+    let currentImgIndex = 0;
+    
+    function runCinematicSequence() {
+      if (sequenceImages.length === 0) return;
+      if (currentImgIndex >= sequenceImages.length) { 
+          if(finalMessage) finalMessage.classList.add('show'); // Triggers the Write-Up
+          return; 
+      }
+      const activeImg = sequenceImages[currentImgIndex]; 
+      activeImg.classList.add('active');
+      
+      setTimeout(() => { 
+          activeImg.classList.remove('active'); 
+          activeImg.classList.add('swipe-out'); // Left-to-Right swipe physics
+          currentImgIndex++; 
+          setTimeout(runCinematicSequence, 300); 
+      }, 3500); // 3.5s hold per image
+    }
+    setTimeout(runCinematicSequence, 800);
+
+    // MOUSE CLICK RIPPLE
     const rippleContainer = document.getElementById('rippleContainer');
     function createRipple(x, y) {
       const ripple = document.createElement('div'); ripple.className = 'water-ripple'; ripple.style.left = x + 'px'; ripple.style.top = y + 'px';
@@ -302,16 +355,13 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
-    let lastRippleTime = 0;
+    // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
+    const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
-      const now = Date.now();
-      if(now - lastRippleTime > 150) { createRipple(e.clientX, e.clientY); lastRippleTime = now; }
-      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
-          document.querySelectorAll('.light-tracker').forEach(el => {
+          lightTrackers.forEach(el => {
             const rect = el.getBoundingClientRect(); 
             el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
             el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
@@ -322,56 +372,92 @@
       }
     });
 
-    const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d');
-    let stars = []; let clouds = [];
+    window.addEventListener('wheel', (e) => {
+      const leftPane = document.querySelector('.left-pane');
+      if (!leftPane.contains(e.target)) leftPane.scrollTop += e.deltaY;
+    }, { passive: true });
+
+    // =================================================================================
+    // MICRO-STAR PHYSICS ENGINE (Smooth Drift, No Jitter, Custom Palette)
+    // =================================================================================
+    const canvas = document.getElementById('nightCanvas'); 
+    const ctx = canvas.getContext('2d');
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<400; i++) { stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.12) + 0.04, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '0, 243, 255' : '255, 255, 255' }); }
-    for(let i=0; i<8; i++) {
-      let baseSize = (Math.random() * 180) + 120; let subParts = []; let cloudCircles = Math.floor(Math.random() * 3) + 4; 
-      for(let j=0; j<cloudCircles; j++) { subParts.push({ offsetX: (Math.random() - 0.5) * baseSize * 1.2, offsetY: (Math.random() - 0.5) * baseSize * 0.4, radius: (Math.random() * 0.4 + 0.6) * (baseSize * 0.5) }); }
-      clouds.push({ x: Math.random() * canvas.width, y: (Math.random() * canvas.height * 0.85), parts: subParts, baseSize: baseSize, speed: (Math.random() * 0.25) + 0.12, opacity: (Math.random() * 0.14) + 0.04 });
+    let stars = []; 
+    // Custom requested color palette
+    const starColors = [
+        {r: 0, g: 255, b: 255},    // Cyan
+        {r: 65, g: 105, b: 225},   // Royal Blue
+        {r: 138, g: 3, b: 3},      // Blood Red
+        {r: 220, g: 20, b: 60},    // Crimson
+        {r: 128, g: 0, b: 128},    // Purple
+        {r: 199, g: 21, b: 133},   // Reddish Purple
+        {r: 255, g: 255, b: 255}   // Soft White
+    ];
+
+    for(let i=0; i<200; i++) { 
+      let isShifter = Math.random() > 0.3; // 70% chance to color-shift in the dark
+      let startColor = starColors[Math.floor(Math.random() * starColors.length)];
+      stars.push({ 
+        x: Math.random() * window.innerWidth, 
+        y: Math.random() * window.innerHeight, 
+        size: (Math.random() * 0.5) + 0.2, // Tiny pinpricks (Max 0.7 radius)
+        speed: (Math.random() * 0.15) + 0.05, // Slow but steady right-to-left drift
+        phase: Math.random() * Math.PI * 2, 
+        phaseSpeed: (Math.random() * 0.008) + 0.002, // Extremely slow breathing fade
+        isShifter: isShifter,
+        targetColor: starColors[Math.floor(Math.random() * starColors.length)],
+        currentColor: {r: startColor.r, g: startColor.g, b: startColor.b}
+      }); 
     }
 
     function drawSereneSky() {
       ctx.fillStyle = '#03040b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => { s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; } s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2; ctx.fillStyle = `rgba(${s.color}, ${opacity})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
-      clouds.forEach(c => {
-        c.x += c.speed; if(c.x > canvas.width + c.baseSize * 2) { c.x = -c.baseSize * 2; c.y = (Math.random() * canvas.height * 0.85); }
-        ctx.save(); ctx.shadowColor = 'rgba(2, 6, 20, 0.95)'; ctx.shadowBlur = c.baseSize * 0.6; ctx.fillStyle = `rgba(5, 14, 32, ${c.opacity})`;
-        ctx.beginPath(); c.parts.forEach(p => { ctx.arc(c.x + p.offsetX, c.y + p.offsetY, p.radius, 0, Math.PI * 2); }); ctx.fill(); ctx.restore();
+      stars.forEach(s => { 
+        s.x -= s.speed; if(s.x < -10) { s.x = canvas.width + 10; s.y = Math.random() * canvas.height; } 
+        
+        s.phase += s.phaseSpeed; 
+        let wave = Math.sin(s.phase);
+        let alpha = Math.abs(wave);
+        
+        if (s.isShifter && alpha < 0.05) {
+            s.currentColor = starColors[Math.floor(Math.random() * starColors.length)];
+        }
+        
+        ctx.save();
+        ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
+        ctx.shadowBlur = s.size * 4; 
+        ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); 
+        
+        if (s.size > 0.5 && alpha > 0.8) {
+           ctx.beginPath();
+           ctx.moveTo(s.x, s.y - s.size * 4); ctx.lineTo(s.x, s.y + s.size * 4);
+           ctx.moveTo(s.x - s.size * 4, s.y); ctx.lineTo(s.x + s.size * 4, s.y);
+           ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.4})`;
+           ctx.lineWidth = 0.3; ctx.stroke();
+        }
+        ctx.restore();
       });
       requestAnimationFrame(drawSereneSky);
     }
     drawSereneSky();
-
-    // Cinematic Sequence disabled safely as Live Cloud Video is now active.
-    const sequenceImages = [ document.getElementById('img-0'), document.getElementById('img-1'), document.getElementById('img-2'), document.getElementById('img-3') ].filter(Boolean);
-    const finalMessage = document.getElementById('finalMessage'); let currentImgIndex = 0;
-    function runCinematicSequence() {
-      if (sequenceImages.length === 0) return; // Prevents errors since images were replaced by video
-      if (currentImgIndex >= sequenceImages.length) { finalMessage.classList.add('show'); return; }
-      const activeImg = sequenceImages[currentImgIndex]; activeImg.classList.add('active');
-      setTimeout(() => { activeImg.classList.remove('active'); activeImg.classList.add('swipe-out'); currentImgIndex++; setTimeout(runCinematicSequence, 300); }, 3500);
-    }
-    setTimeout(runCinematicSequence, 800);
+    // =================================================================================
 
     const SUPABASE_URL = "https://dimvxstsftyalllwtpoy.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbXZ4c3RzZnR5YWxsbHd0cG95Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyMjc4NDAsImV4cCI6MjA5NDgwMzg0MH0.aTUrMN6n4I68eUSEsWMeyLwnIgslYSlrq9JOKVXAPT0";
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let selectedFrequency = ""; let selectedDates = [];
-    let selectedHealthServices = []; // Holds multiple selected services
+    let selectedHealthServices = []; 
 
     function showFreqHelper(text) {
        const bubble = document.getElementById('freqHelperBubble');
-       bubble.innerText = text;
-       bubble.style.display = 'block';
+       bubble.innerText = text; bubble.style.display = 'block';
     }
-    function hideFreqHelper() {
-       document.getElementById('freqHelperBubble').style.display = 'none';
-    }
+    function hideFreqHelper() { document.getElementById('freqHelperBubble').style.display = 'none'; }
 
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
@@ -382,58 +468,37 @@
       
       if(index > -1) {
         selectedHealthServices.splice(index, 1);
-        icon.classList.replace('fa-square-check', 'fa-square');
-        icon.classList.replace('fa-solid', 'fa-regular');
-        el.style.background = 'transparent';
-        el.style.paddingLeft = '25px';
-        icon.style.color = 'white';
+        icon.classList.replace('fa-square-check', 'fa-square'); icon.classList.replace('fa-solid', 'fa-regular');
+        el.style.background = 'transparent'; el.style.paddingLeft = '25px'; icon.style.color = 'white';
       } else {
         selectedHealthServices.push(value);
-        icon.classList.replace('fa-square', 'fa-square-check');
-        icon.classList.replace('fa-regular', 'fa-solid');
-        el.style.background = 'rgba(0, 243, 255, 0.15)';
-        el.style.paddingLeft = '35px';
-        icon.style.color = 'var(--highlight)';
+        icon.classList.replace('fa-square', 'fa-square-check'); icon.classList.replace('fa-regular', 'fa-solid');
+        el.style.background = 'rgba(0, 243, 255, 0.15)'; el.style.paddingLeft = '35px'; icon.style.color = 'var(--highlight)';
       }
       
       const triggerSpan = document.querySelector('#serviceTrigger span');
       if(selectedHealthServices.length === 0) {
-        triggerSpan.innerText = "Choose services";
-        triggerSpan.parentElement.classList.remove('active');
+        triggerSpan.innerText = "Choose services"; triggerSpan.parentElement.classList.remove('active');
       } else if(selectedHealthServices.length <= 2) {
-        triggerSpan.innerText = selectedHealthServices.join(", ");
-        triggerSpan.parentElement.classList.add('active');
+        triggerSpan.innerText = selectedHealthServices.join(", "); triggerSpan.parentElement.classList.add('active');
       } else {
-        triggerSpan.innerText = selectedHealthServices.length + " Services Selected";
-        triggerSpan.parentElement.classList.add('active');
+        triggerSpan.innerText = selectedHealthServices.length + " Services Selected"; triggerSpan.parentElement.classList.add('active');
       }
     }
 
     function selectFrequency(value) { 
         const trigger = document.getElementById('freqTrigger'); 
         trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
-        trigger.classList.add('active'); 
-        document.getElementById('freqOptions').classList.remove('show'); 
+        trigger.classList.add('active'); document.getElementById('freqOptions').classList.remove('show'); 
         
-        selectedFrequency = value; 
-        selectedDates = []; 
-        updateSelectedDatesDisplay(); 
-        document.getElementById('visualCalendar').style.display = 'block'; 
+        selectedFrequency = value; selectedDates = []; 
+        updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; 
         
         const calTopText = document.getElementById('calTopText');
-        if (value === 'Single Visit') {
-            calTopText.innerText = "Select Date:";
-            buildCalendarGrid('single'); 
-        } else if (value === 'Recurring Days') {
-            calTopText.innerText = "Select Days of Week:";
-            buildCalendarGrid('days');
-        } else if (value === 'Recurring Monthly') {
-            calTopText.innerText = "Select Monthly Date:";
-            buildCalendarGrid('monthly');
-        } else {
-            calTopText.innerText = "Select Dates:";
-            buildCalendarGrid('custom');
-        }
+        if (value === 'Single Visit') { calTopText.innerText = "Select Date:"; buildCalendarGrid('single'); } 
+        else if (value === 'Recurring Days') { calTopText.innerText = "Select Days of Week:"; buildCalendarGrid('days'); } 
+        else if (value === 'Recurring Monthly') { calTopText.innerText = "Select Monthly Date:"; buildCalendarGrid('monthly'); } 
+        else { calTopText.innerText = "Select Dates:"; buildCalendarGrid('custom'); }
     }
 
     function getOrdinal(n) {
@@ -444,26 +509,20 @@
     function updateSelectedDatesDisplay() {
       const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
       if (selectedDates.length > 0) { 
-          let prefix = "Selected: ";
-          let suffix = "";
+          let prefix = "Selected: "; let suffix = "";
           let sortedDates = [...selectedDates];
           
           if (selectedFrequency === 'Single Visit' || selectedFrequency === 'Custom Schedule') {
-             prefix = "Selected: May ";
-             sortedDates = sortedDates.sort((a,b)=>a-b);
+             prefix = "Selected: May "; sortedDates = sortedDates.sort((a,b)=>a-b);
           } else if (selectedFrequency === 'Recurring Monthly') {
-             prefix = "Every month on the ";
-             suffix = getOrdinal(sortedDates[0]);
-             sortedDates = [suffix];
+             prefix = "Every month on the "; suffix = getOrdinal(sortedDates[0]); sortedDates = [suffix];
           } else if (selectedFrequency === 'Recurring Days') {
              prefix = "Every: ";
           }
           
           datesText.innerText = prefix + sortedDates.join(", "); 
           displayDiv.style.display = 'block'; 
-      } else { 
-          displayDiv.style.display = 'none'; 
-      }
+      } else { displayDiv.style.display = 'none'; }
     }
 
     function buildCalendarGrid(mode) {
@@ -476,22 +535,17 @@
          
          const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
          daysOfWeek.forEach(day => {
-            const div = document.createElement('div'); 
-            div.className = 'cal-date'; 
-            div.innerText = day;
-            div.style.padding = "12px 10px"; 
+            const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = day; div.style.padding = "12px 10px"; 
             div.onclick = function(e) {
                 createRipple(e.clientX, e.clientY);
                 this.classList.toggle('selected');
-                if(this.classList.contains('selected')) selectedDates.push(day); 
-                else selectedDates = selectedDates.filter(d => d !== day);
+                if(this.classList.contains('selected')) selectedDates.push(day); else selectedDates = selectedDates.filter(d => d !== day);
                 updateSelectedDatesDisplay();
             };
             grid.appendChild(div);
          });
       } else {
-         daysHeader.style.display = 'grid'; 
-         grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+         daysHeader.style.display = 'grid'; grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
          let isSingleSelect = (mode === 'single' || mode === 'monthly');
          
          for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
@@ -499,15 +553,8 @@
            const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
            div.onclick = function(e) {
              createRipple(e.clientX, e.clientY);
-             if(isSingleSelect) { 
-                 document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); 
-                 selectedDates = [i]; 
-                 this.classList.add('selected'); 
-             } else { 
-                 this.classList.toggle('selected'); 
-                 if(this.classList.contains('selected')) selectedDates.push(i); 
-                 else selectedDates = selectedDates.filter(d => d !== i); 
-             }
+             if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
+             else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
              updateSelectedDatesDisplay(); 
            };
            grid.appendChild(div);
@@ -533,13 +580,9 @@
         if (!user) { btn.innerHTML = 'Request Appointment'; btn.disabled = false; return alert("Authentication required. Please log in."); }
 
         let formattedDates = "";
-        if (selectedFrequency === 'Recurring Monthly') {
-           formattedDates = "Every month on the " + getOrdinal(selectedDates[0]);
-        } else if (selectedFrequency === 'Recurring Days') {
-           formattedDates = "Every " + selectedDates.join(", ");
-        } else {
-           formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
-        }
+        if (selectedFrequency === 'Recurring Monthly') { formattedDates = "Every month on the " + getOrdinal(selectedDates[0]); } 
+        else if (selectedFrequency === 'Recurring Days') { formattedDates = "Every " + selectedDates.join(", "); } 
+        else { formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); }
         
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
         const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Health Check: " + finalServices, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (extraDetails ? " | Notes: " + extraDetails : "") };
@@ -555,53 +598,35 @@
   </script>
 
   <script type="text/javascript">
-    // 1. Force the language immediately to stop the choppy English flash
     let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
     document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
     document.cookie = `googtrans=/en/${savedLang}; path=/`;
 
-    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
-    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
-      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
-      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload(); // Reloads instantly in the correct language
+      localStorage.setItem('priyaSevaLang', langCode); localStorage.setItem('langChoiceMade', 'true');  
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`; document.cookie = `googtrans=/en/${langCode}; path=/`;
+      window.location.reload(); 
     }
 
-    // 4. Popup & Loading Mask Controller (For index.html)
     window.addEventListener('DOMContentLoaded', () => {
-      const mask = document.getElementById('contentMask');
-      const popup = document.getElementById('langPopupOverlay');
+      const mask = document.getElementById('contentMask'); const popup = document.getElementById('langPopupOverlay');
       const choiceMade = localStorage.getItem('langChoiceMade');
 
       if (mask && popup) {
         if (!choiceMade) {
-          // First time visitor: Show mask for 1s, then show Popup
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
-          }, 1000);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800); }, 1000);
         } else {
-          // Returning visitor: Just hide the mask smoothly
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; }, 800);
-          }, 800);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; }, 800); }, 800);
         }
       }
       
-      // Nuke the ugly Google Translate Bar permanently
       const observer = new MutationObserver(() => {
-          document.body.style.top = '0px';
-          document.documentElement.style.top = '0px';
-          const gtFrame = document.querySelector('.goog-te-banner-frame');
-          if(gtFrame) gtFrame.remove();
+          document.body.style.top = '0px'; document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame'); if(gtFrame) gtFrame.remove();
       });
       observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
