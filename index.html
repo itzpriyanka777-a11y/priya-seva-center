@@ -24,7 +24,7 @@
       --highlight: #00f3ff; 
     }
 
-    /* GOOGLE TRANSLATE NUKE */
+    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
     body { top: 0px !important; margin-top: 0px !important; position: static !important; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
@@ -112,7 +112,12 @@
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
     
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
-    .mobile-title, .mobile-bg-video, .mobile-overlay-text, .health-slideshow { display: none; }
+    
+    /* VITAL FIX: We hide them visually, but NOT with display:none, so the browser downloads them securely */
+    .mobile-title, .mobile-bg-video, .mobile-overlay-text, .health-slideshow { 
+        position: absolute; opacity: 0; visibility: hidden; pointer-events: none; z-index: -1; width: 0; height: 0;
+    }
+
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
     .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600;}
@@ -223,15 +228,18 @@
       .login-trigger-btn span { display: none; } 
       .desktop-card-content { display: none; }
       
-      /* Fixed Video Stream Cards - Poster is gone, videos must play! */
+      /* THIS IS THE MAGIC FIX: We make them visible on mobile instantly */
       .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden; background: #000;}
-      .mobile-title { display: block; position: relative; z-index: 10; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
-      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.6; border-radius: 24px; pointer-events: none;}
+      
+      .mobile-title { position: relative; z-index: 10; opacity: 1; visibility: visible; width: auto; height: auto; display: block; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
+      
+      .mobile-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.6; visibility: visible; border-radius: 24px; pointer-events: none; display: block; }
       
       /* High-End Health Play Card 5-Part Looping Slideshow */
-      .health-slideshow { display: block; position: absolute; inset: 0; z-index: 1; border-radius: 24px; overflow: hidden; background: #000; }
+      .health-slideshow { position: absolute; inset: 0; z-index: 1; opacity: 1; visibility: visible; border-radius: 24px; overflow: hidden; background: #000; width: 100%; height: 100%; display: block; }
+      
       .health-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: crossFade 25s infinite ease-in-out; pointer-events: none;}
-      .health-slide.img-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; } /* Dark overlay to match other cards */
+      .health-slide.img-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; }
       
       .health-slide:nth-child(1) { animation-delay: 0s; }
       .health-slide:nth-child(2) { animation-delay: 5s; }
@@ -247,7 +255,7 @@
           100% { opacity: 0; }
       }
 
-      .mobile-overlay-text { display: none; } /* Removed overlapping text for Health slide loop */
+      .mobile-overlay-text { display: none; } 
 
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
@@ -331,7 +339,8 @@
       <div class="light-tracker card-maid">
         <div class="service-card" onclick="window.location.href='maid.html'">
           <h3 class="mobile-title">Maids</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-cleaning-the-living-room-2751/1080p.mp4" type="video/mp4"></video>
+          <!-- LOCAL FILE FIX: Change "maid.mp4" to whatever your pristine video name is -->
+          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="maid.mp4" type="video/mp4"></video>
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maids</h3>
             <p>Good maids for home cleaning and cooking.</p>
@@ -345,7 +354,8 @@
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
           <h3 class="mobile-title">Expert Nurses</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4"></video>
+          <!-- LOCAL FILE FIX: Change "nurse.mp4" to whatever your pristine video name is -->
+          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="nurse.mp4" type="video/mp4"></video>
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Expert Nurses</h3>
             <p>Expert nurses to care for sick family members at home.</p>
@@ -387,7 +397,8 @@
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
           <h3 class="mobile-title">Babysitters</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4"></video>
+          <!-- LOCAL FILE FIX: Change "babysitter.mp4" to whatever your pristine video name is -->
+          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="babysitter.mp4" type="video/mp4"></video>
           <div class="desktop-card-content">
             <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
             <p>Safe and caring babysitters for your kids.</p>
@@ -598,16 +609,13 @@
         }
       }
       
-      // THE BRUTE-FORCE MOBILE VIDEO FIX
-      // If iPhone tries to block the video, this forces it to play the moment the user touches the screen.
+      // FORCING VIDEOS TO PLAY ON MOBILE
       document.querySelectorAll('.mobile-bg-video').forEach(v => {
-          let playPromise = v.play();
-          if (playPromise !== undefined) {
-              playPromise.catch(() => {
-                  document.body.addEventListener('touchstart', () => { v.play(); }, {once:true});
-                  document.body.addEventListener('click', () => { v.play(); }, {once:true});
-              });
-          }
+          v.play().catch(e => {
+             // If browser suspends autoplay, force it on first touch
+             document.body.addEventListener('touchstart', () => v.play(), {once:true});
+             document.body.addEventListener('click', () => v.play(), {once:true});
+          });
       });
     });
 
