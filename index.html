@@ -24,7 +24,7 @@
       --highlight: #00f3ff; 
     }
 
-    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    /* GOOGLE TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
     body { top: 0px !important; margin-top: 0px !important; position: static !important; }
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
@@ -72,6 +72,7 @@
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
+    /* PRISTINE DESKTOP NAVBAR */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
     .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
     .logo-container:hover { transform: scale(1.05); }
@@ -113,8 +114,8 @@
     
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     
-    /* VITAL FIX: We hide them visually, but NOT with display:none, so the browser downloads them securely */
-    .mobile-title, .mobile-bg-video, .mobile-overlay-text, .health-slideshow { 
+    /* VITAL FIX: We hide them visually on desktop so they don't break layout */
+    .mobile-title, .card-slideshow { 
         position: absolute; opacity: 0; visibility: hidden; pointer-events: none; z-index: -1; width: 0; height: 0;
     }
 
@@ -228,34 +229,31 @@
       .login-trigger-btn span { display: none; } 
       .desktop-card-content { display: none; }
       
-      /* THIS IS THE MAGIC FIX: We make them visible on mobile instantly */
+      /* THIS IS THE MAGIC FIX: We make the new slideshow visible on mobile */
       .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden; background: #000;}
       
       .mobile-title { position: relative; z-index: 10; opacity: 1; visibility: visible; width: auto; height: auto; display: block; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
       
-      .mobile-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.6; visibility: visible; border-radius: 24px; pointer-events: none; display: block; }
+      /* UNIFIED 6-PART SLIDESHOW CSS */
+      .card-slideshow { position: absolute; inset: 0; z-index: 1; opacity: 1; visibility: visible; border-radius: 24px; overflow: hidden; background: #000; width: 100%; height: 100%; display: block; }
       
-      /* High-End Health Play Card 5-Part Looping Slideshow */
-      .health-slideshow { position: absolute; inset: 0; z-index: 1; opacity: 1; visibility: visible; border-radius: 24px; overflow: hidden; background: #000; width: 100%; height: 100%; display: block; }
+      .card-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: crossFade 30s infinite ease-in-out; pointer-events: none;}
+      .card-slide.img-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; }
       
-      .health-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: crossFade 25s infinite ease-in-out; pointer-events: none;}
-      .health-slide.img-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; }
-      
-      .health-slide:nth-child(1) { animation-delay: 0s; }
-      .health-slide:nth-child(2) { animation-delay: 5s; }
-      .health-slide:nth-child(3) { animation-delay: 10s; }
-      .health-slide:nth-child(4) { animation-delay: 15s; }
-      .health-slide:nth-child(5) { animation-delay: 20s; } /* The Write-up Slide */
+      .card-slide:nth-child(1) { animation-delay: 0s; }
+      .card-slide:nth-child(2) { animation-delay: 5s; }
+      .card-slide:nth-child(3) { animation-delay: 10s; }
+      .card-slide:nth-child(4) { animation-delay: 15s; }
+      .card-slide:nth-child(5) { animation-delay: 20s; }
+      .card-slide:nth-child(6) { animation-delay: 25s; } /* The Write-up Slide */
       
       @keyframes crossFade {
           0% { opacity: 0; transform: scale(1); }
           4% { opacity: 1; }
-          16% { opacity: 1; }
-          20% { opacity: 0; transform: scale(1.05); }
+          12% { opacity: 1; }
+          16% { opacity: 0; transform: scale(1.05); }
           100% { opacity: 0; }
       }
-
-      .mobile-overlay-text { display: none; } 
 
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
@@ -335,12 +333,27 @@
     </div>
   </section>
   <section class="services-container">
+    
     <div class="float-wrap">
       <div class="light-tracker card-maid">
         <div class="service-card" onclick="window.location.href='maid.html'">
-          <h3 class="mobile-title">Maids</h3>
-          <!-- LOCAL FILE FIX: Change "maid.mp4" to whatever your pristine video name is -->
-          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="maid.mp4" type="video/mp4"></video>
+          <h3 class="mobile-title" style="z-index: 20;">Maids</h3>
+          
+          <div class="card-slideshow">
+            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 1.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 2.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 3.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 4.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 5.jpg');"></div>
+            
+            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+               <div style="text-align: center; z-index: 10;">
+                  <i class="fa-solid fa-broom" style="font-size: 30px; color: #3498db; margin-bottom: 15px;"></i>
+                  <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Good maids for home cleaning and cooking.</p>
+               </div>
+            </div>
+          </div>
+          
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maids</h3>
             <p>Good maids for home cleaning and cooking.</p>
@@ -353,9 +366,23 @@
     <div class="float-wrap">
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
-          <h3 class="mobile-title">Expert Nurses</h3>
-          <!-- LOCAL FILE FIX: Change "nurse.mp4" to whatever your pristine video name is -->
-          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="nurse.mp4" type="video/mp4"></video>
+          <h3 class="mobile-title" style="z-index: 20;">Expert Nurses</h3>
+          
+          <div class="card-slideshow">
+            <div class="card-slide img-slide" style="background-image: url('NURSE/N1.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('NURSE/N2.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('NURSE/N3.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('NURSE/N4.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('NURSE/N5.jpg');"></div>
+            
+            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+               <div style="text-align: center; z-index: 10;">
+                  <i class="fa-solid fa-user-nurse" style="font-size: 30px; color: #2ecc71; margin-bottom: 15px;"></i>
+                  <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Expert nurses to care for sick family members at home.</p>
+               </div>
+            </div>
+          </div>
+          
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Expert Nurses</h3>
             <p>Expert nurses to care for sick family members at home.</p>
@@ -370,13 +397,14 @@
         <div class="service-card" onclick="window.location.href='health.html'">
           <h3 class="mobile-title" style="z-index: 20;">Health Check-Ups</h3>
           
-          <div class="health-slideshow">
-            <div class="health-slide img-slide" style="background-image: url('pexels-perfect-lens-15499663.jpg');"></div>
-            <div class="health-slide img-slide" style="background-image: url('pexels-rd-270521240-32712474.jpg');"></div>
-            <div class="health-slide img-slide" style="background-image: url('pexels-thirdman-7659569.jpg');"></div>
-            <div class="health-slide img-slide" style="background-image: url('pexels-yaroslav-shuraev-8088852.jpg');"></div>
+          <div class="card-slideshow">
+            <div class="card-slide img-slide" style="background-image: url('pexels-perfect-lens-15499663.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('pexels-rd-270521240-32712474.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('pexels-thirdman-7659569.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('pexels-yaroslav-shuraev-8088852.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('pexels-perfect-lens-15499663.jpg');"></div>
             
-            <div class="health-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
                <div style="text-align: center; z-index: 10;">
                   <i class="fa-solid fa-house-medical" style="font-size: 30px; color: #00f3ff; margin-bottom: 15px;"></i>
                   <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Fast home visits for body checks, bandages, and injections.</p>
@@ -396,9 +424,23 @@
     <div class="float-wrap">
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
-          <h3 class="mobile-title">Babysitters</h3>
-          <!-- LOCAL FILE FIX: Change "babysitter.mp4" to whatever your pristine video name is -->
-          <video class="mobile-bg-video" autoplay loop muted playsinline webkit-playsinline><source src="babysitter.mp4" type="video/mp4"></video>
+          <h3 class="mobile-title" style="z-index: 20;">Babysitters</h3>
+          
+          <div class="card-slideshow">
+            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY1.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY2.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY3.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY4.jpg');"></div>
+            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY5.jpg');"></div>
+            
+            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+               <div style="text-align: center; z-index: 10;">
+                  <i class="fa-solid fa-baby-carriage" style="font-size: 30px; color: #f39c12; margin-bottom: 15px;"></i>
+                  <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Safe and caring babysitters for your kids.</p>
+               </div>
+            </div>
+          </div>
+          
           <div class="desktop-card-content">
             <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
             <p>Safe and caring babysitters for your kids.</p>
@@ -608,15 +650,6 @@
           }, 1000);
         }
       }
-      
-      // FORCING VIDEOS TO PLAY ON MOBILE
-      document.querySelectorAll('.mobile-bg-video').forEach(v => {
-          v.play().catch(e => {
-             // If browser suspends autoplay, force it on first touch
-             document.body.addEventListener('touchstart', () => v.play(), {once:true});
-             document.body.addEventListener('click', () => v.play(), {once:true});
-          });
-      });
     });
 
     const canvas = document.getElementById('heroCanvas');
