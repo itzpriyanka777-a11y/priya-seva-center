@@ -288,7 +288,7 @@
     
     // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
     const lightTrackers = document.querySelectorAll('.light-tracker');
-    let isTicking = false;
+    let touchTicking = false;
     document.addEventListener('mousemove', (e) => {
       if (!isTicking) {
         window.requestAnimationFrame(() => {
@@ -509,7 +509,7 @@
 
   <script>
   // UI TOUCH & MOUSE TRACKER FIX FOR SUBPAGES
-  let isTicking = false;
+  let touchTicking = false;
   
   function updateLightTracker(clientX, clientY) {
     if (!isTicking) {
