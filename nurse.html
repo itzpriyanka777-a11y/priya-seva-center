@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Health Check | Priya Seva</title>
+  <title>Expert Nurse | Priya Seva</title>
   
   <meta name="theme-color" content="#03040b">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,6 +20,7 @@
       --glass-base: rgba(10, 15, 25, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
       --highlight: #00f3ff; 
+      --deep-ocean: #0055ff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,7 +49,7 @@
     .btn-dash { border-color: rgba(0, 243, 255, 0.3); color: #00f3ff; }
     .btn-dash:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 5px 15px rgba(0, 243, 255, 0.2);}
 
-    /* LANGUAGE DROPDOWN */
+    /* LANGUAGE DROPDOWN CSS */
     .menu-container { position: relative; display: inline-block; }
     .menu-btn { background: rgba(255, 255, 255, 0.05); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 15px; font-size: 16px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-weight: 600; backdrop-filter: blur(10px);}
     .menu-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: white;}
@@ -60,7 +61,7 @@
 
     @media (max-width: 768px) {
        .universal-header { padding: 15px 20px; }
-       .universal-brand span { display: none; } 
+       .universal-brand span { display: none; }
        .universal-btn { padding: 8px 12px; font-size: 12px; }
        .universal-btn span { display: none; } 
     }
@@ -85,33 +86,17 @@
 
     /* LIGHT TRACKER EDGE TRACING PHYSICS */
     .light-tracker { position: relative; width: 100%; }
-    .light-tracker::after {
-      content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), rgba(160, 100, 255, 0.8) 40%, transparent 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
-    }
-    .light-tracker::before {
-      content: ''; position: absolute; inset: 0; border-radius: inherit;
-      background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%);
-      pointer-events: none; z-index: 0;
-    }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
+    .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%); pointer-events: none; z-index: 0; }
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     
-    .glass-render { 
-      width: 100%; padding: 18px 25px; 
-      background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-      border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; 
-      color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; 
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; 
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); 
-      position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1); 
-    }
+    .glass-render { width: 100%; padding: 18px 25px; background: var(--glass-base); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: #ffffff; font-family: 'Poppins'; font-size: 15px; font-weight: 600; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); outline: none; box-shadow: 0 20px 40px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255, 255, 255, 0.1); position: relative; z-index: 1; text-shadow: 0 2px 5px rgba(0,0,0,1); }
     .glass-render::placeholder { color: rgba(255,255,255,0.6); text-transform: uppercase; font-size: 12px; letter-spacing: 1px;}
     .glass-render:hover { background: rgba(10, 15, 25, 0.6); transform: scale(1.02); }
     .glass-render:focus { transform: scale(1.04); background: rgba(0, 243, 255, 0.1); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.3), inset 0 2px 10px rgba(0, 243, 255, 0.3); }
 
+    /* TIME PICKER FIX */
     input[type="time"].glass-render { color-scheme: dark; cursor: pointer; }
     input[type="time"].glass-render::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(1); }
 
@@ -123,9 +108,9 @@
     .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;}
-    .option:last-child { border-bottom: none; }
     .option:hover { background: rgba(0, 243, 255, 0.2); padding-left: 35px; }
 
+    /* HOVER CHAT BUBBLE ENGINE */
     .helper-bubble {
       display: none; position: absolute; top: -50px; right: 0; 
       background: rgba(0, 243, 255, 0.95); color: #000; padding: 12px 18px; 
@@ -142,41 +127,20 @@
     .cal-date { padding: 10px 0; background: transparent; border-radius: 12px; font-size: 13px; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid transparent; text-shadow: 0 2px 5px rgba(0,0,0,1);}
     .cal-date:hover { transform: scale(1.2) translateY(-4px); background: rgba(255,255,255,0.15); box-shadow: 0 5px 15px rgba(0,0,0,0.6); border-color: rgba(255,255,255,0.3);}
     .cal-date.selected { background: rgba(0, 243, 255, 0.3); color: white; border-color: var(--highlight); box-shadow: 0 10px 25px rgba(0, 243, 255, 0.5); transform: scale(1.3) translateY(-6px);}
+    .cal-date:active { transform: scale(0.9) translateY(4px); } 
 
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     
-    /* THE RESTORED SMARTPHONE SCROLL & POPUP CSS */
-    .right-pane { 
-      flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; 
-      -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
-      mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
-    }
+    .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); }
     
-    .cinematic-container { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
-    
-    /* REWRITTEN IMAGE CSS: Smooth Opacity Cross-Fade only. No hard translateX edges! */
-    .cinematic-img { 
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
-      opacity: 0; transform: scale(1.05); /* Subtle zoom out effect */
-      transition: opacity 2s ease-in-out, transform 6s linear;
-      z-index: 1;
+    /* HD VIDEO FIX: Proper framing prevents excessive zoom and grain */
+    .video-bg { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      object-fit: cover; object-position: center 20%;
+      opacity: 0.85; z-index: 1; 
+      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    .cinematic-img.active { opacity: 0.65; transform: scale(1); z-index: 2; }
-
-    /* The updated "Write Up" Popup styling */
-    .final-message {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-      opacity: 0; z-index: 5; text-align: center;
-      background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      padding: 40px 35px; border-radius: 20px; border: 1px solid rgba(0, 243, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05);
-      transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      color: white; width: 85%; max-width: 450px; pointer-events: auto;
-    }
-    .final-message.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .final-message p { font-size: 15px; color: rgba(255,255,255,0.9); line-height: 1.8; font-weight: 500; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
-    .emphasis-text { color: var(--highlight); font-weight: 700; text-shadow: 0 0 12px rgba(0, 243, 255, 0.6); font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
 
     @media (max-width: 900px) {
       body { overflow: auto; }
@@ -192,7 +156,7 @@
 
   <header class="universal-header">
     <a href="index.html" class="universal-brand">
-      <i class="fa-solid fa-stethoscope" style="color: #00f3ff;"></i> <span>Priya Seva Center</span>
+      <i class="fa-solid fa-user-nurse" style="color: #00f3ff;"></i> <span>Priya Seva Center</span>
     </a>
     <div class="universal-nav-right">
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
@@ -200,7 +164,7 @@
       
       <div class="menu-container">
         <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
-        <div class="dropdown-content" style="min-width: 150px; right: 0;">
+        <div class="dropdown-content">
           <a href="#" onclick="changeLanguage('en'); return false;">English</a>
           <a href="#" onclick="changeLanguage('hi'); return false;">हिन्दी (Hindi)</a>
           <a href="#" onclick="changeLanguage('bn'); return false;">বাংলা (Bengali)</a>
@@ -217,35 +181,35 @@
       <div class="form-container" id="mainForm">
         
         <div class="spatial-header">
-          <h2>Health Check</h2>
-          <p>Book a body check at home. Our expert nurses will take good care of you.</p>
+          <h2>Expert Nurse Care</h2>
+          <p>Book a good nurse to take care of your family at home.</p>
         </div>
 
         <div class="capsule-group input-group">
           <label>Patient Name</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="patientName" class="glass-render" placeholder="E.g., Rohan Das" required>
+            <input type="text" id="parentName" class="glass-render" placeholder="E.g., Anjali Sharma" required>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Choose Services</label>
+          <label>Choose Service</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="serviceTrigger" onclick="toggleDropdown('serviceOptions')">
-              <span>Choose services</span> <i class="fa-solid fa-chevron-down"></i>
+              <span>Choose a service</span> <i class="fa-solid fa-chevron-down"></i>
             </div>
           </div>
           <div class="light-tracker select-options" id="serviceOptions" style="border-radius: 25px;">
-            <div class="option" onclick="toggleMultiOption('BP & Vitals Check', this)"><i class="fa-regular fa-square check-icon"></i> BP & Vitals Check</div>
-            <div class="option" onclick="toggleMultiOption('Oxygen Levels Check', this)"><i class="fa-regular fa-square check-icon"></i> Oxygen Levels Check</div>
-            <div class="option" onclick="toggleMultiOption('Vaccinations', this)"><i class="fa-regular fa-square check-icon"></i> Vaccinations</div>
-            <div class="option" onclick="toggleMultiOption('Post-Surgery Dressing', this)"><i class="fa-regular fa-square check-icon"></i> Post-Surgery Dressing</div>
-            <div class="option" onclick="toggleMultiOption('Physiotherapy', this)"><i class="fa-regular fa-square check-icon"></i> Physiotherapy</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Elder Care')">Elder Care</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Post-Op Recovery')">Post-Op Recovery</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Newborn Nursing')">Newborn Nursing</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', 'Medication Management')">Medication Management</div>
+            <div class="option" onclick="selectOption('serviceTrigger', 'serviceOptions', '24/7 Live-in Nurse')">24/7 Live-in Nurse</div>
           </div>
         </div>
 
         <div class="capsule-group input-group custom-select">
-          <label>Schedule Frequency</label>
+          <label>How Often?</label>
           <div id="freqHelperBubble" class="helper-bubble">Select an option for details.</div>
           <div class="light-tracker" style="border-radius: 50px;">
             <div class="glass-render select-trigger" id="freqTrigger" onclick="toggleDropdown('freqOptions')">
@@ -253,10 +217,10 @@
             </div>
           </div>
           <div class="light-tracker select-options" id="freqOptions" style="border-radius: 25px;">
-            <div class="option" onclick="selectFrequency('Single Visit')" onmouseenter="showFreqHelper('Book for one specific date.')" onmouseleave="hideFreqHelper()">Single Visit</div>
-            <div class="option" onclick="selectFrequency('Recurring Days')" onmouseenter="showFreqHelper('Select specific days to repeat weekly (e.g., Every Monday).')" onmouseleave="hideFreqHelper()">Recurring Days</div>
-            <div class="option" onclick="selectFrequency('Recurring Monthly')" onmouseenter="showFreqHelper('Select a date to repeat every month (e.g., 15th).')" onmouseleave="hideFreqHelper()">Recurring Monthly</div>
-            <div class="option" onclick="selectFrequency('Custom Schedule')" onmouseenter="showFreqHelper('Pick multiple specific dates freely.')" onmouseleave="hideFreqHelper()">Custom Schedule</div>
+            <div class="option" onclick="selectFrequency('Single Shift (8h)')" onmouseenter="showFreqHelper('Book for one 8-hour shift.')" onmouseleave="hideFreqHelper()">Single Shift (8h)</div>
+            <div class="option" onclick="selectFrequency('Night Shift (12h)')" onmouseenter="showFreqHelper('Book for one 12-hour night shift.')" onmouseleave="hideFreqHelper()">Night Shift (12h)</div>
+            <div class="option" onclick="selectFrequency('24/7 Coverage')" onmouseenter="showFreqHelper('Around the clock care.')" onmouseleave="hideFreqHelper()">24/7 Coverage</div>
+            <div class="option" onclick="selectFrequency('Weekly Schedule')" onmouseenter="showFreqHelper('Pick specific days every week.')" onmouseleave="hideFreqHelper()">Weekly Schedule</div>
           </div>
           
           <div class="light-tracker glass-calendar" id="visualCalendar" style="border-radius: 35px;">
@@ -267,7 +231,7 @@
                    <i class="fa-solid fa-xmark" style="cursor:pointer; color:rgba(255,255,255,0.5);" onclick="document.getElementById('visualCalendar').style.display='none'"></i>
                </div>
             </div>
-            <div class="cal-days" id="daysHeader" style="margin-bottom:8px;">
+            <div class="cal-days" style="margin-bottom:8px;">
               <span class="cal-day-name">S</span><span class="cal-day-name">M</span><span class="cal-day-name">T</span><span class="cal-day-name">W</span><span class="cal-day-name">T</span><span class="cal-day-name">F</span><span class="cal-day-name">S</span>
             </div>
             <div class="cal-days" id="calGrid"></div>
@@ -279,87 +243,54 @@
         </div>
 
         <div class="capsule-group input-group">
-          <label>Preferred Arrival Time</label>
+          <label>Choose Time</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <input type="time" id="timeWindow" class="glass-render" onclick="this.showPicker ? this.showPicker() : null">
           </div>
         </div>
 
         <div class="capsule-group input-group">
-          <label>Additional Notes</label>
+          <label>Medical Details (Optional)</label>
           <div class="light-tracker" style="border-radius: 50px;">
-            <input type="text" id="extraDetails" class="glass-render" placeholder="Any specific instructions?">
+            <input type="text" id="extraDetails" class="glass-render" placeholder="Any specific conditions we should know?">
           </div>
         </div>
 
         <div class="capsule-group" style="margin-top: 35px;">
           <div class="light-tracker" style="border-radius: 50px;">
-            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Request Appointment</button>
+            <button onclick="submitRequest()" class="submit-btn" id="submitBtn">Book Now</button>
           </div>
         </div>
 
       </div>
     </div>
-
+    
     <div class="right-pane">
-      <div class="cinematic-container">
-        <img src="./pexels-perfect-lens-15499663.jpg" id="img-0" class="cinematic-img">
-        <img src="./pexels-rd-270521240-32712474.jpg" id="img-1" class="cinematic-img">
-        <img src="./pexels-thirdman-7659569.jpg" id="img-2" class="cinematic-img">
-        <img src="./pexels-yaroslav-shuraev-8088852.jpg" id="img-3" class="cinematic-img">
-        
-        <div id="finalMessage" class="final-message">
-            <p style="margin-bottom: 12px; font-size: 17px; font-weight: 600;">There are 1000 of doctors & only one you!</p>
-            <p>Get a <span class="emphasis-text">Health Check Up</span> at Bucks Worth and stay updated with your body notifications the way u need to stay updated on your ig~</p>
-        </div>
-      </div>
+      <video preload="auto" autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
+        <source src="https://github.com/itzpriyanka777-a11y/priya-seva-center/releases/download/v1.0.0/nurse.mp4" type="video/mp4">
+      </video>
     </div>
 
   </div>
   <script>
-    // INFINITE LOOPING, SMOOTH CROSS-FADE SLIDESHOW
-    const sequenceImages = [ 
-      document.getElementById('img-0'), 
-      document.getElementById('img-1'), 
-      document.getElementById('img-2'), 
-      document.getElementById('img-3') 
-    ].filter(Boolean);
-    
-    const finalMessage = document.getElementById('finalMessage'); 
-    let currentImgIndex = 0;
-    
-    function runCinematicSequence() {
-      if (sequenceImages.length === 0) return;
-      
-      // Remove active class from all images to fade them out
-      sequenceImages.forEach(img => img.classList.remove('active'));
-      
-      // Fade in the current target image
-      sequenceImages[currentImgIndex].classList.add('active');
-      
-      // Pop up the text box right after the first image begins
-      if (finalMessage && !finalMessage.classList.contains('show')) {
-          setTimeout(() => { finalMessage.classList.add('show'); }, 1500); 
+    // AGGRESSIVE VIDEO FREEZE ENFORCER
+    window.addEventListener('load', () => {
+      const video = document.getElementById('cinematicVideo');
+      if (video) {
+        video.muted = true; 
+        const forcePlay = () => { video.play().catch(() => { setTimeout(forcePlay, 500); }); };
+        forcePlay();
       }
-      
-      // Advance the counter, and use modulus (%) to loop infinitely back to 0
-      currentImgIndex = (currentImgIndex + 1) % sequenceImages.length;
-      
-      // Re-run the loop every 4.5 seconds
-      setTimeout(runCinematicSequence, 4500); 
-    }
-    // Start sequence
-    setTimeout(runCinematicSequence, 500);
+    });
 
-    // MOUSE CLICK RIPPLE
     const rippleContainer = document.getElementById('rippleContainer');
-    function createRipple(x, y) {
+    function createClickRipple(x, y) {
       const ripple = document.createElement('div'); ripple.className = 'water-ripple'; ripple.style.left = x + 'px'; ripple.style.top = y + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => { ripple.remove(); }, 1800);
     }
-    document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+    document.addEventListener('click', (e) => createClickRipple(e.clientX, e.clientY));
     
-    // LIGHT TRACKER EDGE TRACING PHYSICS
+    // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
@@ -462,7 +393,6 @@
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let selectedFrequency = ""; let selectedDates = [];
-    let selectedHealthServices = []; 
 
     function showFreqHelper(text) {
        const bubble = document.getElementById('freqHelperBubble');
@@ -473,97 +403,49 @@
     function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
     function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
     
-    function toggleMultiOption(value, el) {
-      const index = selectedHealthServices.indexOf(value);
-      const icon = el.querySelector('.check-icon');
-      
-      if(index > -1) {
-        selectedHealthServices.splice(index, 1);
-        icon.classList.replace('fa-square-check', 'fa-square'); icon.classList.replace('fa-solid', 'fa-regular');
-        el.style.background = 'transparent'; el.style.paddingLeft = '25px'; icon.style.color = 'white';
-      } else {
-        selectedHealthServices.push(value);
-        icon.classList.replace('fa-square', 'fa-square-check'); icon.classList.replace('fa-regular', 'fa-solid');
-        el.style.background = 'rgba(0, 243, 255, 0.15)'; el.style.paddingLeft = '35px'; icon.style.color = 'var(--highlight)';
-      }
-      
-      const triggerSpan = document.querySelector('#serviceTrigger span');
-      if(selectedHealthServices.length === 0) {
-        triggerSpan.innerText = "Choose services"; triggerSpan.parentElement.classList.remove('active');
-      } else if(selectedHealthServices.length <= 2) {
-        triggerSpan.innerText = selectedHealthServices.join(", "); triggerSpan.parentElement.classList.add('active');
-      } else {
-        triggerSpan.innerText = selectedHealthServices.length + " Services Selected"; triggerSpan.parentElement.classList.add('active');
-      }
-    }
-
     function selectFrequency(value) { 
-        const trigger = document.getElementById('freqTrigger'); 
-        trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
-        trigger.classList.add('active'); document.getElementById('freqOptions').classList.remove('show'); 
-        
+        selectOption('freqTrigger', 'freqOptions', value); 
         selectedFrequency = value; selectedDates = []; 
         updateSelectedDatesDisplay(); document.getElementById('visualCalendar').style.display = 'block'; 
         
         const calTopText = document.getElementById('calTopText');
-        if (value === 'Single Visit') { calTopText.innerText = "Select Date:"; buildCalendarGrid('single'); } 
-        else if (value === 'Recurring Days') { calTopText.innerText = "Select Days of Week:"; buildCalendarGrid('days'); } 
-        else if (value === 'Recurring Monthly') { calTopText.innerText = "Select Monthly Date:"; buildCalendarGrid('monthly'); } 
-        else { calTopText.innerText = "Select Dates:"; buildCalendarGrid('custom'); }
-    }
-
-    function getOrdinal(n) {
-      let s=["th","st","nd","rd"], v=n%100;
-      return n+(s[(v-20)%10]||s[v]||s[0]);
+        if (value === 'Single Shift (8h)' || value === 'Night Shift (12h)') { calTopText.innerText = "Select Date:"; buildCalendarGrid(true); } 
+        else if (value === 'Weekly Schedule') { calTopText.innerText = "Select Days of Week:"; buildCalendarGrid(false, true); } 
+        else { calTopText.innerText = "Select Start Date:"; buildCalendarGrid(true); }
     }
 
     function updateSelectedDatesDisplay() {
       const displayDiv = document.getElementById('selectedDatesDisplay'); const datesText = document.getElementById('datesText');
       if (selectedDates.length > 0) { 
-          let prefix = "Selected: "; let suffix = "";
-          let sortedDates = [...selectedDates];
-          
-          if (selectedFrequency === 'Single Visit' || selectedFrequency === 'Custom Schedule') {
-             prefix = "Selected: May "; sortedDates = sortedDates.sort((a,b)=>a-b);
-          } else if (selectedFrequency === 'Recurring Monthly') {
-             prefix = "Every month on the "; suffix = getOrdinal(sortedDates[0]); sortedDates = [suffix];
-          } else if (selectedFrequency === 'Recurring Days') {
-             prefix = "Every: ";
-          }
-          
-          datesText.innerText = prefix + sortedDates.join(", "); 
+          let prefix = "Selected: May ";
+          if(selectedFrequency === 'Weekly Schedule') prefix = "Every: ";
+          datesText.innerText = prefix + (selectedFrequency === 'Weekly Schedule' ? selectedDates.join(", ") : selectedDates.sort((a,b)=>a-b).join(", ")); 
           displayDiv.style.display = 'block'; 
       } else { displayDiv.style.display = 'none'; }
     }
 
-    function buildCalendarGrid(mode) {
+    function buildCalendarGrid(isSingleSelect, isDaysMode = false) {
       const grid = document.getElementById('calGrid'); grid.innerHTML = '';
-      const daysHeader = document.getElementById('daysHeader'); 
-      
-      if (mode === 'days') {
-         daysHeader.style.display = 'none'; 
-         grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
-         
-         const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      if (isDaysMode) {
+         const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+         grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
          daysOfWeek.forEach(day => {
-            const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = day; div.style.padding = "12px 10px"; 
+            const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = day; div.style.padding = "10px 5px";
             div.onclick = function(e) {
-                createRipple(e.clientX, e.clientY);
-                this.classList.toggle('selected');
-                if(this.classList.contains('selected')) selectedDates.push(day); else selectedDates = selectedDates.filter(d => d !== day);
-                updateSelectedDatesDisplay();
+              createClickRipple(e.clientX, e.clientY);
+              this.classList.toggle('selected');
+              if(this.classList.contains('selected')) selectedDates.push(day); else selectedDates = selectedDates.filter(d => d !== day);
+              updateSelectedDatesDisplay(); 
             };
             grid.appendChild(div);
          });
       } else {
-         daysHeader.style.display = 'grid'; grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
-         let isSingleSelect = (mode === 'single' || mode === 'monthly');
-         
+         grid.style.gridTemplateColumns = 'repeat(7, 1fr)';
          for(let i=0; i<5; i++) { grid.innerHTML += `<div></div>`; } 
          for(let i=1; i<=31; i++) {
            const div = document.createElement('div'); div.className = 'cal-date'; div.innerText = i;
            div.onclick = function(e) {
-             createRipple(e.clientX, e.clientY);
+             createClickRipple(e.clientX, e.clientY);
              if(isSingleSelect) { document.querySelectorAll('.cal-date').forEach(d => d.classList.remove('selected')); selectedDates = [i]; this.classList.add('selected'); } 
              else { this.classList.toggle('selected'); if(this.classList.contains('selected')) selectedDates.push(i); else selectedDates = selectedDates.filter(d => d !== i); }
              updateSelectedDatesDisplay(); 
@@ -579,32 +461,25 @@
     });
 
     async function submitRequest() {
-      const btn = document.getElementById('submitBtn'); const name = document.getElementById('patientName').value; const timeWindow = document.getElementById('timeWindow').value; const extraDetails = document.getElementById('extraDetails').value;
-      
-      if(!name || selectedHealthServices.length === 0 || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { return alert("Please fill your name, select at least one service, pick your dates, and specify a time."); }
-      
-      const finalServices = selectedHealthServices.join(", ");
+      const btn = document.getElementById('submitBtn'); const name = document.getElementById('parentName').value; const service = document.getElementById('serviceTrigger').innerText.trim(); const timeWindow = document.getElementById('timeWindow').value; const notes = document.getElementById('extraDetails').value;
+      if(!name || service.includes("Choose") || selectedFrequency === "" || selectedDates.length === 0 || !timeWindow) { return alert("Please fill your name, select a service, pick your dates, and specify a time."); }
       
       try {
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...'; btn.disabled = true;
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) { btn.innerHTML = 'Request Appointment'; btn.disabled = false; return alert("Authentication required. Please log in."); }
+        if (!user) { btn.innerHTML = 'Book Now'; btn.disabled = false; return alert("Please log in first."); }
 
-        let formattedDates = "";
-        if (selectedFrequency === 'Recurring Monthly') { formattedDates = "Every month on the " + getOrdinal(selectedDates[0]); } 
-        else if (selectedFrequency === 'Recurring Days') { formattedDates = "Every " + selectedDates.join(", "); } 
-        else { formattedDates = "May " + selectedDates.sort((a,b)=>a-b).join(", "); }
-        
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby9XBlM0d2toRcFt09DbK-OJLLmeVuPGU9j8N3PAEIxEYw9QkCx7YCGah7MoLyKxjY/exec";
-        const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Health Check: " + finalServices, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (extraDetails ? " | Notes: " + extraDetails : "") };
+        let formattedDates = selectedFrequency === 'Weekly Schedule' ? "Every " + selectedDates.join(", ") : "May " + selectedDates.sort((a,b)=>a-b).join(", "); 
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLjRi5sXh__lJCPEpDJBznPkUKemqRYbxlUNkP8qSO0uQYl1EEHx0pXTQe_4r22Po/exec";
+        const payload = { actionType: 'new_booking', name: name, email: user.email, phone: "Not Provided", serviceType: "Nurse: " + service, date: formattedDates, address: "Not Provided", details: "Time: " + timeWindow + " | Freq: " + selectedFrequency + (notes ? " | Med Notes: " + notes : "") };
 
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
         const adminWaNumber = "917439392803";
-        const waMessage = `*New Health Appointment!*\n\n*Services:* ${finalServices}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${extraDetails || 'None'}`;
+        const waMessage = `*New Nursing Request!*\n\n*Service:* ${service}\n*Patient:* ${name}\n*Email:* ${user.email}\n*Frequency:* ${selectedFrequency}\n*Dates:* ${formattedDates}\n*Time:* ${timeWindow}\n*Notes:* ${notes || 'None'}`;
         window.open(`https://wa.me/${adminWaNumber}?text=${encodeURIComponent(waMessage)}`, '_blank');
         window.location.href = "dashboard.html";
-      } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Request Appointment'; btn.disabled = false; }
+      } catch (err) { alert("Transaction aborted: " + err.message); btn.innerHTML = 'Book Now'; btn.disabled = false; }
     }
   </script>
 
