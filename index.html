@@ -76,11 +76,10 @@
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
-    .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s;}
+    .logo-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.3s; margin-top: -10px;}
     .logo-container:hover { transform: scale(1.05); }
-    .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
-    .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
-    .mobile-brand { display: none; }
+    .logo-icon { font-size: 24px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 10px 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
+    .logo-text { color: white; font-weight: 600; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); font-size: 13px; text-align: center; text-transform: uppercase;}
 
     .nav-actions { display: flex; align-items: center; gap: 15px; }
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
@@ -225,20 +224,23 @@
       .hero h1 { font-size: 36px; }
       .navbar { padding: 15px 20px; }
       .login-trigger-btn span { display: none; } 
-      .desktop-brand { display: none; }
-      .mobile-brand { display: inline; font-size: 22px;}
       .desktop-card-content { display: none; }
-      .service-card { padding: 0; min-height: 250px; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.15);}
-      .mobile-title { display: block; position: absolute; top: 20px; left: 0; width: 100%; text-align: center; color: white; z-index: 10; font-size: 20px; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px;}
-      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; animation: fadeVideo 10s infinite; border-radius: 20px;}
-      .mobile-overlay-text { display: flex; position: absolute; inset: 0; z-index: 5; align-items: center; justify-content: center; text-align: center; padding: 30px; font-size: 15px; font-weight: 500; color: white; background: rgba(3, 8, 20, 0.85); animation: fadeText 10s infinite; border-radius: 20px; line-height: 1.6;}
-      @keyframes fadeVideo { 0%, 45% { opacity: 0.7; } 50%, 95% { opacity: 0; } 100% { opacity: 0.7; } }
-      @keyframes fadeText { 0%, 45% { opacity: 0; } 50%, 95% { opacity: 1; } 100% { opacity: 0; } }
+      
+      /* Updated Mobile Service Cards - No laggy fading! */
+      .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden;}
+      .mobile-title { display: block; position: relative; z-index: 10; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
+      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.55; border-radius: 24px; transition: 0.3s;}
+      .mobile-overlay-text { display: block; position: relative; z-index: 10; font-size: 14px; font-weight: 500; color: #e2e8f0; text-shadow: 0 2px 8px rgba(0,0,0,0.9); text-align: center; padding: 0 20px; line-height: 1.5;}
+      
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
-      .carousel-container { display: none; }
+      
+      /* Reviews Carousel Brought Back for Mobile */
+      .carousel-container { height: 350px; margin-top: 20px; }
+      .review-card { padding: 25px 20px; font-size: 13px; max-width: 300px; }
+      
       .site-footer { padding: 40px 20px 20px; text-align: center;}
       .footer-col a:hover { padding-left: 0; } 
     }
@@ -268,11 +270,8 @@
 
   <nav class="navbar">
     <a href="index.html" class="logo-container">
-      <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
-      <div class="logo-text">
-        <span class="desktop-brand">Priya Seva Center</span>
-        <span class="mobile-brand">Priya Seva</span>
-      </div>
+      <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
+      <div class="logo-text">Priya Seva Center</div>
     </a>
     <div class="nav-actions">
       
@@ -371,7 +370,7 @@
   <section class="reviews-section" id="reviews">
     <h2 style="color: #fff; font-size: 32px; font-weight: 700; text-shadow: 0 5px 15px rgba(0,0,0,0.5);">Trusted by Families in Kolkata</h2>
     
-    <div class="carousel-container">
+    <div class="carousel-container" id="reviewCarousel">
       <div class="nav-arrow" onclick="slideReview(-1)"><i class="fa-solid fa-chevron-left"></i></div>
       
       <div class="carousel-track">
@@ -404,7 +403,7 @@
     <div class="footer-content">
       <div class="footer-col">
         <div class="logo-container" style="margin-bottom: 20px; cursor: default;">
-          <div class="logo-icon"><i class="fa-solid fa-notes-medical"></i></div>
+          <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
           <div class="logo-text">Priya Seva Center</div>
         </div>
         <p>Good home care, expert nurses, and safe maids in Kolkata.</p>
@@ -592,22 +591,35 @@
       rippleContainer.appendChild(ripple); setTimeout(() => ripple.remove(), 1500);
     });
 
-    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
+    // UI LAG FIX + TOUCH SUPPORT
     let isMouseTicking = false;
-    document.addEventListener('mousemove', (e) => {
+    
+    function updateLightTracker(clientX, clientY) {
       if (!isMouseTicking) {
         window.requestAnimationFrame(() => {
           document.querySelectorAll('.light-tracker').forEach(el => {
             const rect = el.getBoundingClientRect(); 
-            el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
-            el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            el.style.setProperty('--mouse-x', `${clientX - rect.left}px`); 
+            el.style.setProperty('--mouse-y', `${clientY - rect.top}px`);
           });
           isMouseTicking = false;
         });
         isMouseTicking = true;
       }
-    });
+    }
 
+    document.addEventListener('mousemove', (e) => updateLightTracker(e.clientX, e.clientY));
+
+    // Touch support for mobile sensation
+    document.addEventListener('touchmove', (e) => {
+      if(e.touches.length > 0) updateLightTracker(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    
+    document.addEventListener('touchstart', (e) => {
+      if(e.touches.length > 0) updateLightTracker(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+
+    // Reviews Carousel Auto-Slide
     let revIndex = 0;
     const revCards = document.querySelectorAll('.review-card');
     function updateCarousel() {
@@ -623,6 +635,16 @@
       updateCarousel();
     }
     updateCarousel(); 
+
+    // Auto-slide every 5 seconds
+    let reviewInterval = setInterval(() => { slideReview(1); }, 5000);
+    const reviewCarousel = document.getElementById('reviewCarousel');
+    if(reviewCarousel) {
+        reviewCarousel.addEventListener('mouseenter', () => clearInterval(reviewInterval));
+        reviewCarousel.addEventListener('mouseleave', () => { reviewInterval = setInterval(() => { slideReview(1); }, 5000); });
+        reviewCarousel.addEventListener('touchstart', () => clearInterval(reviewInterval), {passive: true});
+        reviewCarousel.addEventListener('touchend', () => { reviewInterval = setInterval(() => { slideReview(1); }, 5000); }, {passive: true});
+    }
 
     window.addEventListener('load', function() {
       if(!localStorage.getItem('cookiesAccepted')) { setTimeout(() => { document.getElementById('cookieBanner').style.bottom = '0'; }, 3000); }
