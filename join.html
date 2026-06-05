@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* SCROLLBAR NUKE - Hides scrollbars on all browsers but keeps scrolling active */
+    /* SCROLLBAR NUKE */
     ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
     * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
 
@@ -24,27 +24,18 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* THE SCORCHED-EARTH GOOGLE TRANSLATE NUKE */
+    /* TRANSLATE NUKE */
     html { top: 0px !important; margin-top: 0px !important; padding-top: 0px !important; }
-    body { top: 0px !important; margin-top: 0px !important; position: static !important; }
+    body { top: 0px !important; margin-top: 0px !important; position: static !important; background-color: var(--void-bg); overflow: hidden; color: white; opacity: 0; animation: smoothLoad 0.8s ease-in 0.6s forwards; font-family: 'Poppins', sans-serif;}
     .skiptranslate, iframe.goog-te-banner-frame, .VIpgJd-Zvi9od-aZ2wEe-wOHMyf, .VIpgJd-Zvi9od-ORHb-OEVmcd, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; width: 0 !important; height: 0 !important; visibility: hidden !important; }
     .goog-text-highlight { background: none !important; box-shadow: none !important; border: none !important;}
-
-    /* ANTI-FLASH FADE */
-    body { 
-      opacity: 0; 
-      animation: smoothLoad 0.8s ease-in 0.6s forwards; 
-      font-family: 'Poppins', sans-serif; 
-      background-color: var(--void-bg); 
-      overflow: hidden; 
-      color: white; 
-    }
     @keyframes smoothLoad { to { opacity: 1; } }
 
+    /* PHYSICS CANVAS */
     #nightCanvas { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
     #rippleContainer { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
-    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: rippleEffect 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
-    @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
+    .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.1); animation: clickRipple 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; pointer-events: none; transform: translate(-50%, -50%); }
+    @keyframes clickRipple { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 300px; height: 300px; opacity: 0; border-width: 0px; } }
 
     /* UNIVERSAL HEADER */
     .universal-header { position: fixed; top: 0; left: 0; width: 100%; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 10000; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(5, 5, 16, 0.9); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-sizing: border-box;}
@@ -72,25 +63,29 @@
     }
 
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
-    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
-    .left-pane::-webkit-scrollbar { width: 0px; }
-    .form-container { position: relative; width: 100%; max-width: 500px; max-height: 85vh; padding-right: 15px;}
     
-    .spatial-header { text-align: center; margin-bottom: 50px; animation: floatLiquid 6s ease-in-out infinite; z-index: 100;}
+    /* SCROLL FIX: Allow proper scrolling when form gets tall */
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: flex-start; justify-content: center; padding: 120px 40px 100px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;}
+    .left-pane::-webkit-scrollbar { width: 0px; }
+    .form-container { position: relative; width: 100%; max-width: 500px; margin: auto 0; padding-right: 15px;}
+    
+    .spatial-header { text-align: center; margin-bottom: 50px;}
     .spatial-header h2 { margin: 0 0 10px 0; font-size: 40px; font-weight: 700; color: #fff; letter-spacing: 1px; text-shadow: 0 5px 25px rgba(0, 243, 255, 0.8), 0 0 50px rgba(0,0,0,1);}
     .spatial-header p { margin: 0 auto; font-size: 14px; color: #fff; font-weight: 500; max-width: 400px; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,1);}
 
-    .capsule-group { width: 100%; margin-bottom: 25px; position: relative; animation: floatLiquid 7s ease-in-out infinite alternate; }
-    .capsule-group:nth-child(2) { animation-delay: 1s; z-index: 50; }
-    .capsule-group:nth-child(3) { animation-delay: 2s; z-index: 40; }
-    .capsule-group:nth-child(4) { animation-delay: 0.5s; z-index: 30; }
-    .capsule-group:nth-child(5) { animation-delay: 1.5s; z-index: 20; }
-    .capsule-group:nth-child(6) { animation-delay: 0.8s; z-index: 10; }
+    /* Z-INDEX FIX FOR DROPDOWN OVERLAPPING */
+    .capsule-group { width: 100%; margin-bottom: 25px; position: relative; }
+    .capsule-group:nth-child(1) { z-index: 60; }
+    .capsule-group:nth-child(2) { z-index: 50; }
+    .capsule-group:nth-child(3) { z-index: 40; }
+    .capsule-group:nth-child(4) { z-index: 30; }
+    .capsule-group:nth-child(5) { z-index: 20; }
+    .capsule-group:nth-child(6) { z-index: 15; }
+    .capsule-group:nth-child(7) { z-index: 10; }
 
-    @keyframes floatLiquid { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-
+    /* LIGHT TRACKER EDGE TRACING PHYSICS */
     .light-tracker { position: relative; width: 100%; }
-    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 255, 255, 1), rgba(160, 100, 255, 0.8) 40%, transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
+    .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px; background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%); pointer-events: none; z-index: 0; }
 
     .input-group label { display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,1); display: flex; justify-content: space-between;}
@@ -111,7 +106,7 @@
     .select-trigger span { text-transform: uppercase; font-size: 12px; letter-spacing: 1px; color: rgba(255,255,255,0.7); }
     .select-trigger.active span { color: white; font-size: 15px; text-transform: none; letter-spacing: 0; }
     
-    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
+    .select-options { position: absolute; top: 110%; left: 0; right: 0; background: rgba(5, 8, 15, 0.95); backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; overflow: hidden; display: none; box-shadow: 0 30px 60px rgba(0,0,0,0.9);}
     .select-options.show { display: block; animation: dropBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .option { padding: 16px 25px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .option:last-child { border-bottom: none; }
@@ -123,10 +118,15 @@
     @keyframes dropBounce { 0% { opacity: 0; transform: translateY(-20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
 
     .right-pane { flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); }
-    .video-bg { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translateX(-50%) translateY(-50%); opacity: 0; object-fit: cover; z-index: 1; transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .video-bg.playing { opacity: 0.85; }
+    
+    /* RIGHT PANE HR VIDEO UPGRADE */
+    .video-bg { 
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+      object-fit: cover; object-position: center 20%;
+      opacity: 0.85; z-index: 1; filter: grayscale(80%) sepia(20%) hue-rotate(180deg);
+      transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
 
-    /* MOBILE REVOLUTION CSS */
     @media (max-width: 900px) {
       body { overflow: auto; }
       .split-layout { flex-direction: column; overflow-y: visible; height: auto; display: block;}
@@ -137,10 +137,8 @@
 </head>
 <body>
 
-  <!-- HIDDEN GOOGLE TRANSLATE ELEMENT -->
   <div id="google_translate_element" style="display:none; width:0; height:0; position:absolute;"></div>
 
-  <!-- UNIVERSAL HEADER -->
   <header class="universal-header">
     <a href="index.html" class="universal-brand">
       <i class="fa-solid fa-handshake-angle" style="color: #00f3ff;"></i> <span>Priya Seva Jobs</span>
@@ -148,7 +146,6 @@
     <div class="universal-nav-right">
       <a href="index.html" class="universal-btn"><i class="fa-solid fa-house"></i> <span>Home</span></a>
       
-      <!-- LANGUAGE TRANSLATION MENU -->
       <div class="menu-container">
         <button class="menu-btn" title="Change Language"><i class="fa-solid fa-globe"></i></button>
         <div class="dropdown-content">
@@ -180,14 +177,14 @@
           </div>
         </div>
 
-        <div style="display:flex; gap:15px;">
-          <div class="capsule-group input-group" style="flex:1;">
+        <div style="display:flex; gap:15px; z-index: 50; position:relative;">
+          <div class="capsule-group input-group" style="flex:1; margin-bottom:0;">
             <label>Phone Number</label>
             <div class="light-tracker" style="border-radius: 50px;">
               <input type="tel" id="appPhone" class="glass-render" placeholder="10-digit mobile" required>
             </div>
           </div>
-          <div class="capsule-group input-group" style="flex:1;">
+          <div class="capsule-group input-group" style="flex:1; margin-bottom:0;">
             <label>Email Address <span class="optional">(Optional)</span></label>
             <div class="light-tracker" style="border-radius: 50px;">
               <input type="email" id="appEmail" class="glass-render" placeholder="email@address.com">
@@ -195,7 +192,7 @@
           </div>
         </div>
 
-        <div class="capsule-group input-group">
+        <div class="capsule-group input-group" style="margin-top:25px;">
           <label>Your Home Address</label>
           <div class="light-tracker" style="border-radius: 50px;">
             <input type="text" id="appAddress" class="glass-render" placeholder="Current address & Pincode" required>
@@ -214,6 +211,9 @@
             <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Expert Nurse')">Expert Nurse</div>
             <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Health Check-up Staff')">Health Check-up Staff</div>
             <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Babysitter')">Babysitter</div>
+            <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Pet Sitter')">Pet Sitter</div>
+            <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Driver')">Driver</div>
+            <div class="option" onclick="selectOption('roleTrigger', 'roleOptions', 'Others')">Others</div>
           </div>
         </div>
 
@@ -253,7 +253,7 @@
           </div>
         </div>
 
-        <div class="capsule-group" style="margin-top: 35px;">
+        <div class="capsule-group" style="margin-top: 35px; z-index: 1;">
           <div class="light-tracker" style="border-radius: 50px;">
             <button onclick="submitApplication()" class="submit-btn" id="submitBtn">Send Application</button>
           </div>
@@ -263,31 +263,37 @@
     </div>
 
     <div class="right-pane">
-      <video autoplay loop muted playsinline class="video-bg" id="cinematicVideo" onplaying="this.classList.add('playing')">
+      <video preload="auto" autoplay loop muted playsinline class="video-bg" id="cinematicVideo">
         <source src="https://cdn.coverr.co/videos/coverr-business-meeting-2559/1080p.mp4" type="video/mp4">
       </video>
     </div>
 
   </div>
-
   <script>
+    // AGGRESSIVE VIDEO FREEZE ENFORCER
+    window.addEventListener('load', () => {
+      const video = document.getElementById('cinematicVideo');
+      if (video) {
+        video.muted = true; 
+        const forcePlay = () => { video.play().catch(() => { setTimeout(forcePlay, 500); }); };
+        forcePlay();
+      }
+    });
+
     const rippleContainer = document.getElementById('rippleContainer');
-    function createRipple(x, y) {
+    function createClickRipple(x, y) {
       const ripple = document.createElement('div'); ripple.className = 'water-ripple'; ripple.style.left = x + 'px'; ripple.style.top = y + 'px';
       rippleContainer.appendChild(ripple); setTimeout(() => { ripple.remove(); }, 1800);
     }
-    document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
+    document.addEventListener('click', (e) => createClickRipple(e.clientX, e.clientY));
     
-    // UI LAG FIX: requestAnimationFrame throttle added to heavy mousemove event
-    let lastRippleTime = 0;
+    // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
+    const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
-      const now = Date.now();
-      if(now - lastRippleTime > 150) { createRipple(e.clientX, e.clientY); lastRippleTime = now; }
-      
       if (!isTicking) {
         window.requestAnimationFrame(() => {
-          document.querySelectorAll('.light-tracker').forEach(el => {
+          lightTrackers.forEach(el => {
             const rect = el.getBoundingClientRect(); 
             el.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`); 
             el.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
@@ -298,32 +304,99 @@
       }
     });
 
-    const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d');
-    let stars = []; let clouds = [];
+    // GLOBALLY CAPTURE MOUSE WHEEL
+    window.addEventListener('wheel', (e) => {
+      const leftPane = document.querySelector('.left-pane');
+      if (!leftPane.contains(e.target)) leftPane.scrollTop += e.deltaY;
+    }, { passive: true });
+
+    // =================================================================================
+    // MICRO-STAR PHYSICS ENGINE (Small Size, Slow Drift, Royal/Blood Colors, No Jitter)
+    // =================================================================================
+    const canvas = document.getElementById('nightCanvas'); 
+    const ctx = canvas.getContext('2d');
     function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
-    for(let i=0; i<400; i++) { stars.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight, size: Math.random() * 1.5, speed: (Math.random() * 0.12) + 0.04, twinklePhase: Math.random() * Math.PI * 2, twinkleSpeed: (Math.random() * 0.02) + 0.01, color: Math.random() > 0.85 ? '0, 243, 255' : '255, 255, 255' }); }
-    for(let i=0; i<8; i++) {
-      let baseSize = (Math.random() * 180) + 120; let subParts = []; let cloudCircles = Math.floor(Math.random() * 3) + 4; 
-      for(let j=0; j<cloudCircles; j++) { subParts.push({ offsetX: (Math.random() - 0.5) * baseSize * 1.2, offsetY: (Math.random() - 0.5) * baseSize * 0.4, radius: (Math.random() * 0.4 + 0.6) * (baseSize * 0.5) }); }
-      clouds.push({ x: Math.random() * canvas.width, y: (Math.random() * canvas.height * 0.85), parts: subParts, baseSize: baseSize, speed: (Math.random() * 0.25) + 0.12, opacity: (Math.random() * 0.14) + 0.04 });
+    let stars = []; 
+    // Exact requested color palette
+    const starColors = [
+        {r: 0, g: 255, b: 255},    // Cyan
+        {r: 65, g: 105, b: 225},   // Royal Blue
+        {r: 138, g: 3, b: 3},      // Blood Red
+        {r: 220, g: 20, b: 60},    // Crimson
+        {r: 128, g: 0, b: 128},    // Purple
+        {r: 199, g: 21, b: 133},   // Reddish Purple
+        {r: 255, g: 255, b: 255}   // Soft White
+    ];
+
+    for(let i=0; i<200; i++) { 
+      let isShifter = Math.random() > 0.3; // 70% chance to color-shift in the dark
+      let startColor = starColors[Math.floor(Math.random() * starColors.length)];
+      stars.push({ 
+        x: Math.random() * window.innerWidth, 
+        y: Math.random() * window.innerHeight, 
+        size: (Math.random() * 0.5) + 0.2, // Tiny pinpricks (Max 0.7 radius)
+        speed: (Math.random() * 0.15) + 0.05, // Slow but steady right-to-left drift
+        phase: Math.random() * Math.PI * 2, 
+        phaseSpeed: (Math.random() * 0.008) + 0.002, // Extremely slow breathing fade
+        isShifter: isShifter,
+        targetColor: starColors[Math.floor(Math.random() * starColors.length)],
+        currentColor: {r: startColor.r, g: startColor.g, b: startColor.b}
+      }); 
     }
 
     function drawSereneSky() {
       ctx.fillStyle = '#03040b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => { s.x -= s.speed; if(s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; } s.twinklePhase += s.twinkleSpeed; let opacity = Math.abs(Math.sin(s.twinklePhase)) * 0.8 + 0.2; ctx.fillStyle = `rgba(${s.color}, ${opacity})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); });
-      clouds.forEach(c => {
-        c.x += c.speed; if(c.x > canvas.width + c.baseSize * 2) { c.x = -c.baseSize * 2; c.y = (Math.random() * canvas.height * 0.85); }
-        ctx.save(); ctx.shadowColor = 'rgba(2, 6, 20, 0.95)'; ctx.shadowBlur = c.baseSize * 0.6; ctx.fillStyle = `rgba(5, 14, 32, ${c.opacity})`;
-        ctx.beginPath(); c.parts.forEach(p => { ctx.arc(c.x + p.offsetX, c.y + p.offsetY, p.radius, 0, Math.PI * 2); }); ctx.fill(); ctx.restore();
+      stars.forEach(s => { 
+        // Calmly drift the star horizontally
+        s.x -= s.speed; 
+        if(s.x < -10) { 
+           s.x = canvas.width + 10; 
+           s.y = Math.random() * canvas.height; 
+        } 
+        
+        s.phase += s.phaseSpeed; 
+        let wave = Math.sin(s.phase);
+        let alpha = Math.abs(wave);
+        
+        // Color shifting in the dark
+        if (s.isShifter && alpha < 0.05) {
+            s.currentColor = starColors[Math.floor(Math.random() * starColors.length)];
+        }
+        
+        ctx.save();
+        ctx.fillStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`; 
+        ctx.shadowBlur = s.size * 4; 
+        ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); 
+        
+        // Crystalline light rays only for slightly larger stars when fully bright
+        if (s.size > 0.5 && alpha > 0.8) {
+           ctx.beginPath();
+           ctx.moveTo(s.x, s.y - s.size * 4); ctx.lineTo(s.x, s.y + s.size * 4);
+           ctx.moveTo(s.x - s.size * 4, s.y); ctx.lineTo(s.x + s.size * 4, s.y);
+           ctx.strokeStyle = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha * 0.4})`;
+           ctx.lineWidth = 0.3; ctx.stroke();
+        }
+        ctx.restore();
       });
       requestAnimationFrame(drawSereneSky);
     }
     drawSereneSky();
+    // =================================================================================
 
-    function toggleDropdown(id) { document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); document.getElementById(id).classList.toggle('show'); }
-    function selectOption(triggerId, dropdownId, value) { const trigger = document.getElementById(triggerId); trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; trigger.classList.add('active'); document.getElementById(dropdownId).classList.remove('show'); }
+    function toggleDropdown(id) { 
+        document.querySelectorAll('.select-options').forEach(el => { if(el.id !== id) el.classList.remove('show'); }); 
+        document.getElementById(id).classList.toggle('show'); 
+    }
+    
+    function selectOption(triggerId, dropdownId, value) { 
+      const trigger = document.getElementById(triggerId); 
+      trigger.innerHTML = `<span>${value}</span> <i class="fa-solid fa-chevron-down"></i>`; 
+      trigger.classList.add('active'); 
+      document.getElementById(dropdownId).classList.remove('show'); 
+    }
     
     document.addEventListener('click', function(e) {
       if(!e.target.closest('.custom-select')) { document.querySelectorAll('.select-options').forEach(el => el.classList.remove('show')); }
@@ -376,55 +449,36 @@
     }
   </script>
 
-  <!-- THE MASTER LANGUAGE ENGINE (Fix 1) -->
   <script type="text/javascript">
-    // 1. Force the language immediately to stop the choppy English flash
     let savedLang = localStorage.getItem('priyaSevaLang') || 'bn';
     document.cookie = `googtrans=/en/${savedLang}; path=/; domain=${window.location.hostname}`;
     document.cookie = `googtrans=/en/${savedLang}; path=/`;
 
-    // 2. Initialize Google Translate Invisibly
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'en,hi,bn', autoDisplay: false }, 'google_translate_element');
     }
 
-    // 3. The Global Switcher (Fixes the stuck Main Page!)
     function changeLanguage(langCode) {
-      localStorage.setItem('priyaSevaLang', langCode); // Saves to Global Memory
-      localStorage.setItem('langChoiceMade', 'true');  // Tells the popup you already chose
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/`;
-      window.location.reload(); // Reloads instantly in the correct language
+      localStorage.setItem('priyaSevaLang', langCode); localStorage.setItem('langChoiceMade', 'true');  
+      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`; document.cookie = `googtrans=/en/${langCode}; path=/`;
+      window.location.reload(); 
     }
 
-    // 4. Popup & Loading Mask Controller (For index.html)
     window.addEventListener('DOMContentLoaded', () => {
-      const mask = document.getElementById('contentMask');
-      const popup = document.getElementById('langPopupOverlay');
+      const mask = document.getElementById('contentMask'); const popup = document.getElementById('langPopupOverlay');
       const choiceMade = localStorage.getItem('langChoiceMade');
 
       if (mask && popup) {
         if (!choiceMade) {
-          // First time visitor: Show mask for 1s, then show Popup
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800);
-          }, 1000);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; popup.style.display = 'flex'; }, 800); }, 1000);
         } else {
-          // Returning visitor: Just hide the mask smoothly
-          setTimeout(() => {
-            mask.style.opacity = '0';
-            setTimeout(() => { mask.style.display = 'none'; }, 800);
-          }, 800);
+          setTimeout(() => { mask.style.opacity = '0'; setTimeout(() => { mask.style.display = 'none'; }, 800); }, 800);
         }
       }
       
-      // Nuke the ugly Google Translate Bar permanently
       const observer = new MutationObserver(() => {
-          document.body.style.top = '0px';
-          document.documentElement.style.top = '0px';
-          const gtFrame = document.querySelector('.goog-te-banner-frame');
-          if(gtFrame) gtFrame.remove();
+          document.body.style.top = '0px'; document.documentElement.style.top = '0px';
+          const gtFrame = document.querySelector('.goog-te-banner-frame'); if(gtFrame) gtFrame.remove();
       });
       observer.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     });
