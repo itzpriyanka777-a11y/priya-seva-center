@@ -519,5 +519,37 @@
   </script>
   <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+<script>
+  // UI TOUCH & MOUSE TRACKER FIX FOR SUBPAGES
+  let isTicking = false;
+  
+  function updateLightTracker(clientX, clientY) {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        document.querySelectorAll('.light-tracker').forEach(el => {
+          const rect = el.getBoundingClientRect(); 
+          el.style.setProperty('--mouse-x', `${clientX - rect.left}px`); 
+          el.style.setProperty('--mouse-y', `${clientY - rect.top}px`);
+        });
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }
+
+  // Listens for Desktop Mouse
+  document.addEventListener('mousemove', (e) => updateLightTracker(e.clientX, e.clientY));
+
+  // Listens for Mobile Touch / Swipe
+  document.addEventListener('touchmove', (e) => {
+    if(e.touches.length > 0) updateLightTracker(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  
+  // Listens for Mobile Tap
+  document.addEventListener('touchstart', (e) => {
+    if(e.touches.length > 0) updateLightTracker(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+</script>
+  
 </body>
 </html>
