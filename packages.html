@@ -169,7 +169,6 @@
       
     </div>
   </header>
-
   <section class="hero">
     <h1>Health Care Plans</h1>
     <p>Complete home care and health plans. Choose a ready-made plan or build your own below.</p>
@@ -298,7 +297,6 @@
       <button class="action-btn" id="modalSubmitBtn" onclick="submitPackageRequest()">Confirm Subscription</button>
     </div>
   </div>
-
   <script>
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
@@ -428,8 +426,8 @@
           name: name, 
           email: loggedInUser.email, 
           phone: "Not Provided", 
-          serviceType: "Package: " + currentSelectedPackage, 
-          date: "Subscription Started", 
+          serviceType: "Package Request: " + currentSelectedPackage, 
+          date: "Subscription Requested", 
           address: address, 
           details: detailsString 
       };
@@ -437,8 +435,10 @@
       try {
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         
-        btn.innerHTML = '<span style="color:black;"><i class="fa-solid fa-check"></i> Subscription Active</span>';
-        setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
+        btn.innerHTML = '<span style="color:black;"><i class="fa-solid fa-check"></i> Subscription Requested</span>';
+        alert("Plan Subscription Requested! Our backend team has been notified at itzpriyanka777@gmail.com and will contact you shortly.");
+        
+        setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
       } catch (err) {
         alert("Error: " + err.message);
         btn.innerHTML = 'Confirm Subscription';
