@@ -20,7 +20,6 @@
       --glass-base: rgba(10, 15, 25, 0.25);
       --glass-border: rgba(255, 255, 255, 0.08);
       --highlight: #00f3ff; 
-      --deep-ocean: #0055ff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -86,14 +85,12 @@
 
     /* LIGHT TRACKER EDGE TRACING PHYSICS */
     .light-tracker { position: relative; width: 100%; }
-    
     .light-tracker::after {
       content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 1.5px;
-      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), var(--deep-ocean) 45%, transparent 100%);
+      background: radial-gradient(circle 120px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), rgba(160, 100, 255, 0.8) 40%, transparent 100%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10;
     }
-    
     .light-tracker::before {
       content: ''; position: absolute; inset: 0; border-radius: inherit;
       background: radial-gradient(circle 180px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.15), transparent 100%);
@@ -149,35 +146,37 @@
     .submit-btn { width: 100%; padding: 22px; background: rgba(0, 243, 255, 0.1); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05); border-radius: inherit; color: var(--highlight); font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 15px 40px rgba(0,0,0,0.8); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative; z-index: 1;}
     .submit-btn:hover { transform: translateY(-5px) scale(1.03); background: rgba(0, 243, 255, 0.25); color: #fff; box-shadow: 0 25px 50px rgba(0, 243, 255, 0.4); text-shadow: 0 0 10px #fff; }
     
-    /* THE SMARTPHONE SCROLL & POPUP CSS */
+    /* THE RESTORED SMARTPHONE SCROLL & POPUP CSS */
     .right-pane { 
       flex: 0.85; position: relative; background: transparent; overflow: hidden; pointer-events: none; 
       -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
       mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,1) 40%); 
     }
+    
     .cinematic-container { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+    
+    /* REWRITTEN IMAGE CSS: Smooth Opacity Cross-Fade only. No hard translateX edges! */
     .cinematic-img { 
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; 
-      opacity: 0; transform: translateX(-50px); transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      opacity: 0; transform: scale(1.05); /* Subtle zoom out effect */
+      transition: opacity 2s ease-in-out, transform 6s linear;
       z-index: 1;
     }
-    .cinematic-img.active { opacity: 0.85; transform: translateX(0); z-index: 2; }
-    /* The Left-to-Right Swipe Out effect */
-    .cinematic-img.swipe-out { opacity: 0; transform: translateX(100%); z-index: 3; } 
+    .cinematic-img.active { opacity: 0.65; transform: scale(1); z-index: 2; }
 
-    /* The "Write Up" Popup styling */
+    /* The updated "Write Up" Popup styling */
     .final-message {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
       opacity: 0; z-index: 5; text-align: center;
-      background: rgba(5, 8, 15, 0.8); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      padding: 45px 35px; border-radius: 25px; border: 1px solid rgba(0, 243, 255, 0.2);
+      background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+      padding: 40px 35px; border-radius: 20px; border: 1px solid rgba(0, 243, 255, 0.15);
       box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0, 243, 255, 0.05);
       transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      color: white; width: 85%; max-width: 420px; pointer-events: auto;
+      color: white; width: 85%; max-width: 450px; pointer-events: auto;
     }
     .final-message.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    .final-message h3 { font-size: 26px; font-weight: 700; color: var(--highlight); margin-bottom: 15px; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0, 243, 255, 0.4); }
-    .final-message p { font-size: 15px; color: rgba(255,255,255,0.85); line-height: 1.7; font-weight: 500; }
+    .final-message p { font-size: 15px; color: rgba(255,255,255,0.9); line-height: 1.8; font-weight: 500; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+    .emphasis-text { color: var(--highlight); font-weight: 700; text-shadow: 0 0 12px rgba(0, 243, 255, 0.6); font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
 
     @media (max-width: 900px) {
       body { overflow: auto; }
@@ -310,15 +309,15 @@
         <img src="./pexels-yaroslav-shuraev-8088852.jpg" id="img-3" class="cinematic-img">
         
         <div id="finalMessage" class="final-message">
-            <h3>Your Health, Our Priority</h3>
-            <p>Expert diagnostic care and professional nursing brought directly to your home. Accurate, safe, and entirely reliable.</p>
+            <p style="margin-bottom: 12px; font-size: 17px; font-weight: 600;">There are 1000 of doctors & only one you!</p>
+            <p>Get a <span class="emphasis-text">Health Check Up</span> at Bucks Worth and stay updated with your body notifications the way u need to stay updated on your ig~</p>
         </div>
       </div>
     </div>
 
-  </div>\
+  </div>
   <script>
-    // SMARTPHONE SCROLL CINEMATIC SEQUENCE LOGIC
+    // INFINITE LOOPING, SMOOTH CROSS-FADE SLIDESHOW
     const sequenceImages = [ 
       document.getElementById('img-0'), 
       document.getElementById('img-1'), 
@@ -331,21 +330,26 @@
     
     function runCinematicSequence() {
       if (sequenceImages.length === 0) return;
-      if (currentImgIndex >= sequenceImages.length) { 
-          if(finalMessage) finalMessage.classList.add('show'); // Triggers the Write-Up
-          return; 
-      }
-      const activeImg = sequenceImages[currentImgIndex]; 
-      activeImg.classList.add('active');
       
-      setTimeout(() => { 
-          activeImg.classList.remove('active'); 
-          activeImg.classList.add('swipe-out'); // Left-to-Right swipe physics
-          currentImgIndex++; 
-          setTimeout(runCinematicSequence, 300); 
-      }, 3500); // 3.5s hold per image
+      // Remove active class from all images to fade them out
+      sequenceImages.forEach(img => img.classList.remove('active'));
+      
+      // Fade in the current target image
+      sequenceImages[currentImgIndex].classList.add('active');
+      
+      // Pop up the text box right after the first image begins
+      if (finalMessage && !finalMessage.classList.contains('show')) {
+          setTimeout(() => { finalMessage.classList.add('show'); }, 1500); 
+      }
+      
+      // Advance the counter, and use modulus (%) to loop infinitely back to 0
+      currentImgIndex = (currentImgIndex + 1) % sequenceImages.length;
+      
+      // Re-run the loop every 4.5 seconds
+      setTimeout(runCinematicSequence, 4500); 
     }
-    setTimeout(runCinematicSequence, 800);
+    // Start sequence
+    setTimeout(runCinematicSequence, 500);
 
     // MOUSE CLICK RIPPLE
     const rippleContainer = document.getElementById('rippleContainer');
@@ -355,7 +359,7 @@
     }
     document.addEventListener('click', (e) => createRipple(e.clientX, e.clientY));
     
-    // RESTORES THE FORM EDGE LIGHT TRACKING PHYSICS
+    // LIGHT TRACKER EDGE TRACING PHYSICS
     const lightTrackers = document.querySelectorAll('.light-tracker');
     let isTicking = false;
     document.addEventListener('mousemove', (e) => {
@@ -378,7 +382,7 @@
     }, { passive: true });
 
     // =================================================================================
-    // MICRO-STAR PHYSICS ENGINE (Smooth Drift, No Jitter, Custom Palette)
+    // MICRO-STAR PHYSICS ENGINE (Small Size, Slow Drift, Royal/Blood Colors, No Jitter)
     // =================================================================================
     const canvas = document.getElementById('nightCanvas'); 
     const ctx = canvas.getContext('2d');
@@ -386,7 +390,7 @@
     window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
     let stars = []; 
-    // Custom requested color palette
+    // Exact requested color palette
     const starColors = [
         {r: 0, g: 255, b: 255},    // Cyan
         {r: 65, g: 105, b: 225},   // Royal Blue
@@ -416,12 +420,18 @@
     function drawSereneSky() {
       ctx.fillStyle = '#03040b'; ctx.fillRect(0, 0, canvas.width, canvas.height);
       stars.forEach(s => { 
-        s.x -= s.speed; if(s.x < -10) { s.x = canvas.width + 10; s.y = Math.random() * canvas.height; } 
+        // Calmly drift the star horizontally
+        s.x -= s.speed; 
+        if(s.x < -10) { 
+           s.x = canvas.width + 10; 
+           s.y = Math.random() * canvas.height; 
+        } 
         
         s.phase += s.phaseSpeed; 
         let wave = Math.sin(s.phase);
         let alpha = Math.abs(wave);
         
+        // Color shifting in the dark
         if (s.isShifter && alpha < 0.05) {
             s.currentColor = starColors[Math.floor(Math.random() * starColors.length)];
         }
@@ -432,6 +442,7 @@
         ctx.shadowColor = `rgba(${s.currentColor.r}, ${s.currentColor.g}, ${s.currentColor.b}, ${alpha})`;
         ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2); ctx.fill(); 
         
+        // Crystalline light rays only for slightly larger stars when fully bright
         if (s.size > 0.5 && alpha > 0.8) {
            ctx.beginPath();
            ctx.moveTo(s.x, s.y - s.size * 4); ctx.lineTo(s.x, s.y + s.size * 4);
