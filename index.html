@@ -42,7 +42,7 @@
     
     a { text-decoration: none; }
     
-    /* SMOOTH LOADING MASK: Hides the choppy translation flash completely */
+    /* SMOOTH LOADING MASK */
     #contentMask {
       position: fixed; inset: 0; background: #030814; z-index: 999999;
       display: flex; justify-content: center; align-items: center; flex-direction: column;
@@ -75,11 +75,13 @@
     .water-ripple { position: absolute; border-radius: 50%; border: 1px solid rgba(0, 243, 255, 0.6); box-shadow: 0 0 25px rgba(0, 243, 255, 0.3), inset 0 0 15px rgba(0, 243, 255, 0.2); animation: rippleEffect 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; transform: translate(-50%, -50%); pointer-events: none;}
     @keyframes rippleEffect { 0% { width: 0; height: 0; opacity: 1; } 100% { width: 350px; height: 350px; opacity: 0; border-width: 0px; } }
     
+    /* PRISTINE DESKTOP NAVBAR */
     .navbar { background: transparent; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 1000;}
-    .logo-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: 0.3s; margin-top: -10px;}
+    .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
     .logo-container:hover { transform: scale(1.05); }
-    .logo-icon { font-size: 24px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 10px 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
-    .logo-text { color: white; font-weight: 600; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); font-size: 13px; text-align: center; text-transform: uppercase;}
+    .logo-icon { font-size: 28px; color: var(--highlight); background: rgba(0, 243, 255, 0.1); padding: 12px; border-radius: 12px; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); border: 1px solid rgba(0, 243, 255, 0.3);}
+    .logo-text { color: white; font-weight: 700; letter-spacing: 1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); font-size: 20px;}
+    .mobile-brand { display: none; }
 
     .nav-actions { display: flex; align-items: center; gap: 15px; }
     .login-trigger-btn { background: rgba(0, 243, 255, 0.1); color: var(--highlight); border: 1px solid var(--highlight); padding: 12px 25px; font-size: 15px; font-family: 'Poppins', sans-serif; border-radius: 10px; cursor: pointer; transition: 0.3s ease; font-weight: 600; display: flex; align-items: center; gap: 10px; white-space: nowrap; backdrop-filter: blur(10px); box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);}
@@ -98,8 +100,6 @@
     .hero { position: relative; background: linear-gradient(to bottom, rgba(3, 8, 20, 0.4) 0%, rgba(3, 8, 20, 0.8) 60%, var(--bg-void) 100%), url('hero-bg.PNG'); background-size: cover; background-position: center; color: white; text-align: center; padding: 220px 20px 180px 20px; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center;}
     #heroCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
     .hero-content { position: relative; z-index: 2; }
-    
-    /* HIGHLIGHT FIX: pointer-events: none completely stops Google Translate from highlighting the text */
     .hero h1 { font-size: 56px; font-weight: 700; margin-bottom: 20px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.2; text-shadow: 0 10px 30px rgba(0,0,0,0.8); letter-spacing: -1px; pointer-events: none; user-select: none; }
     .hero p { font-size: 18px; color: #94a3b8; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-weight: 400; pointer-events: none; user-select: none; }
 
@@ -114,8 +114,9 @@
     .light-tracker:hover { transform: scale(1.03) translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 20px rgba(0, 243, 255, 0.1); }
     .light-tracker::after { content: ''; position: absolute; inset: 0px; border-radius: inherit; padding: 2px; background: radial-gradient(circle 140px at var(--mouse-x, -500px) var(--mouse-y, -500px), var(--highlight), transparent 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; z-index: 10; }
     .light-tracker::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle 200px at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(0, 243, 255, 0.05), transparent 100%); pointer-events: none; z-index: 0; }
+    
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
-    .mobile-title, .mobile-bg-video, .mobile-overlay-text { display: none; }
+    .mobile-title, .mobile-bg-video, .mobile-overlay-text, .health-slideshow { display: none; }
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
     .service-card h3 { font-size: 22px; margin: 0 0 15px 0; color: #fff; font-weight: 600;}
@@ -131,10 +132,8 @@
     .carousel-container { display: flex; align-items: center; justify-content: center; gap: 15px; position: relative; height: 320px; margin-top: 40px;}
     .nav-arrow { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 10;}
     .nav-arrow:hover { background: var(--highlight); color: black; border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.4);}
-    
     .carousel-track { position: relative; width: 100%; max-width: 600px; height: 100%; display: flex; justify-content: center; align-items: center;}
     .review-card { position: absolute; width: 100%; max-width: 380px; background: var(--glass-panel); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.05); padding: 35px 30px; border-radius: 20px; text-align: left; transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); opacity: 0; pointer-events: none;}
-    
     .review-card.active { transform: translateX(0) scale(1.05); opacity: 1; z-index: 3; border-color: rgba(0,243,255,0.3); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 20px rgba(0,243,255,0.1); pointer-events: auto;}
     .review-card.prev { transform: translateX(-60%) scale(0.85); opacity: 0.4; z-index: 1; }
     .review-card.next { transform: translateX(60%) scale(0.85); opacity: 0.4; z-index: 1; }
@@ -186,17 +185,14 @@
     /* Auth Modals & Buttons */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(15px); }
     .auth-modal { background: rgba(10, 15, 30, 0.95); border: 1px solid rgba(0,243,255,0.2); padding: 40px 35px; border-radius: 24px; width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,243,255,0.1); position: relative; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-    
     .close-modal { position: absolute; top: 15px; right: 25px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: 0.3s;}
     .close-modal:hover { color: #e74c3c; transform: rotate(90deg);}
 
     .auth-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; justify-content: center;}
     .auth-tab-btn { background: transparent; border: none; color: rgba(255,255,255,0.5); font-size: 16px; font-family: 'Poppins'; font-weight: 600; cursor: pointer; transition: 0.3s;}
     .auth-tab-btn.active { color: var(--highlight); text-shadow: 0 0 10px rgba(0,243,255,0.4); }
-    
     .auth-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 15px; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 14px; margin-bottom: 15px; transition: 0.3s; outline: none;}
     .auth-input:focus { border-color: var(--highlight); box-shadow: 0 0 15px rgba(0,243,255,0.2);}
-    
     .google-btn { width: 100%; background: white; color: black; border: none; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; margin-bottom: 15px;}
     .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
     .auth-divider { display: flex; align-items: center; text-align: center; color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 15px;}
@@ -207,7 +203,6 @@
     .primary-auth-btn:hover { background: var(--highlight); color: #000; box-shadow: 0 0 30px rgba(0,243,255,0.4); transform: translateY(-2px);}
     .secondary-auth-btn { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s;}
     .secondary-auth-btn:hover { background: rgba(255,255,255,0.1); border-color: white;}
-    
     .hidden { display: none !important; }
 
     /* FOOTER */
@@ -219,28 +214,54 @@
     .footer-col i { color: var(--highlight); width: 20px; margin-right: 10px; }
     .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); font-size: 13px; }
 
+    /* --- ALL MOBILE SPECIFIC FIXES --- */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
-      .navbar { padding: 15px 20px; }
+      
+      /* Fixed Logo Layout - Thinner gap from left, stacked, and smaller */
+      .navbar { padding: 15px 10px; } 
+      .logo-container { flex-direction: column; align-items: flex-start; gap: 4px; margin-left: 5px;}
+      .logo-icon { font-size: 18px; padding: 8px 10px; }
+      .logo-text { font-size: 11px; text-align: left; letter-spacing: 0.5px;}
+      .mobile-brand { display: block; }
+      .desktop-brand { display: none; }
+
       .login-trigger-btn span { display: none; } 
       .desktop-card-content { display: none; }
       
-      /* Updated Mobile Service Cards - No laggy fading! */
-      .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden;}
+      /* Fixed Video Stream Cards */
+      .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden; background: #000;}
       .mobile-title { display: block; position: relative; z-index: 10; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
-      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.55; border-radius: 24px; transition: 0.3s;}
+      .mobile-bg-video { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.6; border-radius: 24px; pointer-events: none;}
       .mobile-overlay-text { display: block; position: relative; z-index: 10; font-size: 14px; font-weight: 500; color: #e2e8f0; text-shadow: 0 2px 8px rgba(0,0,0,0.9); text-align: center; padding: 0 20px; line-height: 1.5;}
       
+      /* High-End Health Play Card 5-Image Looping Slideshow */
+      .health-slideshow { display: block; position: absolute; inset: 0; z-index: 1; border-radius: 24px; overflow: hidden; background: #000; }
+      .health-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: crossFade 15s infinite ease-in-out; pointer-events: none;}
+      .health-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; } /* Dark overlay for text readability */
+      
+      .health-slide:nth-child(1) { animation-delay: 0s; }
+      .health-slide:nth-child(2) { animation-delay: 3s; }
+      .health-slide:nth-child(3) { animation-delay: 6s; }
+      .health-slide:nth-child(4) { animation-delay: 9s; }
+      .health-slide:nth-child(5) { animation-delay: 12s; }
+      
+      @keyframes crossFade {
+          0% { opacity: 0; transform: scale(1); }
+          6% { opacity: 1; }
+          20% { opacity: 1; }
+          26% { opacity: 0; transform: scale(1.05); }
+          100% { opacity: 0; }
+      }
+
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
       .kelvin-bot { width: 65px; bottom: 40px; right: -5px; }
       .kelvin-bubble { width: 180px; font-size: 11px; bottom: 120px; }
       
-      /* Reviews Carousel Brought Back for Mobile */
       .carousel-container { height: 350px; margin-top: 20px; }
       .review-card { padding: 25px 20px; font-size: 13px; max-width: 300px; }
-      
       .site-footer { padding: 40px 20px 20px; text-align: center;}
       .footer-col a:hover { padding-left: 0; } 
     }
@@ -271,7 +292,10 @@
   <nav class="navbar">
     <a href="index.html" class="logo-container">
       <div class="logo-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
-      <div class="logo-text">Priya Seva Center</div>
+      <div class="logo-text">
+        <span class="desktop-brand">Priya Seva Center</span>
+        <span class="mobile-brand">Priya Seva Centre</span>
+      </div>
     </a>
     <div class="nav-actions">
       
@@ -313,7 +337,7 @@
       <div class="light-tracker card-maid">
         <div class="service-card" onclick="window.location.href='maid.html'">
           <h3 class="mobile-title">Maids</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-cleaning-the-living-room-2751/1080p.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-cleaning-the-living-room-2751/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Good maids for home cleaning and cooking.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-broom card-icon"></i><h3>Maids</h3>
@@ -327,7 +351,7 @@
       <div class="light-tracker card-nurse">
         <div class="service-card" onclick="window.location.href='nurse.html'">
           <h3 class="mobile-title">Expert Nurses</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-nurse-checking-patient-5147/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Expert nurses to care for sick family members at home.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-user-nurse card-icon"></i><h3>Expert Nurses</h3>
@@ -337,11 +361,20 @@
         </div>
       </div>
     </div>
+    
     <div class="float-wrap">
       <div class="light-tracker card-health">
         <div class="service-card" onclick="window.location.href='health.html'">
           <h3 class="mobile-title">Health Check-Ups</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-beautiful-woman-doctor-with-a-stethoscope-2619/1080p.mp4" type="video/mp4"></video>
+          
+          <div class="health-slideshow">
+            <div class="health-slide" style="background-image: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80');"></div>
+            <div class="health-slide" style="background-image: url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=600&q=80');"></div>
+            <div class="health-slide" style="background-image: url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=600&q=80');"></div>
+            <div class="health-slide" style="background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=600&q=80');"></div>
+            <div class="health-slide" style="background-image: url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=600&q=80');"></div>
+          </div>
+          
           <div class="mobile-overlay-text">Fast home visits for body checks, bandages, and injections.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-house-medical card-icon"></i><h3>Health Check-Ups</h3>
@@ -351,11 +384,12 @@
         </div>
       </div>
     </div>
+    
     <div class="float-wrap">
       <div class="light-tracker card-baby">
         <div class="service-card" onclick="window.location.href='babysitter.html'">
           <h3 class="mobile-title">Babysitters</h3>
-          <video class="mobile-bg-video" autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4"></video>
+          <video class="mobile-bg-video" autoplay loop muted playsinline preload="auto"><source src="https://cdn.coverr.co/videos/coverr-a-mother-and-her-baby-playing-together-2621/1080p.mp4" type="video/mp4"></video>
           <div class="mobile-overlay-text">Safe and caring babysitters for your kids.</div>
           <div class="desktop-card-content">
             <i class="fa-solid fa-baby-carriage card-icon"></i><h3>Babysitters</h3>
