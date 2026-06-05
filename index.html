@@ -114,10 +114,8 @@
     
     .service-card { padding: 45px 30px; text-align: center; display: flex; flex-direction: column; height: 100%; position: relative; z-index: 2; cursor: pointer; overflow: hidden; border-radius: 24px;}
     
-    /* VITAL FIX: We hide them visually on desktop so they don't break layout */
-    .mobile-title, .card-slideshow { 
-        position: absolute; opacity: 0; visibility: hidden; pointer-events: none; z-index: -1; width: 0; height: 0;
-    }
+    /* VITAL FIX: Hidden securely on desktop */
+    .mobile-title, .card-slideshow { display: none; }
 
     .card-icon { font-size: 50px; margin-bottom: 25px; transition: 0.4s; text-shadow: 0 0 20px rgba(0,0,0,0.5);}
     .light-tracker:hover .card-icon { transform: scale(1.15) translateY(-5px); }
@@ -214,7 +212,7 @@
     .footer-col i { color: var(--highlight); width: 20px; margin-right: 10px; }
     .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); font-size: 13px; }
 
-    /* --- ALL MOBILE SPECIFIC FIXES --- */
+    /* --- THE MOBILE FIX ENGINE --- */
     @media (max-width: 768px) {
       .hero { padding: 150px 20px 100px 20px; }
       .hero h1 { font-size: 36px; }
@@ -229,31 +227,26 @@
       .login-trigger-btn span { display: none; } 
       .desktop-card-content { display: none; }
       
-      /* THIS IS THE MAGIC FIX: We make the new slideshow visible on mobile */
       .service-card { padding: 0; min-height: 260px; justify-content: flex-end; align-items: center; border: 1px solid rgba(255,255,255,0.15); border-radius: 24px; padding-bottom: 25px; overflow: hidden; background: #000;}
       
-      .mobile-title { position: relative; z-index: 10; opacity: 1; visibility: visible; width: auto; height: auto; display: block; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
+      .mobile-title { position: relative; z-index: 10; width: auto; height: auto; display: block; color: white; font-size: 22px; font-weight: 700; text-shadow: 0 4px 15px rgba(0,0,0,0.9); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;}
       
-      /* UNIFIED 6-PART SLIDESHOW CSS */
-      .card-slideshow { position: absolute; inset: 0; z-index: 1; opacity: 1; visibility: visible; border-radius: 24px; overflow: hidden; background: #000; width: 100%; height: 100%; display: block; }
-      
-      .card-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; animation: crossFade 30s infinite ease-in-out; pointer-events: none;}
+      /* UNIFIED SLIDESHOW CSS */
+      .card-slideshow { display: block; position: absolute; inset: 0; z-index: 1; border-radius: 24px; overflow: hidden; background: #000; width: 100%; height: 100%; }
+      .card-slide { position: absolute; inset: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; pointer-events: none;}
       .card-slide.img-slide::after { content: ''; position: absolute; inset: 0; background: rgba(3, 8, 20, 0.4); z-index: 2; }
       
-      .card-slide:nth-child(1) { animation-delay: 0s; }
-      .card-slide:nth-child(2) { animation-delay: 5s; }
-      .card-slide:nth-child(3) { animation-delay: 10s; }
-      .card-slide:nth-child(4) { animation-delay: 15s; }
-      .card-slide:nth-child(5) { animation-delay: 20s; }
-      .card-slide:nth-child(6) { animation-delay: 25s; } /* The Write-up Slide */
+      /* 5-Slide Animation Engine (Health) */
+      .anim-5 { animation: crossFade5 25s infinite ease-in-out; }
+      @keyframes crossFade5 { 0% { opacity: 0; transform: scale(1); } 4% { opacity: 1; } 16% { opacity: 1; } 20% { opacity: 0; transform: scale(1.05); } 100% { opacity: 0; } }
       
-      @keyframes crossFade {
-          0% { opacity: 0; transform: scale(1); }
-          4% { opacity: 1; }
-          12% { opacity: 1; }
-          16% { opacity: 0; transform: scale(1.05); }
-          100% { opacity: 0; }
-      }
+      /* 6-Slide Animation Engine (Maids) */
+      .anim-6 { animation: crossFade6 30s infinite ease-in-out; }
+      @keyframes crossFade6 { 0% { opacity: 0; transform: scale(1); } 3.3% { opacity: 1; } 13.3% { opacity: 1; } 16.6% { opacity: 0; transform: scale(1.05); } 100% { opacity: 0; } }
+      
+      /* 7-Slide Animation Engine (Nurses, Babysitters) */
+      .anim-7 { animation: crossFade7 35s infinite ease-in-out; }
+      @keyframes crossFade7 { 0% { opacity: 0; transform: scale(1); } 2.8% { opacity: 1; } 11.4% { opacity: 1; } 14.2% { opacity: 0; transform: scale(1.05); } 100% { opacity: 0; } }
 
       .chat-modal-overlay { padding: 15px; align-items: center; justify-content: center; }
       .chat-window { max-width: 100%; height: 90vh; }
@@ -340,13 +333,13 @@
           <h3 class="mobile-title" style="z-index: 20;">Maids</h3>
           
           <div class="card-slideshow">
-            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 1.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 2.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 3.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 4.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('MAID/MAID 5.jpg');"></div>
+            <div class="card-slide img-slide anim-6" style="background-image: url('MAID 1.jpg'); animation-delay: 0s;"></div>
+            <div class="card-slide img-slide anim-6" style="background-image: url('MAID 2.png'); animation-delay: 5s;"></div>
+            <div class="card-slide img-slide anim-6" style="background-image: url('MAID 3.jpg'); animation-delay: 10s;"></div>
+            <div class="card-slide img-slide anim-6" style="background-image: url('MAID 4.jpg'); animation-delay: 15s;"></div>
+            <div class="card-slide img-slide anim-6" style="background-image: url('MAID 5.jpg'); animation-delay: 20s;"></div>
             
-            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card-slide anim-6" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px; animation-delay: 25s;">
                <div style="text-align: center; z-index: 10;">
                   <i class="fa-solid fa-broom" style="font-size: 30px; color: #3498db; margin-bottom: 15px;"></i>
                   <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Good maids for home cleaning and cooking.</p>
@@ -369,13 +362,14 @@
           <h3 class="mobile-title" style="z-index: 20;">Expert Nurses</h3>
           
           <div class="card-slideshow">
-            <div class="card-slide img-slide" style="background-image: url('NURSE/N1.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('NURSE/N2.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('NURSE/N3.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('NURSE/N4.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('NURSE/N5.jpg');"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N1.jpg'); animation-delay: 0s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N2.jpg'); animation-delay: 5s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N3.JPEG'); animation-delay: 10s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N4.jpg'); animation-delay: 15s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N5.jfif'); animation-delay: 20s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('NURSE IMGS/N6.jpg'); animation-delay: 25s;"></div>
             
-            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card-slide anim-7" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px; animation-delay: 30s;">
                <div style="text-align: center; z-index: 10;">
                   <i class="fa-solid fa-user-nurse" style="font-size: 30px; color: #2ecc71; margin-bottom: 15px;"></i>
                   <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Expert nurses to care for sick family members at home.</p>
@@ -398,13 +392,12 @@
           <h3 class="mobile-title" style="z-index: 20;">Health Check-Ups</h3>
           
           <div class="card-slideshow">
-            <div class="card-slide img-slide" style="background-image: url('pexels-perfect-lens-15499663.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('pexels-rd-270521240-32712474.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('pexels-thirdman-7659569.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('pexels-yaroslav-shuraev-8088852.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('pexels-perfect-lens-15499663.jpg');"></div>
+            <div class="card-slide img-slide anim-5" style="background-image: url('pexels-perfect-lens-15499663.jpg'); animation-delay: 0s;"></div>
+            <div class="card-slide img-slide anim-5" style="background-image: url('pexels-rd-270521240-32712474.jpg'); animation-delay: 5s;"></div>
+            <div class="card-slide img-slide anim-5" style="background-image: url('pexels-thirdman-7659569.jpg'); animation-delay: 10s;"></div>
+            <div class="card-slide img-slide anim-5" style="background-image: url('pexels-yaroslav-shuraev-8088852.jpg'); animation-delay: 15s;"></div>
             
-            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card-slide anim-5" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px; animation-delay: 20s;">
                <div style="text-align: center; z-index: 10;">
                   <i class="fa-solid fa-house-medical" style="font-size: 30px; color: #00f3ff; margin-bottom: 15px;"></i>
                   <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Fast home visits for body checks, bandages, and injections.</p>
@@ -427,13 +420,14 @@
           <h3 class="mobile-title" style="z-index: 20;">Babysitters</h3>
           
           <div class="card-slideshow">
-            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY1.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY2.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY3.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY4.jpg');"></div>
-            <div class="card-slide img-slide" style="background-image: url('BABYSITTING/BBY5.jpg');"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY1.jpg'); animation-delay: 0s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY2.jpg'); animation-delay: 5s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY3.jpg'); animation-delay: 10s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY4.jpg'); animation-delay: 15s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY5.jpg'); animation-delay: 20s;"></div>
+            <div class="card-slide img-slide anim-7" style="background-image: url('BABYSITTING/BBY6.jpg'); animation-delay: 25s;"></div>
             
-            <div class="card-slide" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card-slide anim-7" style="background: rgba(3, 8, 20, 0.95); display: flex; align-items: center; justify-content: center; padding: 20px; animation-delay: 30s;">
                <div style="text-align: center; z-index: 10;">
                   <i class="fa-solid fa-baby-carriage" style="font-size: 30px; color: #f39c12; margin-bottom: 15px;"></i>
                   <p style="color: white; font-size: 15px; font-weight: 600; line-height: 1.6;">Safe and caring babysitters for your kids.</p>
