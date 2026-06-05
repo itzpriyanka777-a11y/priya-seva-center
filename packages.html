@@ -436,7 +436,7 @@
         await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         
         btn.innerHTML = '<span style="color:black;"><i class="fa-solid fa-check"></i> Subscription Requested</span>';
-        alert("Plan Subscription Requested! Our backend team has been notified at itzpriyanka777@gmail.com and will contact you shortly.");
+        alert("Plan Subscription Requested! Our backend team has been notified and will contact you shortly.");
         
         setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
       } catch (err) {
