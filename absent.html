@@ -266,7 +266,7 @@
     });
 
     // 5. THE MAGIC SCRIPT: Desktop Mouse & Mobile Touch Tracker
-    let isTicking = false;
+    let touchTicking = false;
     function updateLightTracker(clientX, clientY) {
       if (!isTicking) {
         window.requestAnimationFrame(() => {
