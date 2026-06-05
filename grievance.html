@@ -65,9 +65,13 @@
     }
 
     .split-layout { display: flex; height: 100vh; width: 100vw; position: relative; z-index: 10; }
-    .left-pane { flex: 1.15; position: relative; display: flex; align-items: center; justify-content: center; padding: 100px 40px 20px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden;}
+    
+    /* SCROLL FIX: Changed align-items to flex-start and increased top/bottom padding */
+    .left-pane { flex: 1.15; position: relative; display: flex; align-items: flex-start; justify-content: center; padding: 120px 40px 100px 40px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
     .left-pane::-webkit-scrollbar { width: 0px; }
-    .form-container { position: relative; width: 100%; max-width: 500px;}
+    
+    /* SCROLL FIX: margin: auto 0 ensures it perfectly centers when short, but scrolls properly when long */
+    .form-container { position: relative; width: 100%; max-width: 500px; margin: auto 0; }
     
     .spatial-header { text-align: center; margin-bottom: 40px; }
     .spatial-header h2 { margin: 0 0 10px 0; font-size: 38px; font-weight: 700; color: #fff; letter-spacing: 1px;}
@@ -190,7 +194,6 @@
       <img src="https://images.pexels.com/photos/5668772/pexels-photo-5668772.jpeg" class="video-bg" alt="Support">
     </div>
   </div>
-
   <script>
     // --- Physics & Canvas ---
     const canvas = document.getElementById('nightCanvas'); const ctx = canvas.getContext('2d'); let stars = [];
@@ -215,6 +218,12 @@
         isMouseTicking = true;
       }
     });
+
+    // SCROLL FIX: Forward mouse wheel events outside the left-pane directly to it
+    window.addEventListener('wheel', (e) => {
+      const leftPane = document.querySelector('.left-pane');
+      if (!leftPane.contains(e.target)) leftPane.scrollTop += e.deltaY;
+    }, { passive: true });
 
     const rippleContainer = document.getElementById('rippleContainer');
     document.addEventListener('click', (e) => {
